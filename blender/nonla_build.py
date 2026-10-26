@@ -481,7 +481,7 @@ def build_frame(col, hat, M, meta):
                            "joint_point": to_gltf(cone_point(s, joint_az, OFF["ring"]))})
     for k in range(P["RIBS"]):
         az = math.tau * (k + 0.5) / P["RIBS"]
-        s_top = ring_frame(16)[0]
+        s_top = ring_frame(P["N_RINGS"])[0]
         pts = [cone_point(s, az, OFF["rib"]) for s in np.linspace(s_top, L - 0.003, 32)]
         bm = bmesh.new()
         add_tube(bm, pts, 0.001, profile=[(x * 0.4, y * 0.8) for x, y in
@@ -815,7 +815,8 @@ def build_render_rig(scene):
 
 # --------------------------------------------------------------------------- main
 
-def main():
+def build_scene():
+    """Build the whole hat (and the render rig) into a fresh scene. Returns (scene, collection, meta)."""
     scene = reset_scene()
     tex = ensure_textures()
     M = build_materials(tex)
@@ -853,6 +854,12 @@ def main():
     meta["triangles"] = tris
 
     build_render_rig(scene)
+    return scene, col, meta
+
+
+def main():
+    scene, col, meta = build_scene()
+    tris = meta["triangles"]
 
     # export only the NONLA collection
     layer_col = bpy.context.view_layer.layer_collection.children["NONLA"]
