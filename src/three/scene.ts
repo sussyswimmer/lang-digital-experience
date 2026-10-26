@@ -68,8 +68,9 @@ export class Stage {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       alpha: true,
-      // MSAA only where pixels are big; also off for automated tests (software GL is slow)
-      antialias: (window.devicePixelRatio || 1) < 2 && !new URLSearchParams(location.search).has('test'),
+      // MSAA everywhere (on retina screens too: the thin brim thread and stitches shimmer without it);
+      // off only for automated tests, where software GL is slow
+      antialias: !new URLSearchParams(location.search).has('test'),
       powerPreference: 'high-performance',
       premultipliedAlpha: true,
     });
@@ -77,7 +78,7 @@ export class Stage {
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     // Neutral keeps the straw golden (AgX greys it out a little at this exposure)
     this.renderer.toneMapping = THREE.NeutralToneMapping;
-    this.renderer.toneMappingExposure = 1.0;
+    this.renderer.toneMappingExposure = 0.94;
     this.renderer.setClearColor(0x000000, 0);
 
     this.overlay = document.createElement('div');
@@ -97,15 +98,16 @@ export class Stage {
       }
     });
     this.scene.environment = this.envTex;
-    this.scene.environmentIntensity = 0.4;
+    this.scene.environmentIntensity = 0.6;
 
     // warm afternoon light from the upper left, a soft fill, and a rim that outlines the cone
-    const hemi = new THREE.HemisphereLight(0xfff3d6, 0xb85f36, 0.65);
-    const key = new THREE.DirectionalLight(0xffd59a, 2.9);
+    // near-white light: the photographic leaf texture already carries the straw colour (warmer light turned it orange)
+    const hemi = new THREE.HemisphereLight(0xfffaf0, 0xc9a77a, 0.7);
+    const key = new THREE.DirectionalLight(0xfff0d8, 2.6);
     key.position.set(-1.0, 1.1, 0.7);
-    const fill = new THREE.DirectionalLight(0xfff1dc, 0.6);
+    const fill = new THREE.DirectionalLight(0xfff8ee, 0.6);
     fill.position.set(1.0, 0.3, 0.9);
-    const rim = new THREE.DirectionalLight(0xffe2b0, 1.3);
+    const rim = new THREE.DirectionalLight(0xfff0d0, 1.2);
     rim.position.set(0.6, 0.9, -1.1);
     // a soft light from the child's side, so the underside (Layer 4) isn't left in the dark
     const front = new THREE.DirectionalLight(0xfff0d8, 0.45);

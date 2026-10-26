@@ -151,6 +151,8 @@ test('switching EN/VI mid-insight does not stall the sheet; Next layer still app
   await page.waitForFunction(() => (window as any).__nonla.p2.chunk() === 0, null, { timeout: 60_000, polling: 50 });
   await page.locator('.lang-toggle [data-lang="vi"]').click();
   await expect.poll(() => hook<string>(page, 'phase'), { timeout: 90_000 }).toBe('done');
+  // the sheet starts by saying the layer's name (with its Vietnamese part name)
+  expect(await page.evaluate(() => (window as any).__nonla.narrationLog())).toContain('p2.l1.name');
   const next = page.locator('[data-test="next"]');
   await expect(next).toBeVisible();
   // the CTA sits wholly inside the sheet (it used to fall below its fold on short screens)

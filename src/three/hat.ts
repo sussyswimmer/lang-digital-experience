@@ -136,7 +136,8 @@ export class Hat {
   }
 }
 
-export async function loadHat(): Promise<Hat> {
+/** `maxAnisotropy`: the GPU's limit (renderer.capabilities); the leaf grain is seen at grazing angles on the cone */
+export async function loadHat(maxAnisotropy = 8): Promise<Hat> {
   const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
   const [gltf, meta] = await Promise.all([
     loader.loadAsync(assetUrl('models/nonla.glb')),
@@ -162,7 +163,9 @@ export async function loadHat(): Promise<Hat> {
     mat.userData.baseEmissiveIntensity = mat.emissiveIntensity ?? 1;
     mat.userData.baseOpacity = mat.opacity;
     mat.userData.baseTransparent = mat.transparent;
-    if (mat.map) mat.map.anisotropy = 4;
+    for (const tex of [mat.map, mat.normalMap]) if (tex) tex.anisotropy = maxAnisotropy;
+    // the vein relief is baked for close-ups; at viewing distance a lighter touch reads as leaf, not hair
+    if (mat.normalMap) mat.normalScale.multiplyScalar(0.6);
     m.frustumCulled = true;
   });
   return new Hat(root, meta);

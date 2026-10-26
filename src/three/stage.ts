@@ -47,7 +47,7 @@ export async function createViewer(host: HTMLElement): Promise<HatViewer> {
   return viewer;
 }
 
-const LOAD_TIMEOUT_MS = 45_000;
+const LOAD_TIMEOUT_MS = 60_000;
 
 function webglAvailable(): boolean {
   if (new URLSearchParams(location.search).has('no3d')) return false;
@@ -79,7 +79,7 @@ class Viewer3D implements HatViewer {
     this.canvas = stage.canvas;
     stage.canvas.style.opacity = '0';
     stage.overlay.style.opacity = '0';
-    this.ready = loadHat().then((hat) => {
+    this.ready = loadHat(stage.renderer.capabilities.getMaxAnisotropy()).then((hat) => {
       if (this.disposed) return;
       this.rig = new Rig(stage, hat);
       this.rig.sound = (id, opts) => this.sound(id, opts);
