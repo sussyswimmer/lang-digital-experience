@@ -824,7 +824,7 @@ def main():
     root = empty("nonla_root", col)
     hat = empty("hat_assembly", col, root)
     meta = {
-        "version": 1, "units": "m", "up": "Y", "front": "-Z (glTF) / -Y (Blender)",
+        "version": 1, "units": "m", "up": "Y", "front": "+Z (glTF; a three.js camera at +Z sees the front) / -Y (Blender)",
         "params": {"brim_d": P["BRIM_D"], "height": H, "slant": round(L, 5), "half_apex_deg": round(math.degrees(A), 3),
                    "ring_pitch": P["RING_PITCH"], "rib_count": P["RIBS"], "outer_leaves": P["OUTER_LEAVES"],
                    "panels": P["PANELS"], "sew_start_ring": P["SEW_START_RING"]},
