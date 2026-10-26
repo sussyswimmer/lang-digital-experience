@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.vite/
+*.log
+.DS_Store
+Thumbs.db
+# Blender autosaves / backups
+*.blend1
+*.blend2
+# local render scratch (final, packed outputs are committed under raw-assets/renders)
+renders-scratch/
+# Playwright
+test-results/
+playwright-report/
