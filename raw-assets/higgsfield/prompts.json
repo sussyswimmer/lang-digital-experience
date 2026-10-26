@@ -49,5 +49,17 @@
    "b": "64c171ac-0384-4a72-a4d5-50a7958a82a9 (odd underside brim)",
    "d": "b6184799-3412-49f9-8794-7d8454428796 (rain market; fine, page 4 alternate)"
   }
+ },
+ "ambient_extra": {
+  "schoolyard": {
+   "model": "mirelo_text_to_audio",
+   "duration": 20,
+   "job": "ab2aad56-be6d-496c-89ed-da9151fb2e26",
+   "prompt": "Gentle outdoor schoolyard ambience in a Vietnamese town in the morning: distant children chatting and laughing, a few bicycle bells, birds in the trees, soft breeze, a far-off school bell once. Calm, even level, no music, no clear speech, seamless background loop.",
+   "post": "1 s equal-power crossfade of tail into head (19 s loop), 48 kHz mono 96 kbps, -24 LUFS"
+  },
+  "rain-market": {
+   "source": "mix of rain-on-hat (1.0) and market-chatter (0.7), -2.5 dB, 48 kHz mono 96 kbps (no generation)"
+  }
  }
 }
