@@ -1,0 +1,5 @@
+[
+  ["filter.noise.reduceNoise", {"strength": 4, "preserveDetails": 70, "reduceColorNoise": 40, "sharpenDetails": 15, "removeJpegArtifact": true}],
+  ["filter.cameraRaw", {"temperature": 8, "tint": 0, "exposure": 0.1, "contrast": 8, "highlights": -10, "shadows": 8, "vibrance": 12, "saturation": 2}],
+  ["filter.sharpen.unsharpMask", {"amount": 25, "radius": 0.8, "threshold": 3}]
+]

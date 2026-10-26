@@ -1,0 +1,167 @@
+[
+ {
+  "file": "p1-aodai.jpg",
+  "source": "P1. Conical hats and ao dai.jpg",
+  "width": 2581,
+  "height": 2160,
+  "bytes": 690645,
+  "sha256": "45a2898e76b91b43904e9a135ab3808d3ce2d3ceaf8ef5eec4fbbd7fa3773da5",
+  "higgsfield_job": "e6bd8d20-1dcc-4119-a599-b84a52a5d22d",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "p1-farmers.jpg",
+  "source": "P1. Farmers in field.jpg",
+  "width": 3258,
+  "height": 2160,
+  "bytes": 1143179,
+  "sha256": "878466858bb4193f43e7496c5af9df8ae7d1009df1433901a251d42ea6ad769a",
+  "higgsfield_job": "02143f1f-6000-4e8b-8679-e62835f61d3f",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "p1-rain.jpg",
+  "source": "P1. Raining falling on the hat.jpg",
+  "width": 3258,
+  "height": 2160,
+  "bytes": 1008315,
+  "sha256": "2ccedab76f33fa99626291d11c203b2a752cc023a197815d27fff1ee0eca0f2c",
+  "higgsfield_job": "d5fceec1-7221-44e9-8b35-7e1c98a7c4ad",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "p1-market.jpg",
+  "source": "P1. Sellers in the market.jpg",
+  "width": 2608,
+  "height": 2160,
+  "bytes": 1630791,
+  "sha256": "7db1597718bc8ac66262775f14bdfbc27d5697588304c8a22684d6570d42c5cc",
+  "higgsfield_job": "07e9e005-c80b-4e9d-997d-da24bd74135c",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "p2-16-rims.jpg",
+  "source": "P2. 16 rims.jpg",
+  "width": 3240,
+  "height": 2160,
+  "bytes": 1249556,
+  "sha256": "b1fa77209cd018b8884303080b9e47b66af25cf5cf3cc99b981aa6f8ef9c8eb2",
+  "higgsfield_job": "e26c84d1-90a8-402e-acf3-7692c05ae3e4",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "p2-chin-straps.jpg",
+  "source": "P2. Chin Straps.jpg",
+  "width": 3240,
+  "height": 2160,
+  "bytes": 483394,
+  "sha256": "6bd79f8283a66142e30a4864f343d1b7fab73040e840c95a97bd391ded98b094",
+  "higgsfield_job": "3fe176d1-7cd2-4f8c-9f7e-db54dfb7b073",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "p2-layering-leaves.jpg",
+  "source": "P2. Layering leaves.jpg",
+  "width": 2160,
+  "height": 3260,
+  "bytes": 964405,
+  "sha256": "ce3a4dc3901aa9ff7a94f94f4b6d4c549067f61476fe1762122b786d65846296",
+  "higgsfield_job": "b4a869d6-079b-48b6-9892-1cac2c7906df",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "p2-stitching.jpg",
+  "source": "P2. Stitching.jpg",
+  "width": 3216,
+  "height": 2160,
+  "bytes": 942888,
+  "sha256": "a9f9fb6615c9460bfd6d04de3d56999d4a7232c495090bdef39274eefec86855",
+  "higgsfield_job": "52a2978a-58c2-4960-a426-a18fe91d997a",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "p3-protection.jpg",
+  "source": "P3. Protection from weather conditions.jpg",
+  "width": 3260,
+  "height": 2160,
+  "bytes": 810828,
+  "sha256": "87a361ef7798aeadec306c3349ee1e28df84b39793621bf521f4918eb206f545",
+  "higgsfield_job": "b6564b74-30b1-4c75-a1b6-4c365c00913e",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "p3-poem.jpg",
+  "source": "P3. Traditional craft (poem).jpg",
+  "width": 2160,
+  "height": 2160,
+  "bytes": 1573196,
+  "sha256": "f7cbb9ce039260b77a8cf8f044a559d33a046575a211a974deba05cc3321e6a2",
+  "higgsfield_job": "1da5dc6a-dbaf-4dd7-993d-ddd0c56246a7",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "p3-identity.jpg",
+  "source": "P3. Vietnamese identity.jpg",
+  "width": 3230,
+  "height": 2160,
+  "bytes": 1278481,
+  "sha256": "7e32162a09f5a092041f4d463fbce297668e2680af3c1c72b56020975180bb3c",
+  "higgsfield_job": "e8c31f10-c9fa-4248-b509-18a1ae396e03",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "diverse-1.jpg",
+  "source": "Photo for diverse usage_1.jpg",
+  "width": 2160,
+  "height": 2688,
+  "bytes": 1727049,
+  "sha256": "13b54ad704fe7ab3fb05400ca113767c45d3efa4e961b5bf4e914de4e0848e12",
+  "higgsfield_job": "c2a9b95e-34e3-4155-bca3-457dded1bdf7",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "diverse-2.jpg",
+  "source": "Photo for diverse usage_2.jpg",
+  "width": 3082,
+  "height": 2160,
+  "bytes": 1305634,
+  "sha256": "5aab9736f25561780a13b4845b3662c3ca87359b501dda30da71936bffd106f1",
+  "higgsfield_job": "e3d6fb02-4148-446f-9e4d-f58369ca5c02",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "diverse-3.jpg",
+  "source": "Photo for diverse usage_3.jpg",
+  "width": 2880,
+  "height": 2160,
+  "bytes": 1317567,
+  "sha256": "6d4b117c559385d965b6a314d0b472e1d84d87766749a7f7d2ba5b2a53ddd65b",
+  "higgsfield_job": "34b0c4cb-ea16-429a-8fd1-e2f0ca3fb02d",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ },
+ {
+  "file": "diverse-4.jpg",
+  "source": "Photo for diverse usage_4.jpg",
+  "width": 3692,
+  "height": 2160,
+  "bytes": 2093393,
+  "sha256": "d9b000eac8e8a18d653e6ad4dc0c6110a46feb196cfc3570eab6c690c02f1c12",
+  "higgsfield_job": "0443c0ca-212c-4ae1-9859-e79dd1891c08",
+  "model": "bytedance_image_upscale 2k",
+  "credits": 2
+ }
+]

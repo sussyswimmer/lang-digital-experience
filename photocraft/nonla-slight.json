@@ -1,0 +1,4 @@
+[
+  ["filter.cameraRaw", {"temperature": 8, "tint": 0, "exposure": 0.1, "contrast": 8, "highlights": -10, "shadows": 8, "vibrance": 12, "saturation": 2}],
+  ["filter.sharpen.unsharpMask", {"amount": 35, "radius": 0.8, "threshold": 2}]
+]
