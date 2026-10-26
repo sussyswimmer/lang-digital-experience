@@ -6,8 +6,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 type Pt = { x: number; y: number };
 
-test.describe.configure({ mode: 'serial' });
-test.setTimeout(180_000);
+test.describe.configure({ timeout: 240_000 });
 
 async function open(page: Page, layer: string): Promise<void> {
   await page.goto(`/?test=1&review=1#/play/p2/${layer}`);
@@ -82,7 +81,8 @@ test('layer 4: everything flies back, the strap is centre stage and sways when t
   await expect.poll(async () => Math.abs(await hook<number>(page, 'strapAngle')), { timeout: 30_000 }).toBeGreaterThan(3);
   await expect(page.locator('.screen.p2')).toHaveAttribute('data-phase', /insight|done/, { timeout: 30_000 });
   await page.locator('.p2-swatch--green').click();
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('nonla.settings.v1') ?? '{}').strapColour ?? 'green')).toBe('green');
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('nonla.settings.v1') ?? '{}').strapColour)).toBe('green');
+  await expect(page.locator('.p2-swatch--green')).toHaveAttribute('aria-checked', 'true');
 });
 
 test('Vietnamese: the question and panel follow the language toggle', async ({ page }) => {

@@ -56,7 +56,7 @@ export function createFallbackViewer(host: HTMLElement): HatViewer {
   const knots = [svgEl('circle', { cx: 40, cy: 262, r: 7, fill: '#6E4A86' }, strap), svgEl('circle', { cx: 360, cy: 262, r: 7, fill: '#6E4A86' }, strap)];
   strap.style.opacity = '0';
   const inner = g('inner');
-  svgEl('path', { d: `M${APEX.x},${APEX.y} L${BRIM.cx - BRIM.rx},${BRIM.cy} ${arcPath(BRIM).replace(/^M[^A]+/, '')} Z`, fill: '#9C6B3F' }, inner);
+  svgEl('path', { d: `M${APEX.x},${APEX.y} L${BRIM.cx + BRIM.rx},${BRIM.cy} ${arcPath(BRIM).replace(/^M[^A]+/, '')} Z`, fill: '#9C6B3F' }, inner);
   svgEl('path', { d: `M${APEX.x},${APEX.y} L${BRIM.cx - BRIM.rx * 0.5},${BRIM.cy + BRIM.ry * 0.86} L${BRIM.cx + BRIM.rx * 0.2},${BRIM.cy + BRIM.ry * 0.98} Z`, fill: '#E6D2A0', opacity: 0.55 }, inner);
   const frame = g('frame');
   const ringEls: SVGPathElement[] = [];
@@ -112,15 +112,17 @@ export function createFallbackViewer(host: HTMLElement): HatViewer {
   const reset = (level: number) => {
     for (const a of tweens) a.kill();
     tweens.clear();
-    gsap.set(stitches, { x: 0, opacity: level === 0 ? 1 : 0 });
+    // hidden layers must not catch taps meant for the one underneath
+    const show = (on: boolean) => ({ opacity: on ? 1 : 0, pointerEvents: on ? 'auto' : 'none' });
+    gsap.set(stitches, { x: 0, ...show(level === 0) });
     floating = false;
     rows.forEach((r) => r.setAttribute('stroke', '#FBFAF6'));
-    wedges.forEach((w) => gsap.set(w, { opacity: level <= 1 ? 1 : 0, rotate: 0, y: 0 }));
+    wedges.forEach((w) => gsap.set(w, { rotate: 0, y: 0, ...show(level <= 1) }));
     peeled = level <= 1 ? 0 : 12;
-    gsap.set(inner, { opacity: level <= 2 ? 1 : 0 });
-    gsap.set(frame, { opacity: level >= 2 ? 1 : 0 });
+    gsap.set(inner, show(level <= 2));
+    gsap.set(frame, show(level >= 2));
     ringEls.forEach((r) => r.setAttribute('stroke', '#C79A55'));
-    gsap.set(strap, { opacity: 0, rotate: 0 });
+    gsap.set(strap, { rotate: 0, ...show(false) });
   };
 
   const makeLayer = (id: LayerId, cb: LayerCallbacks): LayerController & { layerId: LayerId } => {
@@ -147,7 +149,10 @@ export function createFallbackViewer(host: HTMLElement): HatViewer {
         floating = true;
         cb.onEvent?.('floating', true);
         complete();
+        // the tap that finished the row must not also send the stitches straight back
+        const armedAt = performance.now() + 500;
         on(stitches, 'click', () => {
+          if (performance.now() < armedAt) return;
           floating = !floating;
           sfx(floating ? 'swish' : 'floatBack');
           tw(gsap.to(stitches, { x: floating ? 150 : 0, duration: motion.dur(0.8), ease: 'power2.inOut' }));
@@ -155,21 +160,21 @@ export function createFallbackViewer(host: HTMLElement): HatViewer {
         });
       },
       leaves: () => {
-        wedges.forEach((w, k) => tw(gsap.to(w, { opacity: 0, y: -80, rotate: k < 3 ? -25 : 25, duration: motion.dur(0.6), delay: k * 0.06 })));
+        wedges.forEach((w, k) => tw(gsap.to(w, { opacity: 0, pointerEvents: 'none', y: -80, rotate: k < 3 ? -25 : 25, duration: motion.dur(0.6), delay: k * 0.06 })));
         peeled = 12;
         cb.onEvent?.('peeled', 12);
         complete();
       },
       frame: () => {
-        tw(gsap.to(inner, { opacity: 0, duration: motion.dur(0.6) }));
+        tw(gsap.to(inner, { opacity: 0, pointerEvents: 'none', duration: motion.dur(0.6) }));
         rings = 16;
         cb.onEvent?.('ring', 16);
         complete();
       },
       strap: () => {
-        gsap.set([inner, stitches], { opacity: 1, x: 0 });
-        wedges.forEach((w) => gsap.set(w, { opacity: 1, y: 0, rotate: 0 }));
-        tw(gsap.to(strap, { opacity: 1, duration: 0.5 }));
+        gsap.set([inner, stitches], { opacity: 1, x: 0, pointerEvents: 'none' });
+        wedges.forEach((w) => gsap.set(w, { opacity: 1, y: 0, rotate: 0, pointerEvents: 'none' }));
+        tw(gsap.to(strap, { opacity: 1, pointerEvents: 'auto', duration: 0.5 }));
         complete();
       },
     };
@@ -193,7 +198,7 @@ export function createFallbackViewer(host: HTMLElement): HatViewer {
               on(w, 'pointerdown', () => {
                 if (done || Number(w.style.opacity || 1) === 0) return;
                 sfx('peel');
-                tw(gsap.to(w, { opacity: 0, y: -70, rotate: k < 3 ? -20 : 20, duration: motion.dur(0.6) }));
+                tw(gsap.to(w, { opacity: 0, pointerEvents: 'none', y: -70, rotate: k < 3 ? -20 : 20, duration: motion.dur(0.6) }));
                 peeled += 2;
                 cb.onEvent?.('peeled', peeled);
                 if (peeled >= 6) {
@@ -206,7 +211,7 @@ export function createFallbackViewer(host: HTMLElement): HatViewer {
           } else if (id === 'frame') {
             on(svg, 'pointerdown', () => {
               if (done || rings > 0) return;
-              tw(gsap.to(inner, { opacity: 0, duration: motion.dur(0.6) }));
+              tw(gsap.to(inner, { opacity: 0, pointerEvents: 'none', duration: motion.dur(0.6) }));
               ringEls.forEach((r, i) =>
                 tw(
                   gsap.delayedCall(0.4 + i * (motion.reduced ? 0.05 : 0.14), () => {
@@ -220,10 +225,10 @@ export function createFallbackViewer(host: HTMLElement): HatViewer {
               );
             });
           } else {
-            gsap.set([inner, stitches], { opacity: 1, x: 0 });
-            wedges.forEach((w, k) => tw(gsap.fromTo(w, { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: motion.dur(0.5), delay: k * 0.08 })));
+            gsap.set([inner, stitches], { opacity: 1, x: 0, pointerEvents: 'none' });
+            wedges.forEach((w, k) => tw(gsap.fromTo(w, { opacity: 0, y: -60, pointerEvents: 'none' }, { opacity: 1, y: 0, duration: motion.dur(0.5), delay: k * 0.08 })));
             peeled = 0;
-            tw(gsap.to(strap, { opacity: 1, duration: 0.6, delay: 0.8 }));
+            tw(gsap.to(strap, { opacity: 1, pointerEvents: 'auto', duration: 0.6, delay: 0.8 }));
             strap.style.transformOrigin = '200px 262px';
             on(strap, 'pointerdown', () => {
               sfx('swish');

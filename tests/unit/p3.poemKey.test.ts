@@ -33,10 +33,15 @@ describe('Chapter 2 poem hat light key', () => {
     expect(out.length).toBe(w * h * 4);
   });
 
-  it('rasterises the outline mask', () => {
+  it('rasterises the outline mask exactly like a point-in-polygon test', () => {
     const m = polygonMask([{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }], 10, 10);
     expect(m[0]).toBe(1);
     expect(m[99]).toBe(0);
+    const n = 64;
+    const mask = polygonMask(region, n, n);
+    const pts = region.map((p) => ({ x: p.x * n, y: p.y * n }));
+    for (let y = 0; y < n; y++)
+      for (let x = 0; x < n; x++) expect(mask[y * n + x], `${x},${y}`).toBe(inPolygon({ x: x + 0.5, y: y + 0.5 }, pts) ? 1 : 0);
   });
 
   it('smoothstep is clamped and monotonic', () => {

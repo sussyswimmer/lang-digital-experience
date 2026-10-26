@@ -13,7 +13,9 @@ export abstract class LayerBase implements LayerController {
   protected completed = false;
   private labelsOwned = new Set<Label>();
   private frameOffs: (() => void)[] = [];
-  private resolveRun: (() => void) | null = null;
+  private resolveDone: () => void = () => {};
+  /** resolves when the child completes the layer (or finish() jumps there); never on dispose */
+  private readonly donePromise = new Promise<void>((resolve) => (this.resolveDone = resolve));
 
   constructor(
     protected rig: Rig,
@@ -44,7 +46,6 @@ export abstract class LayerBase implements LayerController {
     if (this.rig.currentGesture === this.gestureTarget) this.rig.setGesture(null);
     this.rig.rot.locked = false;
     // run() is left pending on purpose: a disposed layer never "completes"
-    this.resolveRun = null;
   }
 
   /** the gesture handler this layer installs (set in subclasses) */
@@ -55,20 +56,15 @@ export abstract class LayerBase implements LayerController {
     this.rig.setGesture(g);
   }
 
-  /** a promise that resolves when complete() is called (or the layer is disposed) */
   protected waitForCompletion(): Promise<void> {
-    if (this.completed) return Promise.resolve();
-    return new Promise((resolve) => {
-      this.resolveRun = resolve;
-    });
+    return this.donePromise;
   }
 
   protected complete(): void {
-    if (this.completed) return;
+    if (this.completed || this.disposed) return;
     this.completed = true;
     this.emit('complete');
-    this.resolveRun?.();
-    this.resolveRun = null;
+    this.resolveDone();
   }
 
   protected label(spec: LabelSpec): Label {

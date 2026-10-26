@@ -8,7 +8,7 @@ import { motion } from '../../a11y/motion';
 import type { HintGesture, LayerCallbacks, ScreenPoint } from '../HatViewer';
 import { Sparkles, clearGlow, setGlow } from '../fx';
 import { MANUAL_PEELS, peelProgress, peelRelease } from '../peel';
-import type { PanelState, Rig } from '../rig';
+import { DEFAULT_POSE, type PanelState, type Rig } from '../rig';
 import type { PointerSample } from '../rotator';
 import { LayerBase } from './base';
 
@@ -19,6 +19,7 @@ export class LeavesLayer extends LayerBase {
   private manual = 0;
   private busy = false;
   private animating = new Set<PanelState>();
+  private sparkles = new Set<Sparkles>();
 
   constructor(rig: Rig, cb: LayerCallbacks, animate: boolean) {
     super(rig, cb);
@@ -121,8 +122,11 @@ export class LeavesLayer extends LayerBase {
     if (!d) return;
     this.drag = null;
     const dt = Math.max(1, p.t - d.start.t);
-    const speed = Math.hypot(p.x - d.start.x, p.y - d.start.y) / dt;
-    if (peelRelease(d.p, speed) === 'peel') {
+    const moved = Math.hypot(p.x - d.start.x, p.y - d.start.y);
+    const speed = moved / dt;
+    // a quick tap on a leaf peels it too (little hands don't always swipe)
+    const tapped = moved < 12 && dt < 500;
+    if (tapped || peelRelease(d.p, speed) === 'peel') {
       this.animating.delete(d.panel);
       this.peelAway(d.panel, true);
     } else {
@@ -189,7 +193,8 @@ export class LeavesLayer extends LayerBase {
       rig.sendAway(rig.hat.get(n), this.anim, { dir: UP, dist: 0.35, delay: t, duration: 0.6 });
     }
     t += 0.7;
-    if (!motion.reduced) rig.pose({ yaw: rig.rot.yaw + Math.PI * 0.5 }, t + 0.6, this.anim);
+    // end facing the front, where the hidden paper art is
+    rig.pose({ yaw: DEFAULT_POSE.yaw * 0.5, pitch: 0.2 }, motion.reduced ? 0.4 : t + 0.6, this.anim);
     await this.wait(t + 0.4);
     if (this.disposed) return;
     this.emit('peeled', rig.panels.peeledCount);
@@ -213,14 +218,15 @@ export class LeavesLayer extends LayerBase {
       this.label({
         id: 'p2.label.mo',
         tone: 'bark',
-        place: 'left',
-        anchor: () => rig.world([-0.13, 0.08, 0.1], a),
-        facing: () => hat.dirToWorld([-0.6, 0.5, 0.6], n),
+        place: 'above',
+        anchor: () => rig.world([-0.1, 0.06, 0.12], a),
+        facing: () => hat.dirToWorld([-0.5, 0.6, 0.6], n),
       });
     }
     if (hat.has('leaf_inner')) {
+      // the inner leaves peep out at the tip, above the mo
       const a = new THREE.Vector3();
-      this.label({ id: 'p2.label.innerLeaves', tone: 'green', place: 'below', anchor: () => rig.world([0.02, -0.005, 0.24], a) });
+      this.label({ id: 'p2.label.innerLeaves', tone: 'green', place: 'right', anchor: () => rig.world([0.012, 0.19, 0.012], a) });
     }
     if (hat.has('poem_art')) {
       const n = new THREE.Vector3();
@@ -230,7 +236,7 @@ export class LeavesLayer extends LayerBase {
         tone: 'gold',
         place: 'right',
         anchor: () => this.poemPoint(),
-        facing: () => hat.dirToWorld([0.6, 0.5, 0.6], n),
+        facing: () => hat.dirToWorld([0.2, 0.6, 0.8], n),
         onTap: () => {
           this.emit('say', 'p2.label.secret');
           this.cue('secret');
@@ -240,19 +246,29 @@ export class LeavesLayer extends LayerBase {
     }
   }
 
+  /** the paper art sits on the front of the hat (+Z), between rings 3 and 12 */
   private poemPoint(out = new THREE.Vector3()): THREE.Vector3 {
-    return this.rig.world([0.12, 0.1, 0.09], out);
+    return this.rig.world([0.035, 0.085, 0.142], out);
   }
 
   private sparkle(at: THREE.Vector3, count: number, radius: number): void {
     if (motion.reduced) count = Math.round(count / 3);
     const sp = new Sparkles(count, at, radius, 16 * Math.min(window.devicePixelRatio || 1, 2));
     this.rig.stage.scene.add(sp.points);
+    this.sparkles.add(sp);
     this.onFrame((dt) => {
+      if (!this.sparkles.has(sp)) return false;
       if (sp.update(dt)) return true;
       sp.dispose();
+      this.sparkles.delete(sp);
       return false;
     });
+  }
+
+  dispose(): void {
+    for (const sp of this.sparkles) sp.dispose();
+    this.sparkles.clear();
+    super.dispose();
   }
 
   // ---------------------------------------------------------------- geometry helpers

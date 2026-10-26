@@ -106,7 +106,22 @@ export class Labels {
         show = n.dot(CAM) > 0.05;
       }
       if (show) {
-        l.el.style.transform = `translate(${(s.x - host.left).toFixed(1)}px, ${(s.y - host.top).toFixed(1)}px)`;
+        // place the box beside its anchor, then keep it fully on screen
+        const w = l.el.offsetWidth;
+        const h = l.el.offsetHeight;
+        const gap = 14;
+        let x = s.x - host.left;
+        let y = s.y - host.top;
+        switch (l.spec.place ?? 'above') {
+          case 'above': x -= w / 2; y -= h + gap; break;
+          case 'below': x -= w / 2; y += gap; break;
+          case 'left': x -= w + gap; y -= h / 2; break;
+          case 'right': x += gap; y -= h / 2; break;
+          default: x -= w / 2; y -= h / 2;
+        }
+        x = Math.max(8, Math.min(host.width - w - 8, x));
+        y = Math.max(8, Math.min(host.height - h - 8, y));
+        l.el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
       }
     }
     if (show !== l.shown) {

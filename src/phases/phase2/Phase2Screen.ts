@@ -38,6 +38,7 @@ export default function Phase2Screen(): Screen {
   let chunk = -1;
   let token = 0;
   let alive = true;
+  let fallbackSaid = false;
   const timers = new Set<number>();
   const offs: (() => void)[] = [];
 
@@ -102,9 +103,12 @@ export default function Phase2Screen(): Screen {
     const top = Math.max(question.hidden ? 0 : question.getBoundingClientRect().bottom, dots.getBoundingClientRect().bottom, 80) + 8;
     const bottom = h - (h < 600 ? 96 : 128);
     if (phase === 'insight' || phase === 'done') {
-      const p = panel.el.getBoundingClientRect();
-      if (isWide()) return { x: 16, y: Math.min(top, 104), width: Math.max(200, p.left - 32), height: bottom - Math.min(top, 104) };
-      return { x: 12, y: top, width: w - 24, height: Math.max(160, p.top - 8 - top) };
+      // the panel's resting place (its layout box, not the slide-in transform)
+      const r = root.getBoundingClientRect();
+      const left = r.left + panel.el.offsetLeft;
+      if (isWide()) return { x: 16, y: Math.min(top, 104), width: Math.max(200, left - 32), height: bottom - Math.min(top, 104) };
+      const below = r.top + panel.el.offsetTop + panel.el.offsetHeight + 8;
+      return { x: 12, y: below, width: w - 24, height: Math.max(140, bottom - below) };
     }
     return { x: 16, y: top, width: w - 32, height: Math.max(180, bottom - top) };
   }
@@ -180,7 +184,13 @@ export default function Phase2Screen(): Screen {
     });
     ctrl = c;
     if (next === 'strap') viewer.setStrapColour(ctx.settings.get().strapColour);
-    ctx.narration.say(script.question);
+    if (viewer.kind === '2d' && !fallbackSaid) {
+      // first tell the grown-ups why the hat is a drawing, then ask the question
+      fallbackSaid = true;
+      void ctx.narration.queue(['p2.fallback', script.question]);
+    } else {
+      ctx.narration.say(script.question);
+    }
     watchInteraction(c);
     c.run().then(() => {
       if (my === token && alive) interactionDone(my);
@@ -437,7 +447,6 @@ export default function Phase2Screen(): Screen {
         };
       }
       v.show({ fade: 0.4 });
-      if (v.kind === '2d') later(300, () => ctx.narration.say('p2.fallback'));
       startLayer(layer);
     },
 

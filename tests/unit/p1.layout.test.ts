@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { exploreReady, inBox, placeTiles, spiralPath, type Placed } from '../../src/phases/phase1/layout';
 
-const IDS = ['sky', 'jars', 'farmers', 'market', 'aodai', 'rain', 'craft'];
+const IDS = ['sky', 'lotus', 'farmers', 'market', 'aodai', 'rain', 'craft'];
 const SCENES = ['farmers', 'market', 'aodai', 'rain', 'craft'];
 
 // collage area = viewport minus the top bar (84 px) and caption strip (112 px), 16 px gutters
@@ -15,7 +15,7 @@ describe('Phase 1 collage layout', () => {
   for (const [name, area] of Object.entries(AREAS)) {
     it(`keeps every polaroid inside the area (${name})`, () => {
       const placed = placeTiles(area, IDS);
-      expect(Object.keys(placed)).toHaveLength(IDS.length);
+      for (const id of SCENES) expect(placed[id]).toBeDefined();
       for (const p of Object.values(placed)) {
         expect(p.left).toBeGreaterThanOrEqual(0);
         expect(p.top).toBeGreaterThanOrEqual(0);

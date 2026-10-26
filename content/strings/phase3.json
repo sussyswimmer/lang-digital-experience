@@ -132,7 +132,7 @@
     "vi": "Soi lên ánh sáng",
     "viStatus": "machine"
   },
-  "p3.ch2.lightsOn": {
+  "p3.ch2.lights-on": {
     "kind": "ui",
     "en": "Lights on",
     "vi": "Bật đèn lên",
@@ -168,7 +168,7 @@
     "vi": "Cho trời mưa nào!",
     "viStatus": "machine"
   },
-  "p3.ch3.rainPrompt": {
+  "p3.ch3.rain-prompt": {
     "kind": "narration",
     "en": "Tap the cloud to make it rain!",
     "vi": "Con chạm vào đám mây để trời mưa nào!",
@@ -186,19 +186,19 @@
     "vi": "Cùng đếm những chiếc nón nào!",
     "viStatus": "machine"
   },
-  "p3.ch3.countDone": {
+  "p3.ch3.count-done": {
     "kind": "ui",
     "en": "We're done counting",
     "vi": "Đếm xong rồi",
     "viStatus": "machine"
   },
-  "p3.ch3.countAgain": {
+  "p3.ch3.count-again": {
     "kind": "ui",
     "en": "Count again",
     "vi": "Đếm lại nào",
     "viStatus": "machine"
   },
-  "p3.ch3.hatLabel": {
+  "p3.ch3.hat-label": {
     "kind": "ui",
     "en": "Count this hat",
     "vi": "Đếm chiếc nón này",

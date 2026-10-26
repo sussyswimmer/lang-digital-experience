@@ -39,6 +39,8 @@ export class StitchRig {
   readonly float = { f: 0, lift: 0, bob: 0 };
   readonly halo: HaloShell;
   readonly proxy: THREE.Mesh;
+  /** a soft green "display case" behind the floating piece, so white thread reads on a cream page */
+  readonly backdrop: THREE.Sprite;
 
   constructor(hat: Hat) {
     this.group = hat.get('stitches_white');
@@ -61,6 +63,14 @@ export class StitchRig {
     this.proxy.userData.helper = true;
     this.proxy.name = 'stitches_hit_proxy';
     this.group.add(this.proxy);
+    this.backdrop = new THREE.Sprite(new THREE.SpriteMaterial({ map: radialTexture('31,77,58'), transparent: true, depthWrite: false, opacity: 0, toneMapped: false }));
+    this.backdrop.scale.set(0.66, 0.5, 1);
+    this.backdrop.position.set(0, 0.085, 0);
+    this.backdrop.renderOrder = -2;
+    this.backdrop.visible = false;
+    this.backdrop.userData.helper = true;
+    this.backdrop.raycast = () => {};
+    this.group.add(this.backdrop);
   }
 
   row(name: string) {
@@ -95,6 +105,9 @@ export class StitchRig {
   /** keep the floating piece beside the hat on screen, turned exactly like the hat */
   updateFloat(stage: Stage, assembly: THREE.Object3D): void {
     const f = this.float;
+    const show = Math.max(0, Math.min(1, (f.f - 0.3) / 0.6));
+    this.backdrop.visible = show > 0.01;
+    this.backdrop.material.opacity = show * 0.85;
     if (f.f <= 0 && f.lift <= 0) {
       if (this.group.position.lengthSq() > 0) this.group.position.set(0, 0, 0);
       return;
@@ -106,6 +119,21 @@ export class StitchRig {
     const world = right.multiplyScalar(FLOAT_DIST * f.f).addScaledVector(UP, 0.025 * f.lift + f.bob);
     this.group.position.copy(world.applyQuaternion(Q.invert()).divideScalar(s));
   }
+}
+
+function radialTexture(rgb: string): THREE.CanvasTexture {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const g = c.getContext('2d')!;
+  const grd = g.createRadialGradient(64, 64, 6, 64, 64, 64);
+  grd.addColorStop(0, `rgba(${rgb},0.55)`);
+  grd.addColorStop(0.6, `rgba(${rgb},0.32)`);
+  grd.addColorStop(1, `rgba(${rgb},0)`);
+  g.fillStyle = grd;
+  g.fillRect(0, 0, 128, 128);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
 }
 
 // ------------------------------------------------------------------ leaves
@@ -227,10 +255,13 @@ export class StrapRig {
     orig.visible = false;
     this.material = (orig.material as THREE.MeshStandardMaterial).clone();
     this.material.side = THREE.DoubleSide;
+    // the glTF sheen washes a thin ribbon out to grey at grazing angles; keep the colour honest
+    if ('sheen' in this.material) (this.material as THREE.MeshPhysicalMaterial).sheen = 0;
+    this.material.roughness = 0.75; // woven cloth, not satin
     this.material.userData = { ...(orig.material as THREE.Material).userData };
-    this.width = meta.width * 1.25;
+    this.width = meta.width * 1.6;
     const pts = meta.rest_points;
-    this.rope = new Rope(pts as V3[], { damping: 0.992, iterations: 14, bend: 0.25 });
+    this.rope = new Rope(pts as V3[], { damping: 0.992, iterations: 24, bend: 0.5 });
     this.rope.pin(0, meta.anchor_L);
     this.rope.pin(pts.length - 1, meta.anchor_R);
     const n = pts.length;
@@ -308,6 +339,14 @@ export class StrapRig {
 
   get swing(): number {
     return this.rope.swingAngle(0, this.rope.n - 1, this.restMid);
+  }
+
+  /** swing away from hanging straight down (radians): 0 when still, whatever the hat's tilt */
+  swingFromVertical(assembly: THREE.Object3D): number {
+    assembly.updateWorldMatrix(true, false);
+    assembly.matrixWorld.decompose(TMP2, Q, TMP);
+    const down = TMP.set(0, -1, 0).applyQuaternion(Q.invert());
+    return this.rope.swingAngle(0, this.rope.n - 1, [down.x, down.y, down.z]);
   }
 
   /** simulate in hat space; gravity is world-down, the gust pushes front-to-back across the anchors */
@@ -394,6 +433,12 @@ export class Rig {
   /** extra rig placement (scripted): lift in metres, uniform scale */
   readonly place = { lift: 0, scale: 1 };
   sound: Sound = () => {};
+  /**
+   * Endless decorative loops (the row shimmer, the floating bob, invite pulses). Off in automated
+   * tests, where software WebGL can't keep up with endless redraws (layers also skip them under
+   * reduced motion).
+   */
+  readonly decor = !new URLSearchParams(location.search).has('test');
   private gesture: GestureTarget | null = null;
   private offFrame: () => void;
   private offAfter: () => void;
@@ -463,10 +508,6 @@ export class Rig {
   }
 
   // -------------------------------------------------------------- part states
-
-  isAway(obj: THREE.Object3D): boolean {
-    return !!obj.userData.away;
-  }
 
   snapAway(obj: THREE.Object3D): void {
     obj.userData.away = true;
@@ -638,22 +679,19 @@ export class Rig {
         }
       }
     }
-    for (const c of caps) {
-      if (level <= 1) {
-        if (c.userData.away || !c.visible) animate ? this.bringBack(c, anim, { dist: 0.4 }) : this.snapHome(c);
-      } else if (!c.userData.away) {
-        animate ? this.sendAway(c, anim, { dist: 0.4, delay: 0.5 }) : this.snapAway(c);
+    const left = right.clone().negate().add(UP);
+    const place = (o: THREE.Object3D, on: boolean, fly: { dir?: THREE.Vector3; dist: number; delay?: number }) => {
+      if (on && (o.userData.away || !o.visible)) {
+        if (animate) this.bringBack(o, anim, fly);
+        else this.snapHome(o);
+      } else if (!on && !o.userData.away) {
+        if (animate) this.sendAway(o, anim, fly);
+        else this.snapAway(o);
       }
-    }
-
+    };
+    for (const c of caps) place(c, level <= 1, { dist: 0.4, delay: level > 1 ? 0.5 : 0 });
     // inner shells: present until L4 starts (it brings them back)
-    for (const o of inner) {
-      if (level <= 2) {
-        if (o.userData.away || !o.visible) animate ? this.bringBack(o, anim, { dir: right.clone().negate().add(UP), dist: 0.5 }) : this.snapHome(o);
-      } else if (!o.userData.away) {
-        animate ? this.sendAway(o, anim, { dir: right.clone().negate().add(UP), dist: 0.5 }) : this.snapAway(o);
-      }
-    }
+    for (const o of inner) place(o, level <= 2, { dir: left, dist: 0.5 });
   }
 
   /** every part home, glow off, default view */

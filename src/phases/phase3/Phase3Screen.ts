@@ -93,6 +93,10 @@ class Phase3 implements Screen {
     this.cleanups.push(() => ro.disconnect());
     this.wireSwipe();
     this.exposeTestHooks();
+    const offLang = i18n.onChange(() => {
+      this.dots.forEach((d, i) => d.setAttribute('aria-label', i18n.t('p3.chapter', { n: i + 1 })));
+    });
+    this.cleanups.push(offLang);
 
     if (id === 'protection') void this.showCover();
     else {
@@ -189,13 +193,15 @@ class Phase3 implements Screen {
   private async showCover(): Promise<void> {
     const ctx = this.ctx;
     gsap.set([this.cover.book, this.cover.cta], { opacity: 0 });
+    // not tappable until it has arrived
+    this.cover.wrap.inert = true;
     if (this.fromPhase2()) {
-      ctx.audio.sfx.play('chime');
       const told = speak(ctx.narration, ['p3.transition'], () => this.alive && !this.coverOpen);
       let handedOff = false;
       if (ctx.layers.stage.childElementCount > 0) {
         const viewer = await ctx.viewer();
         if (!this.alive) return;
+        viewer.sound = (id, o) => ctx.audio.sfx.play(id, o);
         const r = this.cover.hatRect();
         const t0 = performance.now();
         await viewer.celebrateAndShrinkTo({ x: r.left, y: r.top, width: r.width, height: r.height });
@@ -216,8 +222,9 @@ class Phase3 implements Screen {
       await this.cover.reveal(this.g);
     }
     if (!this.alive || this.coverOpen) return;
+    this.cover.wrap.inert = false;
     if (!ctx.narration.currentId()) void ctx.narration.say('p3.cover.open');
-    if (!motion.reduced) this.cover.cta.classList.add('pulse');
+    if (!motion.reduced) this.cover.cta.classList.add('p3-pulse');
     ctx.idle.watch({ stepId: 'p3.cover', gesture: 'tap', target: () => this.cover.book.getBoundingClientRect() });
   }
 
@@ -226,6 +233,7 @@ class Phase3 implements Screen {
     const hat = el('div.p3-celebrate');
     hat.innerHTML = hatArt('celebrate');
     this.root.appendChild(hat);
+    this.ctx.audio.sfx.play('chime');
     const from = hat.getBoundingClientRect();
     const to = this.cover.hatRect();
     const dx = to.left + to.width / 2 - (from.left + from.width / 2);
@@ -248,7 +256,7 @@ class Phase3 implements Screen {
     const ctx = this.ctx;
     ctx.idle.clear();
     ctx.narration.stop();
-    this.cover.cta.classList.remove('pulse');
+    this.cover.cta.classList.remove('p3-pulse');
     if (animated) {
       ctx.audio.sfx.play('bookOpen');
       await this.cover.open(this.g);
@@ -278,7 +286,7 @@ class Phase3 implements Screen {
     const x = -100 * CHAPTERS.indexOf(id);
     if (animate) {
       ctx.audio.sfx.play('pageTurn');
-      await this.g.add(() => gsap.to(this.track, { xPercent: x, x: 0, duration: motion.dur(0.75), ease: 'power2.inOut' }));
+      await this.g.add(() => gsap.to(this.track, { xPercent: x, x: 0, duration: motion.dur(0.75), ease: 'power2.inOut', overwrite: 'auto' }));
     } else gsap.set(this.track, { xPercent: x, x: 0 });
     if (!this.alive || this.current !== id) return;
     this.started = id;

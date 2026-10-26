@@ -25,7 +25,7 @@ export class RainMarketChapter implements Chapter {
   readonly id = 'identity' as const;
   readonly icon = P3_ICONS.ch3;
   readonly story = ['p3.ch3.story.1', 'p3.ch3.story.2'];
-  readonly firstPrompt = 'p3.ch3.rainPrompt';
+  readonly firstPrompt = 'p3.ch3.rain-prompt';
   readonly pic: HTMLDivElement;
   readonly actions: HTMLDivElement;
   complete = false;
@@ -66,13 +66,13 @@ export class RainMarketChapter implements Chapter {
       'button.btn.p3-act',
       { type: 'button', 'data-touch': '', 'data-test': 'count-done', hidden: true, onclick: () => this.showResult() },
       svg(P3_ICONS.check),
-      i18n.bind(el('span'), 'p3.ch3.countDone'),
+      i18n.bind(el('span'), 'p3.ch3.count-done'),
     );
     this.againBtn = el(
       'button.btn.btn--ghost.p3-act',
       { type: 'button', 'data-touch': '', 'data-test': 'count-again', hidden: true, onclick: () => this.countAgain() },
       svg(P3_ICONS.again),
-      i18n.bind(el('span'), 'p3.ch3.countAgain'),
+      i18n.bind(el('span'), 'p3.ch3.count-again'),
     );
     this.result = el('div.p3-result', { hidden: true, role: 'status', 'data-test': 'count-result' });
     this.actions = el('div.p3-actions', {}, this.rainBtn, this.result, this.doneBtn, this.againBtn);
@@ -80,6 +80,7 @@ export class RainMarketChapter implements Chapter {
     this.offLang = i18n.onChange(() => {
       const img = photo.querySelector('img');
       if (img) img.alt = i18n.t('p3.ch3.alt');
+      for (const b of this.hatButtons) b.setAttribute('aria-label', i18n.t('p3.ch3.hat-label'));
     });
   }
 
@@ -205,8 +206,8 @@ export class RainMarketChapter implements Chapter {
     }
     c.globalCompositeOperation = 'lighter';
     c.lineCap = 'round';
-    c.strokeStyle = 'rgba(215, 232, 255, 0.55)';
-    c.lineWidth = 1.4;
+    c.strokeStyle = 'rgba(220, 236, 255, 0.7)';
+    c.lineWidth = 1.6;
     c.beginPath();
     for (const d of sim.drops) {
       if (d.state === 'fall' || d.state === 'drip') {
@@ -274,7 +275,7 @@ export class RainMarketChapter implements Chapter {
       el('button.p3-hatbtn', {
         type: 'button',
         tabindex: '0',
-        'aria-label': i18n.t('p3.ch3.hatLabel'),
+        'aria-label': i18n.t('p3.ch3.hat-label'),
         style: `left:${(h.centre.x / this.size.w) * 100}%;top:${(h.centre.y / this.size.h) * 100}%`,
         onclick: (e: MouseEvent) => {
           // pointer taps are handled by the layer (nearest hat); this is for keyboards

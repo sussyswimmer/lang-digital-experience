@@ -35,7 +35,10 @@ export class StitchesLayer extends LayerBase {
   private floatLabel: Label | null = null;
   private tapLabel: Label | null = null;
   private brimLabel: Label | null = null;
+  /** "sewing starts here" (shown for a few seconds; the tap hint steps aside meanwhile) */
+  private rimLabel: Label | null = null;
   private busy = false;
+  private celebrating = false;
 
   constructor(rig: Rig, cb: LayerCallbacks, animate: boolean) {
     super(rig, cb);
@@ -60,7 +63,7 @@ export class StitchesLayer extends LayerBase {
       cursor: (p) => (this.completed ? (this.hitStitches(p) ? 'pointer' : null) : nearArc(this.project(), p, this.radius()) ? 'crosshair' : null),
     });
     // a soft shimmer running along the row says "this one"
-    if (!motion.reduced) this.shimmer();
+    if (!motion.reduced && this.rig.decor) this.shimmer();
     return this.waitForCompletion();
   }
 
@@ -97,10 +100,7 @@ export class StitchesLayer extends LayerBase {
       onUpdate: () => {
         for (let j = 0; j < Math.floor(st.k); j++) this.cover(arc[j]);
       },
-      onComplete: () => {
-        this.busy = false;
-        this.celebrate();
-      },
+      onComplete: () => void this.celebrate(),
     });
   }
 
@@ -126,8 +126,13 @@ export class StitchesLayer extends LayerBase {
         .to(st, { a: 1, duration: 0.5 })
         .to(st, { b: 1, duration: 0.5 })
         .to(st, { a: 0, b: 0, duration: 1.2, delay: 1.6 });
+      this.unlabel(this.rimLabel);
       const l = this.label({ id: 'p2.label.thirdRim', anchor: () => this.frontPoint(), facing: () => this.frontNormal(), tone: 'white', place: 'below' });
-      this.anim.call(5, () => this.unlabel(l));
+      this.rimLabel = l;
+      this.anim.call(5, () => {
+        this.unlabel(l);
+        if (this.rimLabel === l) this.rimLabel = null;
+      });
     } else if (name === 'brim') {
       this.pulseBrim(3);
       this.showBrimLabel();
@@ -193,7 +198,7 @@ export class StitchesLayer extends LayerBase {
     this.project();
     this.markSegment(this.last, p);
     this.last = p;
-    if (isTraceComplete(this.covered, this.screenPts.map((s) => s.visible))) this.celebrate();
+    if (isTraceComplete(this.covered, this.screenPts.map((s) => s.visible))) void this.celebrate();
   }
 
   private up(_p: PointerSample): void {
@@ -228,14 +233,15 @@ export class StitchesLayer extends LayerBase {
     this.rig.stage.invalidate();
   }
 
+  /** traced stitches light up over ~0.1 s each (the cascade and the shimmer drive the rest) */
   private lerpGlow(dt: number): boolean {
     const r = this.rig.stitches.row(this.rowName);
-    if (!r || this.completed) return false;
+    if (!r || this.completed || this.celebrating) return false;
     let moving = false;
     for (let i = 0; i < this.target.length; i++) {
       const cur = r.glow.values[i];
       const t = this.target[i];
-      if (Math.abs(cur - t) < 0.01) continue;
+      if (t === 0 || Math.abs(cur - t) < 0.01) continue;
       const v = cur + Math.sign(t - cur) * Math.min(Math.abs(t - cur), dt * GLOW_RATE);
       r.glow.set(i, v);
       r.dots.values[i] = v;
@@ -260,7 +266,7 @@ export class StitchesLayer extends LayerBase {
       repeatDelay: 1.2,
       ease: 'none',
       onUpdate: () => {
-        if (this.completed) return;
+        if (this.completed || this.celebrating) return;
         const head = st.t * n * 1.5 - n * 0.25;
         for (let i = 0; i < n; i++) {
           if (this.covered[i]) continue;
@@ -277,8 +283,9 @@ export class StitchesLayer extends LayerBase {
   // ---------------------------------------------------------------- the reveal
 
   private async celebrate(): Promise<void> {
-    if (this.completed || this.busy) return;
+    if (this.completed || this.celebrating) return;
     this.busy = true;
+    this.celebrating = true;
     this.last = null;
     this.useGesture(null);
     const rig = this.rig;
@@ -397,7 +404,7 @@ export class StitchesLayer extends LayerBase {
   }
 
   private startBob(): void {
-    if (motion.reduced) return;
+    if (motion.reduced || !this.rig.decor) return;
     const s = this.rig.stitches;
     this.onFrame(() => {
       if (s.float.f < 0.5) {
@@ -468,7 +475,7 @@ export class StitchesLayer extends LayerBase {
         kind: 'callout',
         tone: 'gold',
         place: 'below',
-        anchor: () => (s.float.f > 0.8 ? s.group.localToWorld(low.set(0, -0.03, 0)) : null),
+        anchor: () => (s.float.f > 0.8 && !this.rimLabel ? s.group.localToWorld(low.set(0, -0.03, 0)) : null),
         onTap: () => this.toggle(),
       });
     }

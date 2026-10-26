@@ -23,23 +23,22 @@ export interface Placed {
 }
 
 export const LANDSCAPE: Record<string, Slot> = {
-  sky: { x: 0.5, y: 0.6, w: 0.17, rot: -7, z: 1 },
-  jars: { x: 0.065, y: 0.56, w: 0.115, rot: 8, z: 1 },
-  farmers: { x: 0.18, y: 0.27, w: 0.255, rot: -5, z: 3 },
-  market: { x: 0.5, y: 0.24, w: 0.25, rot: 3, z: 4 },
-  aodai: { x: 0.82, y: 0.27, w: 0.255, rot: -3, z: 3 },
-  rain: { x: 0.28, y: 0.72, w: 0.245, rot: 4, z: 5 },
-  craft: { x: 0.73, y: 0.72, w: 0.255, rot: -4, z: 5 },
+  sky: { x: 0.5, y: 0.555, w: 0.165, rot: -7, z: 1 },
+  lotus: { x: 0.075, y: 0.53, w: 0.14, rot: 8, z: 1 },
+  farmers: { x: 0.18, y: 0.25, w: 0.245, rot: -5, z: 3 },
+  market: { x: 0.5, y: 0.225, w: 0.24, rot: 3, z: 4 },
+  aodai: { x: 0.82, y: 0.25, w: 0.245, rot: -3, z: 3 },
+  rain: { x: 0.28, y: 0.655, w: 0.24, rot: 4, z: 5 },
+  craft: { x: 0.73, y: 0.655, w: 0.245, rot: -4, z: 5 },
 };
 
+/** phones: the five scenes zig-zag down the screen (no room for the decorative extras) */
 export const PORTRAIT: Record<string, Slot> = {
-  sky: { x: 0.77, y: 0.09, w: 0.36, rot: 6, z: 1 },
-  jars: { x: 0.2, y: 0.66, w: 0.26, rot: -7, z: 1 },
-  farmers: { x: 0.31, y: 0.15, w: 0.56, rot: -5, z: 3 },
-  market: { x: 0.69, y: 0.33, w: 0.56, rot: 4, z: 4 },
-  aodai: { x: 0.31, y: 0.5, w: 0.56, rot: -3, z: 3 },
-  rain: { x: 0.69, y: 0.67, w: 0.55, rot: 4, z: 4 },
-  craft: { x: 0.33, y: 0.83, w: 0.56, rot: -4, z: 5 },
+  farmers: { x: 0.28, y: 0.12, w: 0.5, rot: -5, z: 3 },
+  market: { x: 0.72, y: 0.28, w: 0.5, rot: 4, z: 4 },
+  aodai: { x: 0.28, y: 0.44, w: 0.5, rot: -3, z: 3 },
+  rain: { x: 0.72, y: 0.6, w: 0.5, rot: 4, z: 4 },
+  craft: { x: 0.3, y: 0.76, w: 0.5, rot: -4, z: 5 },
 };
 
 /** polaroid proportions: photo is 4:3, white border all round and a deeper strip at the bottom */

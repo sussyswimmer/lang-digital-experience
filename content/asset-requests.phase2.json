@@ -1,0 +1,20 @@
+[
+  {
+    "path": "public/assets/audio/narration/{en,vi}/p2.*.mp3",
+    "what": "Narration for every Phase 2 string of kind narration (4 questions, 24 insight chunks, p2.fallback, p2.loadError) in EN and VI; the label strings (p2.label.*, p2.part.*, p2.colour.*) are read aloud when tapped, so short clips for them too",
+    "source": "tts",
+    "notes": "Text and ids in content/strings/phase2.json. Until recorded, captions run on a reading-speed timer, so nothing blocks. Add each recorded id to content/audio-index.json."
+  },
+  {
+    "path": "public/assets/models/nonla.glb (poem_art texture)",
+    "what": "The hidden paper art between the leaves (poem_art) still uses the procedural placeholder silhouettes; Layer 2 sparkles it as 'A secret… see it later!' and Phase 3 Chapter 2 pays it off",
+    "source": "blender",
+    "notes": "Swap blender/textures/poem_art.png for the real Tây Hồ-style silhouettes (girl in áo dài, boat, lotus) and re-export; no code change needed (same node and material names)."
+  },
+  {
+    "path": "public/assets/lottie/hand-trace.json, hand-swipe.json, hand-tap.json",
+    "what": "Hand hints for the stitch trace, leaf swipe and skeleton/strap taps",
+    "source": "effectcraft",
+    "notes": "Phase 2 registers ctx.idle.watch() with trace/swipe/tap gestures and screen paths; the shared IdleHint currently draws its SVG hand, so these are optional polish."
+  }
+]

@@ -20,6 +20,9 @@ import { celebrateAndShrink, converge } from './transitions';
 import { createFallbackViewer } from './fallback2d';
 
 export async function createViewer(host: HTMLElement): Promise<HatViewer> {
+  // Automated tests render on a CPU (software WebGL), where a frame can take over half a second;
+  // GSAP's lag smoothing would then slow every tween to a crawl. Keep wall-clock time in tests.
+  if (new URLSearchParams(location.search).has('test')) gsap.ticker.lagSmoothing(0);
   let stage: Stage;
   try {
     if (!webglAvailable()) throw new Error('no WebGL');
@@ -174,7 +177,7 @@ class Viewer3D implements HatViewer {
       floating: () => !!this.rig?.stitches.floating && !!this.rig?.stitches.group.visible,
       peeled: () => this.rig?.panels.peeledCount ?? 0,
       ringsShown: () => (this.current instanceof FrameLayer ? this.current.ringsShown : this.lastRings),
-      strapAngle: () => (this.rig ? THREE.MathUtils.radToDeg(this.rig.strap.swing) : 0),
+      strapAngle: () => (this.rig ? THREE.MathUtils.radToDeg(this.rig.strap.swingFromVertical(this.rig.hat.assembly)) : 0),
       stitchesPoint: () => {
         const rig = this.rig;
         if (!rig || !rig.stitches.group.visible) return null;

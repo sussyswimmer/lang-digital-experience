@@ -60,8 +60,8 @@ export class InsightPanel {
       this.header,
       this.photo,
       this.extras,
-      el('div.p2-panel__nav', {}, this.prevBtn, this.dots, replay, this.nextBtn),
-      this.doneBtn,
+      this.dots,
+      el('div.p2-panel__foot', {}, el('div.p2-panel__nav', {}, this.prevBtn, replay, this.nextBtn), this.doneBtn),
     );
     this.offLang = i18n.onChange(() => {
       if (this.img) this.img.alt = i18n.t(this.altId);

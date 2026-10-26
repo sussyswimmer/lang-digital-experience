@@ -19,7 +19,11 @@ export const P3_ICONS = {
 
 /** a smiling sun for Chapter 1 (the child drags it across the sky) */
 export const SUN_ART = `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-  <defs><radialGradient id="sunfill" cx=".42" cy=".38" r=".7"><stop offset="0" stop-color="#FFF3B0"/><stop offset=".55" stop-color="#FFD25E"/><stop offset="1" stop-color="#F6A623"/></radialGradient></defs>
+  <defs>
+    <radialGradient id="sunfill" cx=".42" cy=".38" r=".7"><stop offset="0" stop-color="#FFF3B0"/><stop offset=".55" stop-color="#FFD25E"/><stop offset="1" stop-color="#F6A623"/></radialGradient>
+    <radialGradient id="sunglow"><stop offset=".45" stop-color="#FFE08A" stop-opacity=".85"/><stop offset="1" stop-color="#FFC94A" stop-opacity="0"/></radialGradient>
+  </defs>
+  <circle cx="60" cy="60" r="60" fill="url(#sunglow)"/>
   <g class="sun-rays" stroke="#F6A623" stroke-width="7" stroke-linecap="round">
     <path d="M60 4v14M60 102v14M4 60h14M102 60h14M20 20l10 10M90 90l10 10M20 100l10-10M90 30l10-10"/>
   </g>

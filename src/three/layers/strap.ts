@@ -32,13 +32,17 @@ export class StrapLayer extends LayerBase {
     rig.defaultFraming(animate ? 0.8 : 0);
   }
 
-  async run(): Promise<void> {
-    await this.assemble();
-    if (this.disposed) return;
-    await this.present();
-    if (this.disposed) return;
-    this.invite();
+  run(): Promise<void> {
+    void this.sequence();
     return this.waitForCompletion();
+  }
+
+  private async sequence(): Promise<void> {
+    await this.assemble();
+    if (this.disposed || this.completed) return;
+    await this.present();
+    if (this.disposed || this.completed) return;
+    this.invite();
   }
 
   finish(): void {
@@ -72,10 +76,6 @@ export class StrapLayer extends LayerBase {
   cue(name: string): void {
     if (name === 'knots') this.glowKnots();
     else if (name === 'strap') this.pulseStrap(2);
-  }
-
-  get swingDegrees(): number {
-    return THREE.MathUtils.radToDeg(this.rig.strap.swing);
   }
 
   dispose(): void {
@@ -226,7 +226,7 @@ export class StrapLayer extends LayerBase {
     this.phase = 'invite';
     this.sfx('invite');
     this.useGesture({ tap: (p) => this.tap(p), cursor: (p) => (this.hitStrap(p) ? 'pointer' : null) });
-    this.pulseStrap(-1);
+    this.pulseStrap(this.rig.decor && !motion.reduced ? -1 : 2);
   }
 
   private pulseStrap(times: number): void {

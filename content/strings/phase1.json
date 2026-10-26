@@ -59,11 +59,60 @@
     "viStatus": "machine",
     "notes": "Ambient: workshop"
   },
-  "p1.alt.farmers": { "kind": "alt", "en": "A farmer in a nón lá gathering pink lotus flowers in a green field", "vi": "Một bác nông dân đội nón lá hái hoa sen hồng giữa cánh đồng xanh", "viStatus": "machine" },
-  "p1.alt.market": { "kind": "alt", "en": "Two market vendors in nón lá among dragon fruit, mangoes and vegetables, seen from above", "vi": "Hai cô bán hàng đội nón lá giữa thanh long, xoài và rau củ, nhìn từ trên cao", "viStatus": "machine" },
-  "p1.alt.aodai": { "kind": "alt", "en": "Three schoolgirls in white áo dài and nón lá walking with a bicycle", "vi": "Ba bạn nữ sinh mặc áo dài trắng, đội nón lá, dắt xe đạp", "viStatus": "machine" },
-  "p1.alt.rain": { "kind": "alt", "en": "A person in a purple raincoat and a nón lá in the rain", "vi": "Một người mặc áo mưa tím, đội nón lá dưới mưa", "viStatus": "machine" },
-  "p1.alt.craft": { "kind": "alt", "en": "A craftswoman making nón lá by candlelight, surrounded by hats", "vi": "Một cô nghệ nhân làm nón lá bên ánh nến, xung quanh là những chiếc nón", "viStatus": "machine" },
-  "p1.alt.sky": { "kind": "alt", "en": "Women hanging many nón lá against a blue sky", "vi": "Các cô treo thật nhiều nón lá dưới bầu trời xanh", "viStatus": "machine" },
-  "p1.alt.jars": { "kind": "alt", "en": "A woman in a nón lá among big clay jars", "vi": "Một cô đội nón lá giữa những chum vại lớn", "viStatus": "machine" }
+  "p1.alt.farmers": {
+    "kind": "alt",
+    "en": "Two farmers in nón lá working in a green rice field",
+    "vi": "Hai bác nông dân đội nón lá làm việc trên cánh đồng lúa xanh",
+    "viStatus": "machine"
+  },
+  "p1.alt.market": {
+    "kind": "alt",
+    "en": "Two market vendors in nón lá among dragon fruit, mangoes and vegetables, seen from above",
+    "vi": "Hai cô bán hàng đội nón lá giữa thanh long, xoài và rau củ, nhìn từ trên cao",
+    "viStatus": "machine"
+  },
+  "p1.alt.aodai": {
+    "kind": "alt",
+    "en": "Three schoolgirls in white áo dài and nón lá walking with a bicycle",
+    "vi": "Ba bạn nữ sinh mặc áo dài trắng, đội nón lá, dắt xe đạp",
+    "viStatus": "machine"
+  },
+  "p1.alt.rain": {
+    "kind": "alt",
+    "en": "A person in a purple raincoat and a nón lá in the rain",
+    "vi": "Một người mặc áo mưa tím, đội nón lá dưới mưa",
+    "viStatus": "machine"
+  },
+  "p1.alt.craft": {
+    "kind": "alt",
+    "en": "A craftswoman making nón lá by candlelight, surrounded by hats",
+    "vi": "Một cô nghệ nhân làm nón lá bên ánh nến, xung quanh là những chiếc nón",
+    "viStatus": "machine"
+  },
+  "p1.alt.sky": {
+    "kind": "alt",
+    "en": "Women hanging many nón lá against a blue sky",
+    "vi": "Các cô treo thật nhiều nón lá dưới bầu trời xanh",
+    "viStatus": "machine"
+  },
+  "p1.alt.lotus": {
+    "kind": "alt",
+    "en": "A farmer in a nón lá gathering pink lotus flowers",
+    "vi": "Một bác nông dân đội nón lá hái hoa sen hồng",
+    "viStatus": "machine"
+  },
+  "p1.deco.sky": {
+    "kind": "narration",
+    "en": "So many hats, drying in the sunshine!",
+    "vi": "Thật nhiều nón lá đang phơi dưới nắng!",
+    "viStatus": "machine",
+    "notes": "Said when the small decorative photo is tapped"
+  },
+  "p1.deco.lotus": {
+    "kind": "narration",
+    "en": "Lotus harvest! A nón lá keeps the farmer cool.",
+    "vi": "Thu hoạch sen! Chiếc nón lá giúp bác nông dân mát mẻ.",
+    "viStatus": "machine",
+    "notes": "Said when the small decorative photo is tapped"
+  }
 }

@@ -1,0 +1,20 @@
+[
+  {
+    "path": "public/assets/img/art/storybook-cover.webp",
+    "what": "Storybook cover art: the finished nón lá (same model and lighting as the Phase 2 → 3 shrink) centred on a forest-green cloth-bound cover with a gold frame; leave the lower fifth plain for the live EN/VI title plate",
+    "source": "blender",
+    "notes": "Portrait 0.78:1 (e.g. 1248×1600). Until it exists the cover is drawn in CSS/SVG. When it lands set COVER_ART_READY = true in src/phases/phase3/Cover.ts. The hat should sit where the drawn hat is (upper middle) so viewer.celebrateAndShrinkTo lines up."
+  },
+  {
+    "path": "public/assets/audio/ambient/rain-market.mp3",
+    "what": "Ambient loop for Chapter 3's 'Make it rain': rain on many hats and tarps, soft market voices (20 s seamless, -24 LUFS)",
+    "source": "higgsfield",
+    "notes": "Missing from content/ambient-index.json, so 'rainMarket' falls back to the synthesised rain bed. Add 'rainMarket' to the index when it lands."
+  },
+  {
+    "path": "public/assets/audio/narration/{en,vi}/num.1.mp3 … num.60.mp3, p3.ch3.counted.1.mp3 … p3.ch3.counted.60.mp3",
+    "what": "Counting words and 'We counted N hats!' lines for Chapter 3",
+    "source": "tts",
+    "notes": "Ids and text in content/strings/phase3.json (num.N are the spoken number words: 'Twenty-one!' / 'Hai mươi mốt!')."
+  }
+]

@@ -25,15 +25,11 @@ export class Cover {
   constructor(onOpen: () => void) {
     this.hat = el('div.p3-book__hat');
     this.hat.innerHTML = hatArt('cover');
+    // the title stays live text on top of the art, so it follows the EN/VI toggle
+    const plate = el('div.p3-book__plate', {}, i18n.bind(el('span.p3-book__title'), 'p3.title'), i18n.bind(el('span.p3-book__sub'), 'p3.cover.sub'));
     const art = COVER_ART_READY
-      ? el('img.p3-book__art', { src: assetUrl('img/art/storybook-cover.webp'), alt: '' })
-      : el(
-          'div.p3-book__frame',
-          {},
-          el('div.p3-book__glow'),
-          this.hat,
-          el('div.p3-book__plate', {}, i18n.bind(el('span.p3-book__title'), 'p3.title'), i18n.bind(el('span.p3-book__sub'), 'p3.cover.sub')),
-        );
+      ? el('div.p3-book__frame.p3-book__frame--art', {}, el('img.p3-book__art', { src: assetUrl('img/art/storybook-cover.webp'), alt: '' }), plate)
+      : el('div.p3-book__frame', {}, el('div.p3-book__glow'), this.hat, plate);
     this.face = el(
       'button.p3-book__cover',
       { type: 'button', 'data-touch': '', 'data-test': 'cover', 'aria-label': i18n.t('p3.cover.open'), onclick: onOpen },

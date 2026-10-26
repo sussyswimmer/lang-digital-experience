@@ -60,7 +60,7 @@ export class FrameLayer extends LayerBase {
   async run(): Promise<void> {
     this.useGesture({ tap: (p) => this.tap(p), cursor: (p) => (this.hitHat(p) ? 'pointer' : null) });
     if (!motion.reduced) {
-      this.anim.to(this.halo, { intensity: 0.9, duration: 0.8, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+      this.anim.to(this.halo, { intensity: 0.9, duration: 0.8, yoyo: true, repeat: this.rig.decor ? -1 : 2, ease: 'sine.inOut' });
     } else {
       this.halo.intensity = 0.6;
     }
@@ -301,7 +301,8 @@ export class FrameLayer extends LayerBase {
         const cam = this.rig.hat.assembly.worldToLocal(this.rig.stage.camera.position.clone());
         cam.y = 0;
         cam.normalize();
-        const side = new THREE.Vector3(-cam.z, 0, cam.x).multiplyScalar(-0.75).add(cam.multiplyScalar(0.66)).normalize();
+        // 55° round to the child's left of the point nearest them
+        const side = new THREE.Vector3(-cam.z, 0, cam.x).multiplyScalar(0.82).add(cam.multiplyScalar(0.57)).normalize();
         const rr = ((r2?.r ?? 0.225) + r1) / 2;
         return this.rig.world(side.multiplyScalar(rr).setY((r2?.y ?? 0.013) / 2), g);
       },

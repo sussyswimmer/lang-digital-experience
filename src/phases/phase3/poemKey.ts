@@ -4,7 +4,7 @@
  * mark disappear with the background), warm it up, and fade everything darker to transparent.
  * Drawn over a blacked-out photo, the hidden pictures and poem lines stand out against glowing leaf.
  */
-import { inPolygon, type Pt } from './geometry';
+import type { Pt } from './geometry';
 
 export interface KeyOptions {
   /** luminance (0..255) where the key starts / is fully on */
@@ -17,12 +17,25 @@ export function smoothstep(lo: number, hi: number, v: number): number {
   return t * t * (3 - 2 * t);
 }
 
-/** 1 inside the polygon (normalised 0..1 coords), 0 outside, sampled at pixel centres */
+/** 1 inside the polygon (normalised 0..1 coords), 0 outside, sampled at pixel centres (scanline fill) */
 export function polygonMask(poly: Pt[], w: number, h: number): Uint8Array {
   const mask = new Uint8Array(w * h);
   const pts = poly.map((p) => ({ x: p.x * w, y: p.y * h }));
+  const xs: number[] = [];
   for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) if (inPolygon({ x: x + 0.5, y: y + 0.5 }, pts)) mask[y * w + x] = 1;
+    const cy = y + 0.5;
+    xs.length = 0;
+    for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+      const a = pts[i];
+      const b = pts[j];
+      if (a.y > cy !== b.y > cy) xs.push(a.x + ((cy - a.y) * (b.x - a.x)) / (b.y - a.y));
+    }
+    xs.sort((m, n) => m - n);
+    for (let k = 0; k + 1 < xs.length; k += 2) {
+      const x0 = Math.max(0, Math.ceil(xs[k] - 0.5));
+      const x1 = Math.min(w - 1, Math.floor(xs[k + 1] - 0.5));
+      for (let x = x0; x <= x1; x++) mask[y * w + x] = 1;
+    }
   }
   return mask;
 }

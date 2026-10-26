@@ -26,6 +26,21 @@ import { speak } from './speak';
 gsap.registerPlugin(Flip, MotionPathPlugin);
 
 const INTRO = ['p1.intro.1', 'p1.intro.2', 'p1.intro.3'];
+const TILE_SIZES = '(max-width: 700px) 60vw, 32vw';
+
+function prefetch3d(): void {
+  void import('../../three/stage').catch(() => {});
+  for (const file of ['models/nonla.glb', 'models/nonla.meta.json']) {
+    const href = assetUrl(file);
+    if (document.head.querySelector(`link[rel="prefetch"][href="${href}"]`)) continue;
+    document.head.appendChild(el('link', { rel: 'prefetch', href }));
+  }
+}
+
+/** a picture's sources and img share one `sizes`; full screen needs the bigger files */
+function setSizes(media: HTMLElement, sizes: string): void {
+  media.querySelectorAll<HTMLImageElement | HTMLSourceElement>('source, img').forEach((n) => (n.sizes = sizes));
+}
 
 interface TileView {
   spec: TileSpec;
@@ -60,6 +75,7 @@ class Phase1 implements Screen {
   private introAt = 0;
   private introRunning = false;
   private exploreShown = false;
+  private exploreAnnounced = false;
   private floats: gsap.core.Tween[] = [];
   private cleanups: (() => void)[] = [];
 
@@ -96,8 +112,9 @@ class Phase1 implements Screen {
       this.cleanups.push(() => delete window.__nonla?.p1);
     }
 
-    // start fetching three.js + the hat while the child looks at the photos
-    const prefetch = window.setTimeout(() => this.alive && void ctx.viewer(), 1500);
+    // fetch three.js and the hat model while the child looks at the photos (network only: the
+    // WebGL viewer itself is created once "Let's explore" shows, when nothing else is animating)
+    const prefetch = window.setTimeout(() => this.alive && prefetch3d(), 1500);
     this.cleanups.push(() => window.clearTimeout(prefetch));
 
     if (exploreReady(false, this.seenCount(), ctx.progress.get().p1.done)) this.showExplore(false);
@@ -160,7 +177,7 @@ class Phase1 implements Screen {
       v.style.objectPosition = `${spec.focal[0] * 100}% ${spec.focal[1] * 100}%`;
       return v;
     }
-    return picture({ stem: spec.stem, alt, focal: spec.focal }, { sizes: '(max-width: 700px) 60vw, 32vw', eager: !spec.deco });
+    return picture({ stem: spec.stem, alt, focal: spec.focal }, { sizes: TILE_SIZES, eager: !spec.deco });
   }
 
   private relabel(): void {
@@ -179,6 +196,8 @@ class Phase1 implements Screen {
     const placed = placeTiles(box, this.views.map((v) => v.spec.id));
     for (const v of this.views) {
       const p = placed[v.spec.id];
+      v.slot.hidden = !p;
+      if (!p) continue;
       Object.assign(v.slot.style, { left: `${p.left}px`, top: `${p.top}px`, width: `${p.width}px`, zIndex: String(p.z) });
       gsap.set(v.slot, { rotation: p.rot });
     }
@@ -217,7 +236,8 @@ class Phase1 implements Screen {
     if (!this.alive) return;
     if (r.result === 'ended') {
       this.introDone = true;
-      this.maybeShowExplore();
+      if (this.exploreShown) this.announceExplore();
+      else this.maybeShowExplore();
     } else {
       this.introAt = from + r.index;
     }
@@ -265,8 +285,7 @@ class Phase1 implements Screen {
     view.photo.replaceWith(holder);
     frame.appendChild(view.photo);
     view.photo.classList.add('is-expanded');
-    const img = view.media.querySelector('img');
-    if (img) img.sizes = '100vw';
+    setSizes(view.media, '100vw');
     const open: OpenScene = { view, overlay, backdrop, frame, close, holder, drift: null };
     this.open = open;
     this.wireOverlay(open);
@@ -281,6 +300,7 @@ class Phase1 implements Screen {
       return Flip.from(state, { duration: motion.dur(0.6), ease: 'power3.inOut' });
     });
     if (!this.alive || this.open !== open) return;
+    overlay.dataset.ready = '';
     if (!motion.reduced) {
       const target = view.media.querySelector('img, video') ?? view.media;
       open.drift = this.g.add(() =>
@@ -339,8 +359,7 @@ class Phase1 implements Screen {
     gsap.set(open.frame, { y: 0 });
     open.holder.replaceWith(view.photo);
     view.photo.classList.remove('is-expanded');
-    const img = view.media.querySelector('img');
-    if (img) img.sizes = '(max-width: 700px) 60vw, 32vw';
+    setSizes(view.media, TILE_SIZES);
     await this.g.add(() => {
       gsap.to(open.backdrop, { opacity: 0, duration: motion.dur(0.45) });
       return Flip.from(state, { duration: motion.dur(0.55), ease: 'power3.inOut' });
@@ -349,14 +368,16 @@ class Phase1 implements Screen {
     this.open = null;
     this.busy = false;
     if (!this.alive) return;
-    this.maybeShowExplore();
+    // resume the intro first, so "Let's explore" isn't spoken only to be cut off by it
     if (!this.introDone && !this.introRunning) void this.runIntro(this.introAt);
+    this.maybeShowExplore();
     this.hint();
   }
 
   private wiggle(view: TileView): void {
-    if (this.converging) return;
+    if (this.converging || this.open) return;
     this.ctx.audio.sfx.play('sparkle');
+    void this.ctx.narration.say(`p1.deco.${view.spec.id}`);
     if (motion.reduced) return;
     this.g.add(() => gsap.fromTo(view.slot, { y: 0 }, { y: -12, duration: 0.18, yoyo: true, repeat: 3, ease: 'power1.inOut' }));
   }
@@ -374,6 +395,8 @@ class Phase1 implements Screen {
   private showExplore(announce: boolean): void {
     if (this.exploreShown) return;
     this.exploreShown = true;
+    const warm = window.setTimeout(() => this.alive && !this.converging && void this.ctx.viewer(), 1200);
+    this.cleanups.push(() => window.clearTimeout(warm));
     const b = this.explore;
     b.hidden = false;
     this.g.add(() =>
@@ -387,16 +410,23 @@ class Phase1 implements Screen {
           ease: 'back.out(1.8)',
           onComplete: () => {
             gsap.set(b, { clearProps: 'transform' });
-            if (!motion.reduced) b.classList.add('pulse');
+            if (!motion.reduced) b.classList.add('p1-pulse');
           },
         },
       ),
     );
     if (announce) {
       this.ctx.audio.sfx.play('invite');
-      if (!this.ctx.narration.currentId() && !this.open) void this.ctx.narration.say('p1.explore');
+      this.announceExplore();
     }
     this.hint();
+  }
+
+  /** say "Let's explore" once, when nothing else is talking */
+  private announceExplore(): void {
+    if (this.exploreAnnounced || this.open || this.converging || this.ctx.narration.currentId()) return;
+    this.exploreAnnounced = true;
+    void this.ctx.narration.say('p1.explore');
   }
 
   private async converge(): Promise<void> {
@@ -407,16 +437,22 @@ class Phase1 implements Screen {
     ctx.idle.clear();
     ctx.narration.stop();
     ctx.audio.sfx.play('whoosh');
-    this.explore.classList.remove('pulse');
+    this.explore.classList.remove('p1-pulse');
     for (const f of this.floats) f.kill();
 
     const area = this.collage.getBoundingClientRect();
     const centre = { x: area.width / 2, y: area.height * 0.46 };
-    const slots = this.views.map((v) => v.slot);
+    const views = this.views.filter((v) => !v.slot.hidden);
+    const slots = views.map((v) => v.slot);
+    // a warm glow gathers in the middle as the photos spiral in
+    const gather = el('div.p1-gather');
+    this.collage.appendChild(gather);
+    gsap.set(gather, { left: centre.x, top: centre.y });
     const fly = this.g.add(() => {
       const tl = gsap.timeline();
+      tl.fromTo(gather, { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: motion.dur(1.3), ease: 'power2.in' }, 0.1);
       tl.to(this.explore, { scale: 0, opacity: 0, duration: 0.3, ease: 'back.in(2)' }, 0);
-      this.views.forEach((v, i) => {
+      views.forEach((v, i) => {
         const b = v.slot.getBoundingClientRect();
         const c = { x: b.left + b.width / 2 - area.left, y: b.top + b.height / 2 - area.top };
         const to = { x: centre.x - c.x, y: centre.y - c.y };
@@ -426,7 +462,13 @@ class Phase1 implements Screen {
         } else {
           tl.to(v.slot, { motionPath: { path: spiralPath({ x: 0, y: 0 }, to, i % 2 ? 0.75 : -0.75), curviness: 1.3 }, duration: 1.15, ease: 'power2.in' }, at);
           tl.to(v.slot, { scale: 0.16, rotation: `+=${i % 2 ? 160 : -160}`, duration: 1.15, ease: 'power2.in' }, at);
-          tl.to(v.photo, { filter: 'sepia(0.65) saturate(1.3) brightness(1.1)', duration: 0.9 }, at + 0.2);
+          // explicit start values: tweening from "none" would start at brightness(0), i.e. black
+          tl.fromTo(
+            v.photo,
+            { filter: 'sepia(0) saturate(1) brightness(1)' },
+            { filter: 'sepia(0.75) saturate(1.5) brightness(1.18)', duration: 0.9 },
+            at + 0.15,
+          );
         }
       });
       return tl;
@@ -439,16 +481,18 @@ class Phase1 implements Screen {
       const r = s.getBoundingClientRect();
       return { x: r.left, y: r.top, width: r.width, height: r.height };
     });
-    const images = this.views.map((v) => assetUrl(`img/photos/${v.spec.stem}-640.jpg`));
+    const images = views.map((v) => assetUrl(`img/photos/${v.spec.stem}-640.jpg`));
     const flash = el('div.p1-flash');
     this.root.appendChild(flash);
     this.root.classList.add('is-converging');
     this.g.add(() => {
       gsap.fromTo(flash, { opacity: 0, scale: 0.5 }, { opacity: 0.95, scale: 1, duration: motion.dur(0.35), ease: 'power2.out', yoyo: true, repeat: 1, repeatDelay: 0.1 });
       gsap.to(slots, { opacity: 0, duration: motion.dur(0.3), delay: 0.15 });
+      gsap.to(gather, { opacity: 0, scale: 1.6, duration: motion.dur(0.6), delay: 0.2 });
     });
     const viewer = await ctx.viewer();
     if (!this.alive) return;
+    viewer.sound = (id, o) => ctx.audio.sfx.play(id, o);
     const t0 = performance.now();
     await viewer.convergeFrom(rects, images);
     if (!this.alive) return;

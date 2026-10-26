@@ -1,0 +1,38 @@
+[
+  {
+    "path": "public/assets/video/p1-farmers.webm, p1-farmers.mp4, p1-farmers-poster.webp",
+    "what": "Muted 5 s seamless loop for the 'farmers in the rice field' polaroid (photo p3-protection): rice stalks sway in a light breeze, hats still, camera locked",
+    "source": "effectcraft",
+    "notes": "Raw Higgsfield/Kling clip exists at raw-assets/video-src/higgsfield/p1-rice.mp4. Grade in EffectCraft, encode ~720p, <= 1.2 MB each (webm VP9 + mp4 H.264, no audio), poster = first frame. Then set VIDEO_READY.farmers = true in src/phases/phase1/tiles.ts."
+  },
+  {
+    "path": "public/assets/video/p1-market.webm, p1-market.mp4, p1-market-poster.webp",
+    "what": "Muted loop for the street-vendor polaroid (photo p1-market)",
+    "source": "effectcraft",
+    "notes": "Raw clip: raw-assets/video-src/higgsfield/p1-market.mp4. Same encode rules; then VIDEO_READY.market = true."
+  },
+  {
+    "path": "public/assets/video/p1-rain.webm, p1-rain.mp4, p1-rain-poster.webp",
+    "what": "Muted loop for the rain-shower polaroid (photo p1-rain)",
+    "source": "effectcraft",
+    "notes": "Raw clip: raw-assets/video-src/higgsfield/p1-rain.mp4. Same encode rules; then VIDEO_READY.rain = true."
+  },
+  {
+    "path": "public/assets/video/p1-craft.webm, p1-craft.mp4, p1-craft-poster.webp",
+    "what": "Muted loop for the hat-making polaroid (photo diverse-3)",
+    "source": "effectcraft",
+    "notes": "Raw clip: raw-assets/video-src/higgsfield/p1-craft.mp4. Same encode rules; then VIDEO_READY.craft = true."
+  },
+  {
+    "path": "public/assets/video/p1-aodai.webm, p1-aodai.mp4, p1-aodai-poster.webp",
+    "what": "Muted loop for the schoolgirls-in-áo-dài polaroid (photo p1-aodai): áo dài panels and hat brims stir in a breeze",
+    "source": "higgsfield",
+    "notes": "Waiting on the stock-licence check for the áo dài photo; until then the tile uses the photo with a Ken Burns drift."
+  },
+  {
+    "path": "public/assets/audio/ambient/schoolyard.mp3",
+    "what": "Ambient loop for the áo dài scene: schoolyard chatter, a bicycle bell, birds (20 s seamless, -24 LUFS)",
+    "source": "higgsfield",
+    "notes": "Missing from content/ambient-index.json, so the 'school' ambient falls back to the synthesised bed. Add 'school' to the index when it lands."
+  }
+]

@@ -69,7 +69,8 @@ export class Stage {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       alpha: true,
-      antialias: (window.devicePixelRatio || 1) < 2,
+      // MSAA only where pixels are big; also off for automated tests (software GL is slow)
+      antialias: (window.devicePixelRatio || 1) < 2 && !new URLSearchParams(location.search).has('test'),
       powerPreference: 'high-performance',
       premultipliedAlpha: true,
     });

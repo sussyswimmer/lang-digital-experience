@@ -4,7 +4,7 @@ import { P1_ICONS } from './art';
 
 export const TILE_IDS = ['farmers', 'market', 'aodai', 'rain', 'craft'] as const;
 export type TileId = (typeof TILE_IDS)[number];
-export type DecoId = 'sky' | 'jars';
+export type DecoId = 'sky' | 'lotus';
 
 export interface TileSpec {
   id: TileId | DecoId;
@@ -18,7 +18,8 @@ export interface TileSpec {
 }
 
 export const TILES: TileSpec[] = [
-  { id: 'farmers', stem: 'p1-farmers', focal: [0.56, 0.4], ambient: 'breeze', icon: P1_ICONS.rice },
+  // the rice field (the same farmers return in the storybook's first chapter)
+  { id: 'farmers', stem: 'p3-protection', focal: [0.66, 0.4], ambient: 'breeze', icon: P1_ICONS.rice },
   { id: 'market', stem: 'p1-market', focal: [0.5, 0.42], ambient: 'market', icon: P1_ICONS.mango },
   { id: 'aodai', stem: 'p1-aodai', focal: [0.5, 0.28], ambient: 'school', icon: P1_ICONS.bike },
   { id: 'rain', stem: 'p1-rain', focal: [0.5, 0.45], ambient: 'rain', icon: P1_ICONS.rain },
@@ -27,7 +28,7 @@ export const TILES: TileSpec[] = [
 
 export const DECOS: TileSpec[] = [
   { id: 'sky', stem: 'diverse-4', focal: [0.42, 0.55], deco: true },
-  { id: 'jars', stem: 'diverse-1', focal: [0.55, 0.42], deco: true },
+  { id: 'lotus', stem: 'p1-farmers', focal: [0.55, 0.4], deco: true },
 ];
 
 /**

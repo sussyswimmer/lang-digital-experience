@@ -46,6 +46,7 @@ export class SunShadeChapter implements Chapter {
   private pendingDone = false;
   private glide: gsap.core.Tween | null = null;
   private skyBottom = 'rgb(214, 236, 244)';
+  private skyTop = 'rgb(126, 196, 232)';
   private offLang: () => void;
 
   constructor(private host: ChapterHost) {
@@ -181,6 +182,7 @@ export class SunShadeChapter implements Chapter {
     this.sun.style.transform = `translate(${p.x - r}px, ${p.y - r}px)`;
     const [top, bottom] = skyColours(this.t);
     this.skyBottom = bottom;
+    this.skyTop = top;
     this.sky.style.background = `linear-gradient(180deg, ${top}, ${bottom})`;
     this.scheduleDraw();
     if (silent) return;
@@ -231,12 +233,21 @@ export class SunShadeChapter implements Chapter {
     c.setTransform(dpr, 0, 0, dpr, 0, 0);
     c.globalCompositeOperation = 'source-over';
     c.drawImage(this.img, 0, 0, w, h);
-    // melt the photo's hazy top edge into the sky band above it
-    const seam = c.createLinearGradient(0, 0, 0, h * 0.14);
-    seam.addColorStop(0, this.skyBottom);
-    seam.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    // melt the photo's hazy top edge into the sky band, and tint the scene with the time of day
+    const tint = (a: number) => this.skyBottom.replace('rgb', 'rgba').replace(')', `, ${a})`);
+    let seam = c.createLinearGradient(0, 0, 0, h * 0.09);
+    seam.addColorStop(0, tint(1));
+    seam.addColorStop(1, tint(0));
     c.fillStyle = seam;
-    c.fillRect(0, 0, w, h * 0.14);
+    c.fillRect(0, 0, w, h * 0.09);
+    c.globalCompositeOperation = 'soft-light';
+    seam = c.createLinearGradient(0, 0, 0, h * 0.45);
+    seam.addColorStop(0, tint(0.9));
+    seam.addColorStop(1, tint(0));
+    c.fillStyle = seam;
+    c.fillRect(0, 0, w, h * 0.45);
+    c.fillStyle = this.skyTop.replace('rgb', 'rgba').replace(')', ', 0.28)');
+    c.fillRect(0, 0, w, h);
 
     const sunPos = arcPoint(this.arc, this.t);
     const sun = { x: sunPos.x, y: sunPos.y - skyH };
@@ -255,6 +266,22 @@ export class SunShadeChapter implements Chapter {
     c.globalCompositeOperation = 'screen';
     c.fillStyle = g;
     c.fillRect(0, 0, w, h);
+    // soft sunbeams fanning down from the sun
+    c.globalCompositeOperation = 'screen';
+    for (let k = -2; k <= 2; k++) {
+      const a = Math.atan2(h * 0.9 - sun.y, w * 0.5 + (w / 2 - sun.x) * 0.3 - sun.x) + k * 0.16;
+      const len = Math.hypot(w, h) * 1.1;
+      const beam = c.createLinearGradient(sun.x, sun.y, sun.x + Math.cos(a) * len, sun.y + Math.sin(a) * len);
+      beam.addColorStop(0, 'rgba(255, 236, 180, 0.14)');
+      beam.addColorStop(1, 'rgba(255, 236, 180, 0)');
+      c.fillStyle = beam;
+      c.beginPath();
+      c.moveTo(sun.x, sun.y);
+      c.lineTo(sun.x + Math.cos(a - 0.06) * len, sun.y + Math.sin(a - 0.06) * len);
+      c.lineTo(sun.x + Math.cos(a + 0.06) * len, sun.y + Math.sin(a + 0.06) * len);
+      c.closePath();
+      c.fill();
+    }
 
     // the shade, drawn on its own layer, with the hat cut out so it only falls under the brim
     const { brim, face, apex } = this.geometry();
@@ -267,9 +294,10 @@ export class SunShadeChapter implements Chapter {
     lc.translate(s.cx, s.cy);
     lc.scale(1, s.ry / s.rx);
     const sg = lc.createRadialGradient(0, 0, 0, 0, 0, s.rx);
-    sg.addColorStop(0, 'rgba(58, 38, 26, 0.78)');
-    sg.addColorStop(0.55, 'rgba(70, 48, 34, 0.6)');
-    sg.addColorStop(1, 'rgba(90, 64, 46, 0)');
+    // a cool, deep pool of shade (multiplied onto the photo below)
+    sg.addColorStop(0, 'rgba(26, 30, 58, 0.9)');
+    sg.addColorStop(0.6, 'rgba(40, 44, 76, 0.7)');
+    sg.addColorStop(1, 'rgba(60, 64, 96, 0)');
     lc.fillStyle = sg;
     lc.beginPath();
     lc.arc(0, 0, s.rx, 0, Math.PI * 2);

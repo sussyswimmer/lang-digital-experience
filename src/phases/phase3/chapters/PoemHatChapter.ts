@@ -126,7 +126,7 @@ export class PoemHatChapter implements Chapter {
     this.tap.setAttribute('aria-pressed', String(on));
     this.tap.setAttribute('aria-label', i18n.t(on ? 'p3.ch2.again' : 'p3.ch2.prompt'));
     const label = this.actions.querySelector('span');
-    if (label) i18n.bind(label, on ? 'p3.ch2.lightsOn' : 'p3.ch2.light');
+    if (label) i18n.bind(label, on ? 'p3.ch2.lights-on' : 'p3.ch2.light');
     window.clearTimeout(this.timer);
     if (quiet) return;
     ctx.audio.sfx.play(on ? 'sparkle' : 'tap');
