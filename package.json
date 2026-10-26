@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "description": "Explore the Nón Lá: an interactive, bilingual (EN/VI) digital experience for children",
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -16,7 +18,11 @@
     "assets:glb": "node tools/assets/optimize-glb.mjs",
     "assets:placeholders": "node tools/assets/make-placeholders.mjs",
     "i18n:check": "node tools/i18n/check.mjs",
-    "i18n:export": "node tools/i18n/export-review.mjs"
+    "i18n:export": "node tools/i18n/export-review.mjs",
+    "assets:renders": "node tools/assets/process-renders.mjs",
+    "assets:video": "node tools/assets/process-video.mjs",
+    "tts:plan": "node tools/audio/tts-plan.mjs",
+    "tts:ingest": "node tools/audio/tts-ingest.mjs"
   },
   "dependencies": {
     "@fontsource-variable/baloo-2": "5.3.0",
