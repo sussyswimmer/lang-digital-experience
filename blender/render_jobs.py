@@ -41,6 +41,7 @@ STEP = int(nb.arg("--step", "1"))
 FRAMES = nb.arg("--frames", "")  # e.g. 1-270
 
 INTRO_LEN = 270
+INTRO_W = int(nb.arg("--intro-width", "1920"))  # 2560 for the 1440p master (16:9)
 REST_FRAME = 300
 
 
@@ -246,7 +247,8 @@ def job_intro(scene):
     cam, tgt = look_at_camera("CAM_INTRO", (0, 0, 0.06), orbit((0, 0, 0.06), 0, 24, 1.35), fov_y=32.2)
     scene.camera = cam
     build_intro(scene, cam, tgt)
-    res(scene, 1920, 1080)
+    studio_light(scene)  # same higher, softer sun as the stills: the shadow stays under the hat
+    res(scene, INTRO_W, INTRO_W * 9 // 16)
     if not PREVIEW:
         scene.render.image_settings.color_depth = "16"  # headroom for EffectCraft's grade
     lo, hi = 1, INTRO_LEN

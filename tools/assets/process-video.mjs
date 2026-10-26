@@ -1,5 +1,5 @@
 // EffectCraft output from the PC (raw-assets/video-edited + raw-assets/lottie, T4) → public/assets.
-//   scroll-intro-fx-1080p.mp4      → scroll/{960,1600}/f_0001.webp … (every 2nd frame) + scroll/manifest.json
+//   scroll-intro-fx-{1440p,1080p}.mp4 → scroll/{960,1600}/f_0001.webp … (every 2nd frame) + scroll/manifest.json
 //                                    (the old frames are removed first; the landing reads count from the manifest)
 //   <clip>-loop-{540,1080}.mp4       → video/p1-<tile>.{mp4,webm} at 960×540 + -poster.webp
 //   raw-assets/lottie/*.json        → lottie/*.json (minified)
@@ -16,8 +16,9 @@ const ff = (...args) => execFileSync('ffmpeg', ['-v', 'error', '-y', ...args], {
 // Higgsfield clip name → Phase 1 tile id
 const TILES = { 'p1-rice': 'farmers', 'p1-market': 'market', 'p1-rain': 'rain', 'p1-craft': 'craft' };
 
-const intro = path.join(ED, 'scroll-intro-fx-1080p.mp4');
-if (existsSync(intro)) {
+// the 1440p master (T6) when present: downsampling it gives crisper 1600 px frames than the 1080p render
+const intro = ['scroll-intro-fx-1440p.mp4', 'scroll-intro-fx-1080p.mp4'].map((f) => path.join(ED, f)).find(existsSync) ?? '';
+if (intro) {
   const tmp = path.join('node_modules/.cache/scroll-frames');
   await rm(tmp, { recursive: true, force: true });
   await mkdir(tmp, { recursive: true });
@@ -28,7 +29,7 @@ if (existsSync(intro)) {
     await rm(dir, { recursive: true, force: true });
     await mkdir(dir, { recursive: true });
     for (const f of frames) {
-      await sharp(path.join(tmp, f)).resize({ width: w }).webp({ quality: w > 1000 ? 74 : 70, effort: 4 })
+      await sharp(path.join(tmp, f)).resize({ width: w, kernel: 'lanczos3' }).webp({ quality: w > 1000 ? 80 : 74, effort: 5 })
         .toFile(path.join(dir, f.replace('.png', '.webp')));
     }
   }
@@ -48,7 +49,7 @@ if (existsSync(intro)) {
     aspect: [16, 9],
     bg: prev.bg ?? { top: '#F7E6BD', bottom: '#D4914F' },
     placeholder: false,
-    source: 'Blender intro (PC GPU, 270 frames) → EffectCraft INTRO_SCROLL → every 2nd frame',
+    source: `Blender intro (PC GPU, 270 frames) → EffectCraft INTRO_SCROLL (${path.basename(intro)}) → every 2nd frame`,
     bytes,
   }, null, 2) + '\n');
   console.log('scroll frames', frames.length);

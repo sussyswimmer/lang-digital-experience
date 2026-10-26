@@ -2,8 +2,9 @@
 //   effectcraft-cli script effectcraft/intro_scroll.jsx
 // then render (see the T4 packet). Paths are absolute for Max's PC.
 var ROOT = "C:/Users/maxwe/lang-digital-experience/";
-var FRAMES = "D:/nonla-work/T3/intro/frame_0001.png"; // first PNG of the 270-frame RGBA sequence
-var W = 1920, H = 1080, FPS = 30, N = 270, DUR = N / FPS;
+var FRAMES = "D:/nonla-work/T6/intro/frame_0001.png"; // first PNG of the 270-frame RGBA sequence (1440p master)
+var W = 2560, H = 1440, FPS = 30, N = 270, DUR = N / FPS;
+var S = W / 1920; // effect sizes were tuned at 1080p; scale them with the frame
 var SNAPS = [160, 172, 180, 186, 205, 215, 218, 230]; // frames where a layer snaps home
 
 function t(f) { return (f - 1) / FPS; }
@@ -47,7 +48,7 @@ var fn = addFx(leak, ["Fractal Noise"]);
 if (fn) {
   setParam(fn, ["Contrast"], 160);
   setParam(fn, ["Brightness"], -20);
-  setParam(fn, ["Scale"], 900);
+  setParam(fn, ["Scale"], 900 * S);
   setParam(fn, ["Evolution"], 0, 0);
   setParam(fn, ["Evolution"], 220, DUR);
 }
@@ -66,7 +67,7 @@ hat.name = "hat";
 var glow = addFx(hat, ["Glow"]);
 if (glow) {
   setParam(glow, ["Glow Threshold", "Threshold"], 68);
-  setParam(glow, ["Glow Radius", "Radius"], 36);
+  setParam(glow, ["Glow Radius", "Radius"], 36 * S);
   var gi = ["Glow Intensity", "Intensity"];
   setParam(glow, gi, 0.25, 0);
   for (var s = 0; s < SNAPS.length; s++) {
@@ -77,9 +78,9 @@ if (glow) {
 }
 var sweep = addFx(hat, ["CC Light Sweep"]);
 if (sweep) {
-  setParam(sweep, ["Center"], [-200, H * 0.45], t(212));
-  setParam(sweep, ["Center"], [W + 200, H * 0.45], t(262));
-  setParam(sweep, ["Width"], 90);
+  setParam(sweep, ["Center"], [-200 * S, H * 0.45], t(212));
+  setParam(sweep, ["Center"], [W + 200 * S, H * 0.45], t(262));
+  setParam(sweep, ["Width"], 90 * S);
   setParam(sweep, ["Sweep Intensity", "Intensity"], 60);
   setParam(sweep, ["Light Color"], rgb("#FFE7A3"));
 }
