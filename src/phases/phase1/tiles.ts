@@ -32,8 +32,8 @@ export const DECOS: TileSpec[] = [
 ];
 
 /**
- * Short muted loops (Higgsfield image-to-video → EffectCraft grade) are optional. Until a clip is
- * dropped in at assets/video/p1-<tile>.{webm,mp4} (+ -poster.webp), flip its flag to true here;
- * tiles without one use the photo with a slow Ken Burns drift. Listed in asset-requests.phase1.json.
+ * Short muted loops (Higgsfield image-to-video → EffectCraft grade, npm run assets:video) at
+ * assets/video/p1-<tile>.{webm,mp4} + -poster.webp. Tiles without one (the áo dài photo carries a stock
+ * credit, so it isn't animated) use the photo with a slow Ken Burns drift.
  */
-export const VIDEO_READY: Partial<Record<TileId, boolean>> = {};
+export const VIDEO_READY: Partial<Record<TileId, boolean>> = { farmers: true, market: true, rain: true, craft: true };

@@ -1,7 +1,7 @@
 // EffectCraft output from the PC (raw-assets/video-edited + raw-assets/lottie, T4) → public/assets.
 //   scroll-intro-fx-1080p.mp4      → scroll/{960,1600}/f_0001.webp … (every 2nd frame) + scroll/manifest.json
 //                                    (the old frames are removed first; the landing reads count from the manifest)
-//   <clip>-loop-{1080,540}.mp4/webm → video/p1-<tile>.{mp4,webm}, video/p1-<tile>-540.mp4, -poster.webp
+//   <clip>-loop-{540,1080}.mp4       → video/p1-<tile>.{mp4,webm} at 960×540 + -poster.webp
 //   raw-assets/lottie/*.json        → lottie/*.json (minified)
 import { readdir, mkdir, rm, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -59,12 +59,14 @@ for (const [clip, tile] of Object.entries(TILES)) {
   const mp4 = path.join(ED, `${clip}-loop-1080.mp4`);
   if (!existsSync(mp4)) continue;
   const dest = (s) => path.join(OUT, 'video', `p1-${tile}${s}`);
-  // re-mux with faststart and no audio track so <video muted autoplay> streams on every browser
-  ff('-i', mp4, '-an', '-c:v', 'copy', '-movflags', '+faststart', dest('.mp4'));
+  // Up to four tiles autoplay at once, so the site serves the 540p grade (≈1.5 MB) rather than 1080p (≈5 MB).
+  // Re-mux with faststart and no audio track so <video muted autoplay> streams everywhere; the WebM is a
+  // VP9 encode of the same 540p grade.
   const small = path.join(ED, `${clip}-loop-540.mp4`);
-  if (existsSync(small)) ff('-i', small, '-an', '-c:v', 'copy', '-movflags', '+faststart', dest('-540.mp4'));
-  const webm = path.join(ED, `${clip}-loop-1080.webm`);
-  if (existsSync(webm)) ff('-i', webm, '-an', '-c:v', 'copy', dest('.webm'));
+  const src540 = existsSync(small) ? small : mp4;
+  if (existsSync(small)) ff('-i', small, '-an', '-c:v', 'copy', '-movflags', '+faststart', dest('.mp4'));
+  else ff('-i', mp4, '-an', '-vf', 'scale=960:-2', '-c:v', 'libx264', '-crf', '24', '-movflags', '+faststart', dest('.mp4'));
+  ff('-i', src540, '-an', '-vf', 'scale=960:-2', '-c:v', 'libvpx-vp9', '-b:v', '1100k', '-row-mt', '1', '-deadline', 'good', dest('.webm'));
   const poster = dest('-poster.png');
   ff('-i', mp4, '-frames:v', '1', poster);
   await sharp(poster).resize({ width: 1280 }).webp({ quality: 78 }).toFile(dest('-poster.webp'));

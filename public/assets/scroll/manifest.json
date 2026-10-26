@@ -1,5 +1,5 @@
 {
-  "count": 48,
+  "count": 135,
   "widths": [
     960,
     1600
@@ -9,13 +9,13 @@
     9
   ],
   "bg": {
-    "top": "#F7E6BD",
-    "bottom": "#D4914F"
+    "top": "#E3D5B4",
+    "bottom": "#B98B51"
   },
-  "placeholder": true,
-  "source": "tools/assets/make-scroll-placeholder.py: INTRO frames 1..270 sampled 48x, 960x540, Cycles CPU 10 spp",
+  "placeholder": false,
+  "source": "Blender intro (PC GPU, 270 frames) \u2192 EffectCraft INTRO_SCROLL \u2192 every 2nd frame",
   "bytes": {
-    "960": 412644,
-    "1600": 815628
+    "960": 1002682,
+    "1600": 2313474
   }
 }
