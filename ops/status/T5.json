@@ -1,0 +1,13 @@
+{
+  "task": "T5",
+  "attempt": 1,
+  "state": "done",
+  "started_at": "2026-10-26T10:33:31Z",
+  "finished_at": "2026-10-26T10:35:47.854Z",
+  "outputs": [],
+  "notes": "Before: Pages 404 (not enabled), no environments; repo public, default branch claude/funny-gates-g6ew58. POST /pages build_type=workflow -> 201 (no 409, so no PUT needed): html_url https://sussyswimmer.github.io/lang-digital-experience/, build_type workflow, public true, https_enforced true, status null (no deployment yet). PUT /environments/github-pages {protected_branches:false, custom_branch_policies:true} -> environment created; POST deployment-branch-policies name=claude/funny-gates-g6ew58 type=branch. Check: branch policies = [claude/funny-gates-g6ew58]. Visibility (public), default branch and branch protection untouched; nothing pushed to main. Max confirmed enabling public Pages directly on the PC (AskUserQuestion) after being reminded that some team photos carry third-party marks (Dreamstime watermark on p2-chin-straps; credits on p3-identity, p1-aodai, p3-poem).",
+  "errors": [],
+  "needs_user": [
+    "Photo rights still open: replace or license p2-chin-straps (Dreamstime watermark) and confirm permission for p3-identity, p1-aodai and p3-poem before the first public deployment."
+  ]
+}
