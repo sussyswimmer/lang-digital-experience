@@ -44,179 +44,201 @@
   "files": [
     {
       "path": "raw-assets/renders/cover/cover.png",
-      "bytes": 3295333,
-      "sha256": "aae7fdec44700e4a692fdcedf303bda166bd4afccdc05f7dedd4fbdb5b0f8d58",
+      "bytes": 3026509,
+      "sha256": "aaaac972cb580da804144287364a882c2077be336dcd95981aecf98256cc22f4",
       "width": 2048,
       "height": 2048,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/brim-closeup.png",
-      "bytes": 1571479,
-      "sha256": "753f1356f1d9b559f41728aa0c6414e491584bb43c7ebe064accc63a5bbb44be",
+      "bytes": 1467520,
+      "sha256": "9d68954c2a18afceba095099fffe87277b1be98b48742152ea9d93431271fed7",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/build-01-frame.png",
-      "bytes": 1095800,
-      "sha256": "612eeb11dec9d1e690b173f01c951fd894f8c9d96d3f3f55535544175ce9ca69",
+      "bytes": 847347,
+      "sha256": "1781d3d3d70cee8d937dd7c6f37d588ea79b5cd1a9497cfc1cc74b74e1fca148",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/build-02-leaf-inner.png",
-      "bytes": 880353,
-      "sha256": "d7ed55d83abbba3aab53929453bd3fc6c2adf5db17d1cc32cf49804d4c897031",
+      "bytes": 719619,
+      "sha256": "dd38201bdc76d1e241031cd57015497af2b9a24d1ef2a8b294724844482c8469",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/build-03-poem-art.png",
-      "bytes": 562168,
-      "sha256": "c365a5237dbc5ee21ca5f2c0908827329399fac6f95aaaff15ee4d736aeb5235",
+      "bytes": 450213,
+      "sha256": "89c3f1b095ed7a433a41dab55cedbcd47e7e6fb0c2592ada4e9751e835564c32",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/build-04-leaf-outer.png",
-      "bytes": 969417,
-      "sha256": "ba2f590cf7e1f09f5896b49afe9d64b5e8e8404aded89dc0f80b6382a044fc23",
+      "bytes": 805568,
+      "sha256": "b222418fcec27986d9eb7c144e1762d2c9d9858b6b5931e073c214f671c937e6",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/build-05-stitches.png",
-      "bytes": 1058603,
-      "sha256": "dd2da869e6f5bca5c73878dda842ae30ec0d71e9ebda59026552d31eddbc844b",
+      "bytes": 781382,
+      "sha256": "e40b72a40cd020ad1f8cbf0ae316e560f673b1fcee7a967a1de42e273cbddb6a",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/build-06-strap.png",
-      "bytes": 684074,
-      "sha256": "75279df357758b3332b16dbbfbc61465e5e7d3eb774d2018857d659c5953e41a",
+      "bytes": 533867,
+      "sha256": "3bc432d3f50ffc0ad6328dc543168c6b3193546d0587b8832e9e36c7005d18e2",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/hat-full.png",
-      "bytes": 1151312,
-      "sha256": "2aec542693cc77a54b5bd127764889d339c32ece7986fdb625614da294f7519f",
+      "bytes": 1127366,
+      "sha256": "3f27a183cf507d13fd4da05f2703174deb1b348f11bb81e41b4950af00258160",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/piece-mo-bark.png",
-      "bytes": 1044758,
-      "sha256": "9e5a76319e7bdb3ede9ec777b6ab3d0166e6989945ee83944391c29e9e41db80",
+      "bytes": 807745,
+      "sha256": "4191572edc4988ffb227e168291a09c469cfb4bd70689313867baec7536567b5",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/underside-green.png",
-      "bytes": 924371,
-      "sha256": "d1a1dd220265193dfe865a38c31e94e5d6e078c6286c1abe897d7ccbcdbb5e69",
+      "bytes": 888532,
+      "sha256": "a505de8eaef7c3aaa6e00753d2d9799650c4359e05830ba434302ac87a4bb57a",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/underside-peach.png",
-      "bytes": 925607,
-      "sha256": "7ffa1482e0ce8d6043ec171056349d1308599562237ef6ec506fbd55b5a1dbbc",
+      "bytes": 890302,
+      "sha256": "93d9769ca69ae090fe9392d0d8b12ac97b19b44558b05534d44c86de03e41d5e",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/stills/underside-purple.png",
-      "bytes": 921200,
-      "sha256": "2c53eac6ab29aa99005ed194f670d5a4dbd3b6ea77db481a26774c3dc322fa9c",
+      "bytes": 890008,
+      "sha256": "a8fa8b5dbcc508875caea661160333a880178e49e46ff9f92229baf75dfc1950",
       "width": 1600,
       "height": 1200,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/quiz/q2-no-rings-floppy.png",
-      "bytes": 637348,
-      "sha256": "e8aad5d46760b611ba476f180156538b809aaa8a8dfd0d328f78ab41dc73779e",
+      "bytes": 625403,
+      "sha256": "33e6617c58c3595c8ad52d69ee72f70b034cb4cc83183d398015ac16710d9441",
       "width": 1200,
       "height": 900,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/quiz/q2-shinier.png",
-      "bytes": 688815,
-      "sha256": "12d4213899811dad94f5ce5dfecb3d345664e2bad0bde75324c0c7246c9db15b",
+      "bytes": 676662,
+      "sha256": "0c865da63fccf90c6bda9ae7d805856ecc7279a901aeef1d4c455e2a7861b026",
       "width": 1200,
       "height": 900,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/quiz/q2-tight-strap.png",
-      "bytes": 643605,
-      "sha256": "79357dcf4f8ace1c660c4c3a2477112dd6f4eee68c0d4c6e72319c2a890b0d7f",
+      "bytes": 493269,
+      "sha256": "2fada994e4acb032f17241b528205403de53acbf2941d026b2e2cead78743c3e",
       "width": 1200,
       "height": 900,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/quiz/q3-leaf-gap.png",
-      "bytes": 735469,
-      "sha256": "041213f98fa174457add1b263e5cd5cd8346a7f4d68994acf5cc7697da0d6f62",
+      "bytes": 716249,
+      "sha256": "7975ac15e1e470fbc24479bedd10184ed9f72b607f664feeebe2d1c4f5c20015",
       "width": 1200,
       "height": 900,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/quiz/q3-strap-new-colour.png",
-      "bytes": 674901,
-      "sha256": "f348aec36b2dc0ae64745fbc7709cb4b23fe84813ca246541482119ce9734708",
+      "bytes": 660610,
+      "sha256": "0e4724d6d99d2dd07a4ef0cb6d7d64170f7b143fc305627771e14666b9281fff",
       "width": 1200,
       "height": 900,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/quiz/q3-tiny-rings.png",
-      "bytes": 545116,
-      "sha256": "f439a3e160c5c45e78b03c7ac4c97edbcdfcb498b276829fb6059dfa50b35154",
+      "bytes": 559376,
+      "sha256": "4ebcd66dbf74a71b9dd5eecb043882deb3ee7c727410d41f6260998f191fdca7",
       "width": 1200,
       "height": 900,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/quiz/q4-rings-08.png",
-      "bytes": 593687,
-      "sha256": "fcb0b7f0f6a56db5fb1b07add0ee4354ef92eea628d25f9b9840da3094fb79b4",
+      "bytes": 599924,
+      "sha256": "df67575521ce1aa94eeb39ea5d4797734c487659eb5a82d168cc2bc2bd26e9f0",
       "width": 1200,
       "height": 900,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/quiz/q4-rings-16.png",
-      "bytes": 658541,
-      "sha256": "0b39260fee530e9c006bf07edda4c344e5b177f66f3f1511e8458e60c78045ef",
+      "bytes": 659759,
+      "sha256": "8f789f2576582bd6318e2f856a3e83878eefd07e4d9be61a47f93822d3566298",
       "width": 1200,
       "height": 900,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/quiz/q4-rings-30.png",
-      "bytes": 735032,
-      "sha256": "bf94d948f344a628be7d688e5f33b5f9dbd551e88f0c7151b3d2503695bcae2c",
+      "bytes": 732752,
+      "sha256": "ea7073052d8d5b76d0e75fa623f0c4ce44a322455a6da613d3ffbd51447585ee",
       "width": 1200,
       "height": 900,
-      "bit_depth": 8
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     },
     {
       "path": "raw-assets/renders/lineart/page-1-plain.png",
@@ -247,6 +269,24 @@
       "sha256": "f73c5a8891bd8ade85c4bd90cd701465d1fcd95bb9a26a6dc61cd23df602a715",
       "width": null,
       "height": null
+    },
+    {
+      "path": "raw-assets/renders/stills/build-00-shadow.png",
+      "bytes": 655582,
+      "sha256": "f1095ba3b7ad1e9ac2be9eefbc9c997c3de32a6a77e641fad7b774ee14969695",
+      "width": 1600,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
     }
-  ]
+  ],
+  "rerender": {
+    "what": "cover, stills and quiz re-rendered after staging fixes (studio sun, floor shadow in frame, shadowless build layers + build-00-shadow, tight-strap camera)",
+    "device": "CPU (cloud, Blender 5.2.3 bpy)",
+    "samples": 64,
+    "denoise": "OpenImageDenoise",
+    "seconds": 3000,
+    "files": 23,
+    "kept_from_pc": "intro frames (D: drive), intro-preview, lineart"
+  }
 }
