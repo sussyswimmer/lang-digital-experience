@@ -312,6 +312,11 @@ def gen_leaf_atlas(path, w=2048, h=1024, variants=8):
     save_png(path, out)
 
 
+def gen_flat_normal(path, w=64, h=64):
+    """Fallback until blender/leaf_textures.py has baked the photographic normal maps."""
+    save_png(path, np.ones((h, w, 3)) * np.array([0.5, 0.5, 1.0]))
+
+
 def gen_leaf_inner(path, w=1024, h=512):
     x = np.linspace(0, 1, w)[None, :]
     base = srgb(COLOURS["leaf_inner"])
@@ -369,8 +374,11 @@ def gen_poem_placeholder(path, w=2048, h=1024):
 def ensure_textures():
     t = {}
     specs = {
+        # photographic versions come from blender/leaf_textures.py; these are the procedural fallbacks
         "leaf_atlas.png": lambda p: gen_leaf_atlas(p),
+        "leaf_atlas_normal.png": lambda p: gen_flat_normal(p),
         "leaf_inner.png": lambda p: gen_leaf_inner(p),
+        "leaf_inner_normal.png": lambda p: gen_flat_normal(p),
         "bamboo.png": lambda p: gen_bamboo(p),
         "mo_bark.png": lambda p: gen_bark(p, COLOURS["mo_bark"], 700),
         "brim_bark.png": lambda p: gen_bark(p, COLOURS["brim_bark"], 710),
@@ -388,7 +396,7 @@ def ensure_textures():
 # --------------------------------------------------------------------------- materials (Principled only → exports cleanly)
 
 def material(name, hexcol, rough=0.6, tex=None, alpha=None, alpha_from_tex=False, coat=0.0, sheen=0.0,
-             transmission=0.0, tint_tex=False):
+             transmission=0.0, tint_tex=False, normal_tex=None, normal_strength=1.0):
     mat = bpy.data.materials.new(name)
     nt = mat.node_tree if mat.node_tree else None
     if nt is None:
@@ -416,6 +424,16 @@ def material(name, hexcol, rough=0.6, tex=None, alpha=None, alpha_from_tex=False
             nt.links.new(node.outputs["Color"], bsdf.inputs["Base Color"])
         if alpha_from_tex:
             nt.links.new(node.outputs["Alpha"], bsdf.inputs["Alpha"])
+    if normal_tex:  # exported as the glTF normalTexture (scale = strength)
+        ntex = nt.nodes.new("ShaderNodeTexImage")
+        ntex.image = bpy.data.images.load(normal_tex, check_existing=True)
+        ntex.image.colorspace_settings.name = "Non-Color"
+        ntex.location = (-500, -150)
+        nmap = nt.nodes.new("ShaderNodeNormalMap")
+        nmap.inputs["Strength"].default_value = normal_strength
+        nmap.location = (-220, -150)
+        nt.links.new(ntex.outputs["Color"], nmap.inputs["Color"])
+        nt.links.new(nmap.outputs["Normal"], bsdf.inputs["Normal"])
     if alpha is not None:
         bsdf.inputs["Alpha"].default_value = alpha
     if alpha is not None or alpha_from_tex:
@@ -426,9 +444,12 @@ def material(name, hexcol, rough=0.6, tex=None, alpha=None, alpha_from_tex=False
 
 def build_materials(t):
     return {
-        "leaf_outer": material("mat_leaf_outer", "#FFFFFF", rough=0.45, tex=t["leaf_atlas"], coat=0.3),
-        "leaf_cap": material("mat_leaf_cap", "#FFFFFF", rough=0.45, tex=t["leaf_atlas"], coat=0.3),
-        "leaf_inner": material("mat_leaf_inner", "#FFFFFF", rough=0.75, tex=t["leaf_inner"]),
+        "leaf_outer": material("mat_leaf_outer", "#FFFFFF", rough=0.55, tex=t["leaf_atlas"], coat=0.1, sheen=0.2,
+                               normal_tex=t["leaf_atlas_normal"], normal_strength=0.8),
+        "leaf_cap": material("mat_leaf_cap", "#FFFFFF", rough=0.55, tex=t["leaf_atlas"], coat=0.1, sheen=0.2,
+                             normal_tex=t["leaf_atlas_normal"], normal_strength=0.8),
+        "leaf_inner": material("mat_leaf_inner", "#FFFFFF", rough=0.75, tex=t["leaf_inner"],
+                               normal_tex=t["leaf_inner_normal"], normal_strength=0.6),
         "mo_bark": material("mat_mo_bark", "#FFFFFF", rough=0.85, tex=t["mo_bark"]),
         "poem_art": material("mat_poem_art", "#FFFFFF", rough=0.9, tex=t["poem_art"], alpha_from_tex=True),
         "bamboo": material("mat_bamboo", "#FFFFFF", rough=0.55, tex=t["bamboo"]),

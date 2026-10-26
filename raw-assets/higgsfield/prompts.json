@@ -77,5 +77,19 @@
    "note": "adds Tràng Tiền bridge and bamboo; finer detail"
   },
   "baked_by": "blender/poem_texture.py → blender/textures/poem_art.png (unrolled-cone warp)"
+ },
+ "textures": {
+  "model": "gpt_image_2_5 quality high 2k 2:3, then bytedance upscale 4k",
+  "leaf-outer-4k.jpg": {
+   "job": "8fea9734-e0fb-46de-9602-e4deaa271232",
+   "upscale": "a56d83bb-7443-463e-9a93-aee20ec9b0a4",
+   "prompt": "Seamless macro texture scan of bleached dried palm leaf used for Vietnamese nón lá hats: the whole frame is leaf surface, fine dense parallel veins running perfectly vertically, ivory and pale cream colour with subtle golden straw tones ..."
+  },
+  "leaf-inner-4k.jpg": {
+   "job": "8a2631be-4190-4195-9400-d9924ecaeffd",
+   "upscale": "d0c7d4da-3fa2-4a23-95c7-c389db448b20",
+   "prompt": "Photographic texture, flat and evenly lit, shot straight down like a scanner: several long dried palm leaves (lá nón) laid side by side vertically ..."
+  },
+  "baked_by": "blender/leaf_textures.py → blender/textures/leaf_atlas(_normal).png, leaf_inner(_normal).png"
  }
 }
