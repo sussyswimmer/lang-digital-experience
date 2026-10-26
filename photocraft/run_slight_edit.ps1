@@ -11,16 +11,17 @@ $manifest = @()
 Get-ChildItem $in -Filter *.jpg | Sort-Object Name | ForEach-Object {
   $recipe = if ($special.ContainsKey($_.Name)) { $special[$_.Name] } else { "photocraft\nonla-slight.json" }
   $steps = Get-Content $recipe -Raw | ConvertFrom-Json
-  $args = @("run", $_.FullName)
-  foreach ($s in $steps) { $args += @("--cmd", $s[0], "--params", ($s[1] | ConvertTo-Json -Compress)) }
+  $cliArgs = @("run", $_.FullName)
+  foreach ($s in $steps) { $cliArgs += @("--cmd", $s[0], "--params", ($s[1] | ConvertTo-Json -Compress)) }
   $dest = Join-Path $out $_.Name
-  $args += @("--out", $dest, "--quality", "92", "--jpeg-format", "progressive")
-  & $cli @args | Out-Null
+  $cliArgs += @("--out", $dest, "--quality", "92", "--jpeg-format", "progressive")
+  & $cli @cliArgs | Out-Null
   if ($LASTEXITCODE -ne 0) { throw "photocraft-cli failed on $($_.Name) (exit $LASTEXITCODE)" }
   $info = & $cli info $dest --compact | ConvertFrom-Json
   $manifest += [ordered]@{
     file = $_.Name; recipe = (Split-Path $recipe -Leaf); bytes = (Get-Item $dest).Length
-    width = $info.width; height = $info.height
+    width = $(if ($info.width) { $info.width } else { $info.size.width })
+    height = $(if ($info.height) { $info.height } else { $info.size.height })
     sha256 = (Get-FileHash $dest -Algorithm SHA256).Hash.ToLower()
     source_sha256 = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower()
   }
