@@ -1,0 +1,89 @@
+{
+  "task": "T1",
+  "state": "done",
+  "finished_at": "2026-10-26T03:49:48.163Z",
+  "outputs": [
+    {
+      "path": "raw-assets/photos/original/P1. Conical hats and ao dai.jpg",
+      "sha256": "26a7b1ffc47c43a6ea7a42be7a9dd0da69acb25cd5b3d51a91adca6f83c1b00e",
+      "bytes": 53456
+    },
+    {
+      "path": "raw-assets/photos/original/P1. Farmers in field.jpg",
+      "sha256": "7cf545bb81213aa14c7813c253b8e2582a6ec9c758a01e4a8341b8836f788518",
+      "bytes": 71819
+    },
+    {
+      "path": "raw-assets/photos/original/P1. Raining falling on the hat.jpg",
+      "sha256": "f7976dc11fadf0b62e90d3b4e1032f1746f6a7dd16e2fa375f4c7d9830e8a2f5",
+      "bytes": 46149
+    },
+    {
+      "path": "raw-assets/photos/original/P1. Sellers in the market.jpg",
+      "sha256": "3b245ea6b69ebf14dc6715068a61e76a42afb124fdcf0d6efcbfe226d24def90",
+      "bytes": 109883
+    },
+    {
+      "path": "raw-assets/photos/original/P2. 16 rims.jpg",
+      "sha256": "81d28c48b7372f7e2a0f172330c1f12c3e53c3d63407b910aab6847dcaad9444",
+      "bytes": 75244
+    },
+    {
+      "path": "raw-assets/photos/original/P2. Chin Straps.jpg",
+      "sha256": "e4d9bd74b7b4549fc0e1ec233a646d59b7ca55175a937a45606b1b8ea48584ce",
+      "bytes": 24040
+    },
+    {
+      "path": "raw-assets/photos/original/P2. Layering leaves.jpg",
+      "sha256": "b3b8117da8c52a1983ac2d4a80145f748743486b3023aeea19babe4d4b2beffd",
+      "bytes": 47870
+    },
+    {
+      "path": "raw-assets/photos/original/P2. Stitching.jpg",
+      "sha256": "228db4b1de9f9b0b62a34994ac75b8899dfded25b0ccaa4110643828f6fea6bd",
+      "bytes": 32148
+    },
+    {
+      "path": "raw-assets/photos/original/P3. Protection from weather conditions.jpg",
+      "sha256": "ae21fe8c74e3980e9503cc73ce975a9b96cac2954efb3e381fbff19770fbd1a9",
+      "bytes": 41947
+    },
+    {
+      "path": "raw-assets/photos/original/P3. Traditional craft (poem).jpg",
+      "sha256": "d882c923be1bd28ac291e661f5e1955165e9b9a5778d31038f6c6b50342e0e3f",
+      "bytes": 130812
+    },
+    {
+      "path": "raw-assets/photos/original/P3. Vietnamese identity.jpg",
+      "sha256": "8b2e0f3dea81220f68bf5c5dbaade1a428f9cc372ab9f5f0a26965622f31da5c",
+      "bytes": 80019
+    },
+    {
+      "path": "raw-assets/photos/original/Photo for diverse usage_1.jpg",
+      "sha256": "d3cf6e4ae32951a1a71e097300170c40d4827c2b1c9701faf944a18f7d70a99e",
+      "bytes": 123179
+    },
+    {
+      "path": "raw-assets/photos/original/Photo for diverse usage_2.jpg",
+      "sha256": "6082c854179c4ab5bec63b91e5925ec2f3db912fa7530ff164342507f682b49e",
+      "bytes": 43762
+    },
+    {
+      "path": "raw-assets/photos/original/Photo for diverse usage_3.jpg",
+      "sha256": "723e5c51ade47ad1a442aa9aff27c51aa5a5c96ae6dbd3892d0d5cab14189dd5",
+      "bytes": 67478
+    },
+    {
+      "path": "raw-assets/photos/original/Photo for diverse usage_4.jpg",
+      "sha256": "7f07de01711f8a0bc63279b48e14718f04ec5c58c5d0db0241e76285e106a498",
+      "bytes": 85145
+    },
+    {
+      "path": "raw-assets/photos/original/manifest.json",
+      "sha256": "bebf4f72b84f171e1fcae8892240f6e6a4306c1da26ef96f7a3ea108f89a06d0",
+      "bytes": 2500
+    }
+  ],
+  "notes": "15 JPEGs copied byte-for-byte (Copy-Item, no re-encode); source and destination SHA-256 compared equal for every file. manifest.json = [{file, bytes, width, height, sha256}] with lowercase hex SHA-256. Photo commit c88f23a8df01a0301aac27b80499b36134f2e290.",
+  "errors": []
+}
