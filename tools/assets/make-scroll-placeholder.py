@@ -63,6 +63,8 @@ def render():
         scene.render.threads_mode = "FIXED"
         scene.render.threads = OPT.threads
     scene.cycles.use_denoising = True
+    # a floor wide enough that its edge never shows as a faint disc behind the hat
+    rj.ob("shadow_catcher").scale = (6, 6, 1)
     cam, tgt = rj.look_at_camera("CAM_INTRO", (0, 0, 0.06), rj.orbit((0, 0, 0.06), 0, 24, 1.35), fov_y=32.2)
     scene.camera = cam
     rj.build_intro(scene, cam, tgt)
