@@ -88,7 +88,10 @@ export class PoemHatChapter implements Chapter {
     const alive = () => this.host.isCurrent(this.id);
     const r = await speak(ctx.narration, this.story, alive);
     this.storyTold = true;
-    if (r.result === 'ended' && alive() && !this.complete && !this.lit) void ctx.narration.say(this.firstPrompt);
+    if (r.result !== 'ended' || !alive()) return;
+    // revealed while the story was still being told: its line waited until now
+    if (this.complete && this.lit) void ctx.narration.say('p3.ch2.done');
+    else if (!this.complete && !this.lit) void ctx.narration.say(this.firstPrompt);
   }
 
   /** build the glowing "backlit" layer once, from the pixels of the photo on screen (no second download) */

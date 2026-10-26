@@ -22,6 +22,20 @@ const sfxLog = (page: Page) => page.evaluate(() => ((window as any).__nonla?.sfx
 const state = (page: Page) => page.evaluate(() => (window as any).__nonla?.state?.() as string);
 const chapters = (page: Page) => page.evaluate(() => (window as any).__nonla.progress().p3.chapters as Record<string, string>);
 
+/** fire the idle hint now and check the hand lands on the Next / Finish arrow */
+async function expectHandOn(page: Page, test: 'next' | 'finish'): Promise<void> {
+  await page.evaluate(() => (window as any).__nonla.showHint());
+  const at = await page.evaluate(() => {
+    const m = new DOMMatrix(getComputedStyle(document.querySelector('.hand-hint')!).transform);
+    return { x: m.m41, y: m.m42 };
+  });
+  const r = (await page.locator(`[data-test=${test}]`).boundingBox())!;
+  expect(at.x).toBeGreaterThanOrEqual(r.x);
+  expect(at.x).toBeLessThanOrEqual(r.x + r.width);
+  expect(at.y).toBeGreaterThanOrEqual(r.y);
+  expect(at.y).toBeLessThanOrEqual(r.y + r.height);
+}
+
 function collectErrors(page: Page): string[] {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
@@ -61,6 +75,10 @@ test('the cover opens into chapter 1, where the shade always covers the farmer�
   await expect.poll(() => p3(page).chapter(), { timeout: 30_000 }).toBe('protection');
   expect(await sfxLog(page)).toContain('bookOpen');
   await expect.poll(() => narrationLog(page)).toContain('p3.ch1.story');
+  // the chapter title is read out first, for children who can't read it yet
+  const log = await narrationLog(page);
+  expect(log.indexOf('p3.ch1.title')).toBeGreaterThanOrEqual(0);
+  expect(log.indexOf('p3.ch1.title')).toBeLessThan(log.indexOf('p3.ch1.story'));
 
   const seen: number[] = [];
   await sweepSun(page, async () => {
@@ -91,6 +109,12 @@ test('chapter 2: tapping the poem hat turns everything dark but the glowing poem
   await page.locator('[data-test=poem-hat]').click({ force: true });
   await expect.poll(() => p3(page).lit()).toBe(false);
   await expect(page.locator('section.screen.p3')).not.toHaveClass(/p3--dark/);
+  // nothing left to do here: the idle hand points at Next, not back at the hat
+  await expectHandOn(page, 'next');
+  // the pages off to either side can't be reached with Tab
+  await expect(page.locator('.p3-page[data-chapter=protection]')).toHaveJSProperty('inert', true);
+  await expect(page.locator('.p3-page[data-chapter=identity]')).toHaveJSProperty('inert', true);
+  await expect(page.locator('.p3-page[data-chapter=heritage]')).toHaveJSProperty('inert', false);
 });
 
 test('chapter 3: rain runs off the hats, then the family counts them', async ({ page }) => {
@@ -115,6 +139,7 @@ test('chapter 3: rain runs off the hats, then the family counts them', async ({ 
 
   await page.locator('[data-test=count-done]').click({ force: true });
   await expect(page.locator('[data-test=count-result]')).toHaveText('We counted 3 hats!');
+  await expectHandOn(page, 'finish');
   await page.locator('.lang-toggle button[data-lang="vi"]').first().click();
   await expect(page.locator('[data-test=count-result]')).toHaveText('Chúng ta đếm được 3 chiếc nón!');
   await page.locator('[data-test=count-again]').click({ force: true });
@@ -166,4 +191,29 @@ test('on the first run a chapter must be done before the next page opens', async
   await next.click({ force: true });
   await expect.poll(() => p3(page).chapter(), { timeout: 30_000 }).toBe('heritage');
   expect(await chapters(page)).toMatchObject({ protection: 'done', heritage: 'active', identity: 'locked' });
+});
+
+test('if the 3D hat never finishes loading, the drawn hat still lands on the cover and the book opens', async ({ page }) => {
+  // the model request never answers
+  await page.route('**/models/nonla.glb', () => {});
+  await page.addInitScript(() => {
+    const p = {
+      v: 1,
+      firstRunComplete: false,
+      p1: { seenTiles: [], done: true },
+      p2: { layers: { stitches: 'done', leaves: 'done', frame: 'done', strap: 'done' } },
+      p3: { chapters: { protection: 'active', heritage: 'locked', identity: 'locked' } },
+      games: { build: { completed: 0 }, colour: { saved: 0 }, quiz: { best: 0, badges: [] } },
+    };
+    localStorage.setItem('nonla.progress.v1', JSON.stringify(p));
+    // as if Phase 2 had put its hat on the stage, so the cover asks the viewer for the celebration
+    new MutationObserver((_, mo) => {
+      const stage = document.querySelector('#stage');
+      if (!stage) return;
+      stage.appendChild(document.createElement('i'));
+      mo.disconnect();
+    }).observe(document, { childList: true, subtree: true });
+  });
+  await openBook(page, '?test=1');
+  expect(await sfxLog(page)).toContain('chime');
 });

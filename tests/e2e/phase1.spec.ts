@@ -51,9 +51,15 @@ test('a tapped scene fills the screen with its caption, and closes by Esc, tap o
   expect(box.width).toBeGreaterThanOrEqual(vp.width - 2);
   expect(box.height).toBeGreaterThanOrEqual(vp.height - 2);
   expect(await narrationLog(page)).toContain('p1.tile.market');
+  // a modal: focus moves to Close and the tiles behind it can't be tabbed to
+  await expect(page.locator('[data-test=close]')).toBeFocused();
+  await expect(page.locator('.p1-collage')).toHaveJSProperty('inert', true);
   await page.keyboard.press('Escape');
   await expect(page.locator('.p1-expand')).toHaveCount(0, { timeout: 30_000 });
   await expect(page.locator('[data-test=tile-market]')).toHaveClass(/is-seen/);
+  // and back on the tile that was opened
+  await expect(page.locator('[data-test=tile-market]')).toBeFocused();
+  await expect(page.locator('.p1-collage')).toHaveJSProperty('inert', false);
 
   await expandScene(page, 'rain');
   await page.mouse.click(vp.width / 2, vp.height / 2);
@@ -96,4 +102,16 @@ test('"Let\'s explore" spirals the collage into the hat and moves on to Phase 2'
   await expect.poll(() => state(page), { timeout: 150_000 }).toBe('p2');
   expect((await p1Progress(page)).done).toBe(true);
   expect(errors).toEqual([]);
+});
+
+test('if the hat model never arrives, "Let\'s explore" lands on the drawn hat and still moves on', async ({ page }) => {
+  // the model request never answers
+  await page.route('**/models/nonla.glb', () => {});
+  await open(page);
+  const explore = page.locator('[data-test=explore]');
+  await expect(explore).toBeVisible({ timeout: 60_000 });
+  await explore.click({ force: true });
+  await expect(page.locator('.p1-finale')).toBeAttached({ timeout: 60_000 });
+  await expect.poll(() => state(page), { timeout: 60_000 }).toBe('p2');
+  expect((await p1Progress(page)).done).toBe(true);
 });

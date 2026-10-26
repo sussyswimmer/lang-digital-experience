@@ -137,7 +137,10 @@ export class App {
     this.screen = screen;
     this.screenState = r.state;
     await screen.mount(host, ctx, r.params);
-    host.querySelector<HTMLElement>('h1, h2, [data-autofocus]')?.focus({ preventScroll: true });
+    // move focus to the new screen (TopBar's title), unless the child is already working inside it
+    if (!host.contains(document.activeElement)) {
+      (host.querySelector<HTMLElement>('[data-autofocus]') ?? host.querySelector<HTMLElement>('h1, h2'))?.focus({ preventScroll: true });
+    }
   }
 
   private unmountScreen(): void {
@@ -148,6 +151,8 @@ export class App {
     this.screen = null;
     this.screenState = null;
     this.ctx.layers.ui.replaceChildren();
+    // the old screen's i18n bindings would otherwise keep its whole DOM (and the screen) alive
+    i18n.prune();
   }
 
   get currentState(): FlowState | null {

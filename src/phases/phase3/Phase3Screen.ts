@@ -138,6 +138,8 @@ class Phase3 implements Screen {
       this.track.appendChild(page.el);
     });
     this.viewport = el('div.p3-viewport', {}, this.track);
+    // the pages move by transform only: nothing (focus, find in page) may scroll the viewport itself
+    this.viewport.addEventListener('scroll', () => (this.viewport.scrollLeft = 0));
     this.prevBtn = el(
       'button.p3-nav.p3-nav--prev',
       { type: 'button', 'data-touch': '', 'data-test': 'prev', onclick: () => this.onPrev() },

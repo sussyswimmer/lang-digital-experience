@@ -53,6 +53,12 @@ function showLanding(): void {
   else landing.resume();
 }
 
+// Browser Back/Forward (or Android's back gesture) from the landing to a #/play route: the router
+// mounts that screen, so the app must be shown again too, or the hidden screen talks over the landing.
+window.addEventListener('hashchange', () => {
+  if (app && location.hash.startsWith('#/play') && document.getElementById('app')!.hidden) void startApp();
+});
+
 // Deep links straight into the experience still need a tap to unlock sound: the landing's
 // Start button provides it. With ?test=1 the app starts immediately.
 const params = new URLSearchParams(location.search);

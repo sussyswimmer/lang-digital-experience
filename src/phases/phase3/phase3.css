@@ -223,8 +223,6 @@
   grid-row: 1;
   min-height: 0;
   overflow: hidden;
-  /* clip, not hidden: focusing something on a neighbouring page must never scroll the track */
-  overflow: clip;
   border-radius: 30px;
   box-shadow: 0 16px 40px rgba(59, 42, 28, 0.28);
   touch-action: pan-y;
@@ -921,7 +919,7 @@
     height: 36px;
   }
 
-  /* the arrows stay inside their 84 px columns, clear of the dots */
+  /* the arrows stay inside their columns, clear of the dots */
   .p3-nav {
     min-width: 0;
   }
@@ -1001,8 +999,16 @@
   }
 }
 
-/* narrower phones: the dots get a row of their own rather than shrinking under the 64 px minimum */
+/* narrower phones: slimmer arrow columns leave the three 64 px dots their 192 px */
 @media (max-aspect-ratio: 1/1) and (max-width: 387px) {
+  .p3-story {
+    grid-template-columns: 72px minmax(0, 1fr) 72px;
+    column-gap: 2px;
+  }
+}
+
+/* narrower still: the dots get a row of their own rather than shrinking under the 64 px minimum */
+@media (max-aspect-ratio: 1/1) and (max-width: 359px) {
   .p3-story {
     grid-template-rows: minmax(0, 1fr) auto auto;
   }

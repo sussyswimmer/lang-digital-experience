@@ -23,11 +23,14 @@ const modules = import.meta.glob<Record<string, StringEntry>>('../../content/str
 export const STRINGS: Record<string, StringEntry> = Object.assign({}, ...Object.values(modules));
 
 type Listener = (lang: Lang) => void;
+type Vars = Record<string, string | number>;
 
 class I18n {
   lang: Lang = 'en';
   private listeners = new Set<Listener>();
-  private bound = new Map<Element, { id: string; vars?: Record<string, string | number> }>();
+  private bound = new Map<Element, { id: string; vars?: Vars }>();
+  /** attribute bindings (aria-label, alt, title…): node → attribute → string */
+  private boundAttrs = new Map<Element, Map<string, { id: string; vars?: Vars }>>();
 
   has(id: string): boolean {
     return id in STRINGS;
@@ -46,24 +49,35 @@ class I18n {
   }
 
   /** Keep an element's text in sync with the language toggle. */
-  bind<E extends Element>(node: E, id: string, vars?: Record<string, string | number>): E {
+  bind<E extends Element>(node: E, id: string, vars?: Vars): E {
     this.bound.set(node, { id, vars });
     node.textContent = this.t(id, vars);
     node.setAttribute('data-i18n', id);
     return node;
   }
 
+  /** Keep an attribute (aria-label, alt, title…) in sync with the language toggle. */
+  bindAttr<E extends Element>(node: E, attr: string, id: string, vars?: Vars): E {
+    let attrs = this.boundAttrs.get(node);
+    if (!attrs) this.boundAttrs.set(node, (attrs = new Map()));
+    attrs.set(attr, { id, vars });
+    node.setAttribute(attr, this.t(id, vars));
+    return node;
+  }
+
+  /** Forget nodes that have left the page, so they can be freed (the shell calls this when a screen unmounts). */
+  prune(): void {
+    for (const node of this.bound.keys()) if (!node.isConnected) this.bound.delete(node);
+    for (const node of this.boundAttrs.keys()) if (!node.isConnected) this.boundAttrs.delete(node);
+  }
+
   setLang(lang: Lang): void {
     if (lang === this.lang) return;
     this.lang = lang;
     document.documentElement.lang = lang;
-    for (const [node, { id, vars }] of this.bound) {
-      if (!node.isConnected) {
-        this.bound.delete(node);
-        continue;
-      }
-      node.textContent = this.t(id, vars);
-    }
+    this.prune();
+    for (const [node, { id, vars }] of this.bound) node.textContent = this.t(id, vars);
+    for (const [node, attrs] of this.boundAttrs) for (const [attr, { id, vars }] of attrs) node.setAttribute(attr, this.t(id, vars));
     for (const l of this.listeners) l(lang);
   }
 
