@@ -1,0 +1,94 @@
+{
+  "gallery.intro": {
+    "kind": "narration",
+    "en": "Here are all your pictures!",
+    "vi": "Đây là tất cả tranh của con!",
+    "viStatus": "machine"
+  },
+  "gallery.empty": {
+    "kind": "narration",
+    "en": "No pictures yet. Let's colour one!",
+    "vi": "Chưa có bức tranh nào. Mình cùng tô một bức nhé!",
+    "viStatus": "machine"
+  },
+  "gallery.colour": {
+    "kind": "ui",
+    "en": "Colour a picture",
+    "vi": "Tô tranh",
+    "viStatus": "machine"
+  },
+  "gallery.count": {
+    "kind": "ui",
+    "en": "{n} pictures",
+    "vi": "{n} bức tranh",
+    "viStatus": "machine"
+  },
+  "gallery.count.one": {
+    "kind": "ui",
+    "en": "1 picture",
+    "vi": "1 bức tranh",
+    "viStatus": "machine"
+  },
+  "gallery.open": {
+    "kind": "ui",
+    "en": "Look at picture {n}",
+    "vi": "Xem tranh số {n}",
+    "viStatus": "machine",
+    "notes": "Accessible name of each grid tile"
+  },
+  "gallery.picture": {
+    "kind": "alt",
+    "en": "Your picture: {page}",
+    "vi": "Tranh của con: {page}",
+    "viStatus": "machine"
+  },
+  "gallery.download": {
+    "kind": "ui",
+    "en": "Download",
+    "vi": "Tải về",
+    "viStatus": "machine"
+  },
+  "gallery.delete": {
+    "kind": "ui",
+    "en": "Hold to delete",
+    "vi": "Giữ để xoá",
+    "viStatus": "machine"
+  },
+  "gallery.hold-more": {
+    "kind": "narration",
+    "en": "Keep holding to delete it.",
+    "vi": "Con giữ lâu thêm chút để xoá nhé.",
+    "viStatus": "machine"
+  },
+  "gallery.deleted": {
+    "kind": "narration",
+    "en": "The picture is gone.",
+    "vi": "Đã xoá bức tranh.",
+    "viStatus": "machine"
+  },
+  "gallery.prev": {
+    "kind": "ui",
+    "en": "Previous",
+    "vi": "Tranh trước",
+    "viStatus": "machine"
+  },
+  "gallery.next": {
+    "kind": "ui",
+    "en": "Next",
+    "vi": "Tranh sau",
+    "viStatus": "machine"
+  },
+  "gallery.session": {
+    "kind": "narration",
+    "en": "These pictures stay only until you close the app. Download the ones you love!",
+    "vi": "Tranh chỉ được giữ đến khi con đóng ứng dụng. Hãy tải về những bức con thích nhé!",
+    "viStatus": "machine",
+    "notes": "Banner + toast when IndexedDB is unavailable"
+  },
+  "gallery.load-error": {
+    "kind": "narration",
+    "en": "Your pictures couldn't be opened just now.",
+    "vi": "Chưa mở được tranh của con lúc này.",
+    "viStatus": "machine"
+  }
+}

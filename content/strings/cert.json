@@ -1,0 +1,31 @@
+{
+  "cert.heading": { "kind": "ui", "en": "Nón Lá Explorer Certificate", "vi": "Giấy chứng nhận Nhà thám hiểm Nón Lá", "viStatus": "machine", "notes": "Both languages are always drawn on the certificate" },
+  "cert.given": { "kind": "ui", "en": "This certificate is proudly given to", "vi": "Giấy chứng nhận này được trao tặng cho", "viStatus": "machine" },
+  "cert.for": { "kind": "ui", "en": "for exploring every layer of the nón lá, from the bamboo frame to the chin strap.", "vi": "vì đã khám phá từng lớp của chiếc nón lá, từ khung tre đến quai nón.", "viStatus": "machine" },
+  "cert.count": { "kind": "ui", "en": "{n} of 5 quiz badges", "vi": "{n} trên 5 huy hiệu đố vui", "viStatus": "machine" },
+  "cert.date": { "kind": "ui", "en": "Date", "vi": "Ngày", "viStatus": "machine" },
+  "cert.seal": { "kind": "ui", "en": "NÓN LÁ EXPLORER", "vi": "NHÀ THÁM HIỂM NÓN LÁ", "viStatus": "machine" },
+  "cert.alt": { "kind": "alt", "en": "Your Nón Lá Explorer certificate", "vi": "Giấy chứng nhận Nhà thám hiểm Nón Lá của con", "viStatus": "machine" },
+
+  "cert.name.label": { "kind": "ui", "en": "Grown-ups: type the child's name", "vi": "Bố mẹ ơi: hãy gõ tên của bé", "viStatus": "machine" },
+  "cert.name.placeholder": { "kind": "ui", "en": "Child's name (optional)", "vi": "Tên của bé (không bắt buộc)", "viStatus": "machine" },
+  "cert.name.private": { "kind": "ui", "en": "The name stays on this device.", "vi": "Tên chỉ được lưu trên thiết bị này.", "viStatus": "machine" },
+
+  "cert.png": { "kind": "ui", "en": "Save picture", "vi": "Lưu ảnh", "viStatus": "machine" },
+  "cert.pdf": { "kind": "ui", "en": "Save PDF", "vi": "Lưu PDF", "viStatus": "machine" },
+  "cert.print": { "kind": "ui", "en": "Print", "vi": "In ra", "viStatus": "machine" },
+  "cert.again": { "kind": "ui", "en": "Play the quiz again", "vi": "Chơi lại đố vui", "viStatus": "machine" },
+  "cert.making": { "kind": "ui", "en": "Making your file…", "vi": "Đang tạo tệp…", "viStatus": "machine" },
+  "cert.saved": { "kind": "ui", "en": "Saved!", "vi": "Đã lưu!", "viStatus": "machine" },
+
+  "cert.intro": { "kind": "narration", "en": "Hooray! You finished the Nón Lá Memory Quiz! Here is your Nón Lá Explorer certificate.", "vi": "Hoan hô! Con đã hoàn thành Đố vui Nón Lá! Đây là giấy chứng nhận Nhà thám hiểm Nón Lá của con.", "viStatus": "machine" },
+  "cert.look": { "kind": "narration", "en": "Here is your Nón Lá Explorer certificate.", "vi": "Đây là giấy chứng nhận Nhà thám hiểm Nón Lá của con.", "viStatus": "machine" },
+  "cert.earned.0": { "kind": "narration", "en": "Every explorer starts somewhere! Play again to collect the badges.", "vi": "Nhà thám hiểm nào cũng phải bắt đầu từ đâu đó! Con chơi lại để nhận huy hiệu nhé.", "viStatus": "machine" },
+  "cert.earned.1": { "kind": "narration", "en": "You collected 1 of 5 badges!", "vi": "Con đã nhận được 1 trên 5 huy hiệu!", "viStatus": "machine" },
+  "cert.earned.2": { "kind": "narration", "en": "You collected 2 of 5 badges!", "vi": "Con đã nhận được 2 trên 5 huy hiệu!", "viStatus": "machine" },
+  "cert.earned.3": { "kind": "narration", "en": "You collected 3 of 5 badges!", "vi": "Con đã nhận được 3 trên 5 huy hiệu!", "viStatus": "machine" },
+  "cert.earned.4": { "kind": "narration", "en": "You collected 4 of 5 badges!", "vi": "Con đã nhận được 4 trên 5 huy hiệu!", "viStatus": "machine" },
+  "cert.earned.5": { "kind": "narration", "en": "You collected all 5 badges! Amazing!", "vi": "Con đã nhận được cả 5 huy hiệu! Tuyệt vời quá!", "viStatus": "machine" },
+  "cert.missing": { "kind": "narration", "en": "Play the quiz again to collect the missing badges!", "vi": "Con chơi lại đố vui để nhận những huy hiệu còn thiếu nhé!", "viStatus": "machine" },
+  "cert.ask": { "kind": "narration", "en": "Ask a grown-up to type your name. Then you can save or print your certificate!", "vi": "Con nhờ bố mẹ gõ tên con vào nhé. Rồi mình có thể lưu hoặc in giấy chứng nhận!", "viStatus": "machine" }
+}

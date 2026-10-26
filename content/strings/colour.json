@@ -1,0 +1,348 @@
+{
+  "colour.question": {
+    "kind": "narration",
+    "en": "How would you paint your own Nón Lá?",
+    "vi": "Con sẽ tô chiếc nón lá của riêng con như thế nào nhỉ?",
+    "viStatus": "machine",
+    "notes": "Brief 4b narration, verbatim. Spoken when the studio opens."
+  },
+  "colour.pick": {
+    "kind": "narration",
+    "en": "Choose a picture to colour!",
+    "vi": "Con chọn một bức tranh để tô màu nhé!",
+    "viStatus": "machine"
+  },
+  "colour.page.plain": {
+    "kind": "narration",
+    "en": "A plain nón lá",
+    "vi": "Chiếc nón lá trơn",
+    "viStatus": "machine",
+    "notes": "Page 1. Card label, also spoken when the page opens."
+  },
+  "colour.page.strap": {
+    "kind": "narration",
+    "en": "A nón lá with its strap",
+    "vi": "Nón lá có quai",
+    "viStatus": "machine",
+    "notes": "Page 2"
+  },
+  "colour.page.poem": {
+    "kind": "narration",
+    "en": "A nón bài thơ, the poem hat",
+    "vi": "Nón bài thơ",
+    "viStatus": "machine",
+    "notes": "Page 3: a girl in áo dài, a boat and a lotus"
+  },
+  "colour.page.market": {
+    "kind": "narration",
+    "en": "A market full of hats",
+    "vi": "Phiên chợ đầy nón lá",
+    "viStatus": "machine",
+    "notes": "Page 4"
+  },
+  "colour.page.n": {
+    "kind": "ui",
+    "en": "Picture {n}",
+    "vi": "Tranh số {n}",
+    "viStatus": "machine",
+    "notes": "Number badge on each page card (screen readers)"
+  },
+  "colour.draft": {
+    "kind": "ui",
+    "en": "Keep colouring",
+    "vi": "Tô tiếp nhé",
+    "viStatus": "machine",
+    "notes": "Badge on a page card that has an unfinished drawing"
+  },
+  "colour.loading": {
+    "kind": "narration",
+    "en": "Getting the paper ready…",
+    "vi": "Đang chuẩn bị giấy vẽ…",
+    "viStatus": "machine"
+  },
+  "colour.load-error": {
+    "kind": "narration",
+    "en": "Oh no, this picture didn't load. Let's try another one!",
+    "vi": "Ôi, bức tranh này chưa tải được. Mình thử bức khác nhé!",
+    "viStatus": "machine"
+  },
+  "colour.tip.fill": {
+    "kind": "narration",
+    "en": "Tap a shape to fill it with colour!",
+    "vi": "Chạm vào một hình để đổ màu nhé!",
+    "viStatus": "machine"
+  },
+  "colour.tip.brush": {
+    "kind": "narration",
+    "en": "Paint with your finger!",
+    "vi": "Dùng ngón tay để tô nào!",
+    "viStatus": "machine"
+  },
+  "colour.tip.eraser": {
+    "kind": "narration",
+    "en": "Rub out some paint. The lines will stay!",
+    "vi": "Tẩy bớt màu nhé. Các nét vẽ vẫn còn nguyên!",
+    "viStatus": "machine"
+  },
+  "colour.tools": {
+    "kind": "ui",
+    "en": "Tools",
+    "vi": "Dụng cụ",
+    "viStatus": "machine",
+    "notes": "Toolbar group label (screen readers)"
+  },
+  "colour.tool.fill": {
+    "kind": "ui",
+    "en": "Fill",
+    "vi": "Đổ màu",
+    "viStatus": "machine"
+  },
+  "colour.tool.brush": {
+    "kind": "ui",
+    "en": "Brush",
+    "vi": "Cọ vẽ",
+    "viStatus": "machine"
+  },
+  "colour.tool.eraser": {
+    "kind": "ui",
+    "en": "Eraser",
+    "vi": "Cục tẩy",
+    "viStatus": "machine"
+  },
+  "colour.tool.undo": {
+    "kind": "ui",
+    "en": "Undo",
+    "vi": "Lùi lại",
+    "viStatus": "machine"
+  },
+  "colour.tool.redo": {
+    "kind": "ui",
+    "en": "Redo",
+    "vi": "Làm lại",
+    "viStatus": "machine"
+  },
+  "colour.tool.clear": {
+    "kind": "ui",
+    "en": "Clear",
+    "vi": "Xoá hết",
+    "viStatus": "machine"
+  },
+  "colour.size": {
+    "kind": "ui",
+    "en": "Brush size",
+    "vi": "Cỡ cọ",
+    "viStatus": "machine"
+  },
+  "colour.size.s": {
+    "kind": "ui",
+    "en": "Small",
+    "vi": "Nhỏ",
+    "viStatus": "machine"
+  },
+  "colour.size.m": {
+    "kind": "ui",
+    "en": "Medium",
+    "vi": "Vừa",
+    "viStatus": "machine"
+  },
+  "colour.size.l": {
+    "kind": "ui",
+    "en": "Big",
+    "vi": "To",
+    "viStatus": "machine"
+  },
+  "colour.palette": {
+    "kind": "ui",
+    "en": "Colours",
+    "vi": "Màu vẽ",
+    "viStatus": "machine",
+    "notes": "Palette group label (screen readers)"
+  },
+  "colour.strap-row": {
+    "kind": "ui",
+    "en": "Strap colours",
+    "vi": "Màu quai nón",
+    "viStatus": "machine",
+    "notes": "Label over the three traditional strap colours"
+  },
+  "colour.c.purple": {
+    "kind": "narration",
+    "en": "Purple",
+    "vi": "Màu tím",
+    "viStatus": "machine",
+    "notes": "Traditional strap colour #8E5BA8"
+  },
+  "colour.c.peach": {
+    "kind": "narration",
+    "en": "Peach pink",
+    "vi": "Màu hồng đào",
+    "viStatus": "machine",
+    "notes": "Traditional strap colour #F4A79A"
+  },
+  "colour.c.lightgreen": {
+    "kind": "narration",
+    "en": "Light green",
+    "vi": "Màu xanh lá nhạt",
+    "viStatus": "machine",
+    "notes": "Traditional strap colour #A9D8A0"
+  },
+  "colour.c.straw": {
+    "kind": "narration",
+    "en": "Straw gold",
+    "vi": "Màu vàng rơm",
+    "viStatus": "machine"
+  },
+  "colour.c.mango": {
+    "kind": "narration",
+    "en": "Mango orange",
+    "vi": "Màu cam xoài",
+    "viStatus": "machine"
+  },
+  "colour.c.yellow": {
+    "kind": "narration",
+    "en": "Yellow",
+    "vi": "Màu vàng",
+    "viStatus": "machine"
+  },
+  "colour.c.terracotta": {
+    "kind": "narration",
+    "en": "Terracotta",
+    "vi": "Màu đỏ gạch",
+    "viStatus": "machine"
+  },
+  "colour.c.red": {
+    "kind": "narration",
+    "en": "Red",
+    "vi": "Màu đỏ",
+    "viStatus": "machine"
+  },
+  "colour.c.dragon": {
+    "kind": "narration",
+    "en": "Dragon fruit pink",
+    "vi": "Màu hồng thanh long",
+    "viStatus": "machine"
+  },
+  "colour.c.leaf": {
+    "kind": "narration",
+    "en": "Leaf green",
+    "vi": "Màu xanh lá",
+    "viStatus": "machine"
+  },
+  "colour.c.forest": {
+    "kind": "narration",
+    "en": "Forest green",
+    "vi": "Màu xanh rừng",
+    "viStatus": "machine"
+  },
+  "colour.c.sky": {
+    "kind": "narration",
+    "en": "Sky blue",
+    "vi": "Màu xanh da trời",
+    "viStatus": "machine"
+  },
+  "colour.c.river": {
+    "kind": "narration",
+    "en": "River blue",
+    "vi": "Màu xanh nước sông",
+    "viStatus": "machine"
+  },
+  "colour.c.wood": {
+    "kind": "narration",
+    "en": "Wood brown",
+    "vi": "Màu nâu gỗ",
+    "viStatus": "machine"
+  },
+  "colour.c.sand": {
+    "kind": "narration",
+    "en": "Sand",
+    "vi": "Màu cát",
+    "viStatus": "machine"
+  },
+  "colour.c.white": {
+    "kind": "narration",
+    "en": "White",
+    "vi": "Màu trắng",
+    "viStatus": "machine"
+  },
+  "colour.c.grey": {
+    "kind": "narration",
+    "en": "Grey",
+    "vi": "Màu xám",
+    "viStatus": "machine"
+  },
+  "colour.c.black": {
+    "kind": "narration",
+    "en": "Black",
+    "vi": "Màu đen",
+    "viStatus": "machine"
+  },
+  "colour.pages": {
+    "kind": "ui",
+    "en": "Pictures",
+    "vi": "Chọn tranh",
+    "viStatus": "machine",
+    "notes": "Back to the page picker"
+  },
+  "colour.save": {
+    "kind": "ui",
+    "en": "Save",
+    "vi": "Lưu tranh",
+    "viStatus": "machine"
+  },
+  "colour.saved": {
+    "kind": "narration",
+    "en": "Lovely! Your picture is saved in Tranh của con.",
+    "vi": "Đẹp quá! Bức tranh đã được cất vào Tranh của con.",
+    "viStatus": "machine"
+  },
+  "colour.save-empty": {
+    "kind": "narration",
+    "en": "Add some colour first!",
+    "vi": "Con tô chút màu trước đã nhé!",
+    "viStatus": "machine"
+  },
+  "colour.save-failed": {
+    "kind": "narration",
+    "en": "Oops, the picture couldn't be saved. Try again!",
+    "vi": "Ôi, chưa lưu được tranh. Con thử lại nhé!",
+    "viStatus": "machine"
+  },
+  "colour.session": {
+    "kind": "narration",
+    "en": "Your pictures will go away when you close the app. Tap Download to keep them!",
+    "vi": "Tranh sẽ mất khi con đóng ứng dụng. Chạm Tải về để giữ tranh nhé!",
+    "viStatus": "machine",
+    "notes": "Shown and spoken when IndexedDB is unavailable"
+  },
+  "colour.download": {
+    "kind": "ui",
+    "en": "Download",
+    "vi": "Tải về",
+    "viStatus": "machine"
+  },
+  "colour.clear.ask": {
+    "kind": "narration",
+    "en": "Start again? All your colours will be cleared.",
+    "vi": "Tô lại từ đầu nhé? Tất cả màu sẽ bị xoá đấy.",
+    "viStatus": "machine"
+  },
+  "colour.clear.yes": {
+    "kind": "ui",
+    "en": "Yes, clear it",
+    "vi": "Ừ, xoá hết",
+    "viStatus": "machine"
+  },
+  "colour.clear.no": {
+    "kind": "ui",
+    "en": "No, keep it",
+    "vi": "Không, giữ lại",
+    "viStatus": "machine"
+  },
+  "colour.canvas": {
+    "kind": "alt",
+    "en": "Colouring page: {page}",
+    "vi": "Trang tô màu: {page}",
+    "viStatus": "machine",
+    "notes": "Accessible name of the drawing area"
+  }
+}

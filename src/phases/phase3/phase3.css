@@ -992,3 +992,12 @@
     display: none;
   }
 }
+
+/* the Blender render of the hat (cover and the drawn celebrate hand-off) */
+.p3-hat-render {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}

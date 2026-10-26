@@ -8,7 +8,6 @@
  */
 import './phase3.css';
 import { gsap } from 'gsap';
-import { Observer } from 'gsap/Observer';
 import { el, svg } from '../../ui/el';
 import { ICONS } from '../../ui/icons';
 import { TopBar } from '../../ui/TopBar';
@@ -17,17 +16,14 @@ import { motion } from '../../a11y/motion';
 import { isOpen } from '../../app/flow';
 import { CHAPTERS, type ChapterId } from '../../app/types';
 import type { AppContext, Screen } from '../../app/context';
-import { hatArt } from '../phase1/art';
 import { speak } from '../phase1/speak';
-import { Cover } from './Cover';
+import { Cover, renderedHat } from './Cover';
 import { P3_ICONS } from './art';
 import { confetti } from './confetti';
 import type { Chapter, ChapterHost } from './chapters/types';
 import { SunShadeChapter } from './chapters/SunShadeChapter';
 import { PoemHatChapter } from './chapters/PoemHatChapter';
 import { RainMarketChapter } from './chapters/RainMarketChapter';
-
-gsap.registerPlugin(Observer);
 
 function pick(c: string | undefined): ChapterId {
   return (CHAPTERS as readonly string[]).includes(c ?? '') ? (c as ChapterId) : 'protection';
@@ -231,7 +227,7 @@ class Phase3 implements Screen {
   /** the WebGL hand-off is still a stub: a drawn hat glows, turns once and shrinks onto the cover */
   private async domCelebrate(): Promise<void> {
     const hat = el('div.p3-celebrate');
-    hat.innerHTML = hatArt('celebrate');
+    hat.append(renderedHat());
     this.root.appendChild(hat);
     this.ctx.audio.sfx.play('chime');
     const from = hat.getBoundingClientRect();
@@ -393,38 +389,60 @@ class Phase3 implements Screen {
 
   // ---------- swipe ----------
 
+  /**
+   * One page per swipe, with plain pointer events so touch, mouse and pen all work (GSAP Observer
+   * listens to touch events only on touch-capable devices, which ignores a mouse on hybrids).
+   * Interaction handles (the sun, the counting layer) are marked data-no-swipe.
+   */
   private wireSwipe(): void {
+    const vp = this.viewport;
+    let start: { x: number; y: number; id: number } | null = null;
     let suppressClick = false;
-    const obs = Observer.create({
-      target: this.viewport,
-      type: 'touch,pointer',
-      dragMinimum: 10,
-      ignoreCheck: (e: Event) => Boolean((e.target as Element | null)?.closest?.('[data-no-swipe]')),
-      onDrag: (self) => {
-        if (!this.coverOpen || this.finishing) return;
-        const dx = (self.x ?? 0) - (self.startX ?? 0);
-        gsap.set(this.track, { x: dx * 0.3 });
-      },
-      onRelease: (self) => {
-        const dx = (self.x ?? 0) - (self.startX ?? 0);
-        const dy = (self.y ?? 0) - (self.startY ?? 0);
-        gsap.to(this.track, { x: 0, duration: 0.3, ease: 'power2.out' });
-        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.3) {
-          suppressClick = true;
-          window.setTimeout(() => (suppressClick = false), 400);
-          if (dx < 0) this.onNext();
-          else this.onPrev();
-        }
-      },
-    });
+    const down = (e: PointerEvent) => {
+      if (!this.coverOpen || this.finishing || !e.isPrimary) return;
+      if ((e.target as Element | null)?.closest?.('[data-no-swipe]')) return;
+      start = { x: e.clientX, y: e.clientY, id: e.pointerId };
+    };
+    const move = (e: PointerEvent) => {
+      if (!start || e.pointerId !== start.id) return;
+      const dx = e.clientX - start.x;
+      if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(e.clientY - start.y)) gsap.set(this.track, { x: dx * 0.3 });
+    };
+    const up = (e: PointerEvent) => {
+      if (!start || e.pointerId !== start.id) return;
+      const dx = e.clientX - start.x;
+      const dy = e.clientY - start.y;
+      start = null;
+      gsap.to(this.track, { x: 0, duration: 0.3, ease: 'power2.out' });
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+        suppressClick = true;
+        window.setTimeout(() => (suppressClick = false), 400);
+        if (dx < 0) this.onNext();
+        else this.onPrev();
+      }
+    };
+    const cancel = () => {
+      if (!start) return;
+      start = null;
+      gsap.to(this.track, { x: 0, duration: 0.3, ease: 'power2.out' });
+    };
+    // a swipe that ends on a button must not also press it
     const swallow = (e: MouseEvent) => {
       if (!suppressClick) return;
       suppressClick = false;
       e.stopPropagation();
       e.preventDefault();
     };
-    this.viewport.addEventListener('click', swallow, true);
-    this.cleanups.push(() => obs.kill(), () => this.viewport.removeEventListener('click', swallow, true));
+    vp.addEventListener('pointerdown', down);
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', cancel);
+    vp.addEventListener('click', swallow, true);
+    this.cleanups.push(() => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointercancel', cancel);
+    });
   }
 
   // ---------- tests ----------

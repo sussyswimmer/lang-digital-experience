@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1800" viewBox="0 0 2400 1800">
+<title>A market full of hats</title>
+<desc>Colouring page 4: a busy Vietnamese market where everyone wears a nón lá: stalls with striped awnings, a hat stall, fruit sellers and a seller with a carrying pole. Every region is closed for tap-to-fill.</desc>
+<g fill="#fff" stroke="#000" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+  <!-- ground line and paving -->
+  <path d="M -10 1010 L 2410 1010" fill="none" stroke-width="6"/>
+  <path d="M 140 1690 L 300 1690 Q 320 1690 320 1710 L 320 1740 Q 320 1760 300 1760 L 140 1760 Q 120 1760 120 1740 L 120 1710 Q 120 1690 140 1690 Z" stroke-width="5"/>
+  <path d="M 2100 1700 L 2280 1700 Q 2300 1700 2300 1720 L 2300 1750 Q 2300 1770 2280 1770 L 2100 1770 Q 2080 1770 2080 1750 L 2080 1720 Q 2080 1700 2100 1700 Z" stroke-width="5"/>
+  <path d="M 920 1720 L 1060 1720 Q 1080 1720 1080 1740 L 1080 1756 Q 1080 1776 1060 1776 L 920 1776 Q 900 1776 900 1756 L 900 1740 Q 900 1720 920 1720 Z" stroke-width="5"/>
+  <path d="M 1580 1730 L 1710 1730 Q 1730 1730 1730 1750 L 1730 1764 Q 1730 1784 1710 1784 L 1580 1784 Q 1560 1784 1560 1764 L 1560 1750 Q 1560 1730 1580 1730 Z" stroke-width="5"/>
+  <path d="M 60 1100 L 180 1100 Q 200 1100 200 1120 L 200 1130 Q 200 1150 180 1150 L 60 1150 Q 40 1150 40 1130 L 40 1120 Q 40 1100 60 1100 Z" stroke-width="5"/>
+  <path d="M 2270 1090 L 2370 1090 Q 2390 1090 2390 1110 L 2390 1118 Q 2390 1138 2370 1138 L 2270 1138 Q 2250 1138 2250 1118 L 2250 1110 Q 2250 1090 2270 1090 Z" stroke-width="5"/>
+  <!-- sun -->
+  <path d="M 1300.1 169.5 Q 1335.1 193.7 1361.7 217 Q 1326.4 214.7 1284.6 207 Z"/>
+  <path d="M 1257 234.6 Q 1264.7 276.4 1267 311.7 Q 1243.7 285.1 1219.5 250.1 Z"/>
+  <path d="M 1180.5 250.1 Q 1156.3 285.1 1133 311.7 Q 1135.3 276.4 1143 234.6 Z"/>
+  <path d="M 1115.4 207 Q 1073.6 214.7 1038.3 217 Q 1064.9 193.7 1099.9 169.5 Z"/>
+  <path d="M 1099.9 130.5 Q 1064.9 106.3 1038.3 83 Q 1073.6 85.3 1115.4 93 Z"/>
+  <path d="M 1143 65.4 Q 1135.3 23.6 1133 -11.7 Q 1156.3 14.9 1180.5 49.9 Z"/>
+  <path d="M 1219.5 49.9 Q 1243.7 14.9 1267 -11.7 Q 1264.7 23.6 1257 65.4 Z"/>
+  <path d="M 1284.6 93 Q 1326.4 85.3 1361.7 83 Q 1335.1 106.3 1300.1 130.5 Z"/>
+  <circle cx="1200" cy="150" r="70"/>
+  <circle cx="1177.6" cy="139.5" r="6" fill="#000" stroke-width="2"/>
+  <circle cx="1222.4" cy="139.5" r="6" fill="#000" stroke-width="2"/>
+  <path d="M 1173.4 165.4 Q 1200 188.5 1226.6 165.4" fill="none" stroke-width="5"/>
+  <!-- left stall: mangoes -->
+  <path d="M 90 330 L 120 330 L 120 1000 L 90 1000 Z"/>
+  <path d="M 860 330 L 890 330 L 890 1000 L 860 1000 Z"/>
+  <path d="M 472.7 632 L 399.2 676.1 Q 365.6 690.8 361.4 758 L 638.6 758 Q 634.4 690.8 600.8 676.1 L 527.3 632 Z"/>
+  <path d="M 472.7 644.6 Q 500 680.3 527.3 644.6" fill="none" stroke-width="5"/>
+  <circle cx="500" cy="590" r="54.6"/>
+  <circle cx="483.1" cy="592.7" r="6" fill="#000" stroke-width="2"/>
+  <circle cx="522.4" cy="592.7" r="6" fill="#000" stroke-width="2"/>
+  <path d="M 483.1 610.7 Q 502.2 628.2 521.3 610.7" fill="none" stroke-width="5"/>
+  <path d="M 500 440.9 L 631.2 566.9 Q 500 601 368.8 566.9 Z"/>
+  <path d="M 423.9 514 Q 500 531.8 576.1 514" fill="none" stroke-width="5"/>
+  <ellipse cx="260" cy="752" rx="58" ry="40" transform="rotate(-20 260 752)"/>
+  <path d="M 290 724 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="360" cy="740" rx="58" ry="40" transform="rotate(10 360 740)"/>
+  <path d="M 390 712 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="460" cy="756" rx="58" ry="40" transform="rotate(30 460 756)"/>
+  <path d="M 490 728 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="560" cy="742" rx="58" ry="40" transform="rotate(-15 560 742)"/>
+  <path d="M 590 714 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="660" cy="754" rx="58" ry="40" transform="rotate(20 660 754)"/>
+  <path d="M 690 726 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="760" cy="744" rx="58" ry="40"/>
+  <path d="M 790 716 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="320" cy="700" rx="58" ry="40" transform="rotate(5 320 700)"/>
+  <path d="M 350 672 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="420" cy="694" rx="58" ry="40" transform="rotate(-25 420 694)"/>
+  <path d="M 450 666 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="520" cy="700" rx="58" ry="40" transform="rotate(15 520 700)"/>
+  <path d="M 550 672 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="620" cy="696" rx="58" ry="40" transform="rotate(-5 620 696)"/>
+  <path d="M 650 668 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="720" cy="702" rx="58" ry="40" transform="rotate(25 720 702)"/>
+  <path d="M 750 674 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <path d="M 150 780 L 830 780 L 830 1000 L 150 1000 Z"/>
+  <path d="M 150 840 L 830 840" fill="none" stroke-width="5"/>
+  <path d="M 50 120 L 930 120 L 930 330 A 62.9 47.1 0 0 1 804.3 330 A 62.9 47.1 0 0 1 678.6 330 A 62.9 47.1 0 0 1 552.9 330 A 62.9 47.1 0 0 1 427.1 330 A 62.9 47.1 0 0 1 301.4 330 A 62.9 47.1 0 0 1 175.7 330 A 62.9 47.1 0 0 1 50 330 Z"/>
+  <path d="M 175.7 120 L 175.7 330" fill="none" stroke-width="5"/>
+  <path d="M 301.4 120 L 301.4 330" fill="none" stroke-width="5"/>
+  <path d="M 427.1 120 L 427.1 330" fill="none" stroke-width="5"/>
+  <path d="M 552.9 120 L 552.9 330" fill="none" stroke-width="5"/>
+  <path d="M 678.6 120 L 678.6 330" fill="none" stroke-width="5"/>
+  <path d="M 804.3 120 L 804.3 330" fill="none" stroke-width="5"/>
+  <!-- right stall: hats -->
+  <path d="M 1510 330 L 1540 330 L 1540 1000 L 1510 1000 Z"/>
+  <path d="M 2280 330 L 2310 330 L 2310 1000 L 2280 1000 Z"/>
+  <path d="M 2034 620 L 1964 662 Q 1932 676 1928 740 L 2192 740 Q 2188 676 2156 662 L 2086 620 Z"/>
+  <path d="M 2034 632 Q 2060 666 2086 632" fill="none" stroke-width="5"/>
+  <circle cx="2060" cy="580" r="52"/>
+  <circle cx="2038.7" cy="582.6" r="5.7" fill="#000" stroke-width="2"/>
+  <circle cx="2076.1" cy="582.6" r="5.7" fill="#000" stroke-width="2"/>
+  <path d="M 2039.7 599.8 Q 2057.9 616.4 2076.1 599.8" fill="none" stroke-width="5"/>
+  <path d="M 2060 438 L 2185 558 Q 2060 590.5 1935 558 Z"/>
+  <path d="M 1987.5 507.6 Q 2060 524.6 2132.5 507.6" fill="none" stroke-width="5"/>
+  <!-- a stack of hats for sale -->
+  <path d="M 1700 610 L 1850 760 Q 1700 799 1550 760 Z"/>
+  <path d="M 1700 584 L 1850 734 Q 1700 773 1550 734 Z"/>
+  <path d="M 1700 558 L 1850 708 Q 1700 747 1550 708 Z"/>
+  <path d="M 1700 532 L 1850 682 Q 1700 721 1550 682 Z"/>
+  <path d="M 1940 650 L 2060 770 Q 1940 801.2 1820 770 Z"/>
+  <path d="M 1870.4 719.6 Q 1940 735.9 2009.6 719.6" fill="none" stroke-width="5"/>
+  <path d="M 1570 780 L 2250 780 L 2250 1000 L 1570 1000 Z"/>
+  <path d="M 1570 840 L 2250 840" fill="none" stroke-width="5"/>
+  <path d="M 1470 120 L 2350 120 L 2350 330 A 62.9 47.1 0 0 1 2224.3 330 A 62.9 47.1 0 0 1 2098.6 330 A 62.9 47.1 0 0 1 1972.9 330 A 62.9 47.1 0 0 1 1847.1 330 A 62.9 47.1 0 0 1 1721.4 330 A 62.9 47.1 0 0 1 1595.7 330 A 62.9 47.1 0 0 1 1470 330 Z"/>
+  <path d="M 1595.7 120 L 1595.7 330" fill="none" stroke-width="5"/>
+  <path d="M 1721.4 120 L 1721.4 330" fill="none" stroke-width="5"/>
+  <path d="M 1847.1 120 L 1847.1 330" fill="none" stroke-width="5"/>
+  <path d="M 1972.9 120 L 1972.9 330" fill="none" stroke-width="5"/>
+  <path d="M 2098.6 120 L 2098.6 330" fill="none" stroke-width="5"/>
+  <path d="M 2224.3 120 L 2224.3 330" fill="none" stroke-width="5"/>
+  <!-- bunting between the stalls -->
+  <path d="M 930 360 Q 1200 450 1470 360" fill="none" stroke-width="5"/>
+  <path d="M 938.6 367.9 L 998.6 367.9 L 968.6 433.9 Z" stroke-width="5"/>
+  <path d="M 1015.7 386.3 L 1075.7 386.3 L 1045.7 452.3 Z" stroke-width="5"/>
+  <path d="M 1092.9 397.3 L 1152.9 397.3 L 1122.9 463.3 Z" stroke-width="5"/>
+  <path d="M 1170 401 L 1230 401 L 1200 467 Z" stroke-width="5"/>
+  <path d="M 1247.1 397.3 L 1307.1 397.3 L 1277.1 463.3 Z" stroke-width="5"/>
+  <path d="M 1324.3 386.3 L 1384.3 386.3 L 1354.3 452.3 Z" stroke-width="5"/>
+  <path d="M 1401.4 367.9 L 1461.4 367.9 L 1431.4 433.9 Z" stroke-width="5"/>
+  <!-- front: two seated sellers -->
+  <!-- seated mango seller -->
+  <path d="M 270 1410 L 230 1600 L 490 1600 L 450 1410 Z"/>
+  <path d="M 320 1280 L 260 1320 Q 234 1336 236 1380 L 250 1480 L 470 1480 L 484 1380 Q 486 1336 460 1320 L 400 1280 Z"/>
+  <path d="M 320 1292 Q 360 1328 400 1292" fill="none" stroke-width="5"/>
+  <circle cx="360" cy="1220" r="62"/>
+  <circle cx="342.3" cy="1223.1" r="6.8" fill="#000" stroke-width="2"/>
+  <circle cx="387" cy="1223.1" r="6.8" fill="#000" stroke-width="2"/>
+  <path d="M 342 1243.6 Q 363.7 1263.4 385.4 1243.6" fill="none" stroke-width="5"/>
+  <path d="M 360 1034 L 510 1184 Q 360 1223 210 1184 Z"/>
+  <path d="M 273 1121 Q 360 1141.4 447 1121" fill="none" stroke-width="5"/>
+  <ellipse cx="280" cy="1550" rx="58" ry="40" transform="rotate(-20 280 1550)"/>
+  <path d="M 310 1522 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="360" cy="1536" rx="58" ry="40" transform="rotate(15 360 1536)"/>
+  <path d="M 390 1508 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="440" cy="1554" rx="58" ry="40" transform="rotate(35 440 1554)"/>
+  <path d="M 470 1526 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="320" cy="1510" rx="58" ry="40"/>
+  <path d="M 350 1482 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <ellipse cx="404" cy="1508" rx="58" ry="40" transform="rotate(-25 404 1508)"/>
+  <path d="M 434 1480 q 14 -18 30 -20" fill="none" stroke-width="5"/>
+  <path d="M 180 1570 Q 190 1760 360 1760 Q 530 1760 540 1570 Z"/>
+  <path d="M 166 1554 L 554 1554 Q 562 1570 554 1586 L 166 1586 Q 158 1570 166 1554 Z"/>
+  <path d="M 195 1644 Q 360 1658 525 1644" fill="none" stroke-width="5"/>
+  <path d="M 227.8 1702 Q 360 1716 492.2 1702" fill="none" stroke-width="5"/>
+  <path d="M 242 1480 Q 210 1520 240 1550 L 270 1550 Q 250 1520 270 1490 Z"/>
+  <path d="M 478 1480 Q 510 1520 480 1550 L 450 1550 Q 470 1520 450 1490 Z"/>
+  <!-- seated dragon seller -->
+  <path d="M 1950 1390 L 1910 1580 L 2170 1580 L 2130 1390 Z"/>
+  <path d="M 2000 1260 L 1940 1300 Q 1914 1316 1916 1360 L 1930 1460 L 2150 1460 L 2164 1360 Q 2166 1316 2140 1300 L 2080 1260 Z"/>
+  <path d="M 2000 1272 Q 2040 1308 2080 1272" fill="none" stroke-width="5"/>
+  <circle cx="2040" cy="1200" r="62"/>
+  <circle cx="2022.3" cy="1203.1" r="6.8" fill="#000" stroke-width="2"/>
+  <circle cx="2067" cy="1203.1" r="6.8" fill="#000" stroke-width="2"/>
+  <path d="M 2022 1223.6 Q 2043.7 1243.4 2065.4 1223.6" fill="none" stroke-width="5"/>
+  <path d="M 2040 1014 L 2190 1164 Q 2040 1203 1890 1164 Z"/>
+  <path d="M 1953 1101 Q 2040 1121.4 2127 1101" fill="none" stroke-width="5"/>
+  <ellipse cx="1950" cy="1510" rx="46.5" ry="55.5"/>
+  <path d="M 1923 1480 Q 1913.3 1463.7 1894.4 1463.5 Q 1904.1 1479.8 1923 1480 Z"/>
+  <path d="M 1956 1465 Q 1962.2 1447.1 1950.3 1432.5 Q 1944 1450.4 1956 1465 Z"/>
+  <path d="M 1980 1495 Q 1998.6 1491.5 2005.3 1473.8 Q 1986.7 1477.3 1980 1495 Z"/>
+  <path d="M 1917 1522 Q 1899.1 1515.8 1884.5 1527.7 Q 1902.4 1534 1917 1522 Z"/>
+  <path d="M 1975.5 1535.5 Q 1987.8 1549.8 2006.5 1546.8 Q 1994.2 1532.5 1975.5 1535.5 Z"/>
+  <path d="M 1945.5 1541.5 Q 1933.5 1556.1 1939.8 1574 Q 1951.7 1559.4 1945.5 1541.5 Z"/>
+  <path d="M 1950 1456 Q 1963.8 1439.8 1956 1420 Q 1942.2 1436.2 1950 1456 Z"/>
+  <ellipse cx="2130" cy="1510" rx="46.5" ry="55.5"/>
+  <path d="M 2103 1480 Q 2093.3 1463.7 2074.4 1463.5 Q 2084.1 1479.8 2103 1480 Z"/>
+  <path d="M 2136 1465 Q 2142.2 1447.1 2130.3 1432.5 Q 2124 1450.4 2136 1465 Z"/>
+  <path d="M 2160 1495 Q 2178.6 1491.5 2185.3 1473.8 Q 2166.7 1477.3 2160 1495 Z"/>
+  <path d="M 2097 1522 Q 2079.1 1515.8 2064.5 1527.7 Q 2082.4 1534 2097 1522 Z"/>
+  <path d="M 2155.5 1535.5 Q 2167.8 1549.8 2186.5 1546.8 Q 2174.2 1532.5 2155.5 1535.5 Z"/>
+  <path d="M 2125.5 1541.5 Q 2113.5 1556.1 2119.8 1574 Q 2131.7 1559.4 2125.5 1541.5 Z"/>
+  <path d="M 2130 1456 Q 2143.8 1439.8 2136 1420 Q 2122.2 1436.2 2130 1456 Z"/>
+  <ellipse cx="2040" cy="1490" rx="46.5" ry="55.5"/>
+  <path d="M 2013 1460 Q 2003.3 1443.7 1984.4 1443.5 Q 1994.1 1459.8 2013 1460 Z"/>
+  <path d="M 2046 1445 Q 2052.2 1427.1 2040.3 1412.5 Q 2034 1430.4 2046 1445 Z"/>
+  <path d="M 2070 1475 Q 2088.6 1471.5 2095.3 1453.8 Q 2076.7 1457.3 2070 1475 Z"/>
+  <path d="M 2007 1502 Q 1989.1 1495.8 1974.5 1507.7 Q 1992.4 1514 2007 1502 Z"/>
+  <path d="M 2065.5 1515.5 Q 2077.8 1529.8 2096.5 1526.8 Q 2084.2 1512.5 2065.5 1515.5 Z"/>
+  <path d="M 2035.5 1521.5 Q 2023.5 1536.1 2029.8 1554 Q 2041.7 1539.4 2035.5 1521.5 Z"/>
+  <path d="M 2040 1436 Q 2053.8 1419.8 2046 1400 Q 2032.2 1416.2 2040 1436 Z"/>
+  <path d="M 1860 1550 Q 1870 1740 2040 1740 Q 2210 1740 2220 1550 Z"/>
+  <path d="M 1846 1534 L 2234 1534 Q 2242 1550 2234 1566 L 1846 1566 Q 1838 1550 1846 1534 Z"/>
+  <path d="M 1875 1624 Q 2040 1638 2205 1624" fill="none" stroke-width="5"/>
+  <path d="M 1907.8 1682 Q 2040 1696 2172.2 1682" fill="none" stroke-width="5"/>
+  <path d="M 1922 1460 Q 1890 1500 1920 1530 L 1950 1530 Q 1930 1500 1950 1470 Z"/>
+  <path d="M 2158 1460 Q 2190 1500 2160 1530 L 2130 1530 Q 2150 1500 2130 1470 Z"/>
+  <!-- carrying pole, ropes and baskets -->
+  <path d="M 730 860 L 1670 830 L 1672 852 L 732 882 Z"/>
+  <path d="M 820 862 L 700 1200" fill="none" stroke-width="5"/>
+  <path d="M 820 862 L 940 1200" fill="none" stroke-width="5"/>
+  <path d="M 1580 834 L 1460 1200" fill="none" stroke-width="5"/>
+  <path d="M 1580 834 L 1700 1200" fill="none" stroke-width="5"/>
+  <ellipse cx="750" cy="1170" rx="55.1" ry="38" transform="rotate(-20 750 1170)"/>
+  <path d="M 778.5 1143.4 q 13.3 -17.1 28.5 -19" fill="none" stroke-width="5"/>
+  <ellipse cx="820" cy="1156" rx="55.1" ry="38" transform="rotate(10 820 1156)"/>
+  <path d="M 848.5 1129.4 q 13.3 -17.1 28.5 -19" fill="none" stroke-width="5"/>
+  <ellipse cx="890" cy="1172" rx="55.1" ry="38" transform="rotate(30 890 1172)"/>
+  <path d="M 918.5 1145.4 q 13.3 -17.1 28.5 -19" fill="none" stroke-width="5"/>
+  <ellipse cx="790" cy="1132" rx="55.1" ry="38" transform="rotate(-10 790 1132)"/>
+  <path d="M 818.5 1105.4 q 13.3 -17.1 28.5 -19" fill="none" stroke-width="5"/>
+  <ellipse cx="860" cy="1130" rx="55.1" ry="38" transform="rotate(20 860 1130)"/>
+  <path d="M 888.5 1103.4 q 13.3 -17.1 28.5 -19" fill="none" stroke-width="5"/>
+  <path d="M 670 1200 Q 680 1370 820 1370 Q 960 1370 970 1200 Z"/>
+  <path d="M 656 1184 L 984 1184 Q 992 1200 984 1216 L 656 1216 Q 648 1200 656 1184 Z"/>
+  <path d="M 682.9 1267.3 Q 820 1281.3 957.1 1267.3" fill="none" stroke-width="5"/>
+  <path d="M 710.2 1318.7 Q 820 1332.7 929.8 1318.7" fill="none" stroke-width="5"/>
+  <ellipse cx="1520" cy="1150" rx="43.4" ry="51.8"/>
+  <path d="M 1494.8 1122 Q 1485.8 1106.8 1468.1 1106.6 Q 1477.2 1121.8 1494.8 1122 Z"/>
+  <path d="M 1525.6 1108 Q 1531.4 1091.3 1520.3 1077.7 Q 1514.4 1094.3 1525.6 1108 Z"/>
+  <path d="M 1548 1136 Q 1565.3 1132.7 1571.6 1116.2 Q 1554.3 1119.5 1548 1136 Z"/>
+  <path d="M 1489.2 1161.2 Q 1472.5 1155.4 1458.9 1166.5 Q 1475.5 1172.4 1489.2 1161.2 Z"/>
+  <path d="M 1543.8 1173.8 Q 1555.3 1187.2 1572.7 1184.3 Q 1561.2 1171 1543.8 1173.8 Z"/>
+  <path d="M 1515.8 1179.4 Q 1504.6 1193.1 1510.5 1209.7 Q 1521.6 1196.1 1515.8 1179.4 Z"/>
+  <path d="M 1520 1099.6 Q 1532.9 1084.5 1525.6 1066 Q 1512.7 1081.1 1520 1099.6 Z"/>
+  <ellipse cx="1640" cy="1150" rx="43.4" ry="51.8"/>
+  <path d="M 1614.8 1122 Q 1605.8 1106.8 1588.1 1106.6 Q 1597.2 1121.8 1614.8 1122 Z"/>
+  <path d="M 1645.6 1108 Q 1651.4 1091.3 1640.3 1077.7 Q 1634.4 1094.3 1645.6 1108 Z"/>
+  <path d="M 1668 1136 Q 1685.3 1132.7 1691.6 1116.2 Q 1674.3 1119.5 1668 1136 Z"/>
+  <path d="M 1609.2 1161.2 Q 1592.5 1155.4 1578.9 1166.5 Q 1595.5 1172.4 1609.2 1161.2 Z"/>
+  <path d="M 1663.8 1173.8 Q 1675.3 1187.2 1692.7 1184.3 Q 1681.2 1171 1663.8 1173.8 Z"/>
+  <path d="M 1635.8 1179.4 Q 1624.6 1193.1 1630.5 1209.7 Q 1641.6 1196.1 1635.8 1179.4 Z"/>
+  <path d="M 1640 1099.6 Q 1652.9 1084.5 1645.6 1066 Q 1632.7 1081.1 1640 1099.6 Z"/>
+  <ellipse cx="1580" cy="1120" rx="43.4" ry="51.8"/>
+  <path d="M 1554.8 1092 Q 1545.8 1076.8 1528.1 1076.6 Q 1537.2 1091.8 1554.8 1092 Z"/>
+  <path d="M 1585.6 1078 Q 1591.4 1061.3 1580.3 1047.7 Q 1574.4 1064.3 1585.6 1078 Z"/>
+  <path d="M 1608 1106 Q 1625.3 1102.7 1631.6 1086.2 Q 1614.3 1089.5 1608 1106 Z"/>
+  <path d="M 1549.2 1131.2 Q 1532.5 1125.4 1518.9 1136.5 Q 1535.5 1142.4 1549.2 1131.2 Z"/>
+  <path d="M 1603.8 1143.8 Q 1615.3 1157.2 1632.7 1154.3 Q 1621.2 1141 1603.8 1143.8 Z"/>
+  <path d="M 1575.8 1149.4 Q 1564.6 1163.1 1570.5 1179.7 Q 1581.6 1166.1 1575.8 1149.4 Z"/>
+  <path d="M 1580 1069.6 Q 1592.9 1054.5 1585.6 1036 Q 1572.7 1051.1 1580 1069.6 Z"/>
+  <path d="M 1430 1200 Q 1440 1370 1580 1370 Q 1720 1370 1730 1200 Z"/>
+  <path d="M 1416 1184 L 1744 1184 Q 1752 1200 1744 1216 L 1416 1216 Q 1408 1200 1416 1184 Z"/>
+  <path d="M 1442.9 1267.3 Q 1580 1281.3 1717.1 1267.3" fill="none" stroke-width="5"/>
+  <path d="M 1470.2 1318.7 Q 1580 1332.7 1689.8 1318.7" fill="none" stroke-width="5"/>
+  <!-- the seller -->
+  <path d="M 1130 1080 L 1090 1600 L 1170 1600 L 1200 1200 L 1230 1600 L 1310 1600 L 1270 1080 Z"/>
+  <path d="M 1088 1600 L 1172 1600 Q 1180 1630 1150 1634 L 1070 1634 Q 1060 1616 1088 1600 Z"/>
+  <path d="M 1230 1600 L 1312 1600 Q 1340 1616 1330 1634 L 1250 1634 Q 1220 1630 1230 1600 Z"/>
+  <path d="M 1160 810 L 1090 850 Q 1060 870 1070 920 L 1100 1120 L 1300 1120 L 1330 920 Q 1340 870 1310 850 L 1240 810 Z"/>
+  <path d="M 1160 822 Q 1200 860 1240 822" fill="none" stroke-width="5"/>
+  <path d="M 1200 860 L 1200 1100" fill="none" stroke-width="5"/>
+  <circle cx="1214" cy="920" r="7" fill="#000" stroke-width="2"/>
+  <circle cx="1214" cy="980" r="7" fill="#000" stroke-width="2"/>
+  <circle cx="1214" cy="1040" r="7" fill="#000" stroke-width="2"/>
+  <path d="M 1082 880 L 1010 860 L 1000 890 L 1078 940 Z"/>
+  <path d="M 1318 880 L 1400 850 L 1404 878 L 1322 940 Z"/>
+  <circle cx="998" cy="860" r="22"/>
+  <circle cx="1410" cy="850" r="22"/>
+  <circle cx="1200" cy="750" r="70"/>
+  <circle cx="1174.8" cy="753.5" r="7.7" fill="#000" stroke-width="2"/>
+  <circle cx="1225.2" cy="753.5" r="7.7" fill="#000" stroke-width="2"/>
+  <path d="M 1175.5 776.6 Q 1200 799 1224.5 776.6" fill="none" stroke-width="5"/>
+  <path d="M 1200 540 L 1370 710 Q 1200 754.2 1030 710 Z"/>
+  <path d="M 1101.4 638.6 Q 1200 661.7 1298.6 638.6" fill="none" stroke-width="5"/>
+</g>
+</svg>

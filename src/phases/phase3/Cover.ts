@@ -1,15 +1,25 @@
 /**
- * The storybook cover the hat shrinks into at the end of Phase 2. Until the Blender cover render
- * (assets/img/art/storybook-cover.webp) lands, the cover is drawn here: forest-green cloth, a
- * golden frame and a glowing nón lá. Tapping it swings the cover open in 3D.
+ * The storybook cover the hat shrinks into at the end of Phase 2: forest-green cloth, a golden frame
+ * and a glowing nón lá (the Blender render of the same hat, so the 3D hat lands on its own picture).
+ * Tapping it swings the cover open in 3D.
  */
 import { gsap } from 'gsap';
 import { el, svg } from '../../ui/el';
 import { i18n } from '../../i18n/i18n';
 import { motion } from '../../a11y/motion';
 import { assetUrl } from '../../assets/manifest';
-import { hatArt } from '../phase1/art';
 import { P3_ICONS } from './art';
+
+/** the Blender cover render of the hat, trimmed to the hat (no floor shadow) */
+export function renderedHat(className = ''): HTMLImageElement {
+  return el(`img.p3-hat-render${className ? '.' + className : ''}`, {
+    src: assetUrl('img/renders/cover-hat-600.webp'),
+    srcset: `${assetUrl('img/renders/cover-hat-600.webp')} 600w, ${assetUrl('img/renders/cover-hat.webp')} 1200w`,
+    sizes: '(max-width: 600px) 60vw, 420px',
+    alt: '',
+    draggable: 'false',
+  });
+}
 
 /** flip to true once assets/img/art/storybook-cover.webp exists (listed in asset-requests.phase3.json) */
 const COVER_ART_READY = false;
@@ -24,7 +34,7 @@ export class Cover {
 
   constructor(onOpen: () => void) {
     this.hat = el('div.p3-book__hat');
-    this.hat.innerHTML = hatArt('cover');
+    this.hat.append(renderedHat());
     // the title stays live text on top of the art, so it follows the EN/VI toggle
     const plate = el('div.p3-book__plate', {}, i18n.bind(el('span.p3-book__title'), 'p3.title'), i18n.bind(el('span.p3-book__sub'), 'p3.cover.sub'));
     const art = COVER_ART_READY

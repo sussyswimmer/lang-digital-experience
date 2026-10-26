@@ -1,0 +1,40 @@
+{
+  "build.intro": { "kind": "narration", "en": "You've discovered all the hidden parts of the nón lá. Now, can you put them back together?", "vi": "Con đã khám phá hết những phần bí mật của chiếc nón lá rồi. Bây giờ, con có thể ghép chúng lại với nhau không?", "viStatus": "machine", "notes": "Brief 4a, verbatim" },
+  "build.how": { "kind": "narration", "en": "Drag each piece onto the hat, from the inside out!", "vi": "Con hãy kéo từng mảnh lên chiếc nón, từ trong ra ngoài nhé!", "viStatus": "machine" },
+  "build.tap-hat": { "kind": "narration", "en": "Now tap the hat to put it on!", "vi": "Giờ con chạm vào chiếc nón để gắn mảnh này lên nhé!", "viStatus": "machine" },
+  "build.drop": { "kind": "ui", "en": "Put it here!", "vi": "Đặt vào đây!", "viStatus": "machine" },
+  "build.workbench": { "kind": "ui", "en": "The hat maker's workbench", "vi": "Bàn làm nón", "viStatus": "machine" },
+  "build.tray": { "kind": "ui", "en": "Hat pieces", "vi": "Các mảnh của nón", "viStatus": "machine" },
+  "build.steps": { "kind": "ui", "en": "Pieces on the hat", "vi": "Các mảnh đã gắn", "viStatus": "machine" },
+
+  "build.piece.frame": { "kind": "narration", "en": "Bamboo frame and rings", "vi": "Khung tre và vòng nón", "viStatus": "machine" },
+  "build.piece.leaf-inner": { "kind": "narration", "en": "Inner leaves", "vi": "Lớp lá bên trong", "viStatus": "machine" },
+  "build.piece.poem-art": { "kind": "narration", "en": "Hidden paper art", "vi": "Tranh giấy bí mật", "viStatus": "machine" },
+  "build.piece.leaf-outer": { "kind": "narration", "en": "Outer leaves", "vi": "Lớp lá bên ngoài", "viStatus": "machine" },
+  "build.piece.stitches": { "kind": "narration", "en": "Hand stitching", "vi": "Đường khâu tay", "viStatus": "machine" },
+  "build.piece.strap": { "kind": "narration", "en": "Chin strap", "vi": "Quai nón", "viStatus": "machine" },
+
+  "build.placed.frame": { "kind": "narration", "en": "Snap! The bamboo frame gives the hat its cone shape.", "vi": "Tách! Khung tre làm cho chiếc nón có hình chóp.", "viStatus": "machine" },
+  "build.placed.leaf-inner": { "kind": "narration", "en": "The inner leaves sit snugly on the frame.", "vi": "Lớp lá bên trong nằm gọn gàng trên khung nón.", "viStatus": "machine" },
+  "build.placed.poem-art": { "kind": "narration", "en": "The secret pictures hide between the leaves.", "vi": "Những bức tranh bí mật nằm giấu giữa các lớp lá.", "viStatus": "machine" },
+  "build.placed.leaf-outer": { "kind": "narration", "en": "The prettiest leaves go on the outside.", "vi": "Những chiếc lá đẹp nhất được xếp ở bên ngoài.", "viStatus": "machine" },
+  "build.placed.stitches": { "kind": "narration", "en": "Neat little stitches hold everything together.", "vi": "Những mũi khâu nhỏ xinh giữ mọi thứ thật chắc.", "viStatus": "machine" },
+  "build.placed.strap": { "kind": "narration", "en": "And the strap keeps the hat on your head!", "vi": "Và quai nón giữ chiếc nón nằm yên trên đầu con!", "viStatus": "machine" },
+
+  "build.hint.leaves-first": { "kind": "narration", "en": "The leaves need something to sit on first!", "vi": "Lá cần có chỗ để nằm lên trước đã!", "viStatus": "machine", "notes": "Brief 4a, verbatim" },
+  "build.hint.need-frame": { "kind": "narration", "en": "Start with the bamboo frame. It gives the hat its shape!", "vi": "Mình bắt đầu với khung tre nhé. Khung tre tạo nên dáng nón!", "viStatus": "machine" },
+  "build.hint.need-leaf-inner": { "kind": "narration", "en": "The frame needs its inside layer of leaves first!", "vi": "Khung nón cần lớp lá bên trong trước đã!", "viStatus": "machine" },
+  "build.hint.poem-between": { "kind": "narration", "en": "The secret pictures hide between the leaves. Put the inner leaves down first!", "vi": "Những bức tranh bí mật nằm giữa các lớp lá. Con đặt lớp lá bên trong trước nhé!", "viStatus": "machine" },
+  "build.hint.need-poem-art": { "kind": "narration", "en": "Wait! Something secret hides between the leaves. Can you find it?", "vi": "Khoan đã! Có một điều bí mật nằm giữa các lớp lá. Con tìm ra không?", "viStatus": "machine" },
+  "build.hint.need-leaf-outer": { "kind": "narration", "en": "The hat still needs its pretty outside leaves!", "vi": "Chiếc nón vẫn còn thiếu lớp lá đẹp bên ngoài!", "viStatus": "machine" },
+  "build.hint.stitches-need-leaves": { "kind": "narration", "en": "Stitches need leaves to hold!", "vi": "Mũi khâu cần có lá để giữ!", "viStatus": "machine" },
+  "build.hint.need-stitches": { "kind": "narration", "en": "Careful! The leaves will slip. Sew them on first!", "vi": "Cẩn thận nhé! Lá sẽ bị tuột đấy. Mình khâu lá lại trước đã!", "viStatus": "machine" },
+  "build.hint.strap-last": { "kind": "narration", "en": "The strap is tied on last, when the hat is finished!", "vi": "Quai nón được buộc vào sau cùng, khi chiếc nón đã làm xong!", "viStatus": "machine" },
+  "build.hint.need-strap": { "kind": "narration", "en": "Only the strap is left!", "vi": "Chỉ còn quai nón thôi!", "viStatus": "machine" },
+  "build.hint.already": { "kind": "narration", "en": "That piece is already on the hat!", "vi": "Mảnh này đã ở trên nón rồi!", "viStatus": "machine" },
+
+  "build.done": { "kind": "narration", "en": "Hooray! You built a whole nón lá, just like a real hat maker!", "vi": "Hoan hô! Con đã làm xong cả một chiếc nón lá, giống hệt một người thợ làm nón thật!", "viStatus": "machine" },
+  "build.badge.name": { "kind": "ui", "en": "Little Hat Maker", "vi": "Thợ làm nón nhí", "viStatus": "machine" },
+  "build.badge.earned": { "kind": "narration", "en": "You earned the Little Hat Maker badge!", "vi": "Con đã nhận được huy hiệu Thợ làm nón nhí!", "viStatus": "machine" },
+  "build.again": { "kind": "ui", "en": "Build again", "vi": "Làm lại nào", "viStatus": "machine" }
+}

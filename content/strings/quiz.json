@@ -1,0 +1,57 @@
+{
+  "quiz.intro": { "kind": "narration", "en": "Let's play the Nón Lá Memory Quiz! Listen to each question, then tap the picture you think is right.", "vi": "Mình cùng chơi Đố vui Nón Lá nhé! Con nghe từng câu hỏi, rồi chạm vào bức tranh mà con nghĩ là đúng.", "viStatus": "machine" },
+  "quiz.qnum": { "kind": "ui", "en": "Question {n} of 5", "vi": "Câu {n} trên 5", "viStatus": "machine" },
+  "quiz.next": { "kind": "ui", "en": "Next question", "vi": "Câu tiếp theo", "viStatus": "machine" },
+  "quiz.finish": { "kind": "ui", "en": "See my certificate", "vi": "Xem giấy chứng nhận", "viStatus": "machine" },
+  "quiz.answers": { "kind": "ui", "en": "Answers", "vi": "Các câu trả lời", "viStatus": "machine" },
+
+  "quiz.yes.1": { "kind": "narration", "en": "Yes, that's right!", "vi": "Đúng rồi!", "viStatus": "machine" },
+  "quiz.yes.2": { "kind": "narration", "en": "Well done!", "vi": "Giỏi quá!", "viStatus": "machine" },
+  "quiz.yes.3": { "kind": "narration", "en": "You got it!", "vi": "Con trả lời đúng rồi!", "viStatus": "machine" },
+  "quiz.oops.1": { "kind": "narration", "en": "Good try! Let's look together.", "vi": "Con giỏi lắm khi đã thử! Mình cùng xem nhé.", "viStatus": "machine" },
+  "quiz.oops.2": { "kind": "narration", "en": "Almost! Here's the answer.", "vi": "Gần đúng rồi! Đáp án ở đây này.", "viStatus": "machine" },
+
+  "quiz.q1.prompt": { "kind": "narration", "en": "A strong wind blows while you are wearing a nón lá. Which part is specially designed to help keep the hat on your head?", "vi": "Một cơn gió mạnh thổi qua khi con đang đội nón lá. Bộ phận nào được làm ra đặc biệt để giữ chiếc nón trên đầu con?", "viStatus": "machine", "notes": "Brief 4c Q1, verbatim" },
+  "quiz.q1.a.thread": { "kind": "narration", "en": "The sewing thread", "vi": "Sợi chỉ khâu", "viStatus": "machine" },
+  "quiz.q1.a.leaves": { "kind": "narration", "en": "The outer leaves", "vi": "Lớp lá bên ngoài", "viStatus": "machine" },
+  "quiz.q1.a.strap": { "kind": "narration", "en": "The chin strap", "vi": "Quai nón", "viStatus": "machine" },
+  "quiz.q1.explain": { "kind": "narration", "en": "The chin strap is called the quai nón. This little strap helps keep the hat in place when you wear it.", "vi": "Sợi dây buộc dưới cằm gọi là quai nón. Chiếc quai nhỏ này giúp giữ nón nằm yên khi con đội.", "viStatus": "machine" },
+
+  "quiz.q2.prompt": { "kind": "narration", "en": "Imagine the bamboo rings disappear, but the leaves and stitches stay. What would most likely happen to the hat?", "vi": "Hãy tưởng tượng các vòng tre biến mất, nhưng lá và mũi khâu vẫn còn. Điều gì có thể sẽ xảy ra với chiếc nón?", "viStatus": "machine", "notes": "Brief 4c Q2, verbatim" },
+  "quiz.q2.a.shape": { "kind": "narration", "en": "It might lose its cone shape", "vi": "Nón có thể mất dáng hình chóp", "viStatus": "machine" },
+  "quiz.q2.a.shiny": { "kind": "narration", "en": "It would become shinier", "vi": "Nón sẽ bóng hơn", "viStatus": "machine" },
+  "quiz.q2.a.tight": { "kind": "narration", "en": "Its chin strap would become tighter", "vi": "Quai nón sẽ chặt hơn", "viStatus": "machine" },
+  "quiz.q2.explain": { "kind": "narration", "en": "The bamboo rings are the hat's hidden frame. Without this hidden frame, the hat would not keep its beautiful cone shape!", "vi": "Các vòng tre là bộ khung giấu bên trong chiếc nón. Không có bộ khung này, chiếc nón sẽ không giữ được dáng hình chóp xinh đẹp!", "viStatus": "machine" },
+
+  "quiz.q3.prompt": { "kind": "narration", "en": "A hat maker finds a leaf that is torn and brittle. Why is it not a good choice for the outside of the hat?", "vi": "Một người thợ làm nón thấy một chiếc lá bị rách và giòn. Vì sao chiếc lá đó không nên dùng cho lớp ngoài của nón?", "viStatus": "machine", "notes": "Brief 4c Q3, verbatim" },
+  "quiz.q3.a.gap": { "kind": "narration", "en": "It may break and leave gaps in the covering", "vi": "Lá có thể vỡ và để lại chỗ hở trên nón", "viStatus": "machine" },
+  "quiz.q3.a.rings": { "kind": "narration", "en": "It would make the bamboo rings too small", "vi": "Lá sẽ làm các vòng tre bé quá", "viStatus": "machine" },
+  "quiz.q3.a.colour": { "kind": "narration", "en": "It would change the colour of the chin strap", "vi": "Lá sẽ làm đổi màu quai nón", "viStatus": "machine" },
+  "quiz.q3.explain": { "kind": "narration", "en": "Hat makers choose leaves that are smooth, flat, and free from tears or cracks. A torn, brittle leaf may break and leave gaps, and the rain could get in!", "vi": "Thợ làm nón chọn những chiếc lá phẳng, mịn, không rách cũng không nứt. Lá rách và giòn có thể vỡ ra, để lại chỗ hở, và mưa sẽ lọt vào!", "viStatus": "machine" },
+
+  "quiz.q4.prompt": { "kind": "narration", "en": "How many circular bamboo rings does a traditional nón lá frame have?", "vi": "Khung nón lá truyền thống có bao nhiêu vòng tre tròn?", "viStatus": "machine", "notes": "Draft question for team review" },
+  "quiz.q4.a.8": { "kind": "narration", "en": "8 rings", "vi": "8 vòng", "viStatus": "machine" },
+  "quiz.q4.a.16": { "kind": "narration", "en": "16 rings", "vi": "16 vòng", "viStatus": "machine" },
+  "quiz.q4.a.30": { "kind": "narration", "en": "30 rings", "vi": "30 vòng", "viStatus": "machine" },
+  "quiz.q4.explain": { "kind": "narration", "en": "A traditional frame has 16 circular rings. They get smaller and smaller until they reach the tip!", "vi": "Khung nón truyền thống có 16 vòng tròn. Các vòng nhỏ dần, nhỏ dần cho đến tận chóp nón!", "viStatus": "machine" },
+
+  "quiz.q5.prompt": { "kind": "narration", "en": "In Tây Hồ village in Huế, what do artisans hide between the leaves of the hat?", "vi": "Ở làng Tây Hồ, Huế, các nghệ nhân giấu gì giữa các lớp lá của chiếc nón?", "viStatus": "machine", "notes": "Draft question for team review" },
+  "quiz.q5.a.poems": { "kind": "narration", "en": "Tiny pictures and poems", "vi": "Những bức tranh và câu thơ nhỏ", "viStatus": "machine" },
+  "quiz.q5.a.coins": { "kind": "narration", "en": "Coins", "vi": "Đồng xu", "viStatus": "machine" },
+  "quiz.q5.a.rice": { "kind": "narration", "en": "Rice seeds", "vi": "Hạt thóc", "viStatus": "machine" },
+  "quiz.q5.explain": { "kind": "narration", "en": "Between the leaves they tuck tiny pictures and lines of poetry. You can only see them when you hold the hat up to the light.", "vi": "Giữa các lớp lá, các nghệ nhân cài những bức tranh nhỏ xíu và những câu thơ. Con chỉ nhìn thấy chúng khi soi chiếc nón lên ánh sáng.", "viStatus": "machine", "notes": "Brief Phase 3 chapter 2 wording" },
+
+  "quiz.badge.q1": { "kind": "ui", "en": "Strap Star", "vi": "Ngôi sao quai nón", "viStatus": "machine" },
+  "quiz.badge.q2": { "kind": "ui", "en": "Bamboo Builder", "vi": "Thợ khung tre", "viStatus": "machine" },
+  "quiz.badge.q3": { "kind": "ui", "en": "Leaf Expert", "vi": "Chuyên gia lá nón", "viStatus": "machine" },
+  "quiz.badge.q4": { "kind": "ui", "en": "Ring Counter", "vi": "Nhà đếm vòng", "viStatus": "machine" },
+  "quiz.badge.q5": { "kind": "ui", "en": "Secret Keeper", "vi": "Người giữ bí mật", "viStatus": "machine" },
+  "quiz.badge.q1.earned": { "kind": "narration", "en": "You earned the Strap Star badge!", "vi": "Con nhận được huy hiệu Ngôi sao quai nón!", "viStatus": "machine" },
+  "quiz.badge.q2.earned": { "kind": "narration", "en": "You earned the Bamboo Builder badge!", "vi": "Con nhận được huy hiệu Thợ khung tre!", "viStatus": "machine" },
+  "quiz.badge.q3.earned": { "kind": "narration", "en": "You earned the Leaf Expert badge!", "vi": "Con nhận được huy hiệu Chuyên gia lá nón!", "viStatus": "machine" },
+  "quiz.badge.q4.earned": { "kind": "narration", "en": "You earned the Ring Counter badge!", "vi": "Con nhận được huy hiệu Nhà đếm vòng!", "viStatus": "machine" },
+  "quiz.badge.q5.earned": { "kind": "narration", "en": "You earned the Secret Keeper badge!", "vi": "Con nhận được huy hiệu Người giữ bí mật!", "viStatus": "machine" },
+
+  "quiz.scene.q1": { "kind": "alt", "en": "A girl holding her nón lá on a windy day in the rice fields", "vi": "Một bạn gái giữ chiếc nón lá trong ngày gió lộng trên cánh đồng lúa", "viStatus": "machine" },
+  "quiz.scene.q3": { "kind": "alt", "en": "A hat maker holding up a torn leaf", "vi": "Một bà thợ làm nón cầm chiếc lá bị rách", "viStatus": "machine" }
+}

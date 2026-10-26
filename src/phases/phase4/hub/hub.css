@@ -1,0 +1,481 @@
+/* Phase 4: the Activity Hub */
+@import './p4.css';
+
+.screen.p4-hub {
+  padding: calc(88px + var(--safe-top)) calc(24px + var(--safe-right)) calc(118px + var(--safe-bottom)) calc(24px + var(--safe-left));
+}
+
+.p4h-main {
+  height: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 18px;
+}
+
+/* ---------- activity cards ---------- */
+
+.p4h-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  min-height: 0;
+}
+
+.p4h-card {
+  --band: var(--terracotta-600);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 10px 10px 0;
+  border: 0;
+  border-radius: 30px;
+  background: var(--paper);
+  box-shadow: var(--shadow-lift);
+  overflow: hidden;
+  text-align: left;
+  transition: translate 0.2s var(--ease-out), scale 0.2s var(--ease-out), rotate 0.2s var(--ease-out);
+  touch-action: manipulation;
+}
+
+.p4h-card[data-activity='colour'] {
+  --band: var(--dragon-600);
+}
+
+.p4h-card[data-activity='quiz'] {
+  --band: var(--forest-700);
+}
+
+.p4h-card:hover {
+  translate: 0 -4px;
+  rotate: -0.4deg;
+}
+
+.p4h-card:active {
+  scale: 0.97;
+}
+
+.p4h-card.is-told {
+  translate: 0 -6px;
+  scale: 1.02;
+  animation: p4-glow 1.4s ease-in-out infinite;
+}
+
+.p4h-card__art {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--straw-200);
+}
+
+.p4h-card__art img,
+.p4h-card__art svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+
+.p4h-card__label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 -10px;
+  padding: 12px 18px 14px;
+  background: var(--band);
+  color: #fff;
+  font-family: var(--font-head);
+  font-size: clamp(1.2rem, 1.9vw, 1.6rem);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.p4h-card__icon {
+  width: 52px;
+  height: 52px;
+  flex: none;
+  padding: 5px;
+  border-radius: 16px;
+  background: var(--paper);
+}
+
+/* ---------- lower row ---------- */
+
+.p4h-lower {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'revisit shelf side';
+  gap: 16px;
+  align-items: stretch;
+}
+
+.p4h-panel {
+  padding: 12px 14px 14px;
+  border-radius: 24px;
+  background: rgba(255, 249, 236, 0.92);
+  box-shadow: var(--shadow-soft);
+}
+
+.p4h-panel__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px 4px;
+  font-size: 1.15rem;
+  color: var(--wood-700);
+}
+
+.p4h-panel__title .p4-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.p4h-revisit {
+  grid-area: revisit;
+}
+
+.p4h-revisit__row {
+  display: flex;
+  gap: 8px;
+}
+
+.p4h-chip,
+.p4h-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 122px;
+  min-height: 86px;
+  padding: 8px 6px;
+  border: 2px solid var(--straw-300);
+  border-radius: 18px;
+  background: #fff;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.05;
+  text-align: center;
+  transition: translate 0.15s var(--ease-out), scale 0.15s var(--ease-out), border-color 0.15s;
+  touch-action: manipulation;
+}
+
+.p4h-chip:hover,
+.p4h-option:hover {
+  border-color: var(--straw-500);
+  translate: 0 -2px;
+}
+
+.p4h-chip:active,
+.p4h-option:active {
+  scale: 0.95;
+}
+
+.p4h-chip .p4-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.p4h-shelf {
+  grid-area: shelf;
+  position: relative;
+  min-width: 0;
+}
+
+.p4h-shelf__row {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  gap: 6px;
+  padding: 2px 6px 12px;
+}
+
+/* the wooden shelf the medals stand on */
+.p4h-shelf__row::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #a07a52, #7a5a3a 60%, #5a3f28);
+  box-shadow: 0 4px 8px rgba(59, 42, 28, 0.25);
+}
+
+.p4h-badge {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  height: 78px;
+  padding: 0;
+  border: 0;
+  background: none;
+  touch-action: manipulation;
+}
+
+.p4h-badge svg {
+  width: 100%;
+  height: 100%;
+}
+
+.p4h-badge[data-earned='true'] svg {
+  filter: drop-shadow(0 4px 4px rgba(59, 42, 28, 0.3));
+}
+
+.p4h-side {
+  grid-area: side;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.p4h-gallery,
+.p4h-cert {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 68px;
+  padding: 6px 18px 6px 10px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--forest-700);
+  color: var(--cream);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.05;
+  box-shadow: var(--shadow-soft);
+  text-align: left;
+  touch-action: manipulation;
+}
+
+.p4h-cert {
+  background: var(--terracotta-600);
+  color: #fff;
+}
+
+.p4h-gallery .p4-icon,
+.p4h-cert .p4-icon {
+  width: 48px;
+  height: 48px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--paper);
+}
+
+.p4h-count {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--mango-400);
+  color: var(--wood-900);
+  font-size: 1rem;
+  line-height: 30px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ---------- revisit picker ---------- */
+
+.p4h-picker {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 90px 16px 130px;
+}
+
+.p4h-picker[hidden] {
+  display: none;
+}
+
+.p4h-picker__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(31, 30, 20, 0.45);
+  backdrop-filter: blur(3px);
+}
+
+.p4h-picker__sheet {
+  position: relative;
+  max-width: min(760px, 100%);
+  padding: 26px 28px 28px;
+  border-radius: 32px;
+  background: var(--paper);
+  box-shadow: var(--shadow-lift);
+}
+
+.p4h-picker__title {
+  margin: 0 64px 18px 0;
+  font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+  color: var(--wood-900);
+}
+
+.p4h-picker__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+
+.p4h-picker__options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.p4h-picker__options[data-kind='chapter'] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.p4h-option {
+  width: auto;
+  min-width: 132px;
+  min-height: 150px;
+  gap: 10px;
+  font-size: 1.2rem;
+  border-width: 3px;
+}
+
+.p4h-option .p4-icon {
+  width: 72px;
+  height: 72px;
+}
+
+/* ---------- smaller screens ---------- */
+
+@media (max-width: 1100px) {
+  .p4h-chip {
+    width: 104px;
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 900px), (max-height: 640px) {
+  /* the content scrolls between the top bar and the captions */
+  .p4h-main {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    display: flex;
+    flex-direction: column;
+    margin: 0 -6px;
+    padding: 6px 6px 24px;
+  }
+
+  .p4h-main > * {
+    flex: none;
+  }
+
+  .p4h-cards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .p4h-card {
+    flex-direction: row;
+    align-items: stretch;
+    height: 150px;
+    padding: 8px;
+  }
+
+  .p4h-card__art {
+    flex: 0 0 46%;
+    border-radius: 20px;
+  }
+
+  .p4h-card__label {
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin: -8px -8px -8px 8px;
+    padding: 12px 14px;
+    font-size: 1.35rem;
+  }
+
+  .p4h-lower {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'shelf' 'side' 'revisit';
+  }
+
+  .p4h-revisit__row {
+    justify-content: space-between;
+  }
+
+  .p4h-chip {
+    flex: 1;
+    width: auto;
+  }
+
+  .p4h-side {
+    flex-direction: row;
+  }
+
+  .p4h-gallery,
+  .p4h-cert {
+    flex: 1;
+  }
+
+  .p4h-picker__options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .p4h-picker__options[data-kind='chapter'] {
+    grid-template-columns: 1fr;
+  }
+
+  .p4h-option {
+    min-height: 110px;
+    min-width: 0;
+  }
+
+  .p4h-picker__options[data-kind='chapter'] .p4h-option {
+    flex-direction: row;
+    justify-content: flex-start;
+    min-height: 80px;
+    padding: 8px 16px;
+  }
+
+  .p4h-option .p4-icon {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 520px) {
+  .screen.p4-hub {
+    padding-left: calc(16px + var(--safe-left));
+    padding-right: calc(16px + var(--safe-right));
+  }
+
+  /* two shelves of three medals */
+  .p4h-shelf__row {
+    display: grid;
+    grid-template-columns: repeat(3, 64px);
+    justify-content: space-evenly;
+    row-gap: 12px;
+    padding: 0 0 0;
+    background: repeating-linear-gradient(180deg, transparent 0 74px, #7a5a3a 74px 86px, transparent 86px 90px);
+  }
+
+  .p4h-shelf__row::after {
+    display: none;
+  }
+}

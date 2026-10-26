@@ -57,7 +57,7 @@ test('layer 2: three peels by hand, then the rest go whoosh', async ({ page }) =
     await page.waitForTimeout(1200);
   }
   await expect.poll(() => hook<number>(page, 'peeled'), { timeout: 60_000 }).toBe(12);
-  await expect(page.locator('.hat-label', { hasText: 'Mo (tree bark)' })).toBeAttached();
+  await expect(page.locator('.hat-label', { hasText: 'Mo (tree bark)' })).toBeAttached({ timeout: 30_000 });
   await expect(page.locator('.screen.p2')).toHaveAttribute('data-phase', /insight|done/, { timeout: 30_000 });
 });
 

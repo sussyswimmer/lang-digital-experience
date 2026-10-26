@@ -1,0 +1,394 @@
+/* Phase 4c: Nón Lá Memory Quiz */
+
+.p4q-layout {
+  height: 100%;
+  max-width: 1260px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 12px;
+}
+
+/* ---------- progress + badge shelf ---------- */
+
+.p4q-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.p4q-where {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 16px 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 249, 236, 0.9);
+  box-shadow: var(--shadow-soft);
+}
+
+.p4q-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.p4q-dot {
+  width: 30px;
+  height: 24px;
+  transition: scale 0.25s var(--ease-out);
+}
+
+.p4q-dot svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--straw-200);
+  stroke: var(--straw-700);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.p4q-dot.is-current {
+  scale: 1.3;
+}
+
+.p4q-dot.is-current svg {
+  fill: var(--mango-400);
+  stroke: var(--wood-700);
+}
+
+.p4q-dot.is-won svg {
+  fill: var(--straw-500);
+  stroke: var(--forest-700);
+}
+
+.p4q-dot.is-done svg {
+  fill: #d8c7a6;
+}
+
+.p4q-count {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+.p4q-shelf {
+  display: flex;
+  gap: 6px;
+  padding: 4px 14px 2px;
+  border-radius: 999px;
+  background: rgba(255, 249, 236, 0.9);
+  box-shadow: var(--shadow-soft);
+}
+
+.p4q-slot {
+  display: block;
+  width: 44px;
+  height: 54px;
+}
+
+.p4q-slot svg {
+  width: 100%;
+  height: 100%;
+}
+
+.p4q-slot.is-earned svg {
+  filter: drop-shadow(0 3px 3px rgba(59, 42, 28, 0.3));
+}
+
+/* ---------- question ---------- */
+
+.p4q-stage {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 14px;
+}
+
+.p4q-question {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 104px;
+  padding: 12px 14px 12px 14px;
+  border-radius: 28px;
+  background: var(--paper);
+  box-shadow: var(--shadow-soft);
+}
+
+.p4q-scene {
+  position: relative;
+  flex: none;
+  width: 176px;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--straw-200);
+}
+
+.p4q-scene[data-art='svg'] {
+  display: none;
+}
+
+.p4q-scene img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.p4q-prompt {
+  flex: 1;
+  margin: 0 0 0 6px;
+  font-size: clamp(1.15rem, 1.95vw, 1.55rem);
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.p4q-actions {
+  flex: none;
+  display: flex;
+  gap: 10px;
+}
+
+.p4q-listen {
+  min-height: 64px;
+  font-size: 1.1rem;
+  border: 2px solid var(--straw-300);
+  box-shadow: none;
+}
+
+.p4q-next {
+  animation: pulse 1.8s ease-in-out 1.2s infinite;
+}
+
+/* ---------- answer cards ---------- */
+
+.p4q-answers {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.p4q-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  padding: 10px 10px 12px;
+  border: 0;
+  border-radius: 28px;
+  background: var(--paper);
+  box-shadow: var(--shadow-lift);
+  transition: box-shadow 0.2s var(--ease-out), opacity 0.3s, filter 0.3s;
+  touch-action: manipulation;
+}
+
+.p4q-card:not(.is-locked):hover {
+  box-shadow: var(--shadow-lift), 0 0 0 4px var(--straw-300);
+}
+
+.p4q-card__pic {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--straw-100);
+}
+
+.p4q-card__pic svg,
+.p4q-card__pic img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+}
+
+.p4q-card__label {
+  display: grid;
+  place-items: center;
+  min-height: 2.3em;
+  padding: 0 6px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+  line-height: 1.12;
+  text-align: center;
+}
+
+.p4q-card__mark {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 46px;
+  height: 46px;
+  opacity: 0;
+  scale: 0.4;
+  transition: opacity 0.25s, scale 0.35s var(--ease-out);
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.25));
+}
+
+.p4q-card__mark svg {
+  width: 100%;
+  height: 100%;
+}
+
+.p4q-card.is-told {
+  animation: p4-glow 1.2s ease-in-out infinite;
+}
+
+.p4q-card.is-locked {
+  cursor: default;
+}
+
+.p4q-card.is-correct {
+  box-shadow: var(--shadow-lift), 0 0 0 6px var(--leaf-500), 0 0 28px 10px rgba(127, 191, 94, 0.45);
+}
+
+.p4q-card.is-correct .p4q-card__mark {
+  opacity: 1;
+  scale: 1;
+}
+
+.p4q-card.is-wrong {
+  opacity: 0.75;
+  box-shadow: var(--shadow-soft), 0 0 0 4px var(--terracotta-400);
+}
+
+.p4q-card.is-dim {
+  opacity: 0.45;
+  filter: saturate(0.5);
+}
+
+/* the badge flying to the shelf */
+.p4q-fly {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 30;
+  width: 120px;
+  height: 150px;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 12px rgba(59, 42, 28, 0.35));
+}
+
+.p4q-fly svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- smaller screens ---------- */
+
+@media (max-width: 1000px) {
+  .p4q-scene {
+    width: 140px;
+  }
+}
+
+@media (max-width: 760px) {
+  .screen.p4-quiz {
+    padding-left: calc(12px + var(--safe-left));
+    padding-right: calc(12px + var(--safe-right));
+  }
+
+  .p4q-layout {
+    gap: 8px;
+  }
+
+  .p4q-head {
+    gap: 6px;
+  }
+
+  .p4q-where {
+    gap: 8px;
+    padding: 4px 10px 4px 8px;
+  }
+
+  .p4q-progress {
+    gap: 3px;
+  }
+
+  .p4q-dot {
+    width: 20px;
+    height: 16px;
+  }
+
+  .p4q-count {
+    font-size: 0.95rem;
+  }
+
+  .p4q-shelf {
+    gap: 2px;
+    padding: 2px 8px;
+  }
+
+  .p4q-slot {
+    width: 28px;
+    height: 36px;
+  }
+
+  .p4q-stage {
+    gap: 8px;
+  }
+
+  .p4q-question {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 22px;
+  }
+
+  .p4q-scene {
+    display: none;
+  }
+
+  .p4q-prompt {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .p4q-actions {
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  .p4q-answers {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .p4q-card {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 6px;
+    border-radius: 20px;
+    gap: 10px;
+  }
+
+  .p4q-card__pic {
+    flex: 0 0 40%;
+    border-radius: 16px;
+  }
+
+  .p4q-card__label {
+    flex: 1;
+    place-items: center start;
+    text-align: left;
+    font-size: 1.02rem;
+  }
+
+  .p4q-card__mark {
+    top: 8px;
+    right: 8px;
+    width: 34px;
+    height: 34px;
+  }
+}

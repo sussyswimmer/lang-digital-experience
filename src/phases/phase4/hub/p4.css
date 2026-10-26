@@ -1,0 +1,117 @@
+/* Phase 4 shared bits: the warm "workshop" backdrop, icon sizing, confetti layer, badge medals. */
+
+.screen.p4 {
+  overflow: hidden;
+  background:
+    radial-gradient(70% 60% at 50% 38%, rgba(255, 249, 236, 0.8), rgba(255, 249, 236, 0) 70%),
+    repeating-linear-gradient(45deg, rgba(184, 134, 42, 0.05) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(-45deg, rgba(184, 134, 42, 0.05) 0 2px, transparent 2px 9px),
+    linear-gradient(180deg, #f8ead0, #f1dcb0 70%, #e8c992);
+}
+
+.p4 .p4-icon {
+  width: 34px;
+  height: 34px;
+  flex: none;
+}
+
+.p4-btn__text {
+  min-width: 0;
+}
+
+.p4-confetti {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.p4 [data-touch] {
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* a gentle "listen to me" ring used while narration reads a card */
+@keyframes p4-glow {
+  0%, 100% { box-shadow: var(--shadow-lift), 0 0 0 4px rgba(246, 166, 35, 0.95), 0 0 0 10px rgba(246, 166, 35, 0.25); }
+  50% { box-shadow: var(--shadow-lift), 0 0 0 4px rgba(246, 166, 35, 0.95), 0 0 0 18px rgba(246, 166, 35, 0); }
+}
+
+/* the pill-shaped action buttons of the build, quiz and certificate screens */
+.p4-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 0 26px 0 20px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--forest-700);
+  color: var(--cream);
+  font-family: var(--font-head);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.1;
+  box-shadow: var(--shadow-soft);
+  transition: scale 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
+  touch-action: manipulation;
+}
+
+.p4-action:hover {
+  box-shadow: var(--shadow-lift);
+}
+
+.p4-action:active {
+  scale: 0.96;
+}
+
+.p4-action .p4-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.p4-action--cta {
+  background: var(--terracotta-600);
+  color: #fff;
+  min-height: 84px;
+  font-size: 1.45rem;
+}
+
+.p4-action--light {
+  background: var(--paper);
+  color: var(--wood-900);
+}
+
+.p4-action--straw {
+  background: var(--straw-500);
+  color: var(--wood-900);
+}
+
+.p4-action[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* phones: the shared top bar has no room for its title next to five round buttons */
+@media (max-width: 520px) {
+  .p4 .topbar__title {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .p4-action {
+    min-height: 64px;
+    font-size: 1.1rem;
+    padding: 0 18px 0 14px;
+  }
+
+  .p4-action--cta {
+    min-height: 72px;
+    font-size: 1.2rem;
+  }
+}
