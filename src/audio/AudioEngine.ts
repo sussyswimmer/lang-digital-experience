@@ -77,14 +77,17 @@ export class AudioEngine {
     if (this.ambients.has(id)) return;
     if ((ambientIndex as string[]).includes(id)) {
       const howl = new Howl({ src: [assetUrl(AMBIENT_FILES[id])], loop: true, volume: 0, html5: false });
+      // fade in once it really plays: fades queued before the file has loaded can run out of order
+      howl.once('play', () => howl.fade(0, this.level(), 600));
       howl.play();
-      howl.fade(0, this.level(), 600);
       this.ambients.set(id, {
         stop: () => {
           howl.fade(howl.volume(), 0, 500);
           setTimeout(() => howl.unload(), 600);
         },
-        setLevel: (v) => howl.fade(howl.volume(), v, 300),
+        setLevel: (v) => {
+          if (howl.playing()) howl.fade(howl.volume(), v, 300);
+        },
       });
     } else {
       const kind = id === 'rain' || id === 'rainMarket' ? 'rain' : id === 'market' || id === 'school' ? 'market' : 'breeze';
