@@ -129,6 +129,26 @@ def render_still(scene, path):
     log(f"wrote {path} in {time.time() - t:.1f}s")
 
 
+def studio_light(scene):
+    """Stills light: a higher, softer sun so the cast shadow lands under the hat inside the frame, and a floor
+    wide enough that its far edge never shows. The intro keeps the low golden-hour sun."""
+    sun = ob("KEY_SUN")
+    sun.rotation_euler = Euler((math.radians(25), 0, math.radians(135)))
+    sun.data.angle = math.radians(9)
+    ob("shadow_catcher").scale = (6, 6, 1)
+
+
+def shadow_only(scene, parts, path):
+    """Render just the shadow that `parts` cast on the floor (the parts themselves are invisible to the camera)."""
+    set_visible(parts)
+    casters = [o for o in bpy.data.objects if o.type == "MESH" and not o.hide_render and o.name != "shadow_catcher"]
+    for o in casters:
+        o.visible_camera = False
+    render_still(scene, path)
+    for o in casters:
+        o.visible_camera = True
+
+
 def set_visible(names, visible=True):
     for o in bpy.data.objects:
         if o.type == "MESH" and o.name != "shadow_catcher":
@@ -256,7 +276,8 @@ def freeze_at_rest(scene):
 
 def job_cover(scene):
     freeze_at_rest(scene)
-    cam, _ = look_at_camera("CAM_COVER", (0, 0, 0.05), orbit((0, 0, 0.05), 25, 38, 1.15), fov_y=30)
+    studio_light(scene)
+    cam, _ = look_at_camera("CAM_COVER", (0, 0, -0.03), orbit((0, 0, -0.03), 25, 38, 1.25), fov_y=30)
     scene.camera = cam
     set_visible(ALL_PARTS)
     res(scene, 2048, 2048)
@@ -264,7 +285,8 @@ def job_cover(scene):
     print("PROGRESS cover 1/1", flush=True)
 
 
-STILLS_CAM = dict(target=(0, 0, 0.03), yaw=18, elev=20, dist=1.25, fov=30)
+# aimed a little below the brim so the floor shadow under the hat stays inside the frame
+STILLS_CAM = dict(target=(0, 0, -0.04), yaw=18, elev=20, dist=1.32, fov=30)
 
 
 def stills_camera(scene):
@@ -283,8 +305,10 @@ def recolour_strap(hexcol):
 
 def job_stills(scene):
     freeze_at_rest(scene)
+    studio_light(scene)
     stills_camera(scene)
     res(scene, 1600, 1200)
+    floor = ob("shadow_catcher")
     layers = [
         ("build-01-frame", ["frame"]),
         ("build-02-leaf-inner", ["leaf_inner"]),
@@ -295,15 +319,24 @@ def job_stills(scene):
         ("build-06-strap", ["strap_rig"]),
         ("hat-full", ALL_PARTS),
     ]
-    total = len(layers) + 4
+    total = len(layers) + 5
     n = 0
+    # build-game layers stack in register, so they carry no floor shadow of their own; the game puts the
+    # whole hat's shadow (build-00-shadow) underneath once
     for name, parts in layers:
+        floor.hide_render = name != "hat-full"
         set_visible(parts)
         render_still(scene, os.path.join(OUT, "stills", f"{name}.png"))
         n += 1
         print(f"PROGRESS stills {n}/{total}", flush=True)
-    # underside, three strap colours: the camera sits low, looking up under the brim
+    floor.hide_render = False
+    shadow_only(scene, ALL_PARTS, os.path.join(OUT, "stills", "build-00-shadow.png"))
+    n += 1
+    print(f"PROGRESS stills {n}/{total}", flush=True)
+    # underside, three strap colours: the camera sits low, looking up under the brim (level with the floor,
+    # which would show as a line, so it is hidden)
     set_visible(ALL_PARTS)
+    floor.hide_render = True
     cam, _ = look_at_camera("CAM_UNDER", (0, 0, -0.04), orbit((0, 0, -0.04), 35, -12, 1.2), fov_y=34)
     scene.camera = cam
     for colour, hexcol in (("purple", nb.COLOURS["strap_purple"]), ("peach", nb.COLOURS["strap_peach"]),
@@ -317,6 +350,7 @@ def job_stills(scene):
     cam, _ = look_at_camera("CAM_BRIM", nb.cone_point(nb.L, math.radians(270), 0.0), Vector((0.05, -0.42, 0.06)), fov_y=14)
     scene.camera = cam
     render_still(scene, os.path.join(OUT, "stills", "brim-closeup.png"))
+    floor.hide_render = False
     n += 1
     print(f"PROGRESS stills {n}/{total}", flush=True)
 
@@ -349,7 +383,8 @@ def frame_with_rings(n_rings):
 
 def job_quiz(scene):
     freeze_at_rest(scene)
-    stills_camera(scene)
+    studio_light(scene)
+    stills_cam = stills_camera(scene)
     res(scene, 1200, 900)
     jobs = []
 
@@ -410,12 +445,19 @@ def job_quiz(scene):
     shot("q2-shinier", ALL_PARTS, before=shiny, after=unshiny)
 
     strap = ob("strap")
+    # seen from under the brim like the underside stills, so the short, pulled-up strap is clearly in view
+    low_cam, _ = look_at_camera("CAM_Q2_TIGHT", (0, 0, -0.04), orbit((0, 0, -0.04), 30, -10, 1.2), fov_y=32)
+    floor = ob("shadow_catcher")
 
     def tight():
-        strap.scale = (1, 1, 0.55)
+        strap.scale = (1, 1, 0.45)
+        scene.camera = low_cam
+        floor.hide_render = True
 
     def loose():
         strap.scale = (1, 1, 1)
+        scene.camera = stills_cam
+        floor.hide_render = False
 
     shot("q2-tight-strap", ALL_PARTS, before=tight, after=loose)
 
