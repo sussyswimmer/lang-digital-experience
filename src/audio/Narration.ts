@@ -87,7 +87,8 @@ export class Narration {
       } else {
         this.captions.progressTimed(simulated);
       }
-      this.current = { id, howl, timer, resolve: finish };
+      // stop() does its own cleanup, so it gets the bare resolver (finish() ignores a line that is no longer current)
+      this.current = { id, howl, timer, resolve };
     });
   }
 
