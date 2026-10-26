@@ -1338,5 +1338,265 @@
  "vi/num.60": {
   "hash": "760455c5de99",
   "seconds": 0.98
+ },
+ "en/p1.explore": {
+  "hash": "c65828c06dce",
+  "seconds": 1.25
+ },
+ "en/p2.fallback": {
+  "hash": "0bb5e585783e",
+  "seconds": 5.18
+ },
+ "en/p2.loadError": {
+  "hash": "37dda749a474",
+  "seconds": 4.82
+ },
+ "en/p2.l1.name": {
+  "hash": "9f66e769f0db",
+  "seconds": 2.33
+ },
+ "en/p2.l1.question": {
+  "hash": "6ff389bbe420",
+  "seconds": 3.07
+ },
+ "en/p2.l1.insight.1": {
+  "hash": "b6f1d3989315",
+  "seconds": 7.08
+ },
+ "en/p2.l1.insight.2": {
+  "hash": "ec3e6c73c239",
+  "seconds": 10.42
+ },
+ "en/p2.l1.insight.3": {
+  "hash": "1e56ded1a920",
+  "seconds": 12.7
+ },
+ "en/p2.l1.insight.4": {
+  "hash": "c9b930a0a9bf",
+  "seconds": 11.66
+ },
+ "en/p2.l1.insight.5": {
+  "hash": "9a655faf0824",
+  "seconds": 7.34
+ },
+ "en/p2.l2.name": {
+  "hash": "6ecb4d3cf788",
+  "seconds": 2.45
+ },
+ "en/p2.l2.question": {
+  "hash": "2f1a7c1ed239",
+  "seconds": 2.33
+ },
+ "en/p2.l2.whoosh": {
+  "hash": "ffaf448f56c6",
+  "seconds": 0.89
+ },
+ "en/p2.l2.insight.2": {
+  "hash": "ea2140893735",
+  "seconds": 13.61
+ },
+ "en/p2.l2.insight.4": {
+  "hash": "a6f41fb71f58",
+  "seconds": 12.84
+ },
+ "en/p2.l2.insight.5": {
+  "hash": "2cef004b358b",
+  "seconds": 8.59
+ },
+ "en/p2.l2.insight.7": {
+  "hash": "2fb0bd0498df",
+  "seconds": 8.45
+ },
+ "en/p2.l3.insight.1": {
+  "hash": "cc6db95a3937",
+  "seconds": 8.78
+ },
+ "en/p2.l3.insight.5": {
+  "hash": "40cc11bc3c42",
+  "seconds": 12.12
+ },
+ "en/p2.l4.insight.5": {
+  "hash": "c4219275c00e",
+  "seconds": 9.5
+ },
+ "en/p2.label.tapToReturn": {
+  "hash": "8f8beaa9a679",
+  "seconds": 1.66
+ },
+ "en/p2.label.mo": {
+  "hash": "0ac6845ba8c5",
+  "seconds": 1.85
+ },
+ "en/p2.label.innerLeaves": {
+  "hash": "70b662c649e0",
+  "seconds": 1.22
+ },
+ "en/p2.part.frame": {
+  "hash": "6707d997f8f4",
+  "seconds": 1.37
+ },
+ "en/p2.part.innerLeaves": {
+  "hash": "70b662c649e0",
+  "seconds": 1.15
+ },
+ "en/p3.ch1.done": {
+  "hash": "cff3c6f3d2c4",
+  "seconds": 4.42
+ },
+ "en/p3.ch2.story": {
+  "hash": "3d301ccc4f35",
+  "seconds": 13.2
+ },
+ "en/p3.ch3.counted.18": {
+  "hash": "b0bb95cbd674",
+  "seconds": 2.21
+ },
+ "en/p3.ch3.counted.30": {
+  "hash": "f82f587e4444",
+  "seconds": 1.99
+ },
+ "en/p3.ch3.counted.41": {
+  "hash": "96e29f2a6e5d",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.42": {
+  "hash": "233ba06e35a2",
+  "seconds": 2.23
+ },
+ "en/p3.ch3.counted.43": {
+  "hash": "df791ddd31bc",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.44": {
+  "hash": "972c0e192dbd",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.45": {
+  "hash": "d1a3f01dc92c",
+  "seconds": 2.33
+ },
+ "en/p3.ch3.counted.46": {
+  "hash": "3f32f21086dd",
+  "seconds": 2.4
+ },
+ "en/p3.ch3.counted.48": {
+  "hash": "4f21ccf42102",
+  "seconds": 2.4
+ },
+ "en/p3.ch3.counted.49": {
+  "hash": "3d900e6105ec",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.51": {
+  "hash": "f26ed592a835",
+  "seconds": 2.35
+ },
+ "en/p3.ch3.counted.52": {
+  "hash": "bcf6fae3b3a1",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.59": {
+  "hash": "daf2716114bf",
+  "seconds": 2.38
+ },
+ "en/num.13": {
+  "hash": "e05a35820075",
+  "seconds": 0.94
+ },
+ "en/num.16": {
+  "hash": "bb134aad82f2",
+  "seconds": 1.1
+ },
+ "en/num.19": {
+  "hash": "3871b442ac30",
+  "seconds": 1.15
+ },
+ "en/num.20": {
+  "hash": "a9e3f66d493c",
+  "seconds": 0.79
+ },
+ "en/num.28": {
+  "hash": "3ba530f4bd0d",
+  "seconds": 1.06
+ },
+ "en/num.29": {
+  "hash": "c883ec6a285b",
+  "seconds": 1.08
+ },
+ "en/num.40": {
+  "hash": "2f024763732b",
+  "seconds": 0.77
+ },
+ "en/num.43": {
+  "hash": "c0667abed212",
+  "seconds": 1.08
+ },
+ "en/num.51": {
+  "hash": "3b30957627d9",
+  "seconds": 1.08
+ },
+ "vi/p1.tile.craft": {
+  "hash": "042c38e31a20",
+  "seconds": 3.31
+ },
+ "vi/p1.deco.lotus": {
+  "hash": "779c388e892f",
+  "seconds": 3.5
+ },
+ "vi/p2.l1.insight.4": {
+  "hash": "bab68f618217",
+  "seconds": 11.18
+ },
+ "vi/p2.l2.name": {
+  "hash": "711b1eb04c0c",
+  "seconds": 0.94
+ },
+ "vi/p2.l2.question": {
+  "hash": "0e9f0670186d",
+  "seconds": 2.18
+ },
+ "vi/p2.l2.whoosh": {
+  "hash": "cafb21c4da34",
+  "seconds": 0.67
+ },
+ "vi/p2.l3.insight.1": {
+  "hash": "805f0051117d",
+  "seconds": 7.37
+ },
+ "vi/p2.label.joints": {
+  "hash": "18238badde7d",
+  "seconds": 2.35
+ },
+ "vi/p2.part.poem": {
+  "hash": "5dfdf46ce266",
+  "seconds": 1.22
+ },
+ "vi/p3.ch1.story": {
+  "hash": "6f1714b118a3",
+  "seconds": 12.36
+ },
+ "vi/p3.ch3.counted.7": {
+  "hash": "29519f2265fa",
+  "seconds": 1.8
+ },
+ "vi/p3.ch3.counted.18": {
+  "hash": "47ef3924d6f9",
+  "seconds": 2.06
+ },
+ "vi/p3.ch3.counted.24": {
+  "hash": "069ee5714d19",
+  "seconds": 2.45
+ },
+ "vi/p3.ch3.counted.57": {
+  "hash": "87f1b4b168f4",
+  "seconds": 2.06
+ },
+ "vi/num.22": {
+  "hash": "1ae4d5353772",
+  "seconds": 1.03
+ },
+ "vi/num.49": {
+  "hash": "e0759e98b55f",
+  "seconds": 1.15
  }
 }
