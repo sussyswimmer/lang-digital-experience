@@ -1,0 +1,155 @@
+{
+  "diverse-1": {
+    "width": 2160,
+    "height": 2688,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(8,8,8)"
+  },
+  "diverse-2": {
+    "width": 3082,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(8,8,8)"
+  },
+  "diverse-3": {
+    "width": 2880,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(24,8,8)"
+  },
+  "diverse-4": {
+    "width": 3692,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920,
+      2560
+    ],
+    "dominant": "rgb(120,184,248)"
+  },
+  "p1-aodai": {
+    "width": 2581,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(248,248,248)"
+  },
+  "p1-farmers": {
+    "width": 3258,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(8,8,8)"
+  },
+  "p1-market": {
+    "width": 2608,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(8,8,8)"
+  },
+  "p1-rain": {
+    "width": 3258,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(216,136,8)"
+  },
+  "p2-16-rims": {
+    "width": 3240,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(248,200,168)"
+  },
+  "p2-chin-straps": {
+    "width": 3240,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(248,248,248)"
+  },
+  "p2-layering-leaves": {
+    "width": 2160,
+    "height": 3260,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(72,72,72)"
+  },
+  "p2-stitching": {
+    "width": 3216,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(56,40,24)"
+  },
+  "p3-identity": {
+    "width": 3230,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920,
+      2560
+    ],
+    "dominant": "rgb(40,24,8)"
+  },
+  "p3-poem": {
+    "width": 2160,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920
+    ],
+    "dominant": "rgb(8,8,8)"
+  },
+  "p3-protection": {
+    "width": 3260,
+    "height": 2160,
+    "widths": [
+      640,
+      1280,
+      1920,
+      2560
+    ],
+    "dominant": "rgb(200,200,216)"
+  }
+}

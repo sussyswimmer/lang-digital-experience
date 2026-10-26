@@ -1,0 +1,52 @@
+/* Warm & organic palette from the brief: golden straw, sun-baked terracotta, deep forest
+   green (vintage shutter doors), weathered wood, and pops of market-fruit colour. */
+:root {
+  --straw-100: #FBF3DF;
+  --straw-200: #F6E7C4;
+  --straw-300: #EED39A;
+  --straw-500: #E0A93B;
+  --straw-700: #B8862A;
+  --cream: #F7EBCF;
+  --paper: #FFF9EC;
+
+  --terracotta-400: #D07A55;
+  --terracotta-600: #A9472A;
+  --forest-500: #2F5D46;
+  --forest-700: #1F4D3A;
+  --forest-900: #12301F;
+  --wood-500: #7A5A3A;
+  --wood-700: #5A3F28;
+  --wood-900: #3B2A1C;
+
+  --dragon-600: #C21F66;
+  --dragon-400: #E0457B;
+  --mango-400: #F6A623;
+  --leaf-500: #7FBF5E;
+  --sky-300: #7EC8E3;
+
+  --strap-purple: #8E5BA8;
+  --strap-peach: #F4A79A;
+  --strap-green: #A9D8A0;
+
+  --ink: var(--wood-900);
+  --ink-soft: #6B5442;
+  --bg: var(--cream);
+
+  --font-head: "Baloo 2 Variable", "Baloo 2", system-ui, sans-serif;
+  --font-body: "Nunito Variable", "Nunito", system-ui, sans-serif;
+
+  --tap-min: 64px;
+  --cta-h: 88px;
+  --radius-s: 12px;
+  --radius-m: 20px;
+  --radius-l: 32px;
+  --shadow-soft: 0 6px 18px rgba(59, 42, 28, 0.18);
+  --shadow-lift: 0 14px 36px rgba(59, 42, 28, 0.28);
+  --focus-ring: 0 0 0 4px var(--mango-400), 0 0 0 6px var(--forest-700);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}

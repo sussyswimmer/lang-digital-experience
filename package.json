@@ -1,0 +1,46 @@
+{
+  "name": "lang-digital-experience",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Explore the Nón Lá: an interactive, bilingual (EN/VI) digital experience for children",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173 --strictPort",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "assets:photos": "node tools/assets/process-photos.mjs",
+    "assets:glb": "node tools/assets/optimize-glb.mjs",
+    "assets:placeholders": "node tools/assets/make-placeholders.mjs",
+    "i18n:check": "node tools/i18n/check.mjs",
+    "i18n:export": "node tools/i18n/export-review.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/baloo-2": "5.3.0",
+    "@fontsource-variable/nunito": "5.3.0",
+    "gsap": "3.15.0",
+    "howler": "2.2.4",
+    "idb": "8.0.4",
+    "jspdf": "4.2.1",
+    "lottie-web": "5.13.0",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "4.5.1",
+    "@gltf-transform/core": "4.5.1",
+    "@gltf-transform/extensions": "4.5.1",
+    "@playwright/test": "1.63.0",
+    "@types/howler": "2.2.13",
+    "@types/three": "0.186.0",
+    "fake-indexeddb": "6.2.5",
+    "happy-dom": "20.14.6",
+    "meshoptimizer": "1.3.0",
+    "sharp": "0.35.5",
+    "typescript": "6.0.3",
+    "vite": "8.3.4",
+    "vitest": "5.0.4"
+  }
+}

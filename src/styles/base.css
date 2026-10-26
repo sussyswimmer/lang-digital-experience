@@ -1,0 +1,156 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-head);
+  line-height: 1.1;
+  margin: 0 0 0.4em;
+}
+
+img,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-s);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- the experience shell (the landing page scrolls; the app does not) ---------- */
+
+body.app-mode {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 20%, var(--straw-200), var(--cream) 60%, #EBD3A2);
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app[hidden] {
+  display: none;
+}
+
+#stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#stage.interactive {
+  pointer-events: auto;
+}
+
+#stage canvas {
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none;
+}
+
+#ui {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#ui > * {
+  pointer-events: auto;
+}
+
+#ui .pass-through {
+  pointer-events: none;
+}
+
+#ui .pass-through > * {
+  pointer-events: auto;
+}
+
+#captions {
+  position: absolute;
+  left: 50%;
+  bottom: calc(16px + var(--safe-bottom));
+  transform: translateX(-50%);
+  z-index: 4;
+  width: min(900px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+#hints {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#toasts {
+  position: absolute;
+  top: calc(96px + var(--safe-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  pointer-events: none;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  padding: calc(88px + var(--safe-top)) calc(24px + var(--safe-right)) calc(120px + var(--safe-bottom)) calc(24px + var(--safe-left));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

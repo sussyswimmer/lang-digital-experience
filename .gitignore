@@ -12,3 +12,4 @@ renders-scratch/
 # Playwright
 test-results/
 playwright-report/
+blender/out/

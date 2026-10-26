@@ -1,0 +1,21 @@
+{
+  "site.title": { "kind": "ui", "en": "Explore the Nón Lá", "vi": "Khám phá Nón Lá", "viStatus": "machine" },
+  "site.tagline": { "kind": "narration", "en": "A journey inside Vietnam's conical hat, layer by layer.", "vi": "Hành trình khám phá bên trong chiếc nón lá Việt Nam, từng lớp một.", "viStatus": "machine" },
+  "ui.start": { "kind": "ui", "en": "Start", "vi": "Bắt đầu", "viStatus": "machine" },
+  "ui.continue": { "kind": "ui", "en": "Continue", "vi": "Tiếp tục", "viStatus": "machine" },
+  "ui.next": { "kind": "ui", "en": "Next", "vi": "Tiếp theo", "viStatus": "machine" },
+  "ui.back": { "kind": "ui", "en": "Back", "vi": "Quay lại", "viStatus": "machine" },
+  "ui.home": { "kind": "ui", "en": "Home", "vi": "Trang chính", "viStatus": "machine" },
+  "ui.replay": { "kind": "ui", "en": "Hear it again", "vi": "Nghe lại", "viStatus": "machine" },
+  "ui.sound": { "kind": "ui", "en": "Sound on or off", "vi": "Bật hoặc tắt âm thanh", "viStatus": "machine" },
+  "ui.close": { "kind": "ui", "en": "Close", "vi": "Đóng", "viStatus": "machine" },
+  "p1.title": { "kind": "ui", "en": "A Hat Full of Stories", "vi": "Chiếc nón đầy những câu chuyện", "viStatus": "machine" },
+  "p2.title": { "kind": "ui", "en": "Uncover the Secrets of the Nón Lá", "vi": "Khám phá bí mật của chiếc nón lá", "viStatus": "machine" },
+  "p3.title": { "kind": "ui", "en": "Stories of the Nón Lá", "vi": "Chuyện chiếc nón lá", "viStatus": "machine" },
+  "hub.title": { "kind": "ui", "en": "Activity Hub", "vi": "Góc trò chơi", "viStatus": "machine" },
+  "build.title": { "kind": "ui", "en": "Build Your Nón Lá", "vi": "Làm chiếc nón lá của con", "viStatus": "machine" },
+  "colour.title": { "kind": "ui", "en": "Colour Your Nón Lá", "vi": "Tô màu chiếc nón lá", "viStatus": "machine" },
+  "gallery.title": { "kind": "ui", "en": "Tranh của con", "vi": "Tranh của con", "viStatus": "machine", "notes": "The brief names the gallery in Vietnamese in both languages" },
+  "quiz.title": { "kind": "ui", "en": "Nón Lá Memory Quiz", "vi": "Đố vui Nón Lá", "viStatus": "machine" },
+  "cert.title": { "kind": "ui", "en": "Your Certificate", "vi": "Giấy chứng nhận của con", "viStatus": "machine" }
+}
