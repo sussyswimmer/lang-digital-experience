@@ -15,3 +15,6 @@ playwright-report/
 blender/out/
 __pycache__/
 ops/tts/pending.json
+ops/tts/chunks/
+ops/tts/results/
+ops/tts/results.json
