@@ -21,6 +21,8 @@ export class Narration {
   /** test hook: every id that was asked to play */
   log: string[] = [];
   private speedFactor = 1;
+  /** told when a line starts/stops (idle hints wait for the voice to finish) */
+  onBusy: (busy: boolean) => void = () => {};
 
   constructor(
     private audio: AudioEngine,
@@ -53,6 +55,7 @@ export class Narration {
     const text = i18n.t(id);
     this.captions.show(text);
     this.audio.duck(true);
+    this.onBusy(true);
     return new Promise<Result>((resolve) => {
       const finish = (r: Result) => {
         if (!this.current || this.current.id !== id) return;
@@ -61,6 +64,7 @@ export class Narration {
         this.current = null;
         this.captions.hide();
         this.audio.duck(false);
+        this.onBusy(false);
         resolve(r);
       };
       const hasFile = this.enabled && AVAILABLE[lang]?.includes(id);
@@ -109,6 +113,7 @@ export class Narration {
     this.current = null;
     this.captions.hide();
     this.audio.duck(false);
+    this.onBusy(false);
     c.resolve('stopped');
   }
 }

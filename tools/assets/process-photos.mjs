@@ -22,8 +22,9 @@ for (const file of files) {
     await base.clone().webp({ quality: 78 }).toFile(path.join(OUT, `${stem}-${w}.webp`));
     await base.clone().jpeg({ quality: 80, progressive: true, mozjpeg: true }).toFile(path.join(OUT, `${stem}-${w}.jpg`));
   }
-  const { dominant } = await img.stats();
-  index[stem] = { width: meta.width, height: meta.height, widths, dominant: `rgb(${dominant.r},${dominant.g},${dominant.b})` };
+  // average colour (sharp's stats().dominant picks near-black bins on dark photos)
+  const px = await img.clone().resize(1, 1, { fit: 'fill' }).raw().toBuffer();
+  index[stem] = { width: meta.width, height: meta.height, widths, average: `rgb(${px[0]},${px[1]},${px[2]})` };
   console.log(stem, widths.join(','));
 }
 await writeFile('content/photos.json', JSON.stringify(index, null, 2) + '\n');

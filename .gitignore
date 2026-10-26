@@ -13,3 +13,4 @@ renders-scratch/
 test-results/
 playwright-report/
 blender/out/
+__pycache__/

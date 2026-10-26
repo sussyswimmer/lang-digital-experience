@@ -56,6 +56,7 @@ export class App {
     const captions = new CaptionBar(document.getElementById('captions')!);
     const narration = new Narration(opts.audio, captions);
     const idle = new IdleHint(layers.hints);
+    narration.onBusy = (busy) => idle.setBusy(busy);
     if (flags.test) {
       idle.scale = 0.1;
       narration.setSpeed(20);

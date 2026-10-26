@@ -39,6 +39,8 @@ export class IdleHint {
   private tl: gsap.core.Timeline | null = null;
   /** test mode shortens the 5 s wait */
   scale = 1;
+  /** while narration is speaking the child is listening, not idle */
+  private busy = false;
 
   constructor(host: HTMLElement) {
     this.hand = el('div.hand-hint', { style: 'display:none' }, el('div.hand-hint__ripple'), svg(HAND_SVG, 'hand-hint__svg'));
@@ -60,6 +62,13 @@ export class IdleHint {
     this.hideHand();
   }
 
+  /** narration start/end: the 5 s idle timer only runs once the voice has finished */
+  setBusy(busy: boolean): void {
+    if (busy === this.busy) return;
+    this.busy = busy;
+    this.reset();
+  }
+
   /** show the hint now (used by tests and by a "help" button) */
   showNow(): void {
     window.clearTimeout(this.timer);
@@ -69,7 +78,7 @@ export class IdleHint {
   private reset(): void {
     window.clearTimeout(this.timer);
     this.hideHand();
-    if (!this.step) return;
+    if (!this.step || this.busy) return;
     this.timer = window.setTimeout(() => this.fire(), (this.step.delayMs ?? 5000) * this.scale);
   }
 
