@@ -5,9 +5,10 @@
 //   stills/piece-0N-*.png      → img/layers/thumb-0N-*.webp: the whole piece, trimmed (game tray)
 //   stills/<other>.png         → img/renders/<name>.webp (+ -800)
 //   quiz/<q>-<answer>.png      → img/quiz/<q>-<answer>.webp (+ -600); Q1/Q5 answers come from QUIZ_EXTRA
-//   lineart/page-*.png         → img/lineart/page-*.png  (2400×1800, black lines on transparent: the
-//                                 colouring studio draws the paint layer underneath); pages 3–4 come from
-//                                 raw-assets/higgsfield/lineart
+//   lineart/page-*.png         → img/lineart/page-*.png  (1600×1200, black lines on transparent: the
+//                                 colouring studio draws the paint layer underneath) + page-*-600.webp picker
+//                                 thumbnails; pages 3–4 come from raw-assets/higgsfield/lineart
+//   stills/build-06-strap-<colour>.png → img/layers/build-06-strap-<colour>.webp (the child's strap colour)
 //   cover/cover.png            → img/renders/cover.webp (+ -1024); cover-hat.png (no floor) → cover-hat.webp (+ -600)
 import { readdir, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -16,6 +17,8 @@ import sharp from 'sharp';
 
 const SRC = 'raw-assets/renders';
 const HF_LINEART = 'raw-assets/higgsfield/lineart';
+// the colouring studio paints at 1600×1200, so that is the size its line art is served at
+const [LINE_W, LINE_H] = [1600, 1200];
 const OUT = 'public/assets/img';
 
 async function pngs(dir) {
@@ -89,10 +92,10 @@ for (const [src, f, margin] of LINEART) {
   await mkdir(path.join(OUT, 'lineart'), { recursive: true });
   // Freestyle renders black lines on near-white paper: ink coverage becomes the alpha of pure black, with
   // anything lighter than PAPER treated as blank so no faint veil sits over the paint
-  const [mx, my] = [Math.round(2400 * margin), Math.round(1800 * margin)];
+  const [mx, my] = [Math.round(LINE_W * margin), Math.round(LINE_H * margin)];
   const grey = await sharp(src)
     .flatten({ background: '#ffffff' })
-    .resize({ width: 2400 - 2 * mx, height: 1800 - 2 * my, fit: 'contain', background: '#ffffff' })
+    .resize({ width: LINE_W - 2 * mx, height: LINE_H - 2 * my, fit: 'contain', background: '#ffffff' })
     .extend({ top: my, bottom: my, left: mx, right: mx, background: '#ffffff' })
     .greyscale()
     .raw()
@@ -104,5 +107,10 @@ for (const [src, f, margin] of LINEART) {
   await sharp(rgba, { raw: { width, height, channels: 4 } })
     .png({ compressionLevel: 9 })
     .toFile(path.join(OUT, 'lineart', f));
+  // picker card thumbnail: the full page is only loaded when the child opens it
+  await sharp(rgba, { raw: { width, height, channels: 4 } })
+    .resize({ width: 600 })
+    .webp({ quality: 85, alphaQuality: 90 })
+    .toFile(path.join(OUT, 'lineart', f.replace('.png', '-600.webp')));
   console.log('lineart/' + f);
 }

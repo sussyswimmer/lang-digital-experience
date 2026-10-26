@@ -335,6 +335,25 @@ def set_holdout(names, on):
                 o.is_holdout = on
 
 
+def job_strapcolours(scene):
+    """build-06-strap in each strap colour, cut by the layers below it like the stacked build-06-strap."""
+    freeze_at_rest(scene)
+    studio_light(scene)
+    stills_camera(scene)
+    res(scene, 1600, 1200)
+    ob("shadow_catcher").hide_render = True
+    placed = [p for _, parts in GAME_LAYERS[:-1] for p in parts]
+    for n, colour in enumerate(("purple", "peach", "green"), 1):
+        recolour_strap(nb.COLOURS[f"strap_{colour}"])
+        set_visible(placed + ["strap_rig"])
+        set_holdout(placed, True)
+        render_still(scene, os.path.join(OUT, "stills", f"build-06-strap-{colour}.png"))
+        set_holdout(placed, False)
+        print(f"PROGRESS strapcolours {n}/3", flush=True)
+    recolour_strap(nb.COLOURS["strap_purple"])
+    ob("shadow_catcher").hide_render = False
+
+
 def job_stills(scene):
     freeze_at_rest(scene)
     studio_light(scene)
@@ -605,7 +624,7 @@ def main():
     for job in JOBS:
         log("job", job)
         {"intro": job_intro, "cover": job_cover, "coverhat": job_coverhat, "stills": job_stills, "quiz": job_quiz,
-         "lineart": job_lineart}[job](scene)
+         "lineart": job_lineart, "strapcolours": job_strapcolours}[job](scene)
     log(f"all done in {time.time() - t0:.0f}s → {OUT}")
 
 
