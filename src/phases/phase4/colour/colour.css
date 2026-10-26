@@ -887,12 +887,16 @@
     overflow: hidden;
   }
   .cs-straplabel {
-    font-size: 0.85rem;
-    margin-bottom: 2px;
+    display: none;
   }
   .cs-swatches {
-    display: flex;
-    gap: 4px;
+    display: grid;
+    grid-template-rows: repeat(2, 64px);
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 64px;
+    justify-content: start;
+    gap: 4px 6px;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;

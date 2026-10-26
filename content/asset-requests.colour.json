@@ -1,0 +1,20 @@
+[
+  {
+    "path": "public/assets/audio/narration/{en,vi}/colour.*.mp3 and gallery.*.mp3",
+    "what": "Narration for the colouring studio and the gallery: the brief's question (colour.question), page names, tool tips, the 18 colour names (colour.c.*), save / clear / session-only lines, and the gallery lines",
+    "source": "tts",
+    "notes": "Ids and text in content/strings/colour.json and content/strings/gallery.json (kind narration). Colour names are short single words; keep them bright and clear. Until recorded, captions run on the reading-speed timer."
+  },
+  {
+    "path": "public/assets/img/lineart/page-1-plain.png, page-2-strap.png",
+    "what": "Optional re-render of the Blender Freestyle pages framed tighter (the hat filling ~80% of the width instead of ~55%) and with the brim stitch hatching merged into one band",
+    "source": "blender",
+    "notes": "Current renders work (lines are ~5 px at 1600 wide, so no thickening kicks in), but ~100 of their regions are tiny brim-stitch cells a child can't hit. Same 2400x1800 black-on-transparent format; the studio picks the PNG over the SVG automatically."
+  },
+  {
+    "path": "public/assets/img/lineart/page-4-market.png",
+    "what": "Optional simpler variant of the Higgsfield market page: the same scene with plain banded baskets instead of a fine basket weave",
+    "source": "higgsfield",
+    "notes": "The current page has ~750 fill regions, ~550 of them tiny (basket weave, bicycle spokes). It works, and the brush handles them, but fewer tiny cells suit 5-year-olds better. Keep it closed-outline, 2400x1800, black on transparent."
+  }
+]
