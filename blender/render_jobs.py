@@ -530,8 +530,9 @@ def job_quiz(scene):
 
 def job_lineart(scene):
     freeze_at_rest(scene)
-    stills_camera(scene)
     res(scene, 3000, 2250)
+    old_samples = scene.cycles.samples
+    scene.cycles.samples = 8  # flat white emission: lines come from Freestyle, not from sampling
     scene.render.film_transparent = False
     world = scene.world
     bg = next(n for n in world.node_tree.nodes if n.type == "BACKGROUND")
@@ -556,7 +557,8 @@ def job_lineart(scene):
     scene.view_settings.exposure = 0.0
     scene.render.use_freestyle = True
     scene.render.line_thickness_mode = "ABSOLUTE"
-    scene.render.line_thickness = 2.6 * SCALE / 0.33 if PREVIEW else 2.6
+    # bold enough for small hands: ~5 px at the 2400 px the app uses
+    scene.render.line_thickness = 6.0 * SCALE if PREVIEW else 6.0
     fs = vl.freestyle_settings
     ls = fs.linesets[0] if fs.linesets else fs.linesets.new("lines")
     if ls.linestyle is None:
@@ -567,18 +569,25 @@ def job_lineart(scene):
     ls.select_border = True
     ls.select_crease = True
     ls.linestyle.color = (0, 0, 0)
-    ls.linestyle.thickness = 2.6
+    ls.linestyle.thickness = 6.0
     floor = bpy.data.objects.get("shadow_catcher")
     if floor:
         floor.hide_render = True
-    pages = [("page-1-plain", [p for p in ALL_PARTS if p not in ("strap_rig", "stitches_white")]),
-             ("page-2-strap", [p for p in ALL_PARTS if p != "stitches_white"])]
-    for n, (name, parts) in enumerate(pages, 1):
+    # The red thread wrapped round the brim would cut it into ~100 cells too small to tap-fill, so the brim is
+    # drawn as its bark band between the two wires. Each page frames the hat as large as its content allows.
+    pages = [("page-1-plain", [p for p in ALL_PARTS if p not in ("strap_rig", "stitches_white")], (0, 0, 0.06), 0.98),
+             ("page-2-strap", [p for p in ALL_PARTS if p != "stitches_white"], (0, 0, -0.05), 1.12)]
+    for n, (name, parts, target, dist) in enumerate(pages, 1):
+        cam, _ = look_at_camera(f"CAM_{name}", target, orbit(target, STILLS_CAM["yaw"], STILLS_CAM["elev"], dist),
+                                fov_y=STILLS_CAM["fov"])
+        scene.camera = cam
         set_visible(parts)
+        ob("brim_thread_red").hide_render = True
         render_still(scene, os.path.join(OUT, "lineart", f"{name}.png"))
         print(f"PROGRESS lineart {n}/{len(pages)}", flush=True)
     vl.material_override = None
     scene.view_settings.exposure = old_exposure
+    scene.cycles.samples = old_samples
     scene.render.use_freestyle = False
     bg.inputs["Color"].default_value, bg.inputs["Strength"].default_value = (*old_bg[0][:3], 1), old_bg[1]
     scene.render.film_transparent = True

@@ -42,12 +42,14 @@
    "prompt": "Colouring book page, pure black line art on a plain white background ... a large Vietnamese conical palm-leaf hat (nón bài thơ) seen from the front ... a woman in a long flowing áo dài dress, a small rowing boat on two gentle waves, and a lotus flower with two round leaves ..."
   },
   "page-4-market": {
-   "job": "e426b1ce-ce7e-494b-bc79-78d9910a6a4d",
-   "prompt": "Colouring book page, pure black line art on a plain white background ... a cheerful Vietnamese street market where everyone wears a conical nón lá hat: three smiling fruit sellers ... a bamboo shoulder pole with two baskets, a bicycle, two simple stalls with striped awnings, and a neat stack of conical hats for sale ..."
+   "job": "11344ce2-ab0d-4479-9019-40d88739ca59",
+   "prompt": "Very simple colouring book page for 4-6 year olds ... A cheerful Vietnamese street market where everyone wears a big conical nón lá hat: three smiling sellers, one carrying a bamboo shoulder pole with two baskets. The baskets are plain smooth bowls with NO weave pattern ...",
+   "why": "replaces e426b1ce (≈450 basket-weave cells too small to tap-fill); ≈100 small regions now"
   },
   "rejected": {
    "b": "64c171ac-0384-4a72-a4d5-50a7958a82a9 (odd underside brim)",
-   "d": "b6184799-3412-49f9-8794-7d8454428796 (rain market; fine, page 4 alternate)"
+   "d": "b6184799-3412-49f9-8794-7d8454428796 (rain market; fine, page 4 alternate)",
+   "e": "e83e7e10-5a20-4442-b58c-832944896605 (umbrella market; simplest but fewer hats)"
   }
  },
  "ambient_extra": {

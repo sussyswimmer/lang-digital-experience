@@ -1,5 +1,5 @@
 {
-  "notes": "Nón Lá Memory Quiz (brief 4c). Q1–Q3 are the brief's questions; Q4–Q5 are drafts for team review (source: draft). Each answer's picture is drawn in code (`art`) until public/assets/img/quiz/<imageId>.webp exists; then set that answer's `imageReady` to true. Q2–Q4 Blender renders are in raw-assets/renders/quiz (npm run assets:renders). One badge per question, earned only on a correct first try.",
+  "notes": "Nón Lá Memory Quiz (brief 4c). Q1–Q3 are the brief's questions; Q4–Q5 are drafts for team review (source: draft). Every answer has a picture at public/assets/img/quiz/<imageId>.webp (Q2–Q4 Blender renders, Q1 built from Blender stills, Q5 Higgsfield art; npm run assets:renders); the `art` drawing is the fallback. One badge per question, earned only on a correct first try.",
   "questions": [
     {
       "id": "q1",
@@ -7,9 +7,9 @@
       "promptId": "quiz.q1.prompt",
       "scene": { "image": "img/quiz/q1-scene-800.webp", "altId": "quiz.scene.q1" },
       "answers": [
-        { "id": "thread", "labelId": "quiz.q1.a.thread", "imageId": "q1-thread", "imageReady": false, "art": "thread", "correct": false },
-        { "id": "leaves", "labelId": "quiz.q1.a.leaves", "imageId": "q1-leaves", "imageReady": false, "art": "leaves", "correct": false },
-        { "id": "strap", "labelId": "quiz.q1.a.strap", "imageId": "q1-strap", "imageReady": false, "art": "strap", "correct": true }
+        { "id": "thread", "labelId": "quiz.q1.a.thread", "imageId": "q1-thread", "imageReady": true, "art": "thread", "correct": false },
+        { "id": "leaves", "labelId": "quiz.q1.a.leaves", "imageId": "q1-leaves", "imageReady": true, "art": "leaves", "correct": false },
+        { "id": "strap", "labelId": "quiz.q1.a.strap", "imageId": "q1-strap", "imageReady": true, "art": "strap", "correct": true }
       ],
       "explanationId": "quiz.q1.explain",
       "badge": "q1"
@@ -19,9 +19,9 @@
       "source": "brief",
       "promptId": "quiz.q2.prompt",
       "answers": [
-        { "id": "shape", "labelId": "quiz.q2.a.shape", "imageId": "q2-no-rings-floppy", "imageReady": false, "art": "floppy", "correct": true },
-        { "id": "shiny", "labelId": "quiz.q2.a.shiny", "imageId": "q2-shinier", "imageReady": false, "art": "shiny", "correct": false },
-        { "id": "tight", "labelId": "quiz.q2.a.tight", "imageId": "q2-tight-strap", "imageReady": false, "art": "tight", "correct": false }
+        { "id": "shape", "labelId": "quiz.q2.a.shape", "imageId": "q2-no-rings-floppy", "imageReady": true, "art": "floppy", "correct": true },
+        { "id": "shiny", "labelId": "quiz.q2.a.shiny", "imageId": "q2-shinier", "imageReady": true, "art": "shiny", "correct": false },
+        { "id": "tight", "labelId": "quiz.q2.a.tight", "imageId": "q2-tight-strap", "imageReady": true, "art": "tight", "correct": false }
       ],
       "explanationId": "quiz.q2.explain",
       "badge": "q2"
@@ -32,9 +32,9 @@
       "promptId": "quiz.q3.prompt",
       "scene": { "image": "img/quiz/q3-scene-800.webp", "altId": "quiz.scene.q3" },
       "answers": [
-        { "id": "gap", "labelId": "quiz.q3.a.gap", "imageId": "q3-leaf-gap", "imageReady": false, "art": "gap", "correct": true },
-        { "id": "rings", "labelId": "quiz.q3.a.rings", "imageId": "q3-tiny-rings", "imageReady": false, "art": "tinyRings", "correct": false },
-        { "id": "colour", "labelId": "quiz.q3.a.colour", "imageId": "q3-strap-new-colour", "imageReady": false, "art": "strapColour", "correct": false }
+        { "id": "gap", "labelId": "quiz.q3.a.gap", "imageId": "q3-leaf-gap", "imageReady": true, "art": "gap", "correct": true },
+        { "id": "rings", "labelId": "quiz.q3.a.rings", "imageId": "q3-tiny-rings", "imageReady": true, "art": "tinyRings", "correct": false },
+        { "id": "colour", "labelId": "quiz.q3.a.colour", "imageId": "q3-strap-new-colour", "imageReady": true, "art": "strapColour", "correct": false }
       ],
       "explanationId": "quiz.q3.explain",
       "badge": "q3"
@@ -44,9 +44,9 @@
       "source": "draft",
       "promptId": "quiz.q4.prompt",
       "answers": [
-        { "id": "8", "labelId": "quiz.q4.a.8", "imageId": "q4-rings-08", "imageReady": false, "art": "rings8", "correct": false },
-        { "id": "16", "labelId": "quiz.q4.a.16", "imageId": "q4-rings-16", "imageReady": false, "art": "rings16", "correct": true },
-        { "id": "30", "labelId": "quiz.q4.a.30", "imageId": "q4-rings-30", "imageReady": false, "art": "rings30", "correct": false }
+        { "id": "8", "labelId": "quiz.q4.a.8", "imageId": "q4-rings-08", "imageReady": true, "art": "rings8", "correct": false },
+        { "id": "16", "labelId": "quiz.q4.a.16", "imageId": "q4-rings-16", "imageReady": true, "art": "rings16", "correct": true },
+        { "id": "30", "labelId": "quiz.q4.a.30", "imageId": "q4-rings-30", "imageReady": true, "art": "rings30", "correct": false }
       ],
       "explanationId": "quiz.q4.explain",
       "badge": "q4"
@@ -56,9 +56,9 @@
       "source": "draft",
       "promptId": "quiz.q5.prompt",
       "answers": [
-        { "id": "poems", "labelId": "quiz.q5.a.poems", "imageId": "q5-poems", "imageReady": false, "art": "poems", "correct": true },
-        { "id": "coins", "labelId": "quiz.q5.a.coins", "imageId": "q5-coins", "imageReady": false, "art": "coins", "correct": false },
-        { "id": "rice", "labelId": "quiz.q5.a.rice", "imageId": "q5-rice", "imageReady": false, "art": "rice", "correct": false }
+        { "id": "poems", "labelId": "quiz.q5.a.poems", "imageId": "q5-poems", "imageReady": true, "art": "poems", "correct": true },
+        { "id": "coins", "labelId": "quiz.q5.a.coins", "imageId": "q5-coins", "imageReady": true, "art": "coins", "correct": false },
+        { "id": "rice", "labelId": "quiz.q5.a.rice", "imageId": "q5-rice", "imageReady": true, "art": "rice", "correct": false }
       ],
       "explanationId": "quiz.q5.explain",
       "badge": "q5"

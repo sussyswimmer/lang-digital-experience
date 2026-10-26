@@ -4,7 +4,7 @@
 //                                 the whole hat's floor shadow that goes under the stack
 //   stills/piece-0N-*.png      → img/layers/thumb-0N-*.webp: the whole piece, trimmed (game tray)
 //   stills/<other>.png         → img/renders/<name>.webp (+ -800)
-//   quiz/<q>-<answer>.png      → img/quiz/<q>-<answer>.webp (+ -600)
+//   quiz/<q>-<answer>.png      → img/quiz/<q>-<answer>.webp (+ -600); Q1/Q5 answers come from QUIZ_EXTRA
 //   lineart/page-*.png         → img/lineart/page-*.png  (2400×1800, black lines on transparent: the
 //                                 colouring studio draws the paint layer underneath); pages 3–4 come from
 //                                 raw-assets/higgsfield/lineart
@@ -50,6 +50,23 @@ for (const f of await pngs('stills')) {
 }
 for (const f of await pngs('quiz')) {
   await webp(path.join(SRC, 'quiz', f), path.join(OUT, 'quiz', path.basename(f, '.png')), [1200, 600]);
+}
+// quiz answers built from other renders / Higgsfield art (Q1: which part keeps the hat on; Q5: what is hidden)
+const QUIZ_EXTRA = {
+  'q1-thread': 'raw-assets/renders/stills/brim-closeup.png',
+  'q1-leaves': 'raw-assets/renders/stills/piece-04-leaf-outer.png',
+  'q1-strap': 'raw-assets/renders/stills/underside-purple.png',
+  'q5-poems': 'raw-assets/higgsfield/art/quiz-q5-poems.png',
+  'q5-coins': 'raw-assets/higgsfield/art/quiz-q5-coins.png',
+  'q5-rice': 'raw-assets/higgsfield/art/quiz-q5-rice.png',
+};
+for (const [id, src] of Object.entries(QUIZ_EXTRA)) {
+  if (!existsSync(src)) continue;
+  const tmp = path.join('node_modules/.cache', `${id}.png`);
+  await mkdir(path.dirname(tmp), { recursive: true });
+  // same 4:3 card as the rendered answers; pieces are centred on transparent
+  await sharp(src).resize(1200, 900, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toFile(tmp);
+  await webp(tmp, path.join(OUT, 'quiz', id), [1200, 600]);
 }
 for (const f of await pngs('cover')) {
   if (f === 'cover.png') {
