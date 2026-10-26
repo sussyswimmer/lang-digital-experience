@@ -1,0 +1,938 @@
+/* Phase 3: Cultural Storytelling Showcase: a cloth-bound storybook and its three chapters. */
+
+.screen.p3 {
+  padding: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 55% at 50% 45%, rgba(255, 249, 236, 0.75), rgba(255, 249, 236, 0) 72%),
+    radial-gradient(130% 100% at 50% 0%, #f8e8c4, #edd29c 58%, #d9b277);
+}
+
+/* Chapter 2 turns the lights off: everything behind the book fades to black */
+.screen.p3::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease;
+}
+
+.screen.p3.p3--dark::after {
+  opacity: 1;
+}
+
+/* ---------- cover ---------- */
+
+.p3-cover {
+  position: absolute;
+  z-index: 2;
+  inset: calc(84px + var(--safe-top)) calc(16px + var(--safe-right)) calc(112px + var(--safe-bottom)) calc(16px + var(--safe-left));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  container-type: size;
+}
+
+.p3-cover[hidden] {
+  display: none;
+}
+
+.p3-book {
+  position: relative;
+  flex: none;
+  height: min(540px, calc(100cqh - 118px), calc((100cqw - 24px) / 0.78));
+  aspect-ratio: 0.78;
+  perspective: 1800px;
+}
+
+.p3-book__pages {
+  position: absolute;
+  inset: 8px -12px -9px 10px;
+  border-radius: 4px 14px 14px 4px;
+  background: #fbf3df;
+  box-shadow:
+    inset -5px 0 0 #efe2c2,
+    inset -7px 0 0 #fffaf0,
+    inset -9px 0 0 #e7d6ae,
+    inset -11px 0 0 #fffaf0,
+    var(--shadow-lift);
+}
+
+.p3-book__cover {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 6px 16px 16px 6px;
+  background: none;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.p3-book__front,
+.p3-book__inside {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.p3-book__front {
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 2px, transparent 2px 4px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 2px, transparent 2px 4px),
+    radial-gradient(120% 80% at 55% 35%, #33735a, #1f4d3a 58%, #143728);
+  box-shadow: 0 18px 40px rgba(31, 30, 20, 0.35), inset 0 0 0 2px rgba(0, 0, 0, 0.25);
+}
+
+.p3-book__spine {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 8%;
+  background: linear-gradient(90deg, #0f2a1c, #1b4433 65%, rgba(255, 255, 255, 0.1));
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.p3-book__frame {
+  position: absolute;
+  inset: 6% 7% 6% 14%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6% 6% 7%;
+  border: 3px solid var(--straw-500);
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 7px rgba(224, 169, 59, 0.16), 0 0 0 2px rgba(0, 0, 0, 0.18);
+}
+
+.p3-book__frame::before {
+  content: '';
+  position: absolute;
+  inset: 9px;
+  border: 2px dashed rgba(246, 214, 140, 0.45);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.p3-book__glow {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  width: 92%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 226, 150, 0.85), rgba(246, 166, 35, 0.35) 38%, rgba(246, 166, 35, 0) 68%);
+}
+
+.p3-book__hat {
+  position: relative;
+  width: 82%;
+  margin-top: 12%;
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.35));
+}
+
+.p3-book__hat svg {
+  width: 100%;
+  height: auto;
+}
+
+.p3-book__plate {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  padding: 10px 14px 12px;
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.p3-book__title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(1.25rem, 3.6cqh, 2rem);
+  line-height: 1.05;
+  color: var(--terracotta-600);
+}
+
+.p3-book__sub {
+  font-weight: 700;
+  font-size: clamp(0.85rem, 2cqh, 1.05rem);
+  color: var(--wood-700);
+}
+
+.p3-book__art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.p3-book__inside {
+  transform: rotateY(180deg);
+  border-radius: 16px 6px 6px 16px;
+  background: radial-gradient(circle at 10px 10px, rgba(184, 134, 42, 0.35) 2px, transparent 2.5px) 0 0 / 22px 22px, #f3e3bd;
+}
+
+.p3-cover-cta {
+  flex: none;
+}
+
+.p3-cover-cta .icon {
+  width: 44px;
+  height: 44px;
+}
+
+/* ---------- the open book ---------- */
+
+.p3-story {
+  position: absolute;
+  z-index: 2;
+  inset: calc(84px + var(--safe-top)) calc(10px + var(--safe-right)) calc(110px + var(--safe-bottom)) calc(10px + var(--safe-left));
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr) 104px;
+  grid-template-rows: minmax(0, 1fr) 64px;
+  gap: 4px 8px;
+}
+
+.p3-story[hidden] {
+  display: none;
+}
+
+.p3-viewport {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 30px;
+  box-shadow: 0 16px 40px rgba(59, 42, 28, 0.28);
+  touch-action: pan-y;
+}
+
+.p3-track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+}
+
+.p3-page {
+  flex: 0 0 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(250px, 1fr);
+  gap: 20px;
+  padding: 18px 20px 18px 18px;
+  background:
+    linear-gradient(90deg, rgba(122, 90, 58, 0.14), rgba(122, 90, 58, 0) 2.5%),
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 60%),
+    #fff7e6;
+  transition: background-color 1.5s ease, color 1.5s ease;
+}
+
+.p3-page[data-chapter='identity'] {
+  grid-template-columns: minmax(0, 2.5fr) minmax(232px, 1fr);
+}
+
+.p3-page__pic {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  container-type: size;
+}
+
+.p3-pic {
+  position: relative;
+  width: min(100cqw, calc(100cqh * var(--ar)));
+  aspect-ratio: var(--ar);
+  border-radius: 20px;
+  overflow: hidden;
+  background: #d9c49a;
+  box-shadow: 0 10px 26px rgba(59, 42, 28, 0.3), 0 0 0 6px #fffdf6;
+  transition: box-shadow 1.5s ease, background-color 1.5s;
+}
+
+.p3-page__side {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0;
+  color: var(--ink);
+  transition: color 1.5s;
+}
+
+.p3-chip {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 16px 4px 6px;
+  border-radius: 999px;
+  background: var(--straw-200);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--wood-700);
+  transition: background-color 1.5s, color 1.5s;
+}
+
+.p3-chip svg {
+  width: 38px;
+  height: 38px;
+}
+
+.p3-page__title {
+  margin: 0;
+  font-size: clamp(1.55rem, 2.5vw, 2.25rem);
+  color: var(--forest-700);
+  transition: color 1.5s;
+}
+
+.p3-prompt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px 12px 10px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+  line-height: 1.2;
+  transition: background-color 1.5s, color 1.5s;
+}
+
+.p3-prompt__hand {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  transform: rotate(-18deg);
+}
+
+.p3-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.p3-act {
+  justify-content: flex-start;
+  padding: 0 22px 0 12px;
+  font-size: 1.3rem;
+}
+
+.p3-act[hidden] {
+  display: none;
+}
+
+.p3-act .icon {
+  width: 42px;
+  height: 42px;
+}
+
+.p3-result {
+  padding: 12px 16px;
+  border-radius: 20px;
+  background: var(--mango-400);
+  color: var(--wood-900);
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  line-height: 1.15;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.p3-result[hidden] {
+  display: none;
+}
+
+.p3-page__grow {
+  flex: 1;
+}
+
+.p3-listen {
+  align-self: flex-start;
+  font-size: 1.1rem;
+  padding: 0 20px 0 14px;
+  border: 2px solid rgba(90, 63, 40, 0.15);
+  box-shadow: none;
+}
+
+.p3-listen .icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* ---------- arrows and dots ---------- */
+
+.p3-nav {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 96px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--wood-700);
+  touch-action: manipulation;
+}
+
+.p3-nav--prev {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.p3-nav--next {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.p3-nav__disc {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--forest-700);
+  box-shadow: var(--shadow-soft);
+  transition: background-color 0.3s, color 0.3s, transform 0.15s var(--ease-out);
+}
+
+.p3-nav:active .p3-nav__disc {
+  transform: scale(0.94);
+}
+
+.p3-nav__disc .icon {
+  width: 46px;
+  height: 46px;
+}
+
+.p3-nav--next .p3-nav__disc {
+  background: var(--forest-700);
+  color: var(--cream);
+}
+
+.p3-nav--next.is-locked .p3-nav__disc {
+  background: #d6c7a4;
+  color: #8a7a5c;
+  box-shadow: none;
+}
+
+.p3-nav--next.is-ready .p3-nav__disc {
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.p3-nav--finish .p3-nav__disc {
+  background: var(--terracotta-600);
+}
+
+.p3-nav--finish.is-locked .p3-nav__disc {
+  background: #d6c7a4;
+}
+
+.p3-nav[disabled] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.p3-nav__label {
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: rgba(255, 249, 236, 0.9);
+  font-size: 1.05rem;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.p3-dots {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+
+.p3-dot {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.p3-dot__mark {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--wood-500);
+  opacity: 0.4;
+  transition: width 0.3s var(--ease-out), background-color 0.3s, opacity 0.3s;
+}
+
+.p3-dot.is-done .p3-dot__mark {
+  background: var(--forest-500);
+  opacity: 0.9;
+}
+
+.p3-dot.is-current .p3-dot__mark {
+  width: 44px;
+  background: var(--terracotta-600);
+  opacity: 1;
+}
+
+.p3-dot.is-locked .p3-dot__mark {
+  background: transparent;
+  border: 3px dashed var(--wood-500);
+  opacity: 0.55;
+}
+
+/* ---------- lights off (Chapter 2) ---------- */
+
+.p3--dark .p3-viewport {
+  box-shadow: none;
+}
+
+.p3--dark .p3-page {
+  background: #050403;
+}
+
+.p3--dark .p3-page__side,
+.p3--dark .p3-page__title {
+  color: var(--straw-300);
+}
+
+.p3--dark .p3-chip,
+.p3--dark .p3-prompt {
+  background: rgba(255, 236, 190, 0.1);
+  color: var(--straw-200);
+  box-shadow: none;
+}
+
+.p3--dark .p3-pic {
+  background: #000;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+.p3--dark .p3-nav__label {
+  background: rgba(255, 236, 190, 0.12);
+  color: var(--straw-200);
+}
+
+.p3--dark .p3-nav__disc {
+  background: rgba(255, 236, 190, 0.14);
+  color: var(--straw-200);
+}
+
+.p3--dark .p3-listen {
+  background: rgba(255, 236, 190, 0.12);
+  color: var(--straw-200);
+}
+
+.p3--dark .p3-dot__mark {
+  background: var(--straw-300);
+}
+
+/* ---------- Chapter 1: the sun and the shade ---------- */
+
+.p3-sun__sky {
+  position: absolute;
+  inset: 0 0 auto;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.p3-sun__photo {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.p3-sun__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.p3-sun__arc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.p3-sun__arcpath {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 3.5;
+  stroke-dasharray: 1 11;
+  stroke-linecap: round;
+}
+
+.p3-sun__sun {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+  filter: drop-shadow(0 0 16px rgba(255, 196, 70, 0.95));
+}
+
+.p3-sun__sun.is-dragging {
+  cursor: grabbing;
+}
+
+.p3-sun__art {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.p3-sun__art .sun-rays {
+  transform-origin: 60px 60px;
+  animation: p3-spin 20s linear infinite;
+}
+
+.reduced-motion .p3-sun__art .sun-rays {
+  animation: none;
+}
+
+@keyframes p3-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Chapter 2: the poem hat ---------- */
+
+.p3-poem {
+  background: #000;
+}
+
+.p3-poem picture,
+.p3-poem__base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.p3-poem__base {
+  transition: filter 1.5s ease;
+}
+
+.p3-poem.is-lit .p3-poem__base {
+  filter: brightness(0);
+}
+
+.p3-poem__light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(48% 42% at 42% 54%, rgba(255, 214, 140, 0.4), rgba(255, 170, 60, 0.12) 55%, rgba(255, 170, 60, 0) 75%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease;
+}
+
+.p3-poem.is-lit .p3-poem__light {
+  opacity: 1;
+  animation: p3-backlight 3.4s ease-in-out infinite alternate;
+}
+
+@keyframes p3-backlight {
+  from {
+    filter: brightness(0.85);
+  }
+  to {
+    filter: brightness(1.2);
+  }
+}
+
+.p3-poem__glow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease;
+}
+
+.p3-poem.is-lit .p3-poem__glow {
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(255, 190, 90, 0.7));
+}
+
+.p3-poem__tap {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.p3-poem__tap:focus-visible {
+  box-shadow: inset 0 0 0 4px var(--mango-400);
+}
+
+/* ---------- Chapter 3: rain and counting ---------- */
+
+.p3-rain picture,
+.p3-rain__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.p3-rain__img {
+  transition: filter 1.2s ease;
+}
+
+.p3-rain.is-raining .p3-rain__img {
+  filter: brightness(0.86) saturate(0.9);
+}
+
+.p3-rain__grade {
+  position: absolute;
+  inset: 0;
+  background: rgb(70, 92, 128);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.2s ease;
+}
+
+.p3-rain.is-raining .p3-rain__grade {
+  opacity: 0.2;
+}
+
+.p3-rain__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.p3-rain__count {
+  position: absolute;
+  inset: 0;
+  display: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.p3-rain__count.is-on {
+  display: block;
+}
+
+.p3-hatbtn {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: none;
+}
+
+.p3-hatbtn:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+.p3-badge {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: clamp(30px, 3.4vw, 44px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--terracotta-600);
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(0.95rem, 1.5vw, 1.3rem);
+  line-height: 1;
+  box-shadow: 0 0 0 3px #fff9ec, 0 4px 10px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.p3-badge:nth-of-type(3n + 2) {
+  background: var(--forest-500);
+}
+
+.p3-badge:nth-of-type(3n) {
+  background: var(--dragon-600);
+}
+
+/* ---------- celebrations ---------- */
+
+.p3-celebrate {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 46%;
+  width: min(46vmin, 420px);
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+.p3-celebrate svg {
+  width: 100%;
+  height: auto;
+}
+
+.p3-celebrate.is-glowing {
+  filter: drop-shadow(0 0 26px rgba(255, 214, 120, 0.95));
+}
+
+.p3-confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---------- phone portrait ---------- */
+
+@media (max-aspect-ratio: 1/1) {
+  .p3-story {
+    grid-template-columns: 84px minmax(0, 1fr) 84px;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 6px 4px;
+  }
+
+  .p3-viewport {
+    grid-column: 1 / -1;
+    border-radius: 24px;
+  }
+
+  .p3-nav--prev,
+  .p3-nav--next,
+  .p3-dots {
+    grid-row: 2;
+  }
+
+  .p3-nav__disc {
+    width: 68px;
+    height: 68px;
+  }
+
+  .p3-nav__disc .icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .p3-nav__label {
+    font-size: 0.85rem;
+    padding: 0 8px;
+  }
+
+  .p3-dot {
+    width: 44px;
+  }
+
+  .p3-page,
+  .p3-page[data-chapter='identity'] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .p3-page__pic {
+    container-type: normal;
+  }
+
+  .p3-pic {
+    width: 100%;
+  }
+
+  .p3-page__side {
+    gap: 8px;
+    overflow: hidden;
+  }
+
+  .p3-chip {
+    display: none;
+  }
+
+  .p3-page__title {
+    font-size: 1.35rem;
+  }
+
+  .p3-prompt {
+    padding: 8px 12px 8px 8px;
+    font-size: 1.05rem;
+  }
+
+  .p3-prompt__hand {
+    width: 32px;
+    height: 32px;
+  }
+
+  .p3-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .p3-act {
+    font-size: 1.05rem;
+    padding: 0 16px 0 8px;
+  }
+
+  .p3-act .icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .p3-result {
+    font-size: 1.15rem;
+    padding: 8px 12px;
+  }
+
+  .p3-page__grow {
+    display: none;
+  }
+}

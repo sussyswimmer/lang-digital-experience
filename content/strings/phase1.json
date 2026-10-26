@@ -1,0 +1,69 @@
+{
+  "p1.intro.1": {
+    "kind": "narration",
+    "en": "Look around! Have you ever seen this familiar hat before? Maybe you've spotted one in a busy market, in a green rice field, or on your way to school.",
+    "vi": "Nhìn xung quanh nào! Con đã bao giờ nhìn thấy chiếc nón quen thuộc này chưa? Có thể con đã thấy nó ở một khu chợ đông vui, trên cánh đồng lúa xanh, hay trên đường đến trường.",
+    "viStatus": "machine"
+  },
+  "p1.intro.2": {
+    "kind": "narration",
+    "en": "This is the nón lá, Vietnam's traditional conical hat. It helps keep the sun off our faces and the rain off our heads.",
+    "vi": "Đây là nón lá, chiếc nón truyền thống của Việt Nam. Nón lá giúp che nắng cho khuôn mặt và che mưa cho mái đầu của chúng ta.",
+    "viStatus": "machine"
+  },
+  "p1.intro.3": {
+    "kind": "narration",
+    "en": "But have you ever wondered how a few simple materials can become such a useful hat? What is hiding underneath those leaves? And what keeps everything together?",
+    "vi": "Nhưng con có bao giờ tự hỏi, làm sao vài vật liệu đơn giản lại có thể trở thành một chiếc nón hữu ích đến thế không? Điều gì đang ẩn giấu bên dưới những chiếc lá kia? Và cái gì giữ cho mọi thứ gắn chặt với nhau?",
+    "viStatus": "machine"
+  },
+  "p1.explore": {
+    "kind": "narration",
+    "en": "Let's explore",
+    "vi": "Cùng khám phá nào!",
+    "viStatus": "machine",
+    "notes": "Button label, also spoken when the button appears"
+  },
+  "p1.tile.farmers": {
+    "kind": "narration",
+    "en": "Farmers wear their nón lá while they work in the fields.",
+    "vi": "Các bác nông dân đội nón lá khi làm việc ngoài đồng.",
+    "viStatus": "machine",
+    "notes": "One-line caption when the tile opens (ambient: breeze in the leaves)"
+  },
+  "p1.tile.market": {
+    "kind": "narration",
+    "en": "At the busy market, vendors sell fresh fruit beneath their hats.",
+    "vi": "Ở khu chợ đông vui, các cô bán hàng đội nón lá bán trái cây tươi.",
+    "viStatus": "machine",
+    "notes": "Ambient: market chatter"
+  },
+  "p1.tile.aodai": {
+    "kind": "narration",
+    "en": "Schoolgirls in white áo dài wear the nón lá on a sunny day.",
+    "vi": "Các bạn nữ sinh mặc áo dài trắng đội nón lá trong ngày nắng đẹp.",
+    "viStatus": "machine",
+    "notes": "Ambient: schoolyard"
+  },
+  "p1.tile.rain": {
+    "kind": "narration",
+    "en": "Pitter-patter! A sudden rain shower, and the nón lá keeps your head dry.",
+    "vi": "Lộp độp, lộp độp! Trời đổ mưa bất chợt, chiếc nón lá giữ cho đầu con khô ráo.",
+    "viStatus": "machine",
+    "notes": "Ambient: rain on the hat"
+  },
+  "p1.tile.craft": {
+    "kind": "narration",
+    "en": "Craftspeople make each nón lá carefully, by hand.",
+    "vi": "Các nghệ nhân cẩn thận làm từng chiếc nón lá bằng tay.",
+    "viStatus": "machine",
+    "notes": "Ambient: workshop"
+  },
+  "p1.alt.farmers": { "kind": "alt", "en": "A farmer in a nón lá gathering pink lotus flowers in a green field", "vi": "Một bác nông dân đội nón lá hái hoa sen hồng giữa cánh đồng xanh", "viStatus": "machine" },
+  "p1.alt.market": { "kind": "alt", "en": "Two market vendors in nón lá among dragon fruit, mangoes and vegetables, seen from above", "vi": "Hai cô bán hàng đội nón lá giữa thanh long, xoài và rau củ, nhìn từ trên cao", "viStatus": "machine" },
+  "p1.alt.aodai": { "kind": "alt", "en": "Three schoolgirls in white áo dài and nón lá walking with a bicycle", "vi": "Ba bạn nữ sinh mặc áo dài trắng, đội nón lá, dắt xe đạp", "viStatus": "machine" },
+  "p1.alt.rain": { "kind": "alt", "en": "A person in a purple raincoat and a nón lá in the rain", "vi": "Một người mặc áo mưa tím, đội nón lá dưới mưa", "viStatus": "machine" },
+  "p1.alt.craft": { "kind": "alt", "en": "A craftswoman making nón lá by candlelight, surrounded by hats", "vi": "Một cô nghệ nhân làm nón lá bên ánh nến, xung quanh là những chiếc nón", "viStatus": "machine" },
+  "p1.alt.sky": { "kind": "alt", "en": "Women hanging many nón lá against a blue sky", "vi": "Các cô treo thật nhiều nón lá dưới bầu trời xanh", "viStatus": "machine" },
+  "p1.alt.jars": { "kind": "alt", "en": "A woman in a nón lá among big clay jars", "vi": "Một cô đội nón lá giữa những chum vại lớn", "viStatus": "machine" }
+}

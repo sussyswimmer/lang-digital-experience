@@ -1,0 +1,934 @@
+{
+  "p3.transition": {
+    "kind": "narration",
+    "en": "You've seen every part of the nón lá! Now let's find out where it goes and who it helps.",
+    "vi": "Con đã khám phá hết mọi phần của chiếc nón lá rồi! Bây giờ, mình cùng tìm hiểu xem nón lá đi đến những đâu và giúp đỡ những ai nhé.",
+    "viStatus": "machine",
+    "notes": "Plays while the finished hat glows, turns and shrinks into the storybook cover"
+  },
+  "p3.cover.sub": {
+    "kind": "ui",
+    "en": "Three little stories",
+    "vi": "Ba câu chuyện nhỏ",
+    "viStatus": "machine"
+  },
+  "p3.cover.cta": {
+    "kind": "ui",
+    "en": "Open the book",
+    "vi": "Mở sách ra",
+    "viStatus": "machine"
+  },
+  "p3.cover.open": {
+    "kind": "narration",
+    "en": "Tap the book to open it!",
+    "vi": "Con chạm vào cuốn sách để mở ra nhé!",
+    "viStatus": "machine"
+  },
+  "p3.chapter": {
+    "kind": "ui",
+    "en": "Chapter {n}",
+    "vi": "Chương {n}",
+    "viStatus": "machine"
+  },
+  "p3.prev": {
+    "kind": "ui",
+    "en": "Back",
+    "vi": "Trang trước",
+    "viStatus": "machine"
+  },
+  "p3.next": {
+    "kind": "ui",
+    "en": "Next",
+    "vi": "Trang sau",
+    "viStatus": "machine"
+  },
+  "p3.finish": {
+    "kind": "ui",
+    "en": "Finish the story",
+    "vi": "Kết thúc câu chuyện",
+    "viStatus": "machine"
+  },
+  "p3.listen": {
+    "kind": "ui",
+    "en": "Hear the story",
+    "vi": "Nghe kể chuyện",
+    "viStatus": "machine"
+  },
+  "p3.locked": {
+    "kind": "narration",
+    "en": "Let's finish this page first!",
+    "vi": "Mình làm xong trang này trước đã nhé!",
+    "viStatus": "machine"
+  },
+  "p3.finish.cheer": {
+    "kind": "narration",
+    "en": "Hooray! You finished the story! Now let's go and play!",
+    "vi": "Hoan hô! Con đã đọc hết câu chuyện rồi! Giờ mình cùng đi chơi nào!",
+    "viStatus": "machine"
+  },
+  "p3.ch1.title": {
+    "kind": "ui",
+    "en": "Protection & Care",
+    "vi": "Che chở và chăm sóc",
+    "viStatus": "machine"
+  },
+  "p3.ch1.story": {
+    "kind": "narration",
+    "en": "Under the hot sun, farmers work all day in the rice fields. The nón lá makes a little circle of shade, just for them. Its wide brim keeps the sun off their face, neck and shoulders.",
+    "vi": "Dưới cái nắng gay gắt, các bác nông dân làm việc cả ngày trên cánh đồng lúa. Chiếc nón lá tạo ra một vòng bóng mát nhỏ, chỉ dành riêng cho họ. Vành nón rộng che nắng cho khuôn mặt, cổ và đôi vai.",
+    "viStatus": "machine"
+  },
+  "p3.ch1.prompt": {
+    "kind": "narration",
+    "en": "Drag the sun across the sky!",
+    "vi": "Con hãy kéo ông mặt trời đi qua bầu trời nhé!",
+    "viStatus": "machine"
+  },
+  "p3.ch1.done": {
+    "kind": "narration",
+    "en": "See? Wherever the sun goes, the shade stays on her face!",
+    "vi": "Con thấy không? Mặt trời đi đến đâu, bóng mát vẫn che khuôn mặt cô ấy!",
+    "viStatus": "machine"
+  },
+  "p3.ch1.alt": {
+    "kind": "alt",
+    "en": "Two farmers in nón lá working in a green rice field; the near farmer's face is shaded by the wide brim",
+    "vi": "Hai bác nông dân đội nón lá làm việc trên cánh đồng lúa xanh; vành nón rộng che bóng mát cho khuôn mặt bác ở gần",
+    "viStatus": "machine"
+  },
+  "p3.ch2.title": {
+    "kind": "ui",
+    "en": "Handcraft Heritage",
+    "vi": "Di sản nghề thủ công",
+    "viStatus": "machine"
+  },
+  "p3.ch2.story": {
+    "kind": "narration",
+    "en": "In Tây Hồ village, in Huế, artisans hide a secret inside the hat. Between the leaves they tuck tiny pictures and lines of poetry. You can only see them when you hold the hat up to the light.",
+    "vi": "Ở làng Tây Hồ, xứ Huế, các nghệ nhân giấu một bí mật bên trong chiếc nón. Giữa các lớp lá, họ khéo léo lồng vào những bức tranh nhỏ xíu và những câu thơ. Con chỉ nhìn thấy chúng khi giơ chiếc nón lên trước ánh sáng.",
+    "viStatus": "machine"
+  },
+  "p3.ch2.prompt": {
+    "kind": "narration",
+    "en": "Tap the hat to hold it up to the light!",
+    "vi": "Con chạm vào chiếc nón để soi lên ánh sáng nhé!",
+    "viStatus": "machine"
+  },
+  "p3.ch2.done": {
+    "kind": "narration",
+    "en": "Look! Tiny pictures and lines of poetry, hidden in the hat!",
+    "vi": "Nhìn kìa! Những bức tranh nhỏ xíu và những câu thơ giấu trong chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch2.again": {
+    "kind": "narration",
+    "en": "Tap the hat again to turn the lights back on.",
+    "vi": "Chạm vào chiếc nón lần nữa để bật đèn lại nhé.",
+    "viStatus": "machine"
+  },
+  "p3.ch2.light": {
+    "kind": "ui",
+    "en": "Hold it up to the light",
+    "vi": "Soi lên ánh sáng",
+    "viStatus": "machine"
+  },
+  "p3.ch2.lightsOn": {
+    "kind": "ui",
+    "en": "Lights on",
+    "vi": "Bật đèn lên",
+    "viStatus": "machine"
+  },
+  "p3.ch2.alt": {
+    "kind": "alt",
+    "en": "A Tây Hồ poem hat glowing against a dark background, with silhouettes of girls in áo dài, a boat and handwritten lines of poetry inside the leaves",
+    "vi": "Chiếc nón bài thơ Tây Hồ sáng lên trên nền tối, bên trong lớp lá có bóng các cô gái mặc áo dài, con thuyền và những câu thơ viết tay",
+    "viStatus": "machine"
+  },
+  "p3.ch3.title": {
+    "kind": "ui",
+    "en": "Cultural Identity",
+    "vi": "Bản sắc văn hoá",
+    "viStatus": "machine"
+  },
+  "p3.ch3.story.1": {
+    "kind": "narration",
+    "en": "Look at all these hats at the market in the rain! Everyone wears a different raincoat, but the same nón lá.",
+    "vi": "Nhìn những chiếc nón ở phiên chợ trong mưa này! Mỗi người mặc một chiếc áo mưa khác nhau, nhưng ai cũng đội chiếc nón lá giống nhau.",
+    "viStatus": "machine"
+  },
+  "p3.ch3.story.2": {
+    "kind": "narration",
+    "en": "The nón lá is a symbol of Vietnam. It brings people together, like everyone at this market.",
+    "vi": "Nón lá là biểu tượng của Việt Nam. Nón lá gắn kết mọi người lại với nhau, giống như mọi người ở phiên chợ này.",
+    "viStatus": "machine"
+  },
+  "p3.ch3.rain": {
+    "kind": "ui",
+    "en": "Make it rain",
+    "vi": "Cho trời mưa nào!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.rainPrompt": {
+    "kind": "narration",
+    "en": "Tap the cloud to make it rain!",
+    "vi": "Con chạm vào đám mây để trời mưa nào!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.dry": {
+    "kind": "narration",
+    "en": "Drip, drop! The rain runs off the hats, and everyone underneath stays dry.",
+    "vi": "Tí tách, tí tách! Nước mưa chảy khỏi vành nón, còn mọi người bên dưới vẫn khô ráo.",
+    "viStatus": "machine"
+  },
+  "p3.ch3.count": {
+    "kind": "narration",
+    "en": "Let's count the hats together!",
+    "vi": "Cùng đếm những chiếc nón nào!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.countDone": {
+    "kind": "ui",
+    "en": "We're done counting",
+    "vi": "Đếm xong rồi",
+    "viStatus": "machine"
+  },
+  "p3.ch3.countAgain": {
+    "kind": "ui",
+    "en": "Count again",
+    "vi": "Đếm lại nào",
+    "viStatus": "machine"
+  },
+  "p3.ch3.hatLabel": {
+    "kind": "ui",
+    "en": "Count this hat",
+    "vi": "Đếm chiếc nón này",
+    "viStatus": "machine"
+  },
+  "p3.ch3.alt": {
+    "kind": "alt",
+    "en": "A crowded market in Quảng Trị in the rain: dozens of people in colourful raincoats, almost all wearing nón lá",
+    "vi": "Phiên chợ đông vui ở Quảng Trị trong mưa: rất nhiều người mặc áo mưa nhiều màu, hầu như ai cũng đội nón lá",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.1": {
+    "kind": "narration",
+    "en": "We counted 1 hat!",
+    "vi": "Chúng ta đếm được 1 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.2": {
+    "kind": "narration",
+    "en": "We counted 2 hats!",
+    "vi": "Chúng ta đếm được 2 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.3": {
+    "kind": "narration",
+    "en": "We counted 3 hats!",
+    "vi": "Chúng ta đếm được 3 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.4": {
+    "kind": "narration",
+    "en": "We counted 4 hats!",
+    "vi": "Chúng ta đếm được 4 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.5": {
+    "kind": "narration",
+    "en": "We counted 5 hats!",
+    "vi": "Chúng ta đếm được 5 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.6": {
+    "kind": "narration",
+    "en": "We counted 6 hats!",
+    "vi": "Chúng ta đếm được 6 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.7": {
+    "kind": "narration",
+    "en": "We counted 7 hats!",
+    "vi": "Chúng ta đếm được 7 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.8": {
+    "kind": "narration",
+    "en": "We counted 8 hats!",
+    "vi": "Chúng ta đếm được 8 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.9": {
+    "kind": "narration",
+    "en": "We counted 9 hats!",
+    "vi": "Chúng ta đếm được 9 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.10": {
+    "kind": "narration",
+    "en": "We counted 10 hats!",
+    "vi": "Chúng ta đếm được 10 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.11": {
+    "kind": "narration",
+    "en": "We counted 11 hats!",
+    "vi": "Chúng ta đếm được 11 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.12": {
+    "kind": "narration",
+    "en": "We counted 12 hats!",
+    "vi": "Chúng ta đếm được 12 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.13": {
+    "kind": "narration",
+    "en": "We counted 13 hats!",
+    "vi": "Chúng ta đếm được 13 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.14": {
+    "kind": "narration",
+    "en": "We counted 14 hats!",
+    "vi": "Chúng ta đếm được 14 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.15": {
+    "kind": "narration",
+    "en": "We counted 15 hats!",
+    "vi": "Chúng ta đếm được 15 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.16": {
+    "kind": "narration",
+    "en": "We counted 16 hats!",
+    "vi": "Chúng ta đếm được 16 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.17": {
+    "kind": "narration",
+    "en": "We counted 17 hats!",
+    "vi": "Chúng ta đếm được 17 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.18": {
+    "kind": "narration",
+    "en": "We counted 18 hats!",
+    "vi": "Chúng ta đếm được 18 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.19": {
+    "kind": "narration",
+    "en": "We counted 19 hats!",
+    "vi": "Chúng ta đếm được 19 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.20": {
+    "kind": "narration",
+    "en": "We counted 20 hats!",
+    "vi": "Chúng ta đếm được 20 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.21": {
+    "kind": "narration",
+    "en": "We counted 21 hats!",
+    "vi": "Chúng ta đếm được 21 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.22": {
+    "kind": "narration",
+    "en": "We counted 22 hats!",
+    "vi": "Chúng ta đếm được 22 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.23": {
+    "kind": "narration",
+    "en": "We counted 23 hats!",
+    "vi": "Chúng ta đếm được 23 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.24": {
+    "kind": "narration",
+    "en": "We counted 24 hats!",
+    "vi": "Chúng ta đếm được 24 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.25": {
+    "kind": "narration",
+    "en": "We counted 25 hats!",
+    "vi": "Chúng ta đếm được 25 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.26": {
+    "kind": "narration",
+    "en": "We counted 26 hats!",
+    "vi": "Chúng ta đếm được 26 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.27": {
+    "kind": "narration",
+    "en": "We counted 27 hats!",
+    "vi": "Chúng ta đếm được 27 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.28": {
+    "kind": "narration",
+    "en": "We counted 28 hats!",
+    "vi": "Chúng ta đếm được 28 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.29": {
+    "kind": "narration",
+    "en": "We counted 29 hats!",
+    "vi": "Chúng ta đếm được 29 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.30": {
+    "kind": "narration",
+    "en": "We counted 30 hats!",
+    "vi": "Chúng ta đếm được 30 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.31": {
+    "kind": "narration",
+    "en": "We counted 31 hats!",
+    "vi": "Chúng ta đếm được 31 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.32": {
+    "kind": "narration",
+    "en": "We counted 32 hats!",
+    "vi": "Chúng ta đếm được 32 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.33": {
+    "kind": "narration",
+    "en": "We counted 33 hats!",
+    "vi": "Chúng ta đếm được 33 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.34": {
+    "kind": "narration",
+    "en": "We counted 34 hats!",
+    "vi": "Chúng ta đếm được 34 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.35": {
+    "kind": "narration",
+    "en": "We counted 35 hats!",
+    "vi": "Chúng ta đếm được 35 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.36": {
+    "kind": "narration",
+    "en": "We counted 36 hats!",
+    "vi": "Chúng ta đếm được 36 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.37": {
+    "kind": "narration",
+    "en": "We counted 37 hats!",
+    "vi": "Chúng ta đếm được 37 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.38": {
+    "kind": "narration",
+    "en": "We counted 38 hats!",
+    "vi": "Chúng ta đếm được 38 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.39": {
+    "kind": "narration",
+    "en": "We counted 39 hats!",
+    "vi": "Chúng ta đếm được 39 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.40": {
+    "kind": "narration",
+    "en": "We counted 40 hats!",
+    "vi": "Chúng ta đếm được 40 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.41": {
+    "kind": "narration",
+    "en": "We counted 41 hats!",
+    "vi": "Chúng ta đếm được 41 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.42": {
+    "kind": "narration",
+    "en": "We counted 42 hats!",
+    "vi": "Chúng ta đếm được 42 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.43": {
+    "kind": "narration",
+    "en": "We counted 43 hats!",
+    "vi": "Chúng ta đếm được 43 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.44": {
+    "kind": "narration",
+    "en": "We counted 44 hats!",
+    "vi": "Chúng ta đếm được 44 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.45": {
+    "kind": "narration",
+    "en": "We counted 45 hats!",
+    "vi": "Chúng ta đếm được 45 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.46": {
+    "kind": "narration",
+    "en": "We counted 46 hats!",
+    "vi": "Chúng ta đếm được 46 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.47": {
+    "kind": "narration",
+    "en": "We counted 47 hats!",
+    "vi": "Chúng ta đếm được 47 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.48": {
+    "kind": "narration",
+    "en": "We counted 48 hats!",
+    "vi": "Chúng ta đếm được 48 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.49": {
+    "kind": "narration",
+    "en": "We counted 49 hats!",
+    "vi": "Chúng ta đếm được 49 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.50": {
+    "kind": "narration",
+    "en": "We counted 50 hats!",
+    "vi": "Chúng ta đếm được 50 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.51": {
+    "kind": "narration",
+    "en": "We counted 51 hats!",
+    "vi": "Chúng ta đếm được 51 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.52": {
+    "kind": "narration",
+    "en": "We counted 52 hats!",
+    "vi": "Chúng ta đếm được 52 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.53": {
+    "kind": "narration",
+    "en": "We counted 53 hats!",
+    "vi": "Chúng ta đếm được 53 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.54": {
+    "kind": "narration",
+    "en": "We counted 54 hats!",
+    "vi": "Chúng ta đếm được 54 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.55": {
+    "kind": "narration",
+    "en": "We counted 55 hats!",
+    "vi": "Chúng ta đếm được 55 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.56": {
+    "kind": "narration",
+    "en": "We counted 56 hats!",
+    "vi": "Chúng ta đếm được 56 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.57": {
+    "kind": "narration",
+    "en": "We counted 57 hats!",
+    "vi": "Chúng ta đếm được 57 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.58": {
+    "kind": "narration",
+    "en": "We counted 58 hats!",
+    "vi": "Chúng ta đếm được 58 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.59": {
+    "kind": "narration",
+    "en": "We counted 59 hats!",
+    "vi": "Chúng ta đếm được 59 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "p3.ch3.counted.60": {
+    "kind": "narration",
+    "en": "We counted 60 hats!",
+    "vi": "Chúng ta đếm được 60 chiếc nón!",
+    "viStatus": "machine"
+  },
+  "num.1": {
+    "kind": "narration",
+    "en": "One!",
+    "vi": "Một!",
+    "viStatus": "machine",
+    "notes": "Counting word (hats in Ch3); the badge shows the numeral"
+  },
+  "num.2": {
+    "kind": "narration",
+    "en": "Two!",
+    "vi": "Hai!",
+    "viStatus": "machine"
+  },
+  "num.3": {
+    "kind": "narration",
+    "en": "Three!",
+    "vi": "Ba!",
+    "viStatus": "machine"
+  },
+  "num.4": {
+    "kind": "narration",
+    "en": "Four!",
+    "vi": "Bốn!",
+    "viStatus": "machine"
+  },
+  "num.5": {
+    "kind": "narration",
+    "en": "Five!",
+    "vi": "Năm!",
+    "viStatus": "machine"
+  },
+  "num.6": {
+    "kind": "narration",
+    "en": "Six!",
+    "vi": "Sáu!",
+    "viStatus": "machine"
+  },
+  "num.7": {
+    "kind": "narration",
+    "en": "Seven!",
+    "vi": "Bảy!",
+    "viStatus": "machine"
+  },
+  "num.8": {
+    "kind": "narration",
+    "en": "Eight!",
+    "vi": "Tám!",
+    "viStatus": "machine"
+  },
+  "num.9": {
+    "kind": "narration",
+    "en": "Nine!",
+    "vi": "Chín!",
+    "viStatus": "machine"
+  },
+  "num.10": {
+    "kind": "narration",
+    "en": "Ten!",
+    "vi": "Mười!",
+    "viStatus": "machine"
+  },
+  "num.11": {
+    "kind": "narration",
+    "en": "Eleven!",
+    "vi": "Mười một!",
+    "viStatus": "machine"
+  },
+  "num.12": {
+    "kind": "narration",
+    "en": "Twelve!",
+    "vi": "Mười hai!",
+    "viStatus": "machine"
+  },
+  "num.13": {
+    "kind": "narration",
+    "en": "Thirteen!",
+    "vi": "Mười ba!",
+    "viStatus": "machine"
+  },
+  "num.14": {
+    "kind": "narration",
+    "en": "Fourteen!",
+    "vi": "Mười bốn!",
+    "viStatus": "machine"
+  },
+  "num.15": {
+    "kind": "narration",
+    "en": "Fifteen!",
+    "vi": "Mười lăm!",
+    "viStatus": "machine"
+  },
+  "num.16": {
+    "kind": "narration",
+    "en": "Sixteen!",
+    "vi": "Mười sáu!",
+    "viStatus": "machine"
+  },
+  "num.17": {
+    "kind": "narration",
+    "en": "Seventeen!",
+    "vi": "Mười bảy!",
+    "viStatus": "machine"
+  },
+  "num.18": {
+    "kind": "narration",
+    "en": "Eighteen!",
+    "vi": "Mười tám!",
+    "viStatus": "machine"
+  },
+  "num.19": {
+    "kind": "narration",
+    "en": "Nineteen!",
+    "vi": "Mười chín!",
+    "viStatus": "machine"
+  },
+  "num.20": {
+    "kind": "narration",
+    "en": "Twenty!",
+    "vi": "Hai mươi!",
+    "viStatus": "machine"
+  },
+  "num.21": {
+    "kind": "narration",
+    "en": "Twenty-one!",
+    "vi": "Hai mươi mốt!",
+    "viStatus": "machine"
+  },
+  "num.22": {
+    "kind": "narration",
+    "en": "Twenty-two!",
+    "vi": "Hai mươi hai!",
+    "viStatus": "machine"
+  },
+  "num.23": {
+    "kind": "narration",
+    "en": "Twenty-three!",
+    "vi": "Hai mươi ba!",
+    "viStatus": "machine"
+  },
+  "num.24": {
+    "kind": "narration",
+    "en": "Twenty-four!",
+    "vi": "Hai mươi tư!",
+    "viStatus": "machine"
+  },
+  "num.25": {
+    "kind": "narration",
+    "en": "Twenty-five!",
+    "vi": "Hai mươi lăm!",
+    "viStatus": "machine"
+  },
+  "num.26": {
+    "kind": "narration",
+    "en": "Twenty-six!",
+    "vi": "Hai mươi sáu!",
+    "viStatus": "machine"
+  },
+  "num.27": {
+    "kind": "narration",
+    "en": "Twenty-seven!",
+    "vi": "Hai mươi bảy!",
+    "viStatus": "machine"
+  },
+  "num.28": {
+    "kind": "narration",
+    "en": "Twenty-eight!",
+    "vi": "Hai mươi tám!",
+    "viStatus": "machine"
+  },
+  "num.29": {
+    "kind": "narration",
+    "en": "Twenty-nine!",
+    "vi": "Hai mươi chín!",
+    "viStatus": "machine"
+  },
+  "num.30": {
+    "kind": "narration",
+    "en": "Thirty!",
+    "vi": "Ba mươi!",
+    "viStatus": "machine"
+  },
+  "num.31": {
+    "kind": "narration",
+    "en": "Thirty-one!",
+    "vi": "Ba mươi mốt!",
+    "viStatus": "machine"
+  },
+  "num.32": {
+    "kind": "narration",
+    "en": "Thirty-two!",
+    "vi": "Ba mươi hai!",
+    "viStatus": "machine"
+  },
+  "num.33": {
+    "kind": "narration",
+    "en": "Thirty-three!",
+    "vi": "Ba mươi ba!",
+    "viStatus": "machine"
+  },
+  "num.34": {
+    "kind": "narration",
+    "en": "Thirty-four!",
+    "vi": "Ba mươi tư!",
+    "viStatus": "machine"
+  },
+  "num.35": {
+    "kind": "narration",
+    "en": "Thirty-five!",
+    "vi": "Ba mươi lăm!",
+    "viStatus": "machine"
+  },
+  "num.36": {
+    "kind": "narration",
+    "en": "Thirty-six!",
+    "vi": "Ba mươi sáu!",
+    "viStatus": "machine"
+  },
+  "num.37": {
+    "kind": "narration",
+    "en": "Thirty-seven!",
+    "vi": "Ba mươi bảy!",
+    "viStatus": "machine"
+  },
+  "num.38": {
+    "kind": "narration",
+    "en": "Thirty-eight!",
+    "vi": "Ba mươi tám!",
+    "viStatus": "machine"
+  },
+  "num.39": {
+    "kind": "narration",
+    "en": "Thirty-nine!",
+    "vi": "Ba mươi chín!",
+    "viStatus": "machine"
+  },
+  "num.40": {
+    "kind": "narration",
+    "en": "Forty!",
+    "vi": "Bốn mươi!",
+    "viStatus": "machine"
+  },
+  "num.41": {
+    "kind": "narration",
+    "en": "Forty-one!",
+    "vi": "Bốn mươi mốt!",
+    "viStatus": "machine"
+  },
+  "num.42": {
+    "kind": "narration",
+    "en": "Forty-two!",
+    "vi": "Bốn mươi hai!",
+    "viStatus": "machine"
+  },
+  "num.43": {
+    "kind": "narration",
+    "en": "Forty-three!",
+    "vi": "Bốn mươi ba!",
+    "viStatus": "machine"
+  },
+  "num.44": {
+    "kind": "narration",
+    "en": "Forty-four!",
+    "vi": "Bốn mươi tư!",
+    "viStatus": "machine"
+  },
+  "num.45": {
+    "kind": "narration",
+    "en": "Forty-five!",
+    "vi": "Bốn mươi lăm!",
+    "viStatus": "machine"
+  },
+  "num.46": {
+    "kind": "narration",
+    "en": "Forty-six!",
+    "vi": "Bốn mươi sáu!",
+    "viStatus": "machine"
+  },
+  "num.47": {
+    "kind": "narration",
+    "en": "Forty-seven!",
+    "vi": "Bốn mươi bảy!",
+    "viStatus": "machine"
+  },
+  "num.48": {
+    "kind": "narration",
+    "en": "Forty-eight!",
+    "vi": "Bốn mươi tám!",
+    "viStatus": "machine"
+  },
+  "num.49": {
+    "kind": "narration",
+    "en": "Forty-nine!",
+    "vi": "Bốn mươi chín!",
+    "viStatus": "machine"
+  },
+  "num.50": {
+    "kind": "narration",
+    "en": "Fifty!",
+    "vi": "Năm mươi!",
+    "viStatus": "machine"
+  },
+  "num.51": {
+    "kind": "narration",
+    "en": "Fifty-one!",
+    "vi": "Năm mươi mốt!",
+    "viStatus": "machine"
+  },
+  "num.52": {
+    "kind": "narration",
+    "en": "Fifty-two!",
+    "vi": "Năm mươi hai!",
+    "viStatus": "machine"
+  },
+  "num.53": {
+    "kind": "narration",
+    "en": "Fifty-three!",
+    "vi": "Năm mươi ba!",
+    "viStatus": "machine"
+  },
+  "num.54": {
+    "kind": "narration",
+    "en": "Fifty-four!",
+    "vi": "Năm mươi tư!",
+    "viStatus": "machine"
+  },
+  "num.55": {
+    "kind": "narration",
+    "en": "Fifty-five!",
+    "vi": "Năm mươi lăm!",
+    "viStatus": "machine"
+  },
+  "num.56": {
+    "kind": "narration",
+    "en": "Fifty-six!",
+    "vi": "Năm mươi sáu!",
+    "viStatus": "machine"
+  },
+  "num.57": {
+    "kind": "narration",
+    "en": "Fifty-seven!",
+    "vi": "Năm mươi bảy!",
+    "viStatus": "machine"
+  },
+  "num.58": {
+    "kind": "narration",
+    "en": "Fifty-eight!",
+    "vi": "Năm mươi tám!",
+    "viStatus": "machine"
+  },
+  "num.59": {
+    "kind": "narration",
+    "en": "Fifty-nine!",
+    "vi": "Năm mươi chín!",
+    "viStatus": "machine"
+  },
+  "num.60": {
+    "kind": "narration",
+    "en": "Sixty!",
+    "vi": "Sáu mươi!",
+    "viStatus": "machine"
+  }
+}
