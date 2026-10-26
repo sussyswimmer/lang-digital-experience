@@ -1,0 +1,46 @@
+{
+  "task": "T6",
+  "attempt": 1,
+  "state": "done",
+  "started_at": "2026-10-26T11:05:54Z",
+  "finished_at": "2026-10-26T12:21:28.043Z",
+  "outputs": [
+    {
+      "path": "raw-assets/video-edited/scroll-intro-fx-1440p.mp4",
+      "sha256": "b35dd2d0756577e1073efcde294a34524951d31658c400697d5fa0b5915a0db0",
+      "bytes": 51127511
+    },
+    {
+      "path": "raw-assets/renders/intro-preview/intro_1440_preview.mp4",
+      "sha256": "96947136684ef4c071950c6b810005a6e32a6e1cd5ff92d3ace7107eb358986e",
+      "bytes": 1092961
+    },
+    {
+      "path": "raw-assets/renders/intro-preview/contact_1440.jpg",
+      "sha256": "46d3219fc38b8db593952e72d6443637744c79e5cb97d29115b39e3489ccd231",
+      "bytes": 48241
+    },
+    {
+      "path": "raw-assets/video-edited/projects/intro_scroll.ecproj",
+      "sha256": "b1e8381a66035b294d2f7e0a77aedd7d88f7849f1d73cf0ce49c12c4b5bf7f51",
+      "bytes": 278773
+    }
+  ],
+  "tools": [
+    {
+      "name": "Blender",
+      "version": "5.2.1 LTS (9e2066aef7ef), Cycles OPTIX, RTX 3070"
+    },
+    {
+      "name": "effectcraft-cli",
+      "version": "0.17.0 (headless, --gpu)"
+    },
+    {
+      "name": "ffmpeg/ffprobe",
+      "version": "9.0-full_build-www.gyan.dev"
+    }
+  ],
+  "notes": "Textures checked: leaf_atlas.png 4096x2048, leaf_atlas_normal.png 2048x1024 present. ALL 270 frames rendered at 160 samples (none at 64). Frames 1-15: 47.03 s/frame (705.5 s) with the factory-default denoiser = OpenImageDenoise on the CPU; GPU was busy only ~9 s of each ~49 s frame (7 CPU cores busy the rest), so --samples 64 would have saved only a few s/frame. Stopped cleanly after frame 15 (all 15 PNGs complete) and resumed with --skip-existing through D:/nonla-work/T6/run_gpu_denoise.py, a 10-line wrapper that imports blender/render_jobs.py unchanged and sets scene.cycles.denoising_use_gpu = True after setup() (same OIDN denoiser, on the GPU). Frames 16-270: 9.42 s/frame (2400.9 s). Mean frame-to-frame difference across the switch 15->16 = 1.29 vs 1.24-1.31 for neighbours: no visible jump. Suggest adding denoising_use_gpu = True to setup() in render_jobs.py (not changed here: outside raw-assets/ops). Blender render time 51.8 min total. Intro: 270 frames 2560x1440 16-bit RGBA with alpha, all complete; blackdetect: 0 black segments; kept on D:/nonla-work/T6/intro, not committed. EffectCraft: intro_scroll.jsx setParam/addFx misses: none. Check frames 1/100/240 at 2560x1440 looked right (warm gradient, hat + shadow under it, glow/dust/sweep). Render 82.2s. scroll-intro-fx-1440p.mp4: h264 2560x1440 30/1 270f 9s 51127511B, no audio (bitrate 45000). intro_1440_preview.mp4: h264 1280x720 270f 1092961B. contact_1440.jpg: every 24th frame, 4x3 tiles 480 wide. scroll-intro-fx-1080p.mp4 kept unchanged. Running the updated cloud scripts was refused by the PC permission classifier (external code); Max approved T6 directly. The cloud's 64-sample restart request was superseded by the GPU-denoise fix with Max's T6 approval in place.",
+  "errors": [],
+  "needs_user": []
+}
