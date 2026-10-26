@@ -946,7 +946,8 @@
 
   .p3-page__side {
     gap: 8px;
-    overflow: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .p3-chip {

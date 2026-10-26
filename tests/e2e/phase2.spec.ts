@@ -78,7 +78,8 @@ test('layer 4: everything flies back, the strap is centre stage and sways when t
   const strap = (await hook<{ points: Pt[] }>(page, 'hint')).points[0];
   expect(Math.abs(strap.x - vp.width / 2)).toBeLessThan(vp.width * 0.2);
   await page.mouse.click(strap.x, strap.y);
-  await expect.poll(async () => Math.abs(await hook<number>(page, 'strapAngle')), { timeout: 30_000 }).toBeGreaterThan(3);
+  // a real sway: well past the few degrees it may still be settling by after dropping down
+  await expect.poll(async () => Math.abs(await hook<number>(page, 'strapAngle')), { timeout: 30_000, intervals: [150] }).toBeGreaterThan(9);
   await expect(page.locator('.screen.p2')).toHaveAttribute('data-phase', /insight|done/, { timeout: 30_000 });
   await page.locator('.p2-swatch--green').click();
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('nonla.settings.v1') ?? '{}').strapColour)).toBe('green');
@@ -101,4 +102,21 @@ test('Next moves on to the following layer without reloading the hat', async ({ 
   await next.click();
   await expect(page).toHaveURL(/#\/play\/p2\/leaves$/);
   await expect.poll(() => hook<string>(page, 'layer')).toBe('leaves');
+});
+
+test('"Show me" does the step for the child, also with reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await open(page, 'stitches');
+  await page.locator('[data-test="show-me"]').click();
+  await expect.poll(() => hook<boolean>(page, 'floating'), { timeout: 60_000 }).toBe(true);
+  await expect(page.locator('.screen.p2')).toHaveAttribute('data-phase', /insight|done/, { timeout: 30_000 });
+});
+
+test('without WebGL a layered drawing stands in and the layers still work', async ({ page }) => {
+  await page.goto('/?test=1&review=1&no3d=1#/play/p2/frame');
+  await page.waitForFunction(() => (window as any).__nonla?.p2?.phase?.() === 'question', null, { timeout: 30_000 });
+  await expect(page.locator('.hat2d__notice')).toBeVisible();
+  const hint = await hook<{ points: Pt[] }>(page, 'hint');
+  await page.mouse.click(hint.points[0].x, hint.points[0].y);
+  await expect.poll(() => hook<number>(page, 'ringsShown'), { timeout: 30_000 }).toBe(16);
 });

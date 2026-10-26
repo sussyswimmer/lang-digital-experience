@@ -246,7 +246,7 @@
 .p2-panel__photo {
   position: relative;
   flex: 1 1 180px;
-  max-height: 210px;
+  max-height: clamp(150px, 30vh, 320px);
   padding: 0;
   border: 0;
   border-radius: var(--radius-m);

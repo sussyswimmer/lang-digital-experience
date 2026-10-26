@@ -9,17 +9,17 @@ test.setTimeout(180_000);
 
 type Pt = { x: number; y: number };
 const p3 = (page: Page) => ({
-  chapter: () => page.evaluate(() => (window as any).__nonla.p3.chapter() as string),
-  sunT: () => page.evaluate(() => (window as any).__nonla.p3.sunT() as number),
-  shadowCoversFace: () => page.evaluate(() => (window as any).__nonla.p3.shadowCoversFace() as boolean),
-  lit: () => page.evaluate(() => (window as any).__nonla.p3.lit() as boolean),
-  raining: () => page.evaluate(() => (window as any).__nonla.p3.raining() as boolean),
-  count: () => page.evaluate(() => (window as any).__nonla.p3.count() as number),
-  hatCenters: () => page.evaluate(() => (window as any).__nonla.p3.hatCenters() as Pt[]),
+  chapter: () => page.evaluate(() => (window as any).__nonla?.p3?.chapter?.() as string),
+  sunT: () => page.evaluate(() => (window as any).__nonla?.p3?.sunT?.() as number),
+  shadowCoversFace: () => page.evaluate(() => (window as any).__nonla?.p3?.shadowCoversFace?.() as boolean),
+  lit: () => page.evaluate(() => (window as any).__nonla?.p3?.lit?.() as boolean),
+  raining: () => page.evaluate(() => (window as any).__nonla?.p3?.raining?.() as boolean),
+  count: () => page.evaluate(() => (window as any).__nonla?.p3?.count?.() as number),
+  hatCenters: () => page.evaluate(() => (window as any).__nonla?.p3?.hatCenters?.() as Pt[]),
 });
-const narrationLog = (page: Page) => page.evaluate(() => (window as any).__nonla.narrationLog() as string[]);
-const sfxLog = (page: Page) => page.evaluate(() => (window as any).__nonla.sfxLog() as string[]);
-const state = (page: Page) => page.evaluate(() => (window as any).__nonla.state() as string);
+const narrationLog = (page: Page) => page.evaluate(() => ((window as any).__nonla?.narrationLog?.() ?? []) as string[]);
+const sfxLog = (page: Page) => page.evaluate(() => ((window as any).__nonla?.sfxLog?.() ?? []) as string[]);
+const state = (page: Page) => page.evaluate(() => (window as any).__nonla?.state?.() as string);
 const chapters = (page: Page) => page.evaluate(() => (window as any).__nonla.progress().p3.chapters as Record<string, string>);
 
 function collectErrors(page: Page): string[] {

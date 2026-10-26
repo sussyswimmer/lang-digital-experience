@@ -56,6 +56,7 @@ export class StrapLayer extends LayerBase {
     rig.place.lift = STRAP_LIFT;
     rig.hat.get('strap_rig').visible = true;
     rig.strap.restShape();
+    rig.strap.simulating = true; // let it re-hang straight down from the tilted hat
     rig.applyTransforms();
     this.frameStrap(0);
     this.showKnotLabel();
@@ -268,7 +269,7 @@ export class StrapLayer extends LayerBase {
   private sway(): void {
     const rig = this.rig;
     this.taps++;
-    rig.strap.gustAmp = motion.reduced ? 0.6 : 1.8;
+    rig.strap.gustAmp = motion.reduced ? 0.8 : 2.6;
     rig.strap.tapGust();
     rig.stage.invalidate();
     this.sfx('swish');

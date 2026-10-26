@@ -12,7 +12,6 @@
  */
 import * as THREE from 'three';
 import { gsap } from 'gsap';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { Anim } from './anim';
 import { defaultFrame, fitDistance, viewOffset, type Extent, type Rect } from './framing';
 
@@ -88,9 +87,17 @@ export class Stage {
     this.anim = new Anim(() => this.invalidate());
 
     this.pmrem = new THREE.PMREMGenerator(this.renderer);
-    this.envTex = this.pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    const env = warmRoom();
+    this.envTex = this.pmrem.fromScene(env, 0.04).texture;
+    env.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (m.isMesh) {
+        m.geometry.dispose();
+        (m.material as THREE.Material).dispose();
+      }
+    });
     this.scene.environment = this.envTex;
-    this.scene.environmentIntensity = 0.32;
+    this.scene.environmentIntensity = 0.4;
 
     // warm afternoon light from the upper left, a soft fill, and a rim that outlines the cone
     const hemi = new THREE.HemisphereLight(0xfff3d6, 0xb85f36, 0.65);
@@ -100,7 +107,10 @@ export class Stage {
     fill.position.set(1.0, 0.3, 0.9);
     const rim = new THREE.DirectionalLight(0xffe2b0, 1.3);
     rim.position.set(0.6, 0.9, -1.1);
-    this.scene.add(hemi, key, fill, rim);
+    // a soft light from the child's side, so the underside (Layer 4) isn't left in the dark
+    const front = new THREE.DirectionalLight(0xfff0d8, 0.45);
+    front.position.set(0.2, -0.15, 1);
+    this.scene.add(hemi, key, fill, rim, front);
 
     this.shadow = makeContactShadow();
     this.rig.add(this.shadow);
@@ -298,6 +308,39 @@ const RAY = new THREE.Raycaster();
 export function disposeMaterial(mat: THREE.Material): void {
   for (const v of Object.values(mat)) if (v instanceof THREE.Texture) v.dispose();
   mat.dispose();
+}
+
+/**
+ * Reflections come from a warm "workshop": cream sky, straw walls, wooden floor and one sunny
+ * window. A neutral studio would turn the glossy leaves silver wherever they catch the light at a
+ * grazing angle (the underside view in Layer 4); this keeps every reflection golden.
+ */
+function warmRoom(): THREE.Scene {
+  const scene = new THREE.Scene();
+  const sky = new THREE.Mesh(
+    new THREE.SphereGeometry(5, 32, 16),
+    new THREE.ShaderMaterial({
+      side: THREE.BackSide,
+      uniforms: {
+        top: { value: new THREE.Color('#FFF6E2') },
+        mid: { value: new THREE.Color('#E9C88A') },
+        bottom: { value: new THREE.Color('#7A5A3A') },
+      },
+      vertexShader: 'varying vec3 vDir; void main() { vDir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: `
+        uniform vec3 top; uniform vec3 mid; uniform vec3 bottom; varying vec3 vDir;
+        void main() {
+          float y = vDir.y;
+          vec3 c = y > 0.0 ? mix(mid, top, smoothstep(0.0, 0.7, y)) : mix(mid, bottom, smoothstep(0.0, 0.5, -y));
+          gl_FragColor = vec4(c, 1.0);
+        }`,
+    }),
+  );
+  const sun = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 1.4), new THREE.MeshBasicMaterial({ color: new THREE.Color(3.2, 2.7, 2.0) }));
+  sun.position.set(-2.6, 2.4, 2.4);
+  sun.lookAt(0, 0, 0);
+  scene.add(sky, sun);
+  return scene;
 }
 
 /** a soft radial blob under the brim (no real-time shadows needed) */

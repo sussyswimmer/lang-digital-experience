@@ -7,10 +7,10 @@ import { expect, test, type Page } from '@playwright/test';
 
 test.setTimeout(180_000);
 
-const tiles = (page: Page) => page.evaluate(() => (window as any).__nonla.p1.tiles() as string[]);
-const narrationLog = (page: Page) => page.evaluate(() => (window as any).__nonla.narrationLog() as string[]);
-const sfxLog = (page: Page) => page.evaluate(() => (window as any).__nonla.sfxLog() as string[]);
-const state = (page: Page) => page.evaluate(() => (window as any).__nonla.state() as string);
+const tiles = (page: Page) => page.evaluate(() => ((window as any).__nonla?.p1?.tiles?.() ?? []) as string[]);
+const narrationLog = (page: Page) => page.evaluate(() => ((window as any).__nonla?.narrationLog?.() ?? []) as string[]);
+const sfxLog = (page: Page) => page.evaluate(() => ((window as any).__nonla?.sfxLog?.() ?? []) as string[]);
+const state = (page: Page) => page.evaluate(() => (window as any).__nonla?.state?.() as string);
 const p1Progress = (page: Page) => page.evaluate(() => (window as any).__nonla.progress().p1 as { seenTiles: string[]; done: boolean });
 
 function collectErrors(page: Page): string[] {

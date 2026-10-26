@@ -144,8 +144,8 @@ export class FrameLayer extends LayerBase {
     this.inner.forEach((o, i) => rig.sendAway(o, this.anim, { dir: left, dist: 0.5, delay: i * 0.15, duration: 0.7 }));
     await this.wait(reduced ? 0.4 : 0.9);
     if (this.disposed) return;
-    // a front view, a little from above, so all 16 rings can be counted
-    rig.pose({ pitch: 0.42 }, 0.8, this.anim);
+    // nearly side-on, so the rings stack up visibly as they spread
+    rig.pose({ pitch: 0.16 }, 0.8, this.anim);
     rig.frameTo({ cy: HAT_CENTRE_Y * SPREAD * 0.98, halfH: DEFAULT_FRAMING.halfH * 1.55, halfW: DEFAULT_FRAMING.halfW * 1.05 }, 1.2);
     const step = reduced ? 0.06 : 0.16;
     const ribs = hat.has('ribs') ? hat.meshes('ribs') : [];
@@ -219,14 +219,18 @@ export class FrameLayer extends LayerBase {
       text: String(i + 1),
       kind: 'num',
       place: 'center',
-      // the ring's point nearest the camera, slightly outside it
+      // on the ring's outline as the child sees it: odd numbers on the left, even on the right,
+      // so 16 badges climb the two slopes of the cone without piling up
       anchor: () => {
         const cam = this.rig.stage.camera.position;
-        const local = ring.worldToLocal(cam.clone());
-        local.y = 0;
-        if (local.lengthSq() < 1e-8) local.set(0, 0, 1);
-        local.setLength(r + 0.012);
-        return ring.localToWorld(a.copy(local));
+        const toCam = ring.worldToLocal(cam.clone());
+        toCam.y = 0;
+        if (toCam.lengthSq() < 1e-8) toCam.set(0, 0, 1);
+        toCam.normalize();
+        const side = i % 2 === 0 ? 1 : -1;
+        const out = new THREE.Vector3(-toCam.z * side, 0, toCam.x * side).multiplyScalar(0.94).addScaledVector(toCam, 0.34);
+        out.setLength(r + 0.02);
+        return ring.localToWorld(a.copy(out));
       },
       facing: () => n.set(0, 0, 1),
       onTap: () => this.sfx('ringSnap', i),
