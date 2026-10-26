@@ -8,7 +8,7 @@ import { ICONS } from '../../../ui/icons';
 import { i18n } from '../../../i18n/i18n';
 import { motion } from '../../../a11y/motion';
 import type { AppContext } from '../../../app/context';
-import { PAGES, loadPageImage, type ColourPage } from './pages';
+import { PAGES, loadPageImage, thumbUrl, type ColourPage } from './pages';
 import { COLOUR_ICONS } from './icons';
 import { getGallery } from '../gallery/galleryDb';
 
@@ -21,9 +21,16 @@ export interface PickerHost {
   settled(): Promise<void>;
 }
 
+interface Card {
+  page: ColourPage;
+  btn: HTMLButtonElement;
+  thumb: HTMLDivElement;
+  line: HTMLImageElement;
+}
+
 export class Picker {
   readonly el: HTMLElement;
-  private cards: { page: ColourPage; btn: HTMLButtonElement; thumb: HTMLDivElement; line: HTMLImageElement }[] = [];
+  private cards: Card[] = [];
   private urls: string[] = [];
   private g = gsap.context(() => {});
   private galleryBtn: HTMLButtonElement;
@@ -62,17 +69,24 @@ export class Picker {
       );
       this.cards.push({ page, btn, thumb, line });
       grid.appendChild(btn);
-      void loadPageImage(page).then(
-        (img) => (line.src = img.currentSrc || img.src),
-        () => thumb.classList.add('is-missing'),
-      );
+      // the small thumbnail; the full page only if that's missing
+      const full = () =>
+        void loadPageImage(page).then(
+          (img) => (line.src = img.currentSrc || img.src),
+          () => thumb.classList.add('is-missing'),
+        );
+      const small = thumbUrl(page);
+      if (small) {
+        line.addEventListener('error', full, { once: true });
+        line.src = small;
+      } else full();
     });
     this.countBadge = el('span.cp-gallery__count', { hidden: true });
     this.galleryBtn = el(
       'button.btn.btn--straw.cp-gallery',
       { type: 'button', 'data-touch': '', 'data-test': 'open-gallery', onclick: () => host.onGallery() },
       svg(COLOUR_ICONS.gallery),
-      i18n.bind(el('span'), 'gallery.title'),
+      i18n.bind(el('span'), 'gallery.name'),
       this.countBadge,
     );
     this.el = el('div.cp', { hidden: true, 'data-test': 'picker' }, head, grid, el('div.cp-foot', {}, this.galleryBtn));
@@ -92,7 +106,7 @@ export class Picker {
       );
     }
     this.speak(first);
-    this.host.ctx.idle.watch({ stepId: 'colour.pick', gesture: 'tap', target: () => this.suggested().getBoundingClientRect() });
+    this.host.ctx.idle.watch({ stepId: 'colour.pick', gesture: 'tap', target: () => this.suggested().btn.getBoundingClientRect() });
     await this.refresh();
   }
 
@@ -118,8 +132,15 @@ export class Picker {
   }
 
   /** the card the idle hand points at: the first unfinished drawing, else page 1 */
-  private suggested(): HTMLButtonElement {
-    return (this.cards.find((c) => c.btn.classList.contains('has-draft')) ?? this.cards[0]).btn;
+  private suggested(): Card {
+    return this.cards.find((c) => c.btn.classList.contains('has-draft')) ?? this.cards[0];
+  }
+
+  /** once the thumbnails are in, fetch the full page the child will most likely open */
+  private prefetch(page: ColourPage): void {
+    void Promise.all(this.cards.map((c) => c.line.decode().catch(() => {})))
+      .then(() => loadPageImage(page))
+      .catch(() => {});
   }
 
   private pick(page: ColourPage): void {
@@ -141,8 +162,10 @@ export class Picker {
     await Promise.all(
       this.cards.map(async (c) => {
         const d = await store.loadDraft(c.page.id).catch(() => undefined);
+        // a draft fits only the line art it was painted over: the full page the studio opens
+        const src = d ? await loadPageImage(c.page).then((img) => img.currentSrc || img.src, () => '') : '';
         c.thumb.querySelector('.cp-thumb__paint')?.remove();
-        const has = Boolean(d && c.line.src && d.src === c.line.src);
+        const has = Boolean(d && src && d.src === src);
         c.btn.classList.toggle('has-draft', has);
         (c.btn.querySelector('.cp-card__draft') as HTMLElement).hidden = !has;
         if (has && d) {
@@ -152,6 +175,7 @@ export class Picker {
         }
       }),
     );
+    this.prefetch(this.suggested().page);
     this.setCount(await store.count().catch(() => 0));
   }
 

@@ -11,6 +11,7 @@ import { el, svg } from '../../../ui/el';
 import { TopBar } from '../../../ui/TopBar';
 import { i18n } from '../../../i18n/i18n';
 import { motion } from '../../../a11y/motion';
+import { assetUrl } from '../../../assets/manifest';
 import type { AppContext, Screen } from '../../../app/context';
 import { speak } from '../../phase1/speak';
 import { art, refreshAlts } from '../hub/media';
@@ -31,6 +32,8 @@ class Quiz implements Screen {
   private g = gsap.context(() => {});
   private cleanups: (() => void)[] = [];
   private run: QuizRun = startRun();
+  /** between Next and the next question: the old cards are fading out and must not take taps */
+  private transitioning = false;
 
   private dots: HTMLSpanElement[] = [];
   private count!: HTMLSpanElement;
@@ -99,6 +102,8 @@ class Quiz implements Screen {
     const ctx = this.ctx;
     const q = this.question;
     const index = this.run.index;
+    this.transitioning = false;
+    this.stage.inert = false;
     i18n.bind(this.count, 'quiz.qnum', { n: index + 1 });
     this.dots.forEach((d, i) => d.classList.toggle('is-current', i === index));
 
@@ -113,7 +118,13 @@ class Quiz implements Screen {
 
     this.cards = q.answers.map((a, i) => {
       const picture = art(
-        { src: a.imageReady ? `img/quiz/${a.imageId}.webp` : null, altId: a.labelId, svg: answerArt(a.art) },
+        {
+          src: a.imageReady ? `img/quiz/${a.imageId}.webp` : null,
+          srcset: a.imageReady ? `${assetUrl(`img/quiz/${a.imageId}-600.webp`)} 600w, ${assetUrl(`img/quiz/${a.imageId}.webp`)} 1200w` : undefined,
+          sizes: '(max-width: 760px) 38vw, min(29vw, 390px)',
+          altId: a.labelId,
+          svg: answerArt(a.art),
+        },
         'p4q-card__pic',
       );
       // the card's own label names the answer; the picture needn't be read twice
@@ -146,6 +157,8 @@ class Quiz implements Screen {
       if (r.result === 'ended') this.readAloud();
     });
     else this.readAloud();
+    // an answered question always offers a way on
+    if (answered(this.run)) this.showNext();
   }
 
   /** the question, then each answer while its card glows */
@@ -163,7 +176,7 @@ class Quiz implements Screen {
   }
 
   private choose(i: number): void {
-    if (!this.alive || finished(this.run) || answered(this.run)) return;
+    if (!this.alive || this.transitioning || finished(this.run) || answered(this.run)) return;
     const ctx = this.ctx;
     const q = this.question;
     const outcome = answer(this.run, QUESTIONS, i);
@@ -262,6 +275,8 @@ class Quiz implements Screen {
     }
     if (motion.reduced) this.showQuestion();
     else {
+      this.transitioning = true;
+      this.stage.inert = true;
       const out = [...this.stage.children];
       this.g.add(() => gsap.to(out, { opacity: 0, y: -14, duration: 0.22, ease: 'power1.in', onComplete: () => this.alive && this.showQuestion() }));
     }

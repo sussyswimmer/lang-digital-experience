@@ -158,6 +158,8 @@ class Viewer3D implements HatViewer {
 
   setStrapColour(c: StrapColour): void {
     this.rig?.strap.setColour(c);
+    // the strap label's dot follows the strap
+    this.stage.overlay.style.setProperty('--strap-current', `var(--strap-${c})`);
     this.stage.invalidate();
   }
 

@@ -1,8 +1,9 @@
 /**
  * Draws the scroll intro's image sequence on a canvas.
  *
- * Every compressed frame (a few tens of KB) is kept as a Blob, but only a ±12-frame window around
- * the current position is decoded to ImageBitmaps (a decoded 1600w frame is ~5.8 MB). Frames arrive
+ * Every compressed frame (a few tens of KB) is kept as a Blob, but only a ±6-frame window around
+ * the current position (6 more ahead while scrolling) is decoded to ImageBitmaps (a decoded 1600w
+ * frame is ~5.8 MB), and only while the story is near the viewport (setDecoding). Frames arrive
  * coarse-to-fine, so scrubbing works after the first handful; until a frame is decoded the nearest
  * decoded one is drawn. Between two decoded neighbours the next frame is blended in by the
  * fractional position, which keeps a short placeholder sequence smooth.
@@ -35,7 +36,7 @@ export function frameUrl(width: number, index: number): string {
 
 const FETCH_PARALLEL = 4;
 const DECODE_PARALLEL = 3;
-const WINDOW = 12;
+const WINDOW = 6;
 
 export class ScrollFrames {
   readonly width: number;
@@ -53,6 +54,7 @@ export class ScrollFrames {
   private shown = -1;
   private raf = 0;
   private running = false;
+  private decodeOn = true;
   private ro: ResizeObserver | null = null;
   private firstDrawn = false;
   onFirstFrame: () => void = () => {};
@@ -106,6 +108,19 @@ export class ScrollFrames {
     for (const b of this.bitmaps.values()) b.close();
     this.bitmaps.clear();
     this.shown = -1;
+  }
+
+  /** Off: keep fetching, but free every decoded frame and decode none (the story is far from the viewport). */
+  setDecoding(on: boolean): void {
+    if (on === this.decodeOn) return;
+    this.decodeOn = on;
+    if (on) {
+      this.schedule();
+      this.requestDraw(true);
+      return;
+    }
+    for (const b of this.bitmaps.values()) b.close();
+    this.bitmaps.clear();
   }
 
   destroy(): void {
@@ -179,7 +194,7 @@ export class ScrollFrames {
   // ---------------------------------------------------------------- decoding
 
   private schedule(): void {
-    if (!this.running) return;
+    if (!this.running || !this.decodeOn) return;
     const wanted = decodeWindow(this.target, this.count, WINDOW, this.dir);
     this.window = new Set(wanted);
     for (const [i, bmp] of this.bitmaps) {
@@ -204,7 +219,7 @@ export class ScrollFrames {
     createImageBitmap(this.blobs[i]!)
       .then((bmp) => {
         this.decoding.delete(i);
-        if (!this.running || (this.firstDrawn && !this.window.has(i))) {
+        if (!this.running || !this.decodeOn || (this.firstDrawn && !this.window.has(i))) {
           bmp.close();
         } else {
           this.bitmaps.set(i, bmp);

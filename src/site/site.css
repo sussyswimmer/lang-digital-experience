@@ -433,9 +433,12 @@
   font-weight: 800;
   font-size: 1.05rem;
   white-space: nowrap;
+  width: max-content;
+  max-width: calc(100vw - 32px);
 }
 
 .hero__scroll-arrow {
+  flex: none;
   display: grid;
   place-items: center;
   width: 44px;
@@ -1215,6 +1218,41 @@
 
   .site-footer__row {
     justify-content: center;
+  }
+}
+
+/* phones: the scroll cue may wrap (Vietnamese is longer), and the bar's Start/Continue pill stays on one line */
+@media (max-width: 480px) {
+  .hero__scroll {
+    padding-block: 8px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-bar {
+    gap: 6px;
+  }
+
+  .site-start--compact {
+    gap: 8px;
+    padding-right: 14px;
+    font-size: 1.05rem;
+    white-space: nowrap;
+  }
+
+  .site-start--compact .site-start__icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* very narrow phones: the bar keeps Start and EN | VI; Back to top is in the footer */
+@media (max-width: 370px) {
+  .site-bar__brand {
+    display: none;
   }
 }
 

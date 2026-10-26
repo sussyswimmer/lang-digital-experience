@@ -71,10 +71,19 @@ async function settled(page: Page): Promise<void> {
 
 test('the picker asks the brief’s question and opens a page', async ({ page }) => {
   const errors = collectErrors(page);
+  const lineart: string[] = [];
+  page.on('request', (r) => {
+    if (r.url().includes('/img/lineart/')) lineart.push(r.url().replace(/.*\/img\/lineart\//, ''));
+  });
   await page.goto('/?test=1&review=1#/play/colour');
   await expect(page.locator('[data-test=picker]')).toBeVisible();
   await expect(page.locator('.cp-question')).toHaveText('How would you paint your own Nón Lá?');
   await expect(page.locator('.cp-card')).toHaveCount(4);
+  await expect(page.locator('[data-test=open-gallery]')).toContainText('My Pictures · Tranh của con');
+  // the cards show small thumbnails; at most the suggested page (1) is fetched in full meanwhile
+  await expect(page.locator('[data-test=page-market] .cp-thumb__line')).toHaveAttribute('src', /page-4-market-600\.webp$/);
+  await expect.poll(() => lineart.filter((u) => u.endsWith('-600.webp')).length).toBe(4);
+  expect(lineart.filter((u) => !u.endsWith('-600.webp') && !u.startsWith('page-1-plain.'))).toEqual([]);
   await expect.poll(() => narrationLog(page)).toContain('colour.question');
   await page.locator('[data-test=page-strap]').click();
   await expect(page).toHaveURL(/#\/play\/colour\/strap$/);
@@ -171,6 +180,13 @@ test('save to Tranh của con, then view, download and hold-to-delete', async ({
   await expect.poll(() => galleryCount(page), { timeout: 10_000 }).toBe(0);
   await page.mouse.up();
   await expect(page.locator('[data-test=empty]')).toBeVisible();
+
+  // the hub's gallery badge follows the pictures, not the number of saves
+  expect((await page.evaluate(() => (window as any).__nonla.progress().games.colour.saved)) as number).toBe(1);
+  await page.evaluate(() => (window as any).__nonla.go('#/play/hub'));
+  await expect(page.locator('.p4-hub [data-test=gallery]')).toBeVisible();
+  await page.waitForTimeout(500);
+  await expect(page.locator('.p4-hub [data-test=gallery] .p4h-count')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 

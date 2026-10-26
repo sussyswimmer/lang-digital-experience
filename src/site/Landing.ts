@@ -97,18 +97,18 @@ export function mountLanding(host: HTMLElement, opts: { settings: Store<Settings
   const heroIo = new IntersectionObserver(([e]) => root.classList.toggle('is-scrolled', !e.isIntersecting), { threshold: 0.15 });
   heroIo.observe(hero.el);
 
-  // the story (GSAP + frames) loads after the hero has painted, or as soon as it comes near
+  // the story (GSAP + compressed frames) loads after the hero has painted, or as soon as it comes near;
+  // frames are decoded only while the story is within half a screen of the viewport
   const kick = () => void story.init();
   const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
   if (idle) idle(kick, { timeout: 1500 });
   else window.setTimeout(kick, 600);
   const nearIo = new IntersectionObserver(
     ([e]) => {
-      if (!e.isIntersecting) return;
-      kick();
-      nearIo.disconnect();
+      if (e.isIntersecting) kick();
+      story.setNear(e.isIntersecting);
     },
-    { rootMargin: '150% 0px' },
+    { rootMargin: '50% 0px' },
   );
   nearIo.observe(story.el);
 
@@ -163,6 +163,8 @@ export function mountLanding(host: HTMLElement, opts: { settings: Store<Settings
       cue.start();
     },
     offerContinue() {
+      // the hash already is (or the app will set) a #/play route
+      entered = true;
       setStartLabel('ui.continue');
     },
   };

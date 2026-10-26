@@ -121,6 +121,15 @@
   transform-origin: 50% 22.8%;
 }
 
+/* the zoomed floor shadow runs past the stack's clip (bottom edge at 77.9% of the picture, left at
+   14.3%): fade it out just inside both, so the table shows a soft shadow, not a straight cut */
+.p4b-stack.is-renders .p4b-ghost img {
+  -webkit-mask-image: linear-gradient(to bottom, #000 69%, transparent 77.5%), linear-gradient(to right, transparent 14.5%, #000 24%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, #000 69%, transparent 77.5%), linear-gradient(to right, transparent 14.5%, #000 24%);
+  mask-composite: intersect;
+}
+
 /* "put it here": a warm glow under the hat while a piece is held */
 .p4b-hat::before {
   content: '';

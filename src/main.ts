@@ -49,8 +49,11 @@ function showLanding(): void {
   document.getElementById('app')!.hidden = true;
   const site = document.getElementById('site')!;
   site.hidden = false;
-  if (!landing) landing = mountLanding(site, { settings, audio, onStart: startApp });
-  else landing.resume();
+  if (!landing) {
+    landing = mountLanding(site, { settings, audio, onStart: startApp });
+    // first shown after a ?test=1 deep link started the app: the journey is already under way
+    if (app) landing.offerContinue();
+  } else landing.resume();
 }
 
 // Browser Back/Forward (or Android's back gesture) from the landing to a #/play route: the router

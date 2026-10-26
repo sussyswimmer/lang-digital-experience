@@ -72,7 +72,7 @@ button.hat-label::before {
 .hat-label--gold .hat-label__dot { background: var(--mango-400); }
 .hat-label--green .hat-label__dot { background: var(--leaf-500); }
 .hat-label--bark .hat-label__dot { background: #9c6b3f; }
-.hat-label--strap .hat-label__dot { background: var(--strap-purple); }
+.hat-label--strap .hat-label__dot { background: var(--strap-current, var(--strap-purple)); }
 
 .hat-label--red { border: 3px solid #c0261c; }
 .hat-label--white { border: 3px solid #fff; outline: 2px solid rgba(201, 191, 168, 0.8); }

@@ -58,7 +58,7 @@ class GalleryScreen implements Screen {
     this.root = root;
     this.alive = true;
     root.classList.add('gallery-screen');
-    root.append(TopBar(ctx, { titleId: 'gallery.title' }), this.build(), this.buildView());
+    root.append(TopBar(ctx, { titleId: 'gallery.name' }), this.build(), this.buildView());
     if (ctx.flags.test && window.__nonla) {
       window.__nonla.gallery = {
         count: () => this.tiles.length,
@@ -115,7 +115,7 @@ class GalleryScreen implements Screen {
     const head = el(
       'div.gl-head',
       {},
-      el('div.gl-title', {}, svg(COLOUR_ICONS.gallery, 'gl-title__icon'), el('div', {}, i18n.bind(el('h2'), 'gallery.title'), this.countText)),
+      el('div.gl-title', {}, svg(COLOUR_ICONS.gallery, 'gl-title__icon'), el('div', {}, i18n.bind(el('h2'), 'gallery.name'), this.countText)),
       this.colourBtn,
     );
     this.banner = el(

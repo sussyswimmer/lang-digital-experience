@@ -13,6 +13,8 @@ export interface Speaker {
   say(id: string): Promise<'ended' | 'stopped'>;
   currentId(): string | null;
   readonly log: string[];
+  /** asides (Narration.interject) pause a line and then resume it, so they don't end a sequence */
+  isAside?(id: string): boolean;
 }
 
 export type SpeakResult = { result: 'ended' | 'stopped'; index: number };
@@ -55,7 +57,7 @@ export function speakLine(n: Speaker, id: string, alive: () => boolean): Promise
       if (n.log.length > seen) {
         const fresh = n.log.slice(seen);
         seen = n.log.length;
-        if (fresh.some((x) => x !== id)) return done(false);
+        if (fresh.some((x) => x !== id && !n.isAside?.(x))) return done(false);
         restarted = true;
       }
       if (n.currentId() === null) return done(restarted);

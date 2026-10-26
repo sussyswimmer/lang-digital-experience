@@ -122,6 +122,13 @@ body.app-mode {
   pointer-events: none;
 }
 
+@media (max-width: 600px) {
+  #captions {
+    bottom: calc(8px + var(--safe-bottom));
+    width: calc(100vw - 16px);
+  }
+}
+
 #hints {
   position: absolute;
   inset: 0;

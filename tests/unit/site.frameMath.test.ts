@@ -55,13 +55,19 @@ describe('decodeWindow', () => {
     expect(Math.max(...decodeWindow(46.6, 48, 12, 0))).toBe(47);
   });
   it('leans ahead in the scroll direction', () => {
-    const down = decodeWindow(20, 135, 12, 1);
+    const down = decodeWindow(20, 135, 12, 1, 4);
     expect(Math.max(...down)).toBe(36);
     expect(Math.min(...down)).toBe(8);
     expect(down[1]).toBe(21); // the next frame wins the tie
-    const up = decodeWindow(20, 135, 12, -1);
+    const up = decodeWindow(20, 135, 12, -1, 4);
     expect(Math.min(...up)).toBe(4);
     expect(up[1]).toBe(19);
+  });
+  it('by default keeps 13 decoded frames at rest and 19 while scrolling (≈75–110 MB at 1600w)', () => {
+    expect(decodeWindow(20, 135)).toHaveLength(13);
+    expect(decodeWindow(20, 135, undefined, 1)).toHaveLength(19);
+    expect(Math.max(...decodeWindow(20, 135, undefined, 1))).toBe(32);
+    expect(decodeWindow(0, 135)).toHaveLength(7);
   });
 });
 

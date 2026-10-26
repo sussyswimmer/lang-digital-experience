@@ -37,13 +37,13 @@ export function loadOrder(count: number): number[] {
 }
 
 /**
- * Frames to keep decoded around `center` (±radius), nearest first. The window leans one frame
+ * Frames to keep decoded around `center` (±radius), nearest first. The window leans `lean` frames
  * further in the scroll direction so the next frames are ready before they are needed.
  */
-export function decodeWindow(center: number, count: number, radius = 12, dir: -1 | 0 | 1 = 0): number[] {
+export function decodeWindow(center: number, count: number, radius = 6, dir: -1 | 0 | 1 = 0, lean = 6): number[] {
   const c = Math.round(center);
-  const lo = Math.max(0, c - radius - (dir < 0 ? 4 : 0));
-  const hi = Math.min(count - 1, c + radius + (dir > 0 ? 4 : 0));
+  const lo = Math.max(0, c - radius - (dir < 0 ? lean : 0));
+  const hi = Math.min(count - 1, c + radius + (dir > 0 ? lean : 0));
   const out: number[] = [];
   for (let i = lo; i <= hi; i++) out.push(i);
   // ahead-of-scroll frames win ties

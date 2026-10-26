@@ -30,6 +30,8 @@ export class AudioEngine {
   private unlocked = false;
   private ambients = new Map<AmbientId, { stop: () => void; setLevel: (v: number) => void }>();
   private ducked = false;
+  /** one ambient file loading ahead of playAmbient() */
+  private preloaded: { id: AmbientId; howl: Howl } | null = null;
   volume = 1;
   muted = false;
 
@@ -73,10 +75,22 @@ export class AudioEngine {
     this.sfx.enabled = !m;
   }
 
+  /** Start loading an ambient file a moment early (e.g. on a tile's pointerdown); playAmbient() picks it up. */
+  preloadAmbient(id: AmbientId): void {
+    if (this.ambients.has(id) || this.preloaded?.id === id || !(ambientIndex as string[]).includes(id)) return;
+    this.preloaded?.howl.unload();
+    this.preloaded = { id, howl: this.ambientHowl(id) };
+  }
+
+  private ambientHowl(id: AmbientId): Howl {
+    return new Howl({ src: [assetUrl(AMBIENT_FILES[id])], loop: true, volume: 0, html5: false });
+  }
+
   playAmbient(id: AmbientId): void {
     if (this.ambients.has(id)) return;
     if ((ambientIndex as string[]).includes(id)) {
-      const howl = new Howl({ src: [assetUrl(AMBIENT_FILES[id])], loop: true, volume: 0, html5: false });
+      const howl = this.preloaded?.id === id ? this.preloaded.howl : this.ambientHowl(id);
+      if (this.preloaded?.id === id) this.preloaded = null;
       // fade in once it really plays: fades queued before the file has loaded can run out of order
       howl.once('play', () => howl.fade(0, this.level(), 600));
       howl.play();

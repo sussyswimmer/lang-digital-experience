@@ -29,6 +29,8 @@
   margin: 0;
   font-size: clamp(1.8rem, 3.4vw, 2.6rem);
   color: var(--forest-700);
+  /* on a phone "My Pictures ·" / "Tranh của con", not a lone "của con" */
+  text-wrap: balance;
 }
 
 .gl-title__icon {

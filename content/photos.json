@@ -1,24 +1,4 @@
 {
-  "diverse-1": {
-    "width": 2160,
-    "height": 2688,
-    "widths": [
-      640,
-      1280,
-      1920
-    ],
-    "average": "rgb(61,44,23)"
-  },
-  "diverse-2": {
-    "width": 3082,
-    "height": 2160,
-    "widths": [
-      640,
-      1280,
-      1920
-    ],
-    "average": "rgb(85,73,63)"
-  },
   "diverse-3": {
     "width": 2880,
     "height": 2160,

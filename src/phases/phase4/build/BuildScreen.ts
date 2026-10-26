@@ -15,7 +15,7 @@ import { assetUrl } from '../../../assets/manifest';
 import type { AppContext, Screen } from '../../../app/context';
 import content from '../../../../content/build.json';
 import { speak } from '../../phase1/speak';
-import { BENCH, seams, STRAP_COLOURS } from '../hub/hat';
+import { BENCH, seams, STRAP_COLOURS, type StrapColour } from '../hub/hat';
 import { MAKER_BADGE, badgeSvg } from '../hub/badges';
 import { P4_ICONS, P4_PICTURES } from '../hub/icons';
 import { confettiBurst, type Burst } from '../hub/confetti';
@@ -27,6 +27,13 @@ const PIECES = content.pieces as Record<PieceId, { labelId: string; placedId: st
 const DRAG_START_PX = 10;
 /** the drop zone is the hat box plus this much on every side */
 const ZONE_PAD = 0.15;
+/** the workbench's width (585 px at 1180, 656 at 1440); the renders' 1.4× zoom only crops their empty margins */
+const LAYER_SIZES = '(max-width: 760px) calc(100vw - 44px), min(50vw, 660px)';
+
+/** a layer render at 800 or 1600 px wide (build-0N-x.webp + build-0N-x-800.webp) */
+function layerImg(file: string): string {
+  return `<img alt="" draggable="false" sizes="${LAYER_SIZES}" srcset="${assetUrl(file.replace(/\.webp$/, '-800.webp'))} 800w, ${assetUrl(file)} 1600w" src="${assetUrl(file)}">`;
+}
 
 interface Card {
   piece: PieceId;
@@ -47,6 +54,7 @@ class Build implements Screen {
   private finished = false;
   private toldTapHat = false;
   private uid = Math.random().toString(36).slice(2, 7);
+  private strap: StrapColour = 'purple';
   private strapColour: string = STRAP_COLOURS.purple;
 
   private layout!: HTMLDivElement;
@@ -70,7 +78,10 @@ class Build implements Screen {
     this.alive = true;
     root.classList.add('p4', 'p4-build');
     quietViewer(ctx);
-    this.strapColour = STRAP_COLOURS[ctx.settings.get().strapColour] ?? STRAP_COLOURS.purple;
+    // the strap colour the child picked in Phase 2
+    const strap = ctx.settings.get().strapColour;
+    this.strap = strap in STRAP_COLOURS ? strap : 'purple';
+    this.strapColour = STRAP_COLOURS[this.strap];
 
     this.buildBench();
     this.tray = el('div.p4b-tray', { role: 'group', 'aria-label': i18n.t('build.tray') });
@@ -89,7 +100,11 @@ class Build implements Screen {
         glowing: () => [...this.cards.values()].filter((c) => c.el.classList.contains('is-glow')).map((c) => c.piece),
       }),
     );
-    const onResize = () => this.cancelDrag();
+    const onResize = () => {
+      const dragging = !!this.drag?.dragging;
+      this.cancelDrag();
+      if (dragging && this.alive) this.watchIdle();
+    };
     window.addEventListener('resize', onResize);
     this.cleanups.push(() => window.removeEventListener('resize', onResize));
 
@@ -121,7 +136,7 @@ class Build implements Screen {
     if (content.layerImagesReady) {
       // the Blender renders: their own floor shadow under a ghost outline drawn to match them
       this.stack.classList.add('is-renders');
-      this.stack.innerHTML = `<div class="p4b-ghost"><img alt="" src="${assetUrl(content.shadowImage)}">${ghostSvg(RENDER_BENCH, false)}</div>`;
+      this.stack.innerHTML = `<div class="p4b-ghost">${layerImg(content.shadowImage)}${ghostSvg(RENDER_BENCH, false)}</div>`;
     } else {
       this.stack.innerHTML = `<div class="p4b-ghost">${ghostSvg()}</div>`;
     }
@@ -235,7 +250,10 @@ class Build implements Screen {
     }
     this.cards.get(d.piece)!.el.classList.remove('is-lifted');
     if (!cancelled && this.inZone(e.clientX, e.clientY)) this.attempt(d.piece);
-    else this.floatBack(d.piece, false);
+    else {
+      this.floatBack(d.piece, false);
+      this.watchIdle();
+    }
   }
 
   private startDrag(piece: PieceId, e: PointerEvent): void {
@@ -390,10 +408,19 @@ class Build implements Screen {
   private makeLayer(piece: PieceId): HTMLDivElement {
     const layer = el('div.p4b-layer', { dataset: { piece } });
     if (content.layerImagesReady) {
-      const img = el('img', { alt: '', draggable: false });
-      img.addEventListener('error', () => (layer.innerHTML = layerSvg(piece, `${this.uid}${piece}`, this.strapColour)), { once: true });
-      img.src = assetUrl(PIECES[piece].layer);
-      layer.appendChild(img);
+      // the strap in the child's colour (build-06-strap-green.webp…), else the default render, else the drawing
+      const file = PIECES[piece].layer;
+      const files = piece === 'strap' ? [file.replace(/\.webp$/, `-${this.strap}.webp`), file] : [file];
+      const next = () => {
+        const f = files.shift();
+        if (!f) {
+          layer.innerHTML = layerSvg(piece, `${this.uid}${piece}`, this.strapColour);
+          return;
+        }
+        layer.innerHTML = layerImg(f);
+        layer.firstElementChild!.addEventListener('error', next, { once: true });
+      };
+      next();
     } else {
       layer.innerHTML = layerSvg(piece, `${this.uid}${piece}`, this.strapColour);
     }

@@ -96,7 +96,11 @@ test.describe('Activity Hub', () => {
     await expect(page.locator('[data-test=badge-q1][data-earned=true]')).toBeVisible();
     await expect(page.locator('[data-test=badge-maker][data-earned=true]')).toBeVisible();
     await expect(page.locator('[data-test=badge-q2][data-earned=false]')).toBeVisible();
-    await expect(page.locator('[data-test=gallery] .p4h-count')).toHaveText('2');
+    // English names the gallery in both languages; its badge counts the pictures really there
+    // (none: progress only remembers that two were saved once)
+    await expect(page.locator('[data-test=gallery]')).toHaveText('My Pictures · Tranh của con');
+    await page.waitForTimeout(500);
+    await expect(page.locator('[data-test=gallery] .p4h-count')).toHaveCount(0);
     await page.locator('[data-test=certificate]').click();
     await expect.poll(() => state(page)).toBe('certificate');
     await page.goBack();
@@ -131,14 +135,17 @@ test.describe('Build Your Nón Lá', () => {
     await expect(page.locator('[data-test=hint]')).toHaveText('The strap is tied on last, when the hat is finished!');
     await expect.poll(() => build(page).glowing()).toEqual(['frame']);
 
-    // dropping off the hat is not a miss
+    // dropping off the hat is not a miss, and the idle hand comes back afterwards
     await dragPiece(page, 'frame', 'away');
     expect(await build(page).placed()).toEqual([]);
+    await expect(page.locator('#hints .hand-hint')).toBeVisible({ timeout: 30_000 });
     expect(errors).toEqual([]);
   });
 
   test('builds the whole hat (drag and tap-to-place) and earns the Little Hat Maker badge', async ({ page }) => {
     const errors = collectErrors(page);
+    // the child picked the light green strap in Phase 2
+    await page.addInitScript(() => localStorage.setItem('nonla.settings.v1', JSON.stringify({ strapColour: 'green' })));
     await page.goto('/?test=1&review=1#/play/build');
     await expect(page.locator('[data-test=piece-frame]')).toBeVisible();
     for (const [i, piece] of PIECES.entries()) {
@@ -153,6 +160,7 @@ test.describe('Build Your Nón Lá', () => {
       await expect(page.locator(`[data-test=piece-${piece}]`)).toBeDisabled();
     }
     await expect.poll(() => build(page).finished()).toBe(true);
+    await expect(page.locator('.p4b-layer[data-piece=strap] img')).toHaveAttribute('src', /build-06-strap-green\.webp$/);
     await expect(page.locator('[data-test=badge-name]')).toHaveText('Little Hat Maker');
     expect((await games(page)).build.completed).toBe(1);
     expect((await sfxLog(page)).filter((s) => s === 'snap')).toHaveLength(6);
@@ -213,6 +221,25 @@ test.describe('Nón Lá Memory Quiz', () => {
     await expect(page.locator('#p4c-print')).toBeVisible();
     await expect(page.locator('#app')).toBeHidden();
     expect(errors).toEqual([]);
+  });
+
+  test('a tap on the old cards while the next question comes in is ignored', async ({ page }) => {
+    await page.goto('/?test=1&review=1#/play/quiz');
+    await page.locator('[data-test=answer-2]').click();
+    await expect(page.locator('[data-test=next]')).toBeVisible();
+    // Next, then at once a card of the question that is still fading out
+    await page.evaluate(() => {
+      document.querySelector<HTMLElement>('[data-test=next]')!.click();
+      document.querySelector<HTMLElement>('[data-test=answer-0]')!.click();
+    });
+    await expect.poll(() => quiz(page).current()).toBe(1);
+    await expect(page.locator('.p4q-prompt')).toContainText('bamboo rings');
+    expect(await quiz(page).badges()).toEqual(['q1']);
+    expect(await page.evaluate(() => (window as any).__nonla.quiz.answered())).toBe(false);
+    // question 2 still takes its answer and offers Next
+    await page.locator('[data-test=answer-0]').click();
+    await expect(page.locator('[data-test=next]')).toBeVisible();
+    expect(await quiz(page).badges()).toEqual(['q1', 'q2']);
   });
 
   test('every answer has a picture and the quiz speaks Vietnamese', async ({ page }) => {

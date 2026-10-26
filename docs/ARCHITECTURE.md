@@ -7,7 +7,7 @@ Stack: **Vite 8 + TypeScript (no UI framework) + three.js 0.186 + GSAP 3.15 + Ho
 npm run dev          # http://localhost:5173/lang-digital-experience/   (BASE_PATH=/ npm run dev for /)
 npm run typecheck    # tsc --noEmit (must stay clean)
 npm test             # vitest unit tests (tests/unit)
-npm run build        # typecheck + production build
+npm run build        # i18n:check + assets:check (warns) + typecheck + production build
 npm run test:e2e     # Playwright (tests/e2e), Chromium in /opt/pw-browsers
 ```
 
@@ -41,14 +41,25 @@ interface Screen {
 }
 ```
 `root` is a full-screen `section.screen` with padding for the top bar (88 px) and captions (120 px).
-Use `TopBar(ctx, { titleId })` from `src/ui/TopBar.ts` at the top of every play screen.
+Use `TopBar(ctx, { titleId })` from `src/ui/TopBar.ts` at the top of every play screen. Its title is the screen's focus
+target: after each mount the shell focuses `[data-autofocus]` (the TopBar title, `tabindex=-1`) so keyboard and
+screen-reader users land on the new screen. Home goes to the landing during the first run and from the hub (whose
+Continue button comes back), and to the hub otherwise.
+
+**Unmounted screens must be collectable.** Anything long-lived that still points at a screen keeps its whole DOM
+(canvases included) alive for the rest of the visit. The shell drops the old screen's `i18n.bind`/`bindAttr` entries
+(`i18n.prune()`) and resets the shared viewer's `sound` hook on every unmount; each screen removes what it added itself:
+`i18n.onChange` and `store.subscribe` disposers, window/document listeners, timers, viewer controllers.
 
 ### AppContext (src/app/context.ts)
 - `ctx.go(route)` · `ctx.completeP1()` · `ctx.completeLayer(layer)` · `ctx.completeChapter(chapter)` (mark progress *and* advance)
 - `ctx.progress` / `ctx.settings` — `Store<T>` with `get()`, `set()`, `patch()`, `subscribe()`
 - `ctx.narration.say(id)` → `Promise<'ended'|'stopped'>`; `queue(ids)`; `replay()`; `stop()`. Shows captions automatically.
+  `preload(id)` fetches and decodes the next line while one plays (`queue()` does this itself), so a paragraph split
+  into chunks has no gaps on slow Wi-Fi. The last few clips stay decoded, so Replay and the EN/VI switch are instant.
 - `ctx.audio.sfx.play(id, { step })` — synthesised SFX ids: `tap snap peel ringSnap stitchTick floatBack chime badge pageTurn whoosh fillPop sparkle swish bookOpen invite leafRustle threadZip fanfare` (`step` raises the pitch of `stitchTick`/`ringSnap`)
-- `ctx.audio.playAmbient(id)` / `stopAmbient(id?)` — `rain market breeze workshop school rainMarket` (file if present, else a synthesised bed)
+- `ctx.audio.playAmbient(id)` / `stopAmbient(id?)` — `rain market breeze workshop school rainMarket` (file if present, else a synthesised bed).
+  Running loops duck to ~30 % while narration speaks. `preloadAmbient(id)` (e.g. on a tile's `pointerdown`) starts loading the file early.
 - `ctx.idle.watch({ stepId, gesture: 'tap'|'swipe'|'drag'|'trace', target: () => DOMRect|{x,y}, path?: () => {x,y}[], nudge? })`; `ctx.idle.clear(stepId)`. Shows the hand after 5 s of no input (brief requirement). **Every interactive step must register one.**
 - `ctx.viewer()` → `Promise<HatViewer>` (lazy, shared)
 - `ctx.toast(text)`; `ctx.flags.test` / `.review`
@@ -68,7 +79,11 @@ Every visible string lives in `content/strings/<area>.json` (one file per area, 
 - **English narration is the brief's wording, verbatim** (see the brief). Long insights are split into chunks of 2–3 sentences: `p2.l1.insight.1`, `.2`, … so each clip is 8–20 s and can trigger a visual cue.
 - Vietnamese: natural, child-friendly drafts, `viStatus: "machine"` (Meri reviews later). Use proper diacritics.
 - Ids are `dot.case`: `p1.*`, `p2.*`, `p3.*`, `hub.*`, `build.*`, `colour.*`, `gallery.*`, `quiz.*`, `cert.*`, `site.*`, `ui.*`, `a11y.*`.
+  A segment after the first may be camelCase (`p2.ui.realPhoto`). Never rename an id: narration MP3s are named after it.
+  `npm run i18n:check` (part of `npm run build`) validates the files and every literal id used in `src/`.
 - In code: `i18n.t(id, vars?)`, and `i18n.bind(element, id)` to keep a node in sync with the EN/VI toggle. Never hard-code visible text.
+  For attributes (`aria-label`, `alt`, `title`) use `i18n.bindAttr(element, attr, id, vars?)`: a one-off `i18n.t()` stays in
+  the mount language, and screen readers then read English names with a Vietnamese voice.
 - Narration audio is found by convention at `public/assets/audio/narration/{en,vi}/<id>.mp3` and listed in `content/audio-index.json`; until recorded, captions run on a reading-speed timer.
 - Every button pairs an icon or picture with its text (pre-readers).
 
@@ -100,6 +115,9 @@ nonla_root
 - One material per mesh. Names are `[a-z0-9_]` (safe through three.js name sanitising). `userData` (glTF extras) carries `layer`, `ring_index`, `panel_index`, `az_deg`, `count`, `sew_order`, …
 - **Peel hinges**: each `leaf_outer_panel_NN_hinge` node's local axes are tangent **+X**, slant-to-brim **−Z**, outward **+Y**. Peel = rotate the hinge about its local +X (sign so the brim end lifts outward), optionally curl in a vertex shader.
 - **Poem art** texture: Higgsfield paper-cut silhouettes baked onto the poem shell's UVs by `blender/poem_texture.py` (unrolled-cone warp, so they sit upright on the front of the hat).
+- **Leaf textures**: Higgsfield palm-leaf scans upscaled to 4K, baked by `blender/leaf_textures.py` into a 4096×2048 outer-leaf atlas, an inner-leaf texture and normal maps (the procedural textures in `nonla_build.py` are the fallback).
+- **Layer 3 → 4** (replaces integration correction 2): Layer 3 settles the rings back at their 2 cm spacing (its callout says so); Layer 4's "everything flies back" beat spreads them to 2.2× briefly before the shells return.
+- **Narration asides**: a name the child taps during an explanation (thread chips, strap colours, 3D labels) goes through `narration.interject(id)`, which pauses the line, says the name and reads the line again; a language switch or Replay hands the waiting promise to the new take instead of stopping it.
 
 ### Viewer API (`src/three/HatViewer.ts`, built in `stage.ts`)
 `getViewer(host)` lazily creates one shared viewer. Beyond the original contract it has: `kind` (`'3d'`, or `'2d'` for the
@@ -123,11 +141,11 @@ Everything served lives under `public/assets/` with stable names (a final asset 
 
 | Kind | Path |
 |---|---|
-| Photos | `img/photos/<stem>-<640|1280|1920>.<avif|webp|jpg>` (heroes also 2560). Sizes in `content/photos.json` |
+| Photos | `img/photos/<stem>-<640|1280|1920>.<avif|webp|jpg>` (`diverse-4` and `p3-identity` also 2560). Sizes in `content/photos.json` |
 | Model | `models/nonla.glb`, `models/nonla.meta.json` |
 | Build-game layers | `img/layers/build-0{1..6}-{frame,leaf-inner,poem-art,leaf-outer,stitches,strap}.webp` (Blender renders, one locked camera; each is cut by the layers below it so they stack like the real hat) + `build-00-shadow.webp` (the whole hat's floor shadow, under the stack) + `thumb-0N-*.webp` (whole piece, trimmed, for the tray) |
 | Renders | `img/renders/{hat-full,cover,cover-hat,underside-{purple,peach,green},brim-closeup,piece-mo-bark}.webp` (`cover-hat` is trimmed to the hat, no floor: the storybook cover) |
-| Line art | `img/lineart/page-{1-plain,2-strap,3-poem,4-market}.png`: 2400×1800 black ink on transparent (paint goes underneath). Pages 1–2 Blender Freestyle, 3–4 Higgsfield; hand-drawn `.svg` versions are the fallback |
+| Line art | `img/lineart/page-{1-plain,2-strap,3-poem,4-market}.png`: 1600×1200 (the studio's canvas size) black ink on transparent (paint goes underneath) + `page-*-600.webp` picker thumbnails. Pages 1–2 Blender Freestyle, 3–4 Higgsfield; hand-drawn `.svg` versions are the fallback |
 | Quiz pictures | `img/quiz/<question>-<answer>.webp` (+ `-600`): Q2–Q4 Blender renders, Q1 from Blender stills, Q5 Higgsfield; `q1-scene`, `q3-scene` are Higgsfield illustrations |
 | Illustrations | `img/art/*.webp`, UI art `img/ui/*` |
 | Narration | `audio/narration/{en,vi}/<stringId>.mp3` |
@@ -149,10 +167,14 @@ Photo stems (team photos → PhotoCraft slight edit → encoded):
 | `p3-protection` | two farmers in a rice field (Ch1) | storybook chapter 1 |
 | `p3-poem` | Tây Hồ poem hat on black (Ch2) | storybook chapter 2 |
 | `p3-identity` | Quảng Trị market in the rain (Ch3) | storybook chapter 3 |
-| `diverse-1`, `diverse-2`, `diverse-4` | jars; artisan & hat stacks; hats against blue sky | landing, hub, certificate |
+| `diverse-4` | hats against blue sky | landing hero, P1 decoration tile |
+| `diverse-1`, `diverse-2` | jars; artisan & hat stacks | not used: kept in `raw-assets/photos/edited`, not published |
 
 Asset pipeline: `npm run assets:photos | assets:glb | assets:renders | assets:video`, narration `npm run tts:plan` →
-Higgsfield → `npm run tts:ingest` (only kinds `narration` and `label` are voiced; button labels are not spoken by the app).
+Higgsfield → `npm run tts:ingest` (only kinds `narration` and `label` are voiced: give any string the app says, card titles
+included, kind `label`, not `ui`). `assets:photos` publishes only the stems in the table above.
+`npm run assets:check` (also run by `npm run build`, as a warning) lists files under `public/assets` that nothing in `src/`,
+`content/` or `index.html` refers to; delete them or move them to `raw-assets/`.
 
 **If an asset you need doesn't exist yet**: draw a tasteful CSS/SVG placeholder in code (or reuse a photo) so the screen still works, and add an entry to `content/asset-requests.json` (`[{ "path", "what", "source": "blender|higgsfield|effectcraft|photocraft|tts", "notes" }]`). Don't block on assets.
 
@@ -164,6 +186,8 @@ Tokens in `src/styles/tokens.css` (straw, terracotta, forest, wood, dragon fruit
 Shared classes in `src/styles/components.css`: `.btn` (`--cta`, `--straw`, `--ghost`, `--round`), `.pulse`, `.bubble`, `.caption`, `.ph`.
 Each area adds its own stylesheet next to its code (e.g. `src/phases/phase3/phase3.css`) and imports it from its screen module.
 - Touch targets ≥ 64 px (`--tap-min`), primary CTAs 88 px. Mark them `data-touch`.
+- Keep controls out of the bottom 120 px of `.screen` (the caption band). On phones (≤ 600 px) the caption shows only the
+  sentence being spoken, so it stays inside that band.
 - Text never sits directly on a photo: use a cream panel or a 60 % forest scrim.
 - Tablet landscape first (1180×820), then desktop (1440×900), phone portrait fallback (390×844).
 

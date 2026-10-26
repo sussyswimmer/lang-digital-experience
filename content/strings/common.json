@@ -13,9 +13,8 @@
   "p2.title": { "kind": "ui", "en": "Uncover the Secrets of the Nón Lá", "vi": "Khám phá bí mật của chiếc nón lá", "viStatus": "machine" },
   "p3.title": { "kind": "ui", "en": "Stories of the Nón Lá", "vi": "Chuyện chiếc nón lá", "viStatus": "machine" },
   "hub.title": { "kind": "ui", "en": "Activity Hub", "vi": "Góc trò chơi", "viStatus": "machine" },
-  "build.title": { "kind": "ui", "en": "Build Your Nón Lá", "vi": "Làm chiếc nón lá của con", "viStatus": "machine" },
-  "colour.title": { "kind": "ui", "en": "Colour Your Nón Lá", "vi": "Tô màu chiếc nón lá", "viStatus": "machine" },
-  "gallery.title": { "kind": "ui", "en": "Tranh của con", "vi": "Tranh của con", "viStatus": "machine", "notes": "The brief names the gallery in Vietnamese in both languages" },
-  "quiz.title": { "kind": "ui", "en": "Nón Lá Memory Quiz", "vi": "Đố vui Nón Lá", "viStatus": "machine" },
+  "build.title": { "kind": "label", "en": "Build Your Nón Lá", "vi": "Làm chiếc nón lá của con", "viStatus": "machine" },
+  "colour.title": { "kind": "label", "en": "Colour Your Nón Lá", "vi": "Tô màu chiếc nón lá", "viStatus": "machine" },
+  "quiz.title": { "kind": "label", "en": "Nón Lá Memory Quiz", "vi": "Đố vui Nón Lá", "viStatus": "machine" },
   "cert.title": { "kind": "ui", "en": "Your Certificate", "vi": "Giấy chứng nhận của con", "viStatus": "machine" }
 }

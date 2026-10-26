@@ -1,4 +1,18 @@
 {
+  "gallery.name": {
+    "kind": "ui",
+    "en": "My Pictures · Tranh của con",
+    "vi": "Tranh của con",
+    "viStatus": "machine",
+    "notes": "Integration correction 10: the English label is \"My Pictures · Tranh của con\" (the brief names the gallery in Vietnamese). Replaces common.json gallery.title"
+  },
+  "gallery.name.short": {
+    "kind": "ui",
+    "en": "My Pictures",
+    "vi": "Tranh của con",
+    "viStatus": "machine",
+    "notes": "gallery.name where space is tight (the colouring studio's top bar)"
+  },
   "gallery.intro": {
     "kind": "narration",
     "en": "Here are all your pictures!",

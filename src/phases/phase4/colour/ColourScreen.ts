@@ -84,7 +84,8 @@ class ColourScreen implements Screen {
       'button.btn.btn--ghost.cs-nav',
       { type: 'button', 'data-touch': '', 'data-test': 'gallery', onclick: () => this.openGallery() },
       svg(COLOUR_ICONS.gallery),
-      i18n.bind(el('span.cs-nav__label'), 'gallery.title'),
+      // the short name: the full one squeezes the page title out of the top bar on tablets
+      i18n.bind(el('span.cs-nav__label'), 'gallery.name.short'),
       this.galleryCount,
     );
     const group = el('div.cs-navgroup', {}, this.pagesBtn, this.galleryBtn);

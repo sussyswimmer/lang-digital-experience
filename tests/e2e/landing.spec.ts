@@ -155,3 +155,18 @@ test('Start enters Phase 1; coming back offers Continue', async ({ page }) => {
   await expect.poll(() => hook(page, 'beat')).toBe(1);
   expect(errors).toEqual([]);
 });
+
+test('phone, Vietnamese: the scroll cue fits the screen and the sticky Start pill stays on one line', async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
+  await context.addInitScript(() => localStorage.setItem('nonla.settings.v1', JSON.stringify({ lang: 'vi' })));
+  const page = await context.newPage();
+  await page.goto('/?test=1#/');
+  const cue = await page.locator('.hero__scroll').boundingBox();
+  expect(cue!.x).toBeGreaterThanOrEqual(0);
+  expect(cue!.x + cue!.width).toBeLessThanOrEqual(390);
+  await page.evaluate(() => window.scrollTo(0, innerHeight * 1.2));
+  const label = page.locator('.site-bar [data-start="bar"] span:not(.site-start__icon)');
+  await expect(label).toHaveText('Bắt đầu');
+  expect((await label.boundingBox())!.height).toBeLessThan(40);
+  await context.close();
+});

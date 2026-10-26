@@ -1,4 +1,5 @@
-// Validates content/strings/*.json: kinds, both languages present, dot.case ids, no id defined twice,
+// Validates content/strings/*.json: kinds, both languages present, dot.case ids (a segment after the first may be
+// camelCase, e.g. p2.ui.realPhoto: ids never change, because narration MP3s are named after them), no id defined twice,
 // and every literal id used in src/ (t('…'), bind(el, '…'), say('…'), queue('…')) exists.
 // Exits 1 on errors; ids built at runtime (template strings) are reported as prefixes only.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
@@ -13,7 +14,7 @@ for (const f of readdirSync('content/strings').filter((x) => x.endsWith('.json')
   for (const [id, e] of Object.entries(data)) {
     if (all[id]) errors.push(`${id}: defined in ${all[id].file} and ${f}`);
     all[id] = { ...e, file: f };
-    if (!/^[a-z0-9]+(\.[a-z0-9-]+)+$/.test(id)) errors.push(`${f} ${id}: id is not dot.case`);
+    if (!/^[a-z0-9]+(\.[a-z0-9][a-zA-Z0-9-]*)+$/.test(id)) errors.push(`${f} ${id}: id is not dot.case`);
     if (!KINDS.has(e.kind)) errors.push(`${f} ${id}: kind "${e.kind}"`);
     if (!e.en?.trim()) errors.push(`${f} ${id}: missing en`);
     if (!e.vi?.trim()) errors.push(`${f} ${id}: missing vi`);
@@ -31,14 +32,14 @@ function* walk(dir) {
 }
 const used = new Set();
 const prefixes = new Set();
-const call = /\b(?:t|bind|say|queue|replay|caption|speak)\(\s*(?:[\w.]+,\s*)?(['"`])([a-z0-9]+\.[a-z0-9.\-]*)(\$\{)?/g;
+const call = /\b(?:t|bind|bindAttr|say|queue|preload|replay|caption|speak)\(\s*(?:[\w.]+,\s*)?(?:(['"])[\w-]+\1,\s*)?(['"`])([a-z0-9]+\.[a-zA-Z0-9.\-]*)(\$\{)?/g;
 for (const file of walk('src')) {
   const src = readFileSync(file, 'utf8');
   for (const m of src.matchAll(call)) {
-    if (m[3]) prefixes.add(m[2]);
-    else if (!used.has(m[2])) {
-      used.add(m[2]);
-      if (!all[m[2]]) errors.push(`${file}: uses unknown string "${m[2]}"`);
+    if (m[4]) prefixes.add(m[3]);
+    else if (!used.has(m[3])) {
+      used.add(m[3]);
+      if (!all[m[3]]) errors.push(`${file}: uses unknown string "${m[3]}"`);
     }
   }
 }

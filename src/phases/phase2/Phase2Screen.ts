@@ -186,7 +186,7 @@ export default function Phase2Screen(): Screen {
     const c = viewer.layer(next, {
       onEvent: (name, data) => {
         if (my !== token) return;
-        if (name === 'say' && typeof data === 'string') ctx.narration.say(data);
+        if (name === 'say' && typeof data === 'string') ctx.narration.interject(data);
         else if (name === 'ring') showCount(Number(data));
       },
     });
@@ -309,7 +309,7 @@ export default function Phase2Screen(): Screen {
             'data-touch': '',
             onclick: () => {
               play('tap');
-              ctx.narration.say(id);
+              ctx.narration.interject(id);
               ctrl?.cue?.(cue);
             },
           },
@@ -349,7 +349,7 @@ export default function Phase2Screen(): Screen {
       stopCycle();
       play('fillPop');
       ctx.settings.patch({ strapColour: c });
-      ctx.narration.say(`p2.colour.${c}`);
+      ctx.narration.interject(`p2.colour.${c}`);
     }
     viewer?.setStrapColour(c);
     panel.extras.querySelectorAll<HTMLElement>('.p2-swatch').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.colour === c)));

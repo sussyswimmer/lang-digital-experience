@@ -235,6 +235,15 @@
   flex-direction: column;
   gap: 10px;
   justify-content: center;
+  /* "My Pictures · Tranh của con" goes on two lines rather than squeezing the badge shelf
+     (six 64 px medals need 454 px beside the 410 px revisit panel at 1180) */
+  max-width: 232px;
+}
+
+@media (min-width: 1300px) {
+  .p4h-side {
+    max-width: none;
+  }
 }
 
 .p4h-gallery,
@@ -261,6 +270,11 @@
 .p4h-cert {
   background: var(--terracotta-600);
   color: #fff;
+}
+
+.p4h-gallery .p4-btn__text,
+.p4h-cert .p4-btn__text {
+  text-wrap: balance;
 }
 
 .p4h-gallery .p4-icon,
@@ -425,6 +439,7 @@
 
   .p4h-side {
     flex-direction: row;
+    max-width: none;
   }
 
   .p4h-gallery,
@@ -476,5 +491,10 @@
 
   .p4h-shelf__row::after {
     display: none;
+  }
+
+  /* one button per row, so "My Pictures · Tranh của con" fits on a line */
+  .p4h-side {
+    flex-direction: column;
   }
 }

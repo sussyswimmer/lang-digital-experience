@@ -34,7 +34,7 @@
   "build.hint.already": { "kind": "narration", "en": "That piece is already on the hat!", "vi": "Mảnh này đã ở trên nón rồi!", "viStatus": "machine" },
 
   "build.done": { "kind": "narration", "en": "Hooray! You built a whole nón lá, just like a real hat maker!", "vi": "Hoan hô! Con đã làm xong cả một chiếc nón lá, giống hệt một người thợ làm nón thật!", "viStatus": "machine" },
-  "build.badge.name": { "kind": "ui", "en": "Little Hat Maker", "vi": "Thợ làm nón nhí", "viStatus": "machine" },
+  "build.badge.name": { "kind": "label", "en": "Little Hat Maker", "vi": "Thợ làm nón nhí", "viStatus": "machine" },
   "build.badge.earned": { "kind": "narration", "en": "You earned the Little Hat Maker badge!", "vi": "Con đã nhận được huy hiệu Thợ làm nón nhí!", "viStatus": "machine" },
   "build.again": { "kind": "ui", "en": "Build again", "vi": "Làm lại nào", "viStatus": "machine" }
 }

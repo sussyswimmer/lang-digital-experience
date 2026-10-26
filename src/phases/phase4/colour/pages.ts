@@ -1,7 +1,8 @@
 /**
  * The four colouring pages from the brief. Each lives at img/lineart/page-N-name.png (Blender
- * Freestyle / Higgsfield line art) and/or .svg (hand-drawn fallback). The PNG is used when it
- * exists; `?lineart=svg` forces the SVGs for review.
+ * Freestyle / Higgsfield line art, 1600×1200 like the paint layer) and/or .svg (hand-drawn
+ * fallback). The PNG is used when it exists; `?lineart=svg` forces the SVGs for review. The picker
+ * shows page-N-name-600.webp thumbnails, so the full pages load only when one is opened.
  */
 import { assetUrl } from '../../../assets/manifest';
 
@@ -29,6 +30,11 @@ export function sourceCandidates(page: ColourPage, search = typeof location === 
   const png = assetUrl(`img/lineart/${page.file}.png`);
   const svg = assetUrl(`img/lineart/${page.file}.svg`);
   return new URLSearchParams(search).get('lineart') === 'svg' ? [svg, png] : [png, svg];
+}
+
+/** the picker card's small picture, or null when the full page has to do (`?lineart=svg`) */
+export function thumbUrl(page: ColourPage, search = typeof location === 'undefined' ? '' : location.search): string | null {
+  return new URLSearchParams(search).get('lineart') === 'svg' ? null : assetUrl(`img/lineart/${page.file}-600.webp`);
 }
 
 const resolved = new Map<string, Promise<HTMLImageElement>>();

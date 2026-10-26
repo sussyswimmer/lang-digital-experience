@@ -44,6 +44,8 @@ export class Story {
   private initPromise: Promise<void> | null = null;
   private paused = false;
   private ready = false;
+  /** the story is within reach of the viewport: only then are frames decoded */
+  private near = false;
   // stills mode
   private stills: HTMLImageElement[] = [];
   private stillIndex = 0;
@@ -127,6 +129,7 @@ export class Story {
       this.gsap = gsap;
       if (m) {
         this.frames = new ScrollFrames(this.canvas, m);
+        this.frames.setDecoding(this.near);
         this.frames.onFirstFrame = () => this.loading.classList.add('is-done');
       } else {
         this.showFallback();
@@ -145,6 +148,16 @@ export class Story {
   resume(): void {
     this.paused = false;
     if (this.ready) this.bind();
+  }
+
+  /**
+   * Near the viewport (the landing's IntersectionObserver): decode frames around the reader. Far away (still
+   * in the hero, or down at the credits): keep only the compressed frames, so 13–19 decoded frames (75–110 MB
+   * at 1600w) are held only while they can be seen.
+   */
+  setNear(on: boolean): void {
+    this.near = on;
+    this.frames?.setDecoding(on);
   }
 
   frameIndex(): number {

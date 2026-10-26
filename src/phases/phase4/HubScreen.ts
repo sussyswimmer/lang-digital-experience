@@ -18,6 +18,7 @@ import { buildCardSvg, colourCardSvg, quizCardSvg } from './hub/cardArt';
 import { P4_ICONS, P4_PICTURES } from './hub/icons';
 import { ALL_BADGES, MAKER_BADGE, badgeSvg, earnedBadges } from './hub/badges';
 import { enter, labelButton, quietViewer, rectOf, testHook } from './hub/kit';
+import { getGallery } from './gallery/galleryDb';
 
 type Activity = 'build' | 'colour' | 'quiz';
 
@@ -132,6 +133,7 @@ class Hub implements Screen {
     const p = this.ctx.progress.get();
     if (p.games.build.completed === 0) return 'build';
     if (!p.games.quiz.certificateAt) return 'quiz';
+    // `saved` counts every save ever made: here it just means "has coloured before"
     if (p.games.colour.saved === 0) return 'colour';
     return 'build';
   }
@@ -226,9 +228,17 @@ class Hub implements Screen {
   // ---------- gallery, badges, certificate ----------
 
   private buildGallery(): HTMLElement {
-    const saved = this.ctx.progress.get().games.colour.saved;
-    const btn = labelButton('button.p4h-gallery', P4_PICTURES.gallery, 'gallery.title', () => this.open('gallery'), { 'data-test': 'gallery' });
-    if (saved > 0) btn.appendChild(el('span.p4h-count', { 'aria-hidden': 'true' }, String(saved)));
+    const btn = labelButton('button.p4h-gallery', P4_PICTURES.gallery, 'gallery.name', () => this.open('gallery'), { 'data-test': 'gallery' });
+    // count the pictures really on the wall: progress only counts saves, and deleting doesn't undo
+    // those (nothing saved yet: no need to open the store at all)
+    if (this.ctx.progress.get().games.colour.saved > 0) {
+      void getGallery()
+        .then((s) => s.count())
+        .then((n) => {
+          if (n > 0 && this.alive) btn.appendChild(el('span.p4h-count', { 'aria-hidden': 'true' }, String(n)));
+        })
+        .catch(() => {});
+    }
     return btn;
   }
 
