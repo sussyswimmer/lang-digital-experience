@@ -53,8 +53,8 @@
     },
     {
       "path": "raw-assets/renders/stills/brim-closeup.png",
-      "bytes": 1467520,
-      "sha256": "1168bf688636ca25afb6486cf6be77f987c8d51ad5a6652e004b83ef85d50d2f",
+      "bytes": 1665564,
+      "sha256": "8e09fc01839f9abbb9aa220eeb066c85995afe9df890964ab64b31769b1b5a75",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -63,7 +63,7 @@
     {
       "path": "raw-assets/renders/stills/build-01-frame.png",
       "bytes": 812965,
-      "sha256": "cf2fc02b934764de89feb54721a78f5b0aa578447edb44fe0b213a8e2623f4bc",
+      "sha256": "52fa85d56fd04e7a458456b580127de3b4ab5576e329dfbc15e21d200928b505",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -71,8 +71,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-02-leaf-inner.png",
-      "bytes": 729678,
-      "sha256": "dd7128e23f131538b0c23bd04f0db09f2041d5526528e850a1b11d23d60cd2fb",
+      "bytes": 920730,
+      "sha256": "210cdcb761bd9c7d2c1aa3016ce96a915976b9fbc1601a9fca624c1f3b039974",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -81,7 +81,7 @@
     {
       "path": "raw-assets/renders/stills/build-03-poem-art.png",
       "bytes": 528510,
-      "sha256": "8226f72f3da4c7b0ad3e97c5618d6e1d1989a9fee0e0e9e6d0d2602d7c898a4d",
+      "sha256": "470e2c57c20edce9504475138d85a3dacb29fdff6be177803b8f7003649ef7b2",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -89,8 +89,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-04-leaf-outer.png",
-      "bytes": 805359,
-      "sha256": "bbcf47d18b8696dd7db379e37f27ed4b9d08781e1577417aee0c69e2790fc2f0",
+      "bytes": 967160,
+      "sha256": "34a0004837d7ac961d9897f357a3770159e6ce541ac5a46cd438961309cff243",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -98,8 +98,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-05-stitches.png",
-      "bytes": 655533,
-      "sha256": "fb83c7ce5cbdc74f992039e58465596ca0697b4eeac369a1e184e13ad3e77d5d",
+      "bytes": 653023,
+      "sha256": "567182929d7bc06433c64002856c30bc81f498503aaa924d77120fe3d3c5c884",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -107,8 +107,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-06-strap.png",
-      "bytes": 475707,
-      "sha256": "4a47998128fc0f5d721ade42af632e96240b16ee7c8c3a437269e0e4b0ea2923",
+      "bytes": 475769,
+      "sha256": "216b5db34554a83875457e23705ff552507a7a2d816f1b3d9d6d3da084161f2c",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -116,8 +116,8 @@
     },
     {
       "path": "raw-assets/renders/stills/hat-full.png",
-      "bytes": 1127347,
-      "sha256": "80dff33b61b10368b5d3e6ed483e99e51d6e3129c76fc33ae08018ec812d6bec",
+      "bytes": 1229643,
+      "sha256": "384d03d81bc3bf42d1d5e2d3efbdd0827d496871e0cc63ca2f0bdfee95f072f2",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -126,7 +126,7 @@
     {
       "path": "raw-assets/renders/stills/piece-mo-bark.png",
       "bytes": 807745,
-      "sha256": "d45fef78a7744ca6c20c86e7883206c5cd1036a96261f004ccd1063aa021796c",
+      "sha256": "084fc1c86bee33e4f4be18cc4ec7e3ff5b7e0a10bb1f67217922a056d84e18b5",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -134,8 +134,8 @@
     },
     {
       "path": "raw-assets/renders/stills/underside-green.png",
-      "bytes": 888532,
-      "sha256": "d5d6f0b890cca99da90bd1ac2c0b66b8e1f0c5b63975fcab461a4547ebb395f6",
+      "bytes": 916733,
+      "sha256": "fef7eef39d96ae1d1defff4c7928e15cf16c2435da522bc3aab18159325a652f",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -143,8 +143,8 @@
     },
     {
       "path": "raw-assets/renders/stills/underside-peach.png",
-      "bytes": 890302,
-      "sha256": "b881319441c4468aa201aef8c48db66111be12446b904392298eb40f2445a9e0",
+      "bytes": 917786,
+      "sha256": "61c95d6ef4268d4e0dc0c47aa32e1cb6880d8dee48bfdd431c0b821bf4fa63fa",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -152,8 +152,8 @@
     },
     {
       "path": "raw-assets/renders/stills/underside-purple.png",
-      "bytes": 890008,
-      "sha256": "7b91417d0bf0a8a9afba1304923c6c10d5dc39e4f09e07ff260e9b85c6c91977",
+      "bytes": 918227,
+      "sha256": "13baf1367078dcbf6dc641f70f6b65ea570019eb027b457639ba8ba82a830896",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -161,8 +161,8 @@
     },
     {
       "path": "raw-assets/renders/quiz/q2-no-rings-floppy.png",
-      "bytes": 625403,
-      "sha256": "33e6617c58c3595c8ad52d69ee72f70b034cb4cc83183d398015ac16710d9441",
+      "bytes": 654364,
+      "sha256": "7bbd2d22eb70e11be5ce4c6ee67efdc394925da37f0fd6ec0f012ef7d30f4a7f",
       "width": 1200,
       "height": 900,
       "bit_depth": 8,
@@ -170,8 +170,8 @@
     },
     {
       "path": "raw-assets/renders/quiz/q2-shinier.png",
-      "bytes": 676662,
-      "sha256": "0c865da63fccf90c6bda9ae7d805856ecc7279a901aeef1d4c455e2a7861b026",
+      "bytes": 722457,
+      "sha256": "e5367a36e443476c273e2cf31fdf5521fc8201ea36907c1c34a8edaba5a1416b",
       "width": 1200,
       "height": 900,
       "bit_depth": 8,
@@ -179,8 +179,8 @@
     },
     {
       "path": "raw-assets/renders/quiz/q2-tight-strap.png",
-      "bytes": 493269,
-      "sha256": "2fada994e4acb032f17241b528205403de53acbf2941d026b2e2cead78743c3e",
+      "bytes": 511400,
+      "sha256": "fdf8a9222a30043e3e14c94eab3056c2d4d65534ddcdd4e960692b9ab0d07700",
       "width": 1200,
       "height": 900,
       "bit_depth": 8,
@@ -188,8 +188,8 @@
     },
     {
       "path": "raw-assets/renders/quiz/q3-leaf-gap.png",
-      "bytes": 716249,
-      "sha256": "7975ac15e1e470fbc24479bedd10184ed9f72b607f664feeebe2d1c4f5c20015",
+      "bytes": 757318,
+      "sha256": "b66c0792401afff4f9b6a7d30544c865c1d105fb27b84e15e31ab97c0e97cebe",
       "width": 1200,
       "height": 900,
       "bit_depth": 8,
@@ -197,8 +197,8 @@
     },
     {
       "path": "raw-assets/renders/quiz/q3-strap-new-colour.png",
-      "bytes": 660610,
-      "sha256": "0e4724d6d99d2dd07a4ef0cb6d7d64170f7b143fc305627771e14666b9281fff",
+      "bytes": 710095,
+      "sha256": "0a09902d0f69ce9f9efe0b74098e3487cd9a301b1d64542b002fc750e8ef934a",
       "width": 1200,
       "height": 900,
       "bit_depth": 8,
@@ -207,7 +207,7 @@
     {
       "path": "raw-assets/renders/quiz/q3-tiny-rings.png",
       "bytes": 559376,
-      "sha256": "4ebcd66dbf74a71b9dd5eecb043882deb3ee7c727410d41f6260998f191fdca7",
+      "sha256": "bc1c42b0aff8c3fb452f302b04af7b5c94b052d284081b3975e97cd22f61fb3a",
       "width": 1200,
       "height": 900,
       "bit_depth": 8,
@@ -216,7 +216,7 @@
     {
       "path": "raw-assets/renders/quiz/q4-rings-08.png",
       "bytes": 599924,
-      "sha256": "df67575521ce1aa94eeb39ea5d4797734c487659eb5a82d168cc2bc2bd26e9f0",
+      "sha256": "87d2e9c461fec09f0f085a727a5d563f5e07cf66cc795d4cca549ad2eec8f6c3",
       "width": 1200,
       "height": 900,
       "bit_depth": 8,
@@ -225,7 +225,7 @@
     {
       "path": "raw-assets/renders/quiz/q4-rings-16.png",
       "bytes": 659759,
-      "sha256": "8f789f2576582bd6318e2f856a3e83878eefd07e4d9be61a47f93822d3566298",
+      "sha256": "51da8d623f1efefdf202d78f50fb97d04becbea0b73a29246bc67361e28f13bd",
       "width": 1200,
       "height": 900,
       "bit_depth": 8,
@@ -234,7 +234,7 @@
     {
       "path": "raw-assets/renders/quiz/q4-rings-30.png",
       "bytes": 732752,
-      "sha256": "ea7073052d8d5b76d0e75fa623f0c4ce44a322455a6da613d3ffbd51447585ee",
+      "sha256": "d97479ec2c67594967e45a7c7732efaea505c4128a598e76552d6ca68ba4b775",
       "width": 1200,
       "height": 900,
       "bit_depth": 8,
@@ -272,8 +272,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-00-shadow.png",
-      "bytes": 655582,
-      "sha256": "6a3f8ae7141f1a3fc662c82500f75309eabacb2a89496dd193fd57fb353b46cc",
+      "bytes": 656408,
+      "sha256": "b18c613fa1aaeab7238f81ac4d03b80db163cde52db073012189f7d8448948ac",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -281,8 +281,8 @@
     },
     {
       "path": "raw-assets/renders/cover/cover-hat.png",
-      "bytes": 984861,
-      "sha256": "e1dc3c43487cf61d6ae4e7555b1bf64b7ef955557d17ebfe8b7653b85f4d3b5e",
+      "bytes": 1136754,
+      "sha256": "b05716a98683835739ecd1047db1fdfdd7ef04b25bdeef77e1166b4f6c85b6b1",
       "width": 1200,
       "height": 1200,
       "bit_depth": 8,
@@ -291,7 +291,7 @@
     {
       "path": "raw-assets/renders/stills/piece-01-frame.png",
       "bytes": 812965,
-      "sha256": "fa754c5fa439a86355c5ff3583fd9321c7882fb110887154c30851dd42a2b0d0",
+      "sha256": "b2a2ffff0697bbfec3007b6b0afe9afb79982d637f3c63c450bfc0a0c837caf5",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -299,8 +299,8 @@
     },
     {
       "path": "raw-assets/renders/stills/piece-02-leaf-inner.png",
-      "bytes": 719619,
-      "sha256": "e98dcd502697c0f35a37a80fc1044beb540c103fe2edc8e9a7b056f6815e7bbd",
+      "bytes": 914350,
+      "sha256": "aa3a648bd7d46a51250ad55ce7c5416c34a272b7954c7fc297f287943cbbed21",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -309,7 +309,7 @@
     {
       "path": "raw-assets/renders/stills/piece-03-poem-art.png",
       "bytes": 528511,
-      "sha256": "bc836b30794259f7ba1a5a6fc9032e9c5e2c0b9761e2531807d2651f046ef2bf",
+      "sha256": "c107a74d79abcdcb9b87cad67d4a79669795549ec27c8688ef41e5417becac33",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -317,8 +317,8 @@
     },
     {
       "path": "raw-assets/renders/stills/piece-04-leaf-outer.png",
-      "bytes": 805568,
-      "sha256": "1de8ab209710cfcbd57accccbe39b4af676213c0be4b450d51e2dfcff2c2ef79",
+      "bytes": 966864,
+      "sha256": "3d67a49eb1520b50765c294e1c56030e3b3dc359f1fc0bdc6952d9c96bf217fc",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -327,7 +327,7 @@
     {
       "path": "raw-assets/renders/stills/piece-05-stitches.png",
       "bytes": 781382,
-      "sha256": "279d6cb20c33a6cfd59ae6aa5a2f00110292f7956d8a0e45c49869e2a31fb9b9",
+      "sha256": "db3a3413553fa04849469be06264c120659c81b6564e21138909e6651f6fff12",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -336,7 +336,34 @@
     {
       "path": "raw-assets/renders/stills/piece-06-strap.png",
       "bytes": 533867,
-      "sha256": "16acd2ed06e81814e4452febb8b356e4f58c09fb7808fd45ff02fe8675a5350e",
+      "sha256": "9852c5b34b6bd11a8bc679aa9722652a9a2bae28f10a60bf840354a5003306c4",
+      "width": 1600,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
+    },
+    {
+      "path": "raw-assets/renders/stills/build-06-strap-green.png",
+      "bytes": 479075,
+      "sha256": "56cbbada9683ecacf671c2ac4e3957a60b2fc8578f3b32d195082bb57823378c",
+      "width": 1600,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
+    },
+    {
+      "path": "raw-assets/renders/stills/build-06-strap-peach.png",
+      "bytes": 479800,
+      "sha256": "c67e17d8b6022258c861e3ca0c79c9f71de4c0b4bfe0b8a9a7d8239ae302d3cf",
+      "width": 1600,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
+    },
+    {
+      "path": "raw-assets/renders/stills/build-06-strap-purple.png",
+      "bytes": 479799,
+      "sha256": "aa87f13dda6455a549468d6acbc17d0b14708cb48e63d02e65e51fe437ba121c",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -351,6 +378,7 @@
     "seconds": 3000,
     "files": 23,
     "kept_from_pc": "intro frames (D: drive), intro-preview, lineart",
-    "second_pass": "stills again (build layers cut by the layers below via holdouts, piece-0N tray renders, real poem-art texture) + cover-hat (no floor)"
+    "second_pass": "stills again (build layers cut by the layers below via holdouts, piece-0N tray renders, real poem-art texture) + cover-hat (no floor)",
+    "third_pass": "coverhat, stills, strap colours and quiz with the photographic 4K leaf textures + normal maps (Higgsfield scans upscaled to 4K)"
   }
 }
