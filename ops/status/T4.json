@@ -1,0 +1,121 @@
+{
+  "task": "T4",
+  "attempt": 1,
+  "state": "done",
+  "started_at": "2026-10-26T05:27:59Z",
+  "finished_at": "2026-10-26T10:32:29.823Z",
+  "outputs": [
+    {
+      "path": "raw-assets/video-edited/p1-craft-loop-1080.mp4",
+      "sha256": "7ef4fea7e2f5a55851c7bb2115b1aa5c401c3a9da2bda8d8eab241617746ae1b",
+      "bytes": 4790191
+    },
+    {
+      "path": "raw-assets/video-edited/p1-craft-loop-1080.webm",
+      "sha256": "3bc2b27d1e1f8bce1e46cf6f4dda5d6844441c67615ce9044d81cbc825e8554a",
+      "bytes": 3898419
+    },
+    {
+      "path": "raw-assets/video-edited/p1-craft-loop-540.mp4",
+      "sha256": "1c1f3640ee863e7441e14004bb4952d5ff4efae5df27daeb20139d4a98e7b5c2",
+      "bytes": 1502061
+    },
+    {
+      "path": "raw-assets/video-edited/p1-market-loop-1080.mp4",
+      "sha256": "8922d80a92a33cd62130f9b29cde7ee92f5267cc54ad624e7948c82911f9c2a1",
+      "bytes": 4953748
+    },
+    {
+      "path": "raw-assets/video-edited/p1-market-loop-1080.webm",
+      "sha256": "85f5e0d24ce4ec3c53d51e3e93bb350b81a18584e8209e19ba686b1363f3dbb4",
+      "bytes": 4134242
+    },
+    {
+      "path": "raw-assets/video-edited/p1-market-loop-540.mp4",
+      "sha256": "c8864690eb06db4f86aa62514284c628e3c795d4de53d4b9279b9c2875c3e3d1",
+      "bytes": 1501988
+    },
+    {
+      "path": "raw-assets/video-edited/p1-rain-loop-1080.mp4",
+      "sha256": "fa58acaaf13ed0eff913d31cdd501c85edbec430f0a866c12a91800b794c0fc2",
+      "bytes": 4972643
+    },
+    {
+      "path": "raw-assets/video-edited/p1-rain-loop-1080.webm",
+      "sha256": "64ecf2756c791d6880d65bc48f71d934ec0a130216984d604972a70dc27f39f6",
+      "bytes": 3977688
+    },
+    {
+      "path": "raw-assets/video-edited/p1-rain-loop-540.mp4",
+      "sha256": "07984cc466f5d9023bc84543e2e679a533c81c7c7bdc8074baf3e0f798b61f1b",
+      "bytes": 1560438
+    },
+    {
+      "path": "raw-assets/video-edited/p1-rice-loop-1080.mp4",
+      "sha256": "755ccf77a3ec78559024462be2a587034acd38cebdd839b62f8310c27d43214b",
+      "bytes": 4954134
+    },
+    {
+      "path": "raw-assets/video-edited/p1-rice-loop-1080.webm",
+      "sha256": "086085b75cf7249c04bc943b2331f39fa20e465ac47207a763070937aff5d6a9",
+      "bytes": 3978877
+    },
+    {
+      "path": "raw-assets/video-edited/p1-rice-loop-540.mp4",
+      "sha256": "3128ddd2bf67f02168f61dfb9816e5337fd7801fcc98830e4a3d2c025e6a0440",
+      "bytes": 1561119
+    },
+    {
+      "path": "raw-assets/video-edited/scroll-intro-fx-1080p.mp4",
+      "sha256": "f09e9ee81829468c8572945633a82932b8a381e0dbf38a1b7d115daf02586d74",
+      "bytes": 34183398
+    },
+    {
+      "path": "raw-assets/lottie/badge-pop.json",
+      "sha256": "775d5ceb682026da754227f31a963b3a4a35daf7b81571412715cf78645a8ada",
+      "bytes": 13214
+    },
+    {
+      "path": "raw-assets/lottie/sparkle.json",
+      "sha256": "5b927e4575d73bce02a7c6619370fc60ef4785cfae5c1b62c27e8f0029e86018",
+      "bytes": 7267
+    },
+    {
+      "path": "raw-assets/lottie/tap-ripple.json",
+      "sha256": "2221b35a6817d129962c75e7292082ee4df3e2a3e0e3ffa57824016c01eafb3d",
+      "bytes": 2141
+    },
+    {
+      "path": "raw-assets/video-edited/projects/intro_scroll.ecproj",
+      "sha256": "49661dadd8b153530ee9b1000b04088ad5c392e2729ab1d1f11398e4b209a10f",
+      "bytes": 278727
+    },
+    {
+      "path": "raw-assets/video-edited/projects/lottie_motion.ecproj",
+      "sha256": "1ca8e7f9891a630fd5e7020e2fd9b6d5a2fe73208a777206d2a26e9eafd25f78",
+      "bytes": 870550
+    },
+    {
+      "path": "raw-assets/video-edited/projects/p1_loops.ecproj",
+      "sha256": "c0aa819337515fd2877b62dbcd1fe29862f59716c72a91af54e95b5d650a170a",
+      "bytes": 123952
+    }
+  ],
+  "tools": [
+    {
+      "name": "effectcraft-cli",
+      "version": "0.17.0 (headless, --gpu)"
+    },
+    {
+      "name": "ffmpeg/ffprobe",
+      "version": "9.0-full_build-www.gyan.dev"
+    },
+    {
+      "name": "node (verification)",
+      "version": "24.15.0"
+    }
+  ],
+  "notes": "A) EffectCraft read the Blender sequence straight from D:/nonla-work/T3/intro (frame_[0001-0270].png, 1920x1080, 9 s @30), so FRAMES was not changed and nothing was copied. Check frames 1/100/240 (plus 94/106) looked right: warm gradient bg, hat + shadow present, gold sweep and dust visible by 240. Frame 100 is the scripted flash peak (meanY 236, 0.59% clipped, 41.9% >=240; 94: 0.00% clipped, 106: 0.18%) - a soft ~18-frame flash, not a blow-out, so left as authored. Last frame is the scripted fade to page colour #F3DFAE. INTRO_SCROLL render 54.1 s for 270 frames (~0.2 s/frame, --gpu, 30 Mbps). setParam/addFx misses: none in any of the three scripts (all effect and parameter names resolved). No JSX changes were needed. ffprobe: p1-craft-loop-1080.mp4 h264 1920x1080 24/1 121f 5.042s 4790191B | p1-craft-loop-1080.webm vp9 1920x1080 24/1 121f 5.042s 3898419B | p1-craft-loop-540.mp4 h264 960x540 24/1 121f 5.042s 1502061B | p1-market-loop-1080.mp4 h264 1920x1080 24/1 121f 5.042s 4953748B | p1-market-loop-1080.webm vp9 1920x1080 24/1 121f 5.042s 4134242B | p1-market-loop-540.mp4 h264 960x540 24/1 121f 5.042s 1501988B | p1-rain-loop-1080.mp4 h264 1920x1080 24/1 121f 5.042s 4972643B | p1-rain-loop-1080.webm vp9 1920x1080 24/1 121f 5.042s 3977688B | p1-rain-loop-540.mp4 h264 960x540 24/1 121f 5.042s 1560438B | p1-rice-loop-1080.mp4 h264 1920x1080 24/1 121f 5.042s 4954134B | p1-rice-loop-1080.webm vp9 1920x1080 24/1 121f 5.042s 3978877B | p1-rice-loop-540.mp4 h264 960x540 24/1 121f 5.042s 1561119B | scroll-intro-fx-1080p.mp4 h264 1920x1080 30/1 270f 9s 34183398B. No audio streams. Lottie: badge-pop.json v5.12.0 400x400 fr30 ip0-op36 12 layers | sparkle.json v5.12.0 256x256 fr30 ip0-op24 6 layers | tap-ripple.json v5.12.0 256x256 fr30 ip0-op40 2 layers; export warnings: none. BADGE_POP rendered at 0.45 s shows ring + 8 rays + stars. Projects committed (.ecproj, binary per .gitattributes). Running the cloud-authored JSX was first refused by the PC permission classifier (external code); Max approved T4 directly.",
+  "errors": [],
+  "needs_user": []
+}
