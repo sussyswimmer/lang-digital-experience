@@ -771,23 +771,23 @@
   }
 }
 
-/* ---------- phone portrait ---------- */
+/* ---------- phone portrait: everything on one screen, no scrolling between paint and page ---------- */
 
 @media (max-width: 700px) {
   .colour-screen {
-    padding: calc(156px + var(--safe-top)) 12px calc(96px + var(--safe-bottom));
-    overflow-y: auto;
+    padding: calc(150px + var(--safe-top)) 10px calc(10px + var(--safe-bottom));
   }
   .colour-screen .topbar__title {
     display: none;
   }
   .colour-screen .cs-navgroup {
     position: absolute;
-    top: 74px;
+    top: 72px;
     left: 0;
   }
   .colour-screen[data-view="picker"] {
-    padding-top: calc(88px + var(--safe-top));
+    padding: calc(88px + var(--safe-top)) 12px calc(96px + var(--safe-bottom));
+    overflow-y: auto;
   }
   .colour-screen[data-view="picker"] .cs-navgroup {
     display: none;
@@ -802,6 +802,7 @@
 
   .cp {
     height: auto;
+    justify-content: flex-start;
   }
   .cp-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -813,54 +814,100 @@
 
   .cs {
     height: auto;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "cell" "rail" "side";
-    gap: 12px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-areas:
+      "cell cell cell cell cell"
+      "fill brush eraser undo redo"
+      "sizes sizes sizes clear save"
+      "pal pal pal pal pal";
+    gap: 6px;
+  }
+  .cs-rail,
+  .cs-side,
+  .cs-tools,
+  .cs-acts {
+    display: contents;
   }
   .cs-cell {
     grid-area: cell;
-    height: calc((100vw - 24px) * 0.75);
-    padding: 10px;
+    height: calc((100vw - 20px) * 0.75 + 16px);
+    padding: 8px;
   }
-  .cs-rail {
-    grid-area: rail;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: stretch;
+  [data-test="tool-fill"] { grid-area: fill; }
+  [data-test="tool-brush"] { grid-area: brush; }
+  [data-test="tool-eraser"] { grid-area: eraser; }
+  [data-test="undo"] { grid-area: undo; }
+  [data-test="redo"] { grid-area: redo; }
+  [data-test="clear"] { grid-area: clear; }
+  .cs-btn {
+    min-height: 68px;
+    padding: 4px 2px;
   }
-  .cs-tools {
-    flex-direction: row;
+  .cs-btn__icon {
+    width: 28px;
+    height: 28px;
   }
-  .cs-tool {
-    width: 76px;
+  .cs-btn__label,
+  .cs-act .cs-btn__label {
+    font-size: 0.82rem;
   }
   .cs-tool[aria-pressed="true"] {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
   }
   .cs-sizes {
+    grid-area: sizes;
     flex-direction: row;
-    padding: 4px;
+    justify-content: space-between;
+    padding: 2px;
   }
   .cs-size {
-    width: var(--tap-min);
+    flex: 1;
+    min-width: var(--tap-min);
   }
   .cs-grow {
     display: none;
   }
   .cs-save {
-    flex: 1;
-    min-height: 76px;
-    flex-direction: row;
-    gap: 10px;
+    grid-area: save;
+    min-height: 68px;
+  }
+  .cs-save .cs-btn__icon {
+    width: 30px;
+    height: 30px;
+  }
+  .cs-save .cs-btn__label {
+    font-size: 0.95rem;
   }
   .cs-download {
-    flex: 1;
+    grid-column: 1 / -1;
   }
-  .cs-side {
-    grid-area: side;
+  .cs-palette {
+    grid-area: pal;
+    padding: 6px 8px 8px;
+    overflow: hidden;
+  }
+  .cs-straplabel {
+    font-size: 0.85rem;
+    margin-bottom: 2px;
   }
   .cs-swatches {
-    grid-template-columns: repeat(auto-fill, 64px);
-    justify-content: space-between;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    touch-action: pan-x;
+    padding-bottom: 2px;
+  }
+  .cs-swatches::-webkit-scrollbar {
+    display: none;
+  }
+  .cs-swatch {
+    flex: none;
+  }
+  .cs-confirm {
+    position: fixed;
+    inset: 0;
+    border-radius: 0;
   }
 }

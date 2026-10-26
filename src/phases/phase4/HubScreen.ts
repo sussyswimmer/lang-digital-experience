@@ -13,7 +13,7 @@ import { assetUrl } from '../../assets/manifest';
 import { CHAPTERS, LAYERS, type ChapterId, type FlowState, type LayerId } from '../../app/types';
 import type { AppContext, Screen } from '../../app/context';
 import { speak } from '../phase1/speak';
-import { art } from './hub/media';
+import { art, refreshAlts } from './hub/media';
 import { buildCardSvg, colourCardSvg, quizCardSvg } from './hub/cardArt';
 import { P4_ICONS, P4_PICTURES } from './hub/icons';
 import { ALL_BADGES, MAKER_BADGE, badgeSvg, earnedBadges } from './hub/badges';
@@ -63,6 +63,7 @@ class Hub implements Screen {
     this.picker = this.buildPicker();
     root.append(TopBar(ctx, { titleId: 'hub.title' }), main, this.picker);
 
+    this.cleanups.push(i18n.onChange(() => refreshAlts(root)));
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && !this.picker.hidden) this.closePicker();
     };
@@ -104,7 +105,7 @@ class Hub implements Screen {
           src: `img/art/hub-${c.id}-800.webp`,
           srcset: `${assetUrl(`img/art/hub-${c.id}-800.webp`)} 800w, ${assetUrl(`img/art/hub-${c.id}-1600.webp`)} 1600w`,
           sizes: '(max-width: 700px) 90vw, 32vw',
-          alt: i18n.t(c.altId),
+          altId: c.altId,
           svg: c.svg(),
         },
         'p4h-card__art',

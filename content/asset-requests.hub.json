@@ -1,0 +1,38 @@
+[
+  {
+    "path": "public/assets/img/layers/build-0{1..6}-{frame,leaf-inner,poem-art,leaf-outer,stitches,strap}.webp + build-00-shadow.webp",
+    "what": "Build-game layers (one locked camera, alpha) and the hat's floor shadow",
+    "source": "blender",
+    "notes": "Already rendered: raw-assets/renders/stills/build-*.png. Run `npm run assets:renders`, then set \"layerImagesReady\": true in content/build.json. The workbench zooms the renders ×1.4 about (50%, 22.8%) to fill the bench (RENDER_BENCH in src/phases/phase4/build/art.ts was measured from their alpha bounds; re-measure if the camera changes). Until then the workbench draws matching SVG layers. Verified with the current renders via request interception."
+  },
+  {
+    "path": "public/assets/img/layers/build-06-strap-{peach,green}.webp",
+    "what": "The build-game strap layer in the other two traditional strap colours",
+    "source": "blender",
+    "notes": "Optional. With renders on, the strap layer is the purple render whatever strap colour the child picked in Phase 2 (the SVG layers follow settings.strapColour)."
+  },
+  {
+    "path": "public/assets/img/quiz/{q2-no-rings-floppy,q2-shinier,q2-tight-strap,q3-leaf-gap,q3-tiny-rings,q3-strap-new-colour,q4-rings-08,q4-rings-16,q4-rings-30}.webp",
+    "what": "Quiz answer pictures for Q2–Q4",
+    "source": "blender",
+    "notes": "Already rendered: raw-assets/renders/quiz/*.png. Run `npm run assets:renders`, then set \"imageReady\": true on those answers in content/quiz.json. The in-code SVG pictures (src/phases/phase4/quiz/pictures.ts) show until then, and again if an image fails to load."
+  },
+  {
+    "path": "public/assets/img/quiz/{q1-thread,q1-leaves,q1-strap}.webp",
+    "what": "Q1 answer pictures: a spool of white sewing thread with a needle; a fan of outer palm leaves; a finished nón lá with its purple chin strap, wind blowing",
+    "source": "blender",
+    "notes": "4:3 (1200×900), transparent or soft cream background, same stills camera/lighting as the q2–q4 renders. Set \"imageReady\": true in content/quiz.json when they land."
+  },
+  {
+    "path": "public/assets/img/quiz/{q5-poems,q5-coins,q5-rice}.webp",
+    "what": "Q5 answer pictures: a backlit poem hat glowing with tiny pictures and poem lines (Tây Hồ, Huế); three old Vietnamese coins with square holes; a little pile of rice seeds (unhusked thóc) with a stalk",
+    "source": "higgsfield",
+    "notes": "Q5 is a draft question (team review). 4:3, warm storybook style matching img/art/hub-*.webp; q5-poems could also be the Blender poem-backlit still. Set \"imageReady\": true in content/quiz.json when they land."
+  },
+  {
+    "path": "public/assets/audio/narration/{en,vi}/<id>.mp3 for every narration id in content/strings/{hub,build,quiz,cert}.json",
+    "what": "Narration for the Activity Hub, the build game, the quiz and the certificate",
+    "source": "tts",
+    "notes": "The hub intro also reads the three card titles (build.title, colour.title, quiz.title from common.json); the quiz reads every answer label (quiz.qN.a.*). Captions run on a reading-speed timer until recorded."
+  }
+]

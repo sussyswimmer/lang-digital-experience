@@ -26,12 +26,18 @@ export function layerSvg(piece: PieceId, uid: string, strapColour: string): stri
   }
 }
 
+/**
+ * Where the hat stands in the Blender build-0N renders once they are zoomed onto the workbench
+ * (see .p4b-stack.is-renders in build.css: scale 1.4 about 50% 22.8%; measured from the renders'
+ * alpha bounds), so the dashed outline matches whichever pictures are in use.
+ */
+export const RENDER_BENCH: Cone = { cx: 200, apexY: 30, brimY: 166, rx: 148, ry: 50 };
+
 /** the empty workbench: the hat's shadow and a dashed outline of where it will stand */
-export function ghostSvg(): string {
-  const c = BENCH;
+export function ghostSvg(c: Cone = BENCH, withShadow = true): string {
   return svgDoc(
     BENCH_VB,
-    `${shadow(c, 'ghost')}<path d="${bodyPath(c)}" fill="#FFF9EC" fill-opacity=".35" stroke="#7A5A3A" stroke-opacity=".38" stroke-width="3" stroke-dasharray="10 9" stroke-linejoin="round"/>`,
+    `${withShadow ? shadow(c, 'ghost') : ''}<path d="${bodyPath(c)}" fill="#FFF9EC" fill-opacity=".35" stroke="#7A5A3A" stroke-opacity=".38" stroke-width="3" stroke-dasharray="10 9" stroke-linejoin="round"/>`,
   );
 }
 

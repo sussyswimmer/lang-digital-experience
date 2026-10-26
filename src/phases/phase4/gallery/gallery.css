@@ -47,6 +47,10 @@
   display: none;
 }
 
+.gl-colour[hidden] {
+  display: none;
+}
+
 .gl-colour {
   --swatch: #fff;
   min-height: 76px;

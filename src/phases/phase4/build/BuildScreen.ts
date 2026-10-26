@@ -21,7 +21,7 @@ import { P4_ICONS, P4_PICTURES } from '../hub/icons';
 import { confettiBurst, type Burst } from '../hub/confetti';
 import { centreOf, enter, labelButton, quietViewer, rectOf, testHook } from '../hub/kit';
 import { ORDER, evaluateDrop, isComplete, nextPiece, shuffledTray, type PieceId } from './order';
-import { ghostSvg, layerSvg, trayArt } from './art';
+import { RENDER_BENCH, ghostSvg, layerSvg, trayArt } from './art';
 
 const PIECES = content.pieces as Record<PieceId, { labelId: string; placedId: string; layer: string }>;
 const DRAG_START_PX = 10;
@@ -118,7 +118,13 @@ class Build implements Screen {
 
   private buildBench(): void {
     this.stack = el('div.p4b-stack');
-    this.stack.innerHTML = `<div class="p4b-ghost">${ghostSvg()}</div>`;
+    if (content.layerImagesReady) {
+      // the Blender renders: their own floor shadow under a ghost outline drawn to match them
+      this.stack.classList.add('is-renders');
+      this.stack.innerHTML = `<div class="p4b-ghost"><img alt="" src="${assetUrl(content.shadowImage)}">${ghostSvg(RENDER_BENCH, false)}</div>`;
+    } else {
+      this.stack.innerHTML = `<div class="p4b-ghost">${ghostSvg()}</div>`;
+    }
     this.dropLabel = i18n.bind(el('span.p4b-drop'), 'build.drop');
     this.hat = el(
       'button.p4b-hat',

@@ -100,6 +100,27 @@
   object-fit: contain;
 }
 
+.p4b-ghost img,
+.p4b-ghost svg {
+  position: absolute;
+  inset: 0;
+}
+
+/* Blender renders frame the hat smaller than the workbench: zoom them all the same way */
+.p4b-stack.is-renders {
+  overflow: hidden;
+  border-radius: 36px;
+}
+
+.p4b-stack.is-renders .p4b-layer img,
+.p4b-stack.is-renders .p4b-ghost img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.4);
+  transform-origin: 50% 22.8%;
+}
+
 /* "put it here": a warm glow under the hat while a piece is held */
 .p4b-hat::before {
   content: '';
@@ -358,10 +379,6 @@
   scale: 0.95;
 }
 
-.p4b-piece.is-glow {
-  animation: p4-glow 1.2s ease-in-out infinite;
-}
-
 .p4b-piece.is-used,
 .p4b-piece[disabled] {
   opacity: 0.5;
@@ -512,4 +529,13 @@
     width: 110px;
     height: 136px;
   }
+}
+
+/* with renders the dashed outline is only a guide for the empty bench */
+.p4b-stack.is-renders .p4b-ghost svg {
+  transition: opacity 0.3s;
+}
+
+.p4b-stack.is-renders:has(.p4b-layer) .p4b-ghost svg {
+  opacity: 0;
 }

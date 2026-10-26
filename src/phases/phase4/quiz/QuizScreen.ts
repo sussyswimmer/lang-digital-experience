@@ -13,7 +13,7 @@ import { i18n } from '../../../i18n/i18n';
 import { motion } from '../../../a11y/motion';
 import type { AppContext, Screen } from '../../../app/context';
 import { speak } from '../../phase1/speak';
-import { art } from '../hub/media';
+import { art, refreshAlts } from '../hub/media';
 import { P4_ICONS } from '../hub/icons';
 import { QUIZ_BADGES, badgeSvg } from '../hub/badges';
 import { centreOf, enter, labelButton, quietViewer, rectOf, testHook } from '../hub/kit';
@@ -77,6 +77,7 @@ class Quiz implements Screen {
         next: () => this.onNext(),
       }),
     );
+    this.cleanups.push(i18n.onChange(() => refreshAlts(root)));
     this.showQuestion(true);
   }
 
@@ -101,7 +102,7 @@ class Quiz implements Screen {
     i18n.bind(this.count, 'quiz.qnum', { n: index + 1 });
     this.dots.forEach((d, i) => d.classList.toggle('is-current', i === index));
 
-    const scene = q.scene ? art({ src: q.scene.image, alt: i18n.t(q.scene.altId), svg: '' }, 'p4q-scene') : null;
+    const scene = q.scene ? art({ src: q.scene.image, altId: q.scene.altId, svg: '' }, 'p4q-scene') : null;
     const listen = labelButton('button.p4-action.p4-action--light.p4q-listen', P4_ICONS.speaker, 'ui.replay', () => {
       ctx.audio.sfx.play('tap');
       this.readAloud();
@@ -112,9 +113,11 @@ class Quiz implements Screen {
 
     this.cards = q.answers.map((a, i) => {
       const picture = art(
-        { src: a.imageReady ? `img/quiz/${a.imageId}.webp` : null, alt: i18n.t(a.labelId), svg: answerArt(a.art) },
+        { src: a.imageReady ? `img/quiz/${a.imageId}.webp` : null, altId: a.labelId, svg: answerArt(a.art) },
         'p4q-card__pic',
       );
+      // the card's own label names the answer; the picture needn't be read twice
+      picture.setAttribute('aria-hidden', 'true');
       const card = el(
         'button.p4q-card',
         {

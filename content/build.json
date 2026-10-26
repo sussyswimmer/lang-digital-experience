@@ -2,6 +2,7 @@
   "notes": "Build Your Nón Lá. Pieces go on inside → out (brief 4a). A wrong drop shows the first `special` hint whose `dropped` and `missing` both match, else the hint for the piece that is missing next. Flip `layerImagesReady` to true once public/assets/img/layers/build-0N-*.webp exist (npm run assets:renders); until then the workbench draws SVG layers.",
   "order": ["frame", "leaf-inner", "poem-art", "leaf-outer", "stitches", "strap"],
   "layerImagesReady": false,
+  "shadowImage": "img/layers/build-00-shadow.webp",
   "pieces": {
     "frame": { "labelId": "build.piece.frame", "placedId": "build.placed.frame", "layer": "img/layers/build-01-frame.webp" },
     "leaf-inner": { "labelId": "build.piece.leaf-inner", "placedId": "build.placed.leaf-inner", "layer": "img/layers/build-02-leaf-inner.webp" },

@@ -60,7 +60,6 @@
 .p4h-card.is-told {
   translate: 0 -6px;
   scale: 1.02;
-  animation: p4-glow 1.4s ease-in-out infinite;
 }
 
 .p4h-card__art {

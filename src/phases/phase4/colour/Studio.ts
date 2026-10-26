@@ -613,18 +613,24 @@ export class Studio {
       this.spread = null;
       this.pg.putImageData(this.mirror, 0, 0, after.x, after.y, after.w, after.h);
     };
+    // a circle filled with the new paint as a pattern: no clip state to leak between frames
+    const pattern = this.pg.createPattern(overlay, 'no-repeat');
+    pattern?.setTransform(new DOMMatrix().translateSelf(after.x, after.y));
     const frame = (now: number) => {
       // rAF timestamps are frame starts and can be a little earlier than t0
       const t = Math.min(1, Math.max(0, (now - t0) / ms));
       const r = far * (1 - Math.pow(1 - t, 3)) + 2;
       const g = this.pg;
-      g.save();
-      g.beginPath();
-      g.arc(x, y, r, 0, Math.PI * 2);
-      g.clip();
-      g.drawImage(overlay, after.x, after.y);
-      g.restore();
-      if (t >= 1) finish();
+      if (pattern) {
+        g.save();
+        g.globalCompositeOperation = 'source-over';
+        g.fillStyle = pattern;
+        g.beginPath();
+        g.arc(x, y, r, 0, Math.PI * 2);
+        g.fill();
+        g.restore();
+      }
+      if (t >= 1 || !pattern) finish();
       else if (this.spread) this.spread.raf = requestAnimationFrame(frame);
     };
     this.spread = { raf: requestAnimationFrame(frame), finish };
@@ -883,7 +889,7 @@ export class Studio {
         const o = (Math.floor(y) * W + Math.floor(x)) * 4;
         return Array.from(this.mirror.data.subarray(o, o + 4));
       },
-      fillAt: (x: number, y: number, hex: string) => this.fillAt(x, y, hex, false),
+      fillAt: (x: number, y: number, hex: string, animate = false) => this.fillAt(x, y, hex, animate),
       undo: () => this.undo(),
       redo: () => this.redo(),
       saveCount: async () => (await getGallery()).count(),
@@ -901,6 +907,16 @@ export class Studio {
         return { x: r.left + (x / W) * r.width, y: r.top + (y / H) * r.height };
       },
       persistent: async () => (await getGallery()).persistent,
+      /** pixels where what's on screen differs from the paint model (should be 0 once animations end) */
+      mismatch: () => {
+        const shown = this.pg.getImageData(0, 0, W, H).data;
+        const model = this.mirror.data;
+        let n = 0;
+        for (let i = 0; i < shown.length; i += 4) {
+          if (Math.abs(shown[i + 3] - model[i + 3]) > 2 || (model[i + 3] > 0 && Math.abs(shown[i] - model[i]) > 2)) n++;
+        }
+        return n;
+      },
     };
   }
 }

@@ -240,6 +240,8 @@ class GalleryScreen implements Screen {
     const n = this.tiles.length;
     this.countText.textContent = n === 1 ? i18n.t('gallery.count.one') : i18n.t('gallery.count', { n });
     this.countText.hidden = n === 0;
+    // the empty wall has its own big "Colour a picture" button
+    this.colourBtn.hidden = n === 0;
     this.labelTiles();
   }
 

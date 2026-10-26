@@ -5,6 +5,7 @@
   max-width: 1260px;
   margin: 0 auto;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr);
   gap: 12px;
 }
@@ -160,7 +161,19 @@
 }
 
 .p4q-next {
-  animation: pulse 1.8s ease-in-out 1.2s infinite;
+  position: relative;
+}
+
+/* a ring that breathes round the Next button (the button itself stays still) */
+.p4q-next::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border: 4px solid var(--mango-400);
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  animation: p4-ring 1.6s ease-in-out 1.2s infinite;
 }
 
 /* ---------- answer cards ---------- */
@@ -197,7 +210,7 @@
   min-height: 0;
   border-radius: 20px;
   overflow: hidden;
-  background: var(--straw-100);
+  background: radial-gradient(120% 95% at 50% 38%, #fffaf0, #f6e7c4);
 }
 
 .p4q-card__pic svg,
@@ -237,10 +250,6 @@
 .p4q-card__mark svg {
   width: 100%;
   height: 100%;
-}
-
-.p4q-card.is-told {
-  animation: p4-glow 1.2s ease-in-out infinite;
 }
 
 .p4q-card.is-locked {
@@ -390,5 +399,16 @@
     right: 8px;
     width: 34px;
     height: 34px;
+  }
+}
+
+/* narrow phones: the "Question 2 of 5" text is enough, the hat dots make room for the badges */
+@media (max-width: 480px) {
+  .p4q-progress {
+    display: none;
+  }
+
+  .p4q-where {
+    padding: 4px 12px;
   }
 }
