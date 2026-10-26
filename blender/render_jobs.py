@@ -285,6 +285,20 @@ def job_cover(scene):
     print("PROGRESS cover 1/1", flush=True)
 
 
+def job_coverhat(scene):
+    """The cover's hat alone with no floor shadow, for the storybook cover (the 3D hat shrinks onto it)."""
+    freeze_at_rest(scene)
+    studio_light(scene)
+    cam, _ = look_at_camera("CAM_COVER", (0, 0, -0.03), orbit((0, 0, -0.03), 25, 38, 1.25), fov_y=30)
+    scene.camera = cam
+    set_visible(ALL_PARTS)
+    ob("shadow_catcher").hide_render = True
+    res(scene, 1200, 1200)
+    render_still(scene, os.path.join(OUT, "cover", "cover-hat.png"))
+    ob("shadow_catcher").hide_render = False
+    print("PROGRESS coverhat 1/1", flush=True)
+
+
 # aimed a little below the brim so the floor shadow under the hat stays inside the frame
 STILLS_CAM = dict(target=(0, 0, -0.04), yaw=18, elev=20, dist=1.32, fov=30)
 
@@ -303,33 +317,55 @@ def recolour_strap(hexcol):
         mix.inputs["B"].default_value = (*nb.hex_rgb(hexcol), 1)
 
 
+# the build game's order (brief 4a): frame → inner leaves → paper art → outer leaves → stitching → strap
+GAME_LAYERS = [
+    ("01-frame", ["frame"]),
+    ("02-leaf-inner", ["leaf_inner"]),
+    ("03-poem-art", ["poem_art"]),
+    ("04-leaf-outer", ["leaf_outer", "apex_cap"]),
+    ("05-stitches", ["stitches_white", "brim"]),
+    ("06-strap", ["strap_rig"]),
+]
+
+
+def set_holdout(names, on):
+    for n in names:
+        for o in [ob(n)] + list(ob(n).children_recursive):
+            if o.type == "MESH":
+                o.is_holdout = on
+
+
 def job_stills(scene):
     freeze_at_rest(scene)
     studio_light(scene)
     stills_camera(scene)
     res(scene, 1600, 1200)
     floor = ob("shadow_catcher")
-    layers = [
-        ("build-01-frame", ["frame"]),
-        ("build-02-leaf-inner", ["leaf_inner"]),
-        ("piece-mo-bark", ["mo_bark"]),
-        ("build-03-poem-art", ["poem_art"]),
-        ("build-04-leaf-outer", ["leaf_outer", "apex_cap"]),
-        ("build-05-stitches", ["stitches_white", "brim"]),
-        ("build-06-strap", ["strap_rig"]),
-        ("hat-full", ALL_PARTS),
-    ]
-    total = len(layers) + 5
+    total = 2 * len(GAME_LAYERS) + 7
     n = 0
-    # build-game layers stack in register, so they carry no floor shadow of their own; the game puts the
-    # whole hat's shadow (build-00-shadow) underneath once
-    for name, parts in layers:
-        floor.hide_render = name != "hat-full"
+    # Build-game layers stack in register with no floor shadow of their own (the game puts the whole hat's
+    # shadow, build-00-shadow, underneath once). Each build-0N is rendered with the layers already placed as
+    # holdouts, so parts they hide (the back of the brim behind the cone, the strap ends inside the hat)
+    # are cut out and the stack reads like the real hat; piece-0N is the whole piece for the tray.
+    floor.hide_render = True
+    placed = []
+    for name, parts in GAME_LAYERS:
+        set_visible(placed + parts)
+        set_holdout(placed, True)
+        render_still(scene, os.path.join(OUT, "stills", f"build-{name}.png"))
+        set_holdout(placed, False)
         set_visible(parts)
-        render_still(scene, os.path.join(OUT, "stills", f"{name}.png"))
-        n += 1
+        render_still(scene, os.path.join(OUT, "stills", f"piece-{name}.png"))
+        placed += parts
+        n += 2
         print(f"PROGRESS stills {n}/{total}", flush=True)
+    set_visible(["mo_bark"])
+    render_still(scene, os.path.join(OUT, "stills", "piece-mo-bark.png"))
     floor.hide_render = False
+    set_visible(ALL_PARTS)
+    render_still(scene, os.path.join(OUT, "stills", "hat-full.png"))
+    n += 2
+    print(f"PROGRESS stills {n}/{total}", flush=True)
     shadow_only(scene, ALL_PARTS, os.path.join(OUT, "stills", "build-00-shadow.png"))
     n += 1
     print(f"PROGRESS stills {n}/{total}", flush=True)
@@ -559,7 +595,8 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     for job in JOBS:
         log("job", job)
-        {"intro": job_intro, "cover": job_cover, "stills": job_stills, "quiz": job_quiz, "lineart": job_lineart}[job](scene)
+        {"intro": job_intro, "cover": job_cover, "coverhat": job_coverhat, "stills": job_stills, "quiz": job_quiz,
+         "lineart": job_lineart}[job](scene)
     log(f"all done in {time.time() - t0:.0f}s → {OUT}")
 
 

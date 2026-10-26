@@ -61,5 +61,19 @@
   "rain-market": {
    "source": "mix of rain-on-hat (1.0) and market-chatter (0.7), -2.5 dB, 48 kHz mono 96 kbps (no generation)"
   }
+ },
+ "poem_art": {
+  "model": "gpt_image_2_5 quality high 2k 16:9",
+  "used": {
+   "file": "poem-silhouettes.png",
+   "job": "78c68e11-66b4-4013-9d58-0ecd5e1cfe99",
+   "prompt": "Paper-cut silhouette artwork for a Vietnamese poem hat (nón bài thơ): solid flat dark-brown cut-paper shapes on a pure white background. A wide, balanced composition: a girl in a flowing áo dài with a nón lá on the left, a sampan boat with a rower on gentle waves in the middle, a lotus flower with round leaves on the right, small birds and a crescent moon above. ..."
+  },
+  "alternate": {
+   "file": "poem-silhouettes-alt-bridge.png",
+   "job": "44d524f4-cd54-4ff0-8ffa-b2e4f70b20da",
+   "note": "adds Tràng Tiền bridge and bamboo; finer detail"
+  },
+  "baked_by": "blender/poem_texture.py → blender/textures/poem_art.png (unrolled-cone warp)"
  }
 }
