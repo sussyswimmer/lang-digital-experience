@@ -1,0 +1,1342 @@
+{
+ "en/site.tagline": {
+  "hash": "865680090375",
+  "seconds": 4.7
+ },
+ "en/p1.intro.1": {
+  "hash": "9ff4a4b80ee6",
+  "seconds": 10.13
+ },
+ "en/p1.intro.2": {
+  "hash": "d227976dabf8",
+  "seconds": 8.47
+ },
+ "en/p1.intro.3": {
+  "hash": "d60dc3d5ef74",
+  "seconds": 10.75
+ },
+ "en/p1.tile.farmers": {
+  "hash": "7986e35d34f4",
+  "seconds": 3.5
+ },
+ "en/p1.tile.market": {
+  "hash": "3e14704e48b6",
+  "seconds": 4.42
+ },
+ "en/p1.tile.aodai": {
+  "hash": "a8de094e571b",
+  "seconds": 4.56
+ },
+ "en/p1.tile.rain": {
+  "hash": "16b12a520f3f",
+  "seconds": 4.97
+ },
+ "en/p1.tile.craft": {
+  "hash": "5c16fc805ea8",
+  "seconds": 4.01
+ },
+ "en/p1.deco.sky": {
+  "hash": "f87f296f4c3c",
+  "seconds": 3.41
+ },
+ "en/p1.deco.lotus": {
+  "hash": "1ecc0c856559",
+  "seconds": 3.84
+ },
+ "en/p2.l2.insight.1": {
+  "hash": "eb23eb949109",
+  "seconds": 8.45
+ },
+ "en/p2.l2.insight.3": {
+  "hash": "41d5b43ef8c6",
+  "seconds": 12.7
+ },
+ "en/p2.l2.insight.6": {
+  "hash": "09219e1bbab5",
+  "seconds": 11.74
+ },
+ "en/p2.l3.name": {
+  "hash": "33dbbe76d3ba",
+  "seconds": 2.47
+ },
+ "en/p2.l3.question": {
+  "hash": "660e85b1f0cb",
+  "seconds": 2.83
+ },
+ "en/p2.l3.insight.2": {
+  "hash": "81b0081efe57",
+  "seconds": 10.22
+ },
+ "en/p2.l3.insight.3": {
+  "hash": "fc0c21343eba",
+  "seconds": 9.24
+ },
+ "en/p2.l3.insight.4": {
+  "hash": "4b8311ea5314",
+  "seconds": 10.97
+ },
+ "en/p2.l3.insight.6": {
+  "hash": "581e82041600",
+  "seconds": 13.32
+ },
+ "en/p2.l4.name": {
+  "hash": "942ef7956737",
+  "seconds": 2.26
+ },
+ "en/p2.l4.question": {
+  "hash": "9692d075bddc",
+  "seconds": 2.98
+ },
+ "en/p2.l4.insight.1": {
+  "hash": "9d334a8fd6da",
+  "seconds": 7.18
+ },
+ "en/p2.l4.insight.2": {
+  "hash": "e23d23b8da81",
+  "seconds": 5.69
+ },
+ "en/p2.l4.insight.3": {
+  "hash": "0c87c4e6fa42",
+  "seconds": 10.7
+ },
+ "en/p2.l4.insight.4": {
+  "hash": "3cdf14198a1a",
+  "seconds": 14.38
+ },
+ "en/p2.l4.insight.6": {
+  "hash": "4110e63e98f5",
+  "seconds": 12.89
+ },
+ "en/p2.label.whiteThread": {
+  "hash": "ab0dd04f7438",
+  "seconds": 2.16
+ },
+ "en/p2.label.redThread": {
+  "hash": "539dd70fad2c",
+  "seconds": 4.37
+ },
+ "en/p2.label.thirdRim": {
+  "hash": "98fc2e1c6804",
+  "seconds": 2.93
+ },
+ "en/p2.label.secret": {
+  "hash": "e44ff150ac91",
+  "seconds": 2.45
+ },
+ "en/p2.label.joints": {
+  "hash": "fe5da89e661c",
+  "seconds": 3.62
+ },
+ "en/p2.label.ringGap": {
+  "hash": "c36283b399e7",
+  "seconds": 2.64
+ },
+ "en/p2.label.brimWidth": {
+  "hash": "3bef7dde0ecd",
+  "seconds": 2.59
+ },
+ "en/p2.label.knots": {
+  "hash": "284bdab1f4de",
+  "seconds": 2.9
+ },
+ "en/p2.part.mo": {
+  "hash": "0ac6845ba8c5",
+  "seconds": 1.92
+ },
+ "en/p2.part.poem": {
+  "hash": "10a09cb166be",
+  "seconds": 1.56
+ },
+ "en/p2.part.outerLeaves": {
+  "hash": "40b5940c85e8",
+  "seconds": 1.18
+ },
+ "en/p2.part.stitches": {
+  "hash": "0a6849392513",
+  "seconds": 1.1
+ },
+ "en/p3.transition": {
+  "hash": "f536ecddc52f",
+  "seconds": 6
+ },
+ "en/p3.cover.open": {
+  "hash": "b7f79f52710c",
+  "seconds": 1.85
+ },
+ "en/p3.locked": {
+  "hash": "f89d38714211",
+  "seconds": 1.99
+ },
+ "en/p3.finish.cheer": {
+  "hash": "5ed612568395",
+  "seconds": 4.18
+ },
+ "en/p3.ch1.story": {
+  "hash": "04b514e338a1",
+  "seconds": 13.51
+ },
+ "en/p3.ch1.prompt": {
+  "hash": "ece0e41bdae7",
+  "seconds": 2.42
+ },
+ "en/p3.ch2.prompt": {
+  "hash": "8971c4814393",
+  "seconds": 2.54
+ },
+ "en/p3.ch2.done": {
+  "hash": "090f334d58b7",
+  "seconds": 4.78
+ },
+ "en/p3.ch2.again": {
+  "hash": "3c9b954b3b85",
+  "seconds": 2.83
+ },
+ "en/p3.ch3.story.1": {
+  "hash": "d5cc03bbd051",
+  "seconds": 7.27
+ },
+ "en/p3.ch3.story.2": {
+  "hash": "e3345bd1ac75",
+  "seconds": 6.5
+ },
+ "en/p3.ch3.rain-prompt": {
+  "hash": "42716d7a37b6",
+  "seconds": 2.28
+ },
+ "en/p3.ch3.dry": {
+  "hash": "517eb669d720",
+  "seconds": 5.81
+ },
+ "en/p3.ch3.count": {
+  "hash": "a1431aa17431",
+  "seconds": 1.87
+ },
+ "en/p3.ch3.counted.1": {
+  "hash": "28ee3bbef6dd",
+  "seconds": 1.85
+ },
+ "en/p3.ch3.counted.2": {
+  "hash": "4c0c4dc2b103",
+  "seconds": 1.82
+ },
+ "en/p3.ch3.counted.3": {
+  "hash": "5679a14c886f",
+  "seconds": 1.92
+ },
+ "en/p3.ch3.counted.4": {
+  "hash": "2fe01ae62cb5",
+  "seconds": 1.97
+ },
+ "en/p3.ch3.counted.5": {
+  "hash": "28948cabf0a4",
+  "seconds": 1.97
+ },
+ "en/p3.ch3.counted.6": {
+  "hash": "5d5d09fedfe3",
+  "seconds": 1.99
+ },
+ "en/p3.ch3.counted.7": {
+  "hash": "5226b3a6606b",
+  "seconds": 2.09
+ },
+ "en/p3.ch3.counted.8": {
+  "hash": "0bd857c9a9ee",
+  "seconds": 1.87
+ },
+ "en/p3.ch3.counted.9": {
+  "hash": "b61bf9b4011d",
+  "seconds": 2.04
+ },
+ "en/p3.ch3.counted.10": {
+  "hash": "392714f224c7",
+  "seconds": 1.99
+ },
+ "en/p3.ch3.counted.11": {
+  "hash": "f4ed7201459b",
+  "seconds": 2.14
+ },
+ "en/p3.ch3.counted.12": {
+  "hash": "acfc16ebe93e",
+  "seconds": 2.02
+ },
+ "en/p3.ch3.counted.13": {
+  "hash": "8da0f361b8dd",
+  "seconds": 2.16
+ },
+ "en/p3.ch3.counted.14": {
+  "hash": "3b97553284c9",
+  "seconds": 2.26
+ },
+ "en/p3.ch3.counted.15": {
+  "hash": "3fed2e7de491",
+  "seconds": 2.21
+ },
+ "en/p3.ch3.counted.16": {
+  "hash": "f99aaf44121f",
+  "seconds": 2.23
+ },
+ "en/p3.ch3.counted.17": {
+  "hash": "1884129dd8d9",
+  "seconds": 2.33
+ },
+ "en/p3.ch3.counted.19": {
+  "hash": "e0549771f1f2",
+  "seconds": 2.23
+ },
+ "en/p3.ch3.counted.20": {
+  "hash": "c48fadb3f577",
+  "seconds": 2.04
+ },
+ "en/p3.ch3.counted.21": {
+  "hash": "cbcf3b001cb6",
+  "seconds": 2.21
+ },
+ "en/p3.ch3.counted.22": {
+  "hash": "75a0f0f17799",
+  "seconds": 2.23
+ },
+ "en/p3.ch3.counted.23": {
+  "hash": "c5c811f88d74",
+  "seconds": 2.28
+ },
+ "en/p3.ch3.counted.24": {
+  "hash": "0c6b5a249a87",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.25": {
+  "hash": "a98dbef72424",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.26": {
+  "hash": "f6077c77c3a1",
+  "seconds": 2.4
+ },
+ "en/p3.ch3.counted.27": {
+  "hash": "1beb970d7b9e",
+  "seconds": 2.33
+ },
+ "en/p3.ch3.counted.28": {
+  "hash": "59c8ca4dece1",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.29": {
+  "hash": "5eace9324749",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.31": {
+  "hash": "946f3349b0d5",
+  "seconds": 2.23
+ },
+ "en/p3.ch3.counted.32": {
+  "hash": "fad22766a24d",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.33": {
+  "hash": "6f542940a217",
+  "seconds": 2.23
+ },
+ "en/p3.ch3.counted.34": {
+  "hash": "2c8bbe02613f",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.35": {
+  "hash": "2b8b85b4a2e4",
+  "seconds": 2.33
+ },
+ "en/p3.ch3.counted.36": {
+  "hash": "27f35f979ef7",
+  "seconds": 2.4
+ },
+ "en/p3.ch3.counted.37": {
+  "hash": "5fb9c26992ac",
+  "seconds": 2.47
+ },
+ "en/p3.ch3.counted.38": {
+  "hash": "3d0df5545e05",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.39": {
+  "hash": "c7e54cfa222c",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.40": {
+  "hash": "73ddf7784de8",
+  "seconds": 1.99
+ },
+ "en/p3.ch3.counted.47": {
+  "hash": "e4c11ba39a3c",
+  "seconds": 2.47
+ },
+ "en/p3.ch3.counted.50": {
+  "hash": "f928fd0abbde",
+  "seconds": 2.09
+ },
+ "en/p3.ch3.counted.53": {
+  "hash": "5114b7741448",
+  "seconds": 2.3
+ },
+ "en/p3.ch3.counted.54": {
+  "hash": "443a4339b8cf",
+  "seconds": 2.38
+ },
+ "en/p3.ch3.counted.55": {
+  "hash": "352d4cf46634",
+  "seconds": 2.4
+ },
+ "en/p3.ch3.counted.56": {
+  "hash": "679b37d34642",
+  "seconds": 2.4
+ },
+ "en/p3.ch3.counted.57": {
+  "hash": "d5fa54e4a5f8",
+  "seconds": 2.45
+ },
+ "en/p3.ch3.counted.58": {
+  "hash": "f6801277c937",
+  "seconds": 2.4
+ },
+ "en/p3.ch3.counted.60": {
+  "hash": "7f886e820731",
+  "seconds": 2.23
+ },
+ "en/num.1": {
+  "hash": "27141a590fa0",
+  "seconds": 0.79
+ },
+ "en/num.2": {
+  "hash": "4a908e1cd357",
+  "seconds": 0.74
+ },
+ "en/num.3": {
+  "hash": "0c111972e944",
+  "seconds": 0.67
+ },
+ "en/num.4": {
+  "hash": "bed03137a7d9",
+  "seconds": 0.77
+ },
+ "en/num.5": {
+  "hash": "b495566271ee",
+  "seconds": 0.7
+ },
+ "en/num.6": {
+  "hash": "b8df22469c0c",
+  "seconds": 0.89
+ },
+ "en/num.7": {
+  "hash": "9b81dc9d9e10",
+  "seconds": 0.89
+ },
+ "en/num.8": {
+  "hash": "483c5bfb6cc2",
+  "seconds": 0.74
+ },
+ "en/num.9": {
+  "hash": "fcf10fd20a7d",
+  "seconds": 0.86
+ },
+ "en/num.10": {
+  "hash": "0ffaa623c4c9",
+  "seconds": 0.77
+ },
+ "en/num.11": {
+  "hash": "b39c69d31aff",
+  "seconds": 0.96
+ },
+ "en/num.12": {
+  "hash": "710e1c94cdc9",
+  "seconds": 0.77
+ },
+ "en/num.14": {
+  "hash": "972defbed134",
+  "seconds": 1.01
+ },
+ "en/num.15": {
+  "hash": "678b52babdab",
+  "seconds": 1.03
+ },
+ "en/num.17": {
+  "hash": "3e7d01513e0f",
+  "seconds": 1.15
+ },
+ "en/num.18": {
+  "hash": "4b73fbca5f6a",
+  "seconds": 0.98
+ },
+ "en/num.21": {
+  "hash": "fd796e1aa904",
+  "seconds": 1.08
+ },
+ "en/num.22": {
+  "hash": "03b22519e606",
+  "seconds": 1.1
+ },
+ "en/num.23": {
+  "hash": "44c1f27114d9",
+  "seconds": 1.08
+ },
+ "en/num.24": {
+  "hash": "74891578edd3",
+  "seconds": 1.27
+ },
+ "en/num.25": {
+  "hash": "a467c65b1c71",
+  "seconds": 1.03
+ },
+ "en/num.26": {
+  "hash": "a629919092ae",
+  "seconds": 1.2
+ },
+ "en/num.27": {
+  "hash": "2aceac71da37",
+  "seconds": 1.2
+ },
+ "en/num.30": {
+  "hash": "ada1c8383786",
+  "seconds": 0.74
+ },
+ "en/num.31": {
+  "hash": "1e139099eb1c",
+  "seconds": 1.03
+ },
+ "en/num.32": {
+  "hash": "451a97b6d283",
+  "seconds": 1.03
+ },
+ "en/num.33": {
+  "hash": "9baa996fddf3",
+  "seconds": 1.03
+ },
+ "en/num.34": {
+  "hash": "a62439e8d28b",
+  "seconds": 1.2
+ },
+ "en/num.35": {
+  "hash": "f20325016157",
+  "seconds": 0.98
+ },
+ "en/num.36": {
+  "hash": "af701d3d6390",
+  "seconds": 1.13
+ },
+ "en/num.37": {
+  "hash": "3778237627d3",
+  "seconds": 1.13
+ },
+ "en/num.38": {
+  "hash": "c8578b3876f0",
+  "seconds": 1.03
+ },
+ "en/num.39": {
+  "hash": "14ff5fa19ecb",
+  "seconds": 1.06
+ },
+ "en/num.41": {
+  "hash": "ed3955a08056",
+  "seconds": 1.03
+ },
+ "en/num.42": {
+  "hash": "f55e2851e251",
+  "seconds": 1.06
+ },
+ "en/num.44": {
+  "hash": "c9a51c0d2415",
+  "seconds": 1.03
+ },
+ "en/num.45": {
+  "hash": "88c28e98a7ed",
+  "seconds": 1.06
+ },
+ "en/num.46": {
+  "hash": "aea0fc8d18a4",
+  "seconds": 1.13
+ },
+ "en/num.47": {
+  "hash": "292dec54e644",
+  "seconds": 1.2
+ },
+ "en/num.48": {
+  "hash": "1dfb213ff654",
+  "seconds": 1.08
+ },
+ "en/num.49": {
+  "hash": "41c27da281b6",
+  "seconds": 1.15
+ },
+ "en/num.50": {
+  "hash": "24897a4aadf6",
+  "seconds": 0.82
+ },
+ "en/num.52": {
+  "hash": "40cf9e670eb8",
+  "seconds": 1.13
+ },
+ "en/num.53": {
+  "hash": "f4874d8edf7a",
+  "seconds": 1.08
+ },
+ "en/num.54": {
+  "hash": "af06f714201f",
+  "seconds": 1.22
+ },
+ "en/num.55": {
+  "hash": "206c4f144a0b",
+  "seconds": 1.06
+ },
+ "en/num.56": {
+  "hash": "023c04dd0fc8",
+  "seconds": 1.22
+ },
+ "en/num.57": {
+  "hash": "54f179dc9c45",
+  "seconds": 1.22
+ },
+ "en/num.58": {
+  "hash": "171e0af3f927",
+  "seconds": 1.15
+ },
+ "en/num.59": {
+  "hash": "1338e2440096",
+  "seconds": 1.18
+ },
+ "en/num.60": {
+  "hash": "bdccdd30538b",
+  "seconds": 1.18
+ },
+ "vi/site.tagline": {
+  "hash": "93431eefe071",
+  "seconds": 4.3
+ },
+ "vi/p1.intro.1": {
+  "hash": "8db8c9d858c6",
+  "seconds": 12.38
+ },
+ "vi/p1.intro.2": {
+  "hash": "903100915589",
+  "seconds": 9.1
+ },
+ "vi/p1.intro.3": {
+  "hash": "ace9a3f8b8e8",
+  "seconds": 13.85
+ },
+ "vi/p1.explore": {
+  "hash": "2b96c38c4455",
+  "seconds": 1.32
+ },
+ "vi/p1.tile.farmers": {
+  "hash": "bf8f1efa84f5",
+  "seconds": 3.1
+ },
+ "vi/p1.tile.market": {
+  "hash": "2647e29dfe85",
+  "seconds": 4.68
+ },
+ "vi/p1.tile.aodai": {
+  "hash": "cf9998967fbc",
+  "seconds": 4.63
+ },
+ "vi/p1.tile.rain": {
+  "hash": "2b2b3da53a0b",
+  "seconds": 6.46
+ },
+ "vi/p1.deco.sky": {
+  "hash": "cee11ef5f13c",
+  "seconds": 3.48
+ },
+ "vi/p2.fallback": {
+  "hash": "a29022bcf1ab",
+  "seconds": 4.9
+ },
+ "vi/p2.loadError": {
+  "hash": "341d97da981c",
+  "seconds": 3.89
+ },
+ "vi/p2.l1.name": {
+  "hash": "af7f46e12547",
+  "seconds": 0.79
+ },
+ "vi/p2.l1.question": {
+  "hash": "cceaa82fc01b",
+  "seconds": 3.22
+ },
+ "vi/p2.l1.insight.1": {
+  "hash": "ddbd89588ef2",
+  "seconds": 8.47
+ },
+ "vi/p2.l1.insight.2": {
+  "hash": "8e761727ea6b",
+  "seconds": 11.83
+ },
+ "vi/p2.l1.insight.3": {
+  "hash": "a6defb40c558",
+  "seconds": 11.42
+ },
+ "vi/p2.l1.insight.5": {
+  "hash": "32f0bfb2227b",
+  "seconds": 8.35
+ },
+ "vi/p2.l2.insight.1": {
+  "hash": "cfc5041006e7",
+  "seconds": 8.11
+ },
+ "vi/p2.l2.insight.2": {
+  "hash": "dafaf886adbb",
+  "seconds": 9.58
+ },
+ "vi/p2.l2.insight.3": {
+  "hash": "a5dd65e7b96a",
+  "seconds": 8.38
+ },
+ "vi/p2.l2.insight.4": {
+  "hash": "3f96de36aad1",
+  "seconds": 12.7
+ },
+ "vi/p2.l2.insight.5": {
+  "hash": "09dcd3c194a8",
+  "seconds": 9.07
+ },
+ "vi/p2.l2.insight.6": {
+  "hash": "8e957baa83fd",
+  "seconds": 11.38
+ },
+ "vi/p2.l2.insight.7": {
+  "hash": "0302591ddca1",
+  "seconds": 9.77
+ },
+ "vi/p2.l3.name": {
+  "hash": "c05c8c932189",
+  "seconds": 0.91
+ },
+ "vi/p2.l3.question": {
+  "hash": "335bdfc33861",
+  "seconds": 2.45
+ },
+ "vi/p2.l3.insight.2": {
+  "hash": "73b9711f89e8",
+  "seconds": 10.44
+ },
+ "vi/p2.l3.insight.3": {
+  "hash": "88e0797cdcc4",
+  "seconds": 8.76
+ },
+ "vi/p2.l3.insight.4": {
+  "hash": "8675cbb19f10",
+  "seconds": 8.71
+ },
+ "vi/p2.l3.insight.5": {
+  "hash": "c648e441f1e1",
+  "seconds": 10.97
+ },
+ "vi/p2.l3.insight.6": {
+  "hash": "d54ceadb3c78",
+  "seconds": 12.29
+ },
+ "vi/p2.l4.name": {
+  "hash": "654cf2b1a988",
+  "seconds": 1.06
+ },
+ "vi/p2.l4.question": {
+  "hash": "1463ddab0bee",
+  "seconds": 2.78
+ },
+ "vi/p2.l4.insight.1": {
+  "hash": "ab180043d242",
+  "seconds": 7.27
+ },
+ "vi/p2.l4.insight.2": {
+  "hash": "4684eeb4ef9b",
+  "seconds": 7.44
+ },
+ "vi/p2.l4.insight.3": {
+  "hash": "e4ffc466453d",
+  "seconds": 8.45
+ },
+ "vi/p2.l4.insight.4": {
+  "hash": "1fb4bfeb8a6c",
+  "seconds": 12.46
+ },
+ "vi/p2.l4.insight.5": {
+  "hash": "101a23902ace",
+  "seconds": 9.72
+ },
+ "vi/p2.l4.insight.6": {
+  "hash": "dfa1c488292a",
+  "seconds": 15.07
+ },
+ "vi/p2.label.whiteThread": {
+  "hash": "f17e957857b0",
+  "seconds": 1.73
+ },
+ "vi/p2.label.redThread": {
+  "hash": "0f01524d6359",
+  "seconds": 2.66
+ },
+ "vi/p2.label.tapToReturn": {
+  "hash": "356d61b8d95e",
+  "seconds": 1.73
+ },
+ "vi/p2.label.thirdRim": {
+  "hash": "d4b8340ea4b2",
+  "seconds": 2.47
+ },
+ "vi/p2.label.mo": {
+  "hash": "b82554a80e6f",
+  "seconds": 1.7
+ },
+ "vi/p2.label.innerLeaves": {
+  "hash": "aa1d4d1e4b42",
+  "seconds": 1.78
+ },
+ "vi/p2.label.secret": {
+  "hash": "ed2ca6003fad",
+  "seconds": 2.88
+ },
+ "vi/p2.label.ringGap": {
+  "hash": "bb14431d4856",
+  "seconds": 3.86
+ },
+ "vi/p2.label.brimWidth": {
+  "hash": "cd0d89f1b99d",
+  "seconds": 2.74
+ },
+ "vi/p2.label.knots": {
+  "hash": "c19fa7e87fd8",
+  "seconds": 2.71
+ },
+ "vi/p2.part.frame": {
+  "hash": "c3bb6ea929d0",
+  "seconds": 2.5
+ },
+ "vi/p2.part.innerLeaves": {
+  "hash": "994ba3a45b0c",
+  "seconds": 1.73
+ },
+ "vi/p2.part.mo": {
+  "hash": "3cbbe2cf4ddb",
+  "seconds": 0.98
+ },
+ "vi/p2.part.outerLeaves": {
+  "hash": "5417f220217e",
+  "seconds": 1.03
+ },
+ "vi/p2.part.stitches": {
+  "hash": "406ad8864ebb",
+  "seconds": 1.03
+ },
+ "vi/p3.transition": {
+  "hash": "3311932db472",
+  "seconds": 8.42
+ },
+ "vi/p3.cover.open": {
+  "hash": "4c87799fb4ce",
+  "seconds": 2.04
+ },
+ "vi/p3.locked": {
+  "hash": "a530745ea746",
+  "seconds": 2.16
+ },
+ "vi/p3.finish.cheer": {
+  "hash": "7c30f28ee9ce",
+  "seconds": 4.2
+ },
+ "vi/p3.ch1.prompt": {
+  "hash": "1c053b3e49da",
+  "seconds": 2.93
+ },
+ "vi/p3.ch1.done": {
+  "hash": "29b9056619f3",
+  "seconds": 4.99
+ },
+ "vi/p3.ch2.story": {
+  "hash": "0cab7d990aa6",
+  "seconds": 14.78
+ },
+ "vi/p3.ch2.prompt": {
+  "hash": "0ac16283f348",
+  "seconds": 2.78
+ },
+ "vi/p3.ch2.done": {
+  "hash": "bf57ae841c5b",
+  "seconds": 4.3
+ },
+ "vi/p3.ch2.again": {
+  "hash": "bea90c76c433",
+  "seconds": 2.54
+ },
+ "vi/p3.ch3.story.1": {
+  "hash": "2cab9e45e891",
+  "seconds": 7.9
+ },
+ "vi/p3.ch3.story.2": {
+  "hash": "d9957e939cc9",
+  "seconds": 7.54
+ },
+ "vi/p3.ch3.rain-prompt": {
+  "hash": "67aca27fb66f",
+  "seconds": 2.16
+ },
+ "vi/p3.ch3.dry": {
+  "hash": "876693d99821",
+  "seconds": 6.38
+ },
+ "vi/p3.ch3.count": {
+  "hash": "db79713ace09",
+  "seconds": 1.78
+ },
+ "vi/p3.ch3.counted.1": {
+  "hash": "8a0e8797f23f",
+  "seconds": 1.92
+ },
+ "vi/p3.ch3.counted.2": {
+  "hash": "23aea12e2a54",
+  "seconds": 2.04
+ },
+ "vi/p3.ch3.counted.3": {
+  "hash": "5070a8adb3d6",
+  "seconds": 1.94
+ },
+ "vi/p3.ch3.counted.4": {
+  "hash": "fae385f57fe6",
+  "seconds": 2.09
+ },
+ "vi/p3.ch3.counted.5": {
+  "hash": "84a5c1fb31ca",
+  "seconds": 2.06
+ },
+ "vi/p3.ch3.counted.6": {
+  "hash": "3a5f62b0c000",
+  "seconds": 1.68
+ },
+ "vi/p3.ch3.counted.8": {
+  "hash": "64cd010852ee",
+  "seconds": 1.92
+ },
+ "vi/p3.ch3.counted.9": {
+  "hash": "8205e56f9445",
+  "seconds": 1.66
+ },
+ "vi/p3.ch3.counted.10": {
+  "hash": "0b91a6210161",
+  "seconds": 3.22
+ },
+ "vi/p3.ch3.counted.11": {
+  "hash": "53fb5577e089",
+  "seconds": 2.04
+ },
+ "vi/p3.ch3.counted.12": {
+  "hash": "ba8bc1a90af6",
+  "seconds": 3
+ },
+ "vi/p3.ch3.counted.13": {
+  "hash": "88d651765ea0",
+  "seconds": 2.06
+ },
+ "vi/p3.ch3.counted.14": {
+  "hash": "2d149bcb034c",
+  "seconds": 2.18
+ },
+ "vi/p3.ch3.counted.15": {
+  "hash": "fb83e3c1daff",
+  "seconds": 1.9
+ },
+ "vi/p3.ch3.counted.16": {
+  "hash": "19e9f5181531",
+  "seconds": 2.35
+ },
+ "vi/p3.ch3.counted.17": {
+  "hash": "7c7446feca28",
+  "seconds": 2.18
+ },
+ "vi/p3.ch3.counted.19": {
+  "hash": "0989c9cf2c54",
+  "seconds": 2.16
+ },
+ "vi/p3.ch3.counted.20": {
+  "hash": "e14d5fba713d",
+  "seconds": 2.47
+ },
+ "vi/p3.ch3.counted.21": {
+  "hash": "2f021805b172",
+  "seconds": 2.18
+ },
+ "vi/p3.ch3.counted.22": {
+  "hash": "778cf8f10e51",
+  "seconds": 2.21
+ },
+ "vi/p3.ch3.counted.23": {
+  "hash": "50a33a395d3d",
+  "seconds": 3.02
+ },
+ "vi/p3.ch3.counted.25": {
+  "hash": "846b9ab76d63",
+  "seconds": 2.69
+ },
+ "vi/p3.ch3.counted.26": {
+  "hash": "6f49cdf05684",
+  "seconds": 2.5
+ },
+ "vi/p3.ch3.counted.27": {
+  "hash": "dbceeb1346d2",
+  "seconds": 2.3
+ },
+ "vi/p3.ch3.counted.28": {
+  "hash": "55c490d27786",
+  "seconds": 2.14
+ },
+ "vi/p3.ch3.counted.29": {
+  "hash": "af85eeb7bc2b",
+  "seconds": 3.34
+ },
+ "vi/p3.ch3.counted.30": {
+  "hash": "b080eacbc0b8",
+  "seconds": 1.94
+ },
+ "vi/p3.ch3.counted.31": {
+  "hash": "d3f636cc3798",
+  "seconds": 2.21
+ },
+ "vi/p3.ch3.counted.32": {
+  "hash": "1091106f26c4",
+  "seconds": 2.14
+ },
+ "vi/p3.ch3.counted.33": {
+  "hash": "0a7e32162fdb",
+  "seconds": 2.11
+ },
+ "vi/p3.ch3.counted.34": {
+  "hash": "9c4657268d67",
+  "seconds": 2.02
+ },
+ "vi/p3.ch3.counted.35": {
+  "hash": "05fa379f0308",
+  "seconds": 2.26
+ },
+ "vi/p3.ch3.counted.36": {
+  "hash": "134c6d8f8b46",
+  "seconds": 2.83
+ },
+ "vi/p3.ch3.counted.37": {
+  "hash": "11b34ded0117",
+  "seconds": 2.06
+ },
+ "vi/p3.ch3.counted.38": {
+  "hash": "d83bed008999",
+  "seconds": 2.04
+ },
+ "vi/p3.ch3.counted.39": {
+  "hash": "0e865705f2dc",
+  "seconds": 2.26
+ },
+ "vi/p3.ch3.counted.40": {
+  "hash": "a41024068426",
+  "seconds": 2.18
+ },
+ "vi/p3.ch3.counted.41": {
+  "hash": "bdfef611a3b1",
+  "seconds": 2.38
+ },
+ "vi/p3.ch3.counted.42": {
+  "hash": "f3eec37cc920",
+  "seconds": 3.05
+ },
+ "vi/p3.ch3.counted.43": {
+  "hash": "04031007e1cd",
+  "seconds": 2.62
+ },
+ "vi/p3.ch3.counted.44": {
+  "hash": "c0b33c9ae85b",
+  "seconds": 2.62
+ },
+ "vi/p3.ch3.counted.45": {
+  "hash": "a2596b8664fa",
+  "seconds": 2.38
+ },
+ "vi/p3.ch3.counted.46": {
+  "hash": "6fc8ab9b509d",
+  "seconds": 1.92
+ },
+ "vi/p3.ch3.counted.47": {
+  "hash": "d7b7577a6a1e",
+  "seconds": 3.19
+ },
+ "vi/p3.ch3.counted.48": {
+  "hash": "ca1dd9ca1509",
+  "seconds": 2.21
+ },
+ "vi/p3.ch3.counted.49": {
+  "hash": "778df872c883",
+  "seconds": 2.16
+ },
+ "vi/p3.ch3.counted.50": {
+  "hash": "902318ae627d",
+  "seconds": 1.92
+ },
+ "vi/p3.ch3.counted.51": {
+  "hash": "2f702f518d91",
+  "seconds": 2.42
+ },
+ "vi/p3.ch3.counted.52": {
+  "hash": "90c3236540f2",
+  "seconds": 2.5
+ },
+ "vi/p3.ch3.counted.53": {
+  "hash": "b16b1e25ff39",
+  "seconds": 2.83
+ },
+ "vi/p3.ch3.counted.54": {
+  "hash": "e1bf9049d71d",
+  "seconds": 2.06
+ },
+ "vi/p3.ch3.counted.55": {
+  "hash": "964a380bb708",
+  "seconds": 2.18
+ },
+ "vi/p3.ch3.counted.56": {
+  "hash": "9613ec1254fa",
+  "seconds": 2.21
+ },
+ "vi/p3.ch3.counted.58": {
+  "hash": "b99959aa7d23",
+  "seconds": 2.4
+ },
+ "vi/p3.ch3.counted.59": {
+  "hash": "f9bc1a85c32c",
+  "seconds": 2.35
+ },
+ "vi/p3.ch3.counted.60": {
+  "hash": "d68c4ffb4b42",
+  "seconds": 1.99
+ },
+ "vi/num.1": {
+  "hash": "3191cc49bd6d",
+  "seconds": 0.77
+ },
+ "vi/num.2": {
+  "hash": "3cb75c2ad0a3",
+  "seconds": 0.67
+ },
+ "vi/num.3": {
+  "hash": "9c0c63702c50",
+  "seconds": 0.6
+ },
+ "vi/num.4": {
+  "hash": "e65ccc7c6caa",
+  "seconds": 0.77
+ },
+ "vi/num.5": {
+  "hash": "405e30633d88",
+  "seconds": 0.62
+ },
+ "vi/num.6": {
+  "hash": "4c1b727322ea",
+  "seconds": 0.86
+ },
+ "vi/num.7": {
+  "hash": "dbf33ab238c7",
+  "seconds": 0.7
+ },
+ "vi/num.8": {
+  "hash": "ebbfc7c52969",
+  "seconds": 0.7
+ },
+ "vi/num.9": {
+  "hash": "3494d5d32d07",
+  "seconds": 0.72
+ },
+ "vi/num.10": {
+  "hash": "5a9b68c6ee8b",
+  "seconds": 0.77
+ },
+ "vi/num.11": {
+  "hash": "79e187ce52b5",
+  "seconds": 0.72
+ },
+ "vi/num.12": {
+  "hash": "d9d4ae35c1ce",
+  "seconds": 1.03
+ },
+ "vi/num.13": {
+  "hash": "84ec8856fb24",
+  "seconds": 0.7
+ },
+ "vi/num.14": {
+  "hash": "bc9554b6d7d4",
+  "seconds": 0.89
+ },
+ "vi/num.15": {
+  "hash": "16da0bc98b61",
+  "seconds": 0.89
+ },
+ "vi/num.16": {
+  "hash": "a7c0a49f0766",
+  "seconds": 0.91
+ },
+ "vi/num.17": {
+  "hash": "712111388fe8",
+  "seconds": 0.79
+ },
+ "vi/num.18": {
+  "hash": "120ced002115",
+  "seconds": 0.84
+ },
+ "vi/num.19": {
+  "hash": "db13298f91b0",
+  "seconds": 0.98
+ },
+ "vi/num.20": {
+  "hash": "520cfc1ea622",
+  "seconds": 1.03
+ },
+ "vi/num.21": {
+  "hash": "82cd45e2ce36",
+  "seconds": 1.03
+ },
+ "vi/num.23": {
+  "hash": "dbcdd320e365",
+  "seconds": 1.15
+ },
+ "vi/num.24": {
+  "hash": "08f7399c06cc",
+  "seconds": 1.44
+ },
+ "vi/num.25": {
+  "hash": "dae8366c7f15",
+  "seconds": 1.01
+ },
+ "vi/num.26": {
+  "hash": "da66700229ba",
+  "seconds": 1.15
+ },
+ "vi/num.27": {
+  "hash": "3509f3f70db8",
+  "seconds": 1.08
+ },
+ "vi/num.28": {
+  "hash": "470e9a935d55",
+  "seconds": 1.13
+ },
+ "vi/num.29": {
+  "hash": "03cdd63aceb6",
+  "seconds": 1.15
+ },
+ "vi/num.30": {
+  "hash": "b7ebfeeffdfc",
+  "seconds": 0.84
+ },
+ "vi/num.31": {
+  "hash": "fc8cef856ab4",
+  "seconds": 1.1
+ },
+ "vi/num.32": {
+  "hash": "edad8291ef66",
+  "seconds": 1.1
+ },
+ "vi/num.33": {
+  "hash": "f1ab719cfc44",
+  "seconds": 1.01
+ },
+ "vi/num.34": {
+  "hash": "d204d0c468aa",
+  "seconds": 1.22
+ },
+ "vi/num.35": {
+  "hash": "0fa056fa3c34",
+  "seconds": 0.98
+ },
+ "vi/num.36": {
+  "hash": "2d9a774aa725",
+  "seconds": 2.33
+ },
+ "vi/num.37": {
+  "hash": "b70a55f37612",
+  "seconds": 1.2
+ },
+ "vi/num.38": {
+  "hash": "7e0a5f487bcc",
+  "seconds": 1.06
+ },
+ "vi/num.39": {
+  "hash": "44335becc7a4",
+  "seconds": 0.94
+ },
+ "vi/num.40": {
+  "hash": "7138305f4541",
+  "seconds": 0.94
+ },
+ "vi/num.41": {
+  "hash": "42c2a27a7275",
+  "seconds": 1.1
+ },
+ "vi/num.42": {
+  "hash": "88b6f743af8b",
+  "seconds": 1.06
+ },
+ "vi/num.43": {
+  "hash": "8437abf31650",
+  "seconds": 1.13
+ },
+ "vi/num.44": {
+  "hash": "6cf2e7ddefeb",
+  "seconds": 1.39
+ },
+ "vi/num.45": {
+  "hash": "3034c9a85ec8",
+  "seconds": 0.94
+ },
+ "vi/num.46": {
+  "hash": "1a0b41b4cf86",
+  "seconds": 1.15
+ },
+ "vi/num.47": {
+  "hash": "4fe97ce0dc04",
+  "seconds": 1.25
+ },
+ "vi/num.48": {
+  "hash": "f5b20851957a",
+  "seconds": 1.18
+ },
+ "vi/num.50": {
+  "hash": "736ebd0db6cf",
+  "seconds": 0.98
+ },
+ "vi/num.51": {
+  "hash": "c207371a0471",
+  "seconds": 0.86
+ },
+ "vi/num.52": {
+  "hash": "9289ba19cabd",
+  "seconds": 1.58
+ },
+ "vi/num.53": {
+  "hash": "8331c82fbceb",
+  "seconds": 1.2
+ },
+ "vi/num.54": {
+  "hash": "a061cd4a015f",
+  "seconds": 1.3
+ },
+ "vi/num.55": {
+  "hash": "b9ac147028c2",
+  "seconds": 1.15
+ },
+ "vi/num.56": {
+  "hash": "10b668540e5a",
+  "seconds": 1.01
+ },
+ "vi/num.57": {
+  "hash": "b6b2d2eb6ea1",
+  "seconds": 1.18
+ },
+ "vi/num.58": {
+  "hash": "f0eea54abb63",
+  "seconds": 1.15
+ },
+ "vi/num.59": {
+  "hash": "bfa6a4b6d86c",
+  "seconds": 1.01
+ },
+ "vi/num.60": {
+  "hash": "760455c5de99",
+  "seconds": 0.98
+ }
+}
