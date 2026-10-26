@@ -1,23 +1,53 @@
 {
-  "style_suffix": "Children's picture-book illustration, soft gouache and coloured-pencil texture, rounded friendly shapes, warm golden-hour light, palette of golden straw #E2C27A, sun-baked terracotta #C4623D, deep forest green #2F5D46, weathered wood #8A6A4F, dragon-fruit pink #E0457B, mango #F4A62A, leafy green #6BAA3F, cream paper #F6EBD3; no text, no letters, no watermark.",
-  "reference": "Blender render of the procedural hat (blender/nonla_build.py) passed as image_references so every illustration shows the same hat",
-  "model": "gpt_image_2_5 (flare), quality high, 2k",
-  "items": {
-    "hub-build": { "job": "52dcd967-461e-4bcf-a87b-35e877acd5c9", "credits": 2.75 },
-    "hub-colour": { "job": "8bff1591-824d-4a1f-baf9-53252c45c242", "credits": 2.75 },
-    "hub-quiz": { "job": "89ec7320-69f9-4eec-9af8-922de3c638b5", "credits": 2.75 },
-    "quiz-q1-wind": { "job": "953a6675-f999-4e04-931a-81016d23eea8", "credits": 2.75 },
-    "quiz-q3-torn-leaf": { "job": "75735b14-2f72-423c-913f-75f886d5f0c9", "credits": 2.75 }
+ "style_suffix": "Children's picture-book illustration, soft gouache and coloured-pencil texture, rounded friendly shapes, warm golden-hour light, palette of golden straw #E2C27A, sun-baked terracotta #C4623D, deep forest green #2F5D46, weathered wood #8A6A4F, dragon-fruit pink #E0457B, mango #F4A62A, leafy green #6BAA3F, cream paper #F6EBD3; no text, no letters, no watermark.",
+ "reference": "Blender render of the procedural hat (blender/nonla_build.py) passed as image_references so every illustration shows the same hat",
+ "model": "gpt_image_2_5 (flare), quality high, 2k",
+ "items": {
+  "hub-build": {
+   "job": "52dcd967-461e-4bcf-a87b-35e877acd5c9",
+   "credits": 2.75
   },
-  "video": {
-    "model": "kling3_0 pro, 5 s, sound on, start_image = end_image (seamless loop)",
-    "p1-rice": "8cf3fa5e-61ed-4ccb-9a12-3459ae79a70c",
-    "p1-market": "56d75b5e-61d5-4d4b-8eab-3c88527e1c3a",
-    "p1-rain": "2be1621f-c022-4355-af32-f5089c22c230",
-    "p1-craft": "cffc9a2b-12aa-43ae-b596-21fb89b9e121"
+  "hub-colour": {
+   "job": "8bff1591-824d-4a1f-baf9-53252c45c242",
+   "credits": 2.75
   },
-  "voices": {
-    "en": "elevenlabs_v4, preset voice Daisy (032386ec-491b-5bdc-81ac-49e9a6a2c89d) — chosen by Whisper round-trip accuracy",
-    "vi": "text2speech_v2 variant minimax, preset voice Daisy — more accurate Vietnamese tones than ElevenLabs in the audition"
+  "hub-quiz": {
+   "job": "89ec7320-69f9-4eec-9af8-922de3c638b5",
+   "credits": 2.75
+  },
+  "quiz-q1-wind": {
+   "job": "953a6675-f999-4e04-931a-81016d23eea8",
+   "credits": 2.75
+  },
+  "quiz-q3-torn-leaf": {
+   "job": "75735b14-2f72-423c-913f-75f886d5f0c9",
+   "credits": 2.75
   }
+ },
+ "video": {
+  "model": "kling3_0 pro, 5 s, sound on, start_image = end_image (seamless loop)",
+  "p1-rice": "8cf3fa5e-61ed-4ccb-9a12-3459ae79a70c",
+  "p1-market": "56d75b5e-61d5-4d4b-8eab-3c88527e1c3a",
+  "p1-rain": "2be1621f-c022-4355-af32-f5089c22c230",
+  "p1-craft": "cffc9a2b-12aa-43ae-b596-21fb89b9e121"
+ },
+ "voices": {
+  "en": "elevenlabs_v4, preset voice Daisy (032386ec-491b-5bdc-81ac-49e9a6a2c89d) — chosen by Whisper round-trip accuracy",
+  "vi": "text2speech_v2 variant minimax, preset voice Daisy — more accurate Vietnamese tones than ElevenLabs in the audition"
+ },
+ "lineart": {
+  "model": "gpt_image_2_5 quality high 2k 4:3 (recraft_v4_1 vector was refused by the safety filter on every prompt and refunded)",
+  "page-3-poem": {
+   "job": "a6237494-aaf5-4e69-b81d-746a38f4fb09",
+   "prompt": "Colouring book page, pure black line art on a plain white background ... a large Vietnamese conical palm-leaf hat (nón bài thơ) seen from the front ... a woman in a long flowing áo dài dress, a small rowing boat on two gentle waves, and a lotus flower with two round leaves ..."
+  },
+  "page-4-market": {
+   "job": "e426b1ce-ce7e-494b-bc79-78d9910a6a4d",
+   "prompt": "Colouring book page, pure black line art on a plain white background ... a cheerful Vietnamese street market where everyone wears a conical nón lá hat: three smiling fruit sellers ... a bamboo shoulder pole with two baskets, a bicycle, two simple stalls with striped awnings, and a neat stack of conical hats for sale ..."
+  },
+  "rejected": {
+   "b": "64c171ac-0384-4a72-a4d5-50a7958a82a9 (odd underside brim)",
+   "d": "b6184799-3412-49f9-8794-7d8454428796 (rain market; fine, page 4 alternate)"
+  }
+ }
 }

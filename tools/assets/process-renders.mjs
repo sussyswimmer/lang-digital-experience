@@ -5,7 +5,8 @@
 //   stills/<other>.png         → img/renders/<name>.webp (+ -800)
 //   quiz/<q>-<answer>.png      → img/quiz/<q>-<answer>.webp (+ -600)
 //   lineart/page-*.png         → img/lineart/page-*.png  (2400×1800, black lines on transparent: the
-//                                 colouring studio draws the paint layer underneath)
+//                                 colouring studio draws the paint layer underneath); pages 3–4 come from
+//                                 raw-assets/higgsfield/lineart
 //   cover/cover.png            → img/renders/cover.webp (+ -1024)
 import { readdir, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -13,6 +14,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 
 const SRC = 'raw-assets/renders';
+const HF_LINEART = 'raw-assets/higgsfield/lineart';
 const OUT = 'public/assets/img';
 
 async function pngs(dir) {
@@ -50,13 +52,21 @@ for (const f of await pngs('quiz')) {
 for (const f of await pngs('cover')) {
   await webp(path.join(SRC, 'cover', f), path.join(OUT, 'renders', path.basename(f, '.png')), [2048, 1024]);
 }
-for (const f of await pngs('lineart')) {
+// colouring pages 1–2 are Blender Freestyle renders; 3 (poem hat) and 4 (market) are Higgsfield line art
+const LINEART = [
+  ...(await pngs('lineart')).map((f) => [path.join(SRC, 'lineart', f), f, 0]),
+  ...(existsSync(HF_LINEART) ? (await readdir(HF_LINEART)).filter((f) => f.endsWith('.png')) : [])
+    .map((f) => [path.join(HF_LINEART, f), f, 0.05]),
+];
+for (const [src, f, margin] of LINEART) {
   await mkdir(path.join(OUT, 'lineart'), { recursive: true });
   // Freestyle renders black lines on near-white paper: ink coverage becomes the alpha of pure black, with
   // anything lighter than PAPER treated as blank so no faint veil sits over the paint
-  const grey = await sharp(path.join(SRC, 'lineart', f))
+  const [mx, my] = [Math.round(2400 * margin), Math.round(1800 * margin)];
+  const grey = await sharp(src)
     .flatten({ background: '#ffffff' })
-    .resize({ width: 2400, height: 1800, fit: 'contain', background: '#ffffff' })
+    .resize({ width: 2400 - 2 * mx, height: 1800 - 2 * my, fit: 'contain', background: '#ffffff' })
+    .extend({ top: my, bottom: my, left: mx, right: mx, background: '#ffffff' })
     .greyscale()
     .raw()
     .toBuffer({ resolveWithObject: true });
