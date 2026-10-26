@@ -1,0 +1,20 @@
+[
+  {
+    "path": "public/assets/scroll/{1600,960}/f_0001.webp … f_0135.webp + public/assets/scroll/manifest.json",
+    "what": "Final scroll-intro frames: the Blender INTRO turntable → explode → reassemble → hero view, with EffectCraft effects",
+    "source": "effectcraft",
+    "notes": "Blender: render_jobs.py --jobs intro on the PC (OptiX, 270 frames @30 fps, 1920×1080 RGBA). EffectCraft INTRO_SCROLL: warm straw → terracotta background, glow pulses at meta intro_events, ≤ 80 sparse dust particles, light leaks; NO film grain (the page adds it as a CSS overlay) and NO text (captions are DOM, EN/VI). Keep the top and bottom rows of the background flat: on portrait phones the canvas letterboxes with them. Extract every 2nd frame, encode WebP q72 at 1600w and 960w (sharp), same names. Then edit manifest.json: count 135, widths [960,1600], bg.top/bg.bottom = the frames' top/bottom edge colours, remove \"placeholder\". No code change needed. Today's placeholder (48 frames, 960×540 Cycles CPU 10 spp, upscaled to 1600) comes from `python3 tools/assets/make-scroll-placeholder.py` (~8 min). Note for the Blender run: the intro's shadow-catcher disc (radius 1.5 m) shows its edge as a faint ellipse behind the hat; the placeholder scales it ×6 (as studio_light() does for the stills)."
+  },
+  {
+    "path": "public/assets/audio/narration/{en,vi}/site.story.{1,2,3,4}.mp3, site.inside.lead, site.inside.{1,2,3,4}, site.footer.ask",
+    "what": "Narration for the landing page's Listen buttons (caption beats, phase cards, footer question)",
+    "source": "tts",
+    "notes": "New narration ids in content/strings/site.json; `npm run tts:plan` picks them up. Until recorded, Listen uses the device's own voice when it has one for the language (speechSynthesis), else it just highlights the button. site.tagline is already recorded."
+  },
+  {
+    "path": "public/assets/img/ui/lang-mark.svg",
+    "what": "Optional: the lắng team mark for the footer (and the hero kicker)",
+    "source": "higgsfield",
+    "notes": "Only if the team wants the org mark on the landing page (open item in the plan). The footer currently shows the hat icon + \"Made with care by the lắng team\"."
+  }
+]

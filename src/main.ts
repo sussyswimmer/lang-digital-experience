@@ -32,12 +32,16 @@ async function startApp(): Promise<void> {
   document.body.classList.add('app-mode');
   landing?.pause();
   document.getElementById('site')!.hidden = true;
+  document.getElementById('app')!.hidden = false; // showLanding() hid it when the child went back
   if (!app) {
+    // route to the experience before the router's first read, so it never mounts the landing route
+    if (!location.hash.startsWith('#/play')) history.replaceState(null, '', '#/play');
     const { App } = await import('./app/App');
     app = new App({ audio, settings, onLeave: showLanding });
     app.start();
+  } else if (!location.hash.startsWith('#/play')) {
+    location.hash = '#/play';
   }
-  if (!location.hash.startsWith('#/play')) location.hash = '#/play';
 }
 
 function showLanding(): void {

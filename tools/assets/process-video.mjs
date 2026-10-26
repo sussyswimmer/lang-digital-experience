@@ -1,5 +1,6 @@
 // EffectCraft output from the PC (raw-assets/video-edited + raw-assets/lottie, T4) → public/assets.
 //   scroll-intro-fx-1080p.mp4      → scroll/{960,1600}/f_0001.webp … (every 2nd frame) + scroll/manifest.json
+//                                    (the old frames are removed first; the landing reads count from the manifest)
 //   <clip>-loop-{1080,540}.mp4/webm → video/p1-<tile>.{mp4,webm}, video/p1-<tile>-540.mp4, -poster.webp
 //   raw-assets/lottie/*.json        → lottie/*.json (minified)
 import { readdir, mkdir, rm, readFile, writeFile } from 'node:fs/promises';
@@ -31,8 +32,25 @@ if (existsSync(intro)) {
         .toFile(path.join(dir, f.replace('.png', '.webp')));
     }
   }
-  await writeFile(path.join(OUT, 'scroll', 'manifest.json'),
-    JSON.stringify({ frames: frames.length, widths: [960, 1600], aspect: 16 / 9, sourceFps: 30, step: 2 }) + '\n');
+  // same shape the landing reads (src/site/ScrollFrames.ts); keep its letterbox colours
+  const manifestPath = path.join(OUT, 'scroll', 'manifest.json');
+  const prev = existsSync(manifestPath) ? JSON.parse(await readFile(manifestPath, 'utf8')) : {};
+  const bytes = {};
+  for (const w of [960, 1600]) {
+    const dir = path.join(OUT, 'scroll', String(w));
+    let n = 0;
+    for (const f of await readdir(dir)) n += (await readFile(path.join(dir, f))).length;
+    bytes[w] = n;
+  }
+  await writeFile(manifestPath, JSON.stringify({
+    count: frames.length,
+    widths: [960, 1600],
+    aspect: [16, 9],
+    bg: prev.bg ?? { top: '#F7E6BD', bottom: '#D4914F' },
+    placeholder: false,
+    source: 'Blender intro (PC GPU, 270 frames) → EffectCraft INTRO_SCROLL → every 2nd frame',
+    bytes,
+  }, null, 2) + '\n');
   console.log('scroll frames', frames.length);
 }
 

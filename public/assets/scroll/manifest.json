@@ -1,0 +1,21 @@
+{
+  "count": 48,
+  "widths": [
+    960,
+    1600
+  ],
+  "aspect": [
+    16,
+    9
+  ],
+  "bg": {
+    "top": "#F7E6BD",
+    "bottom": "#D4914F"
+  },
+  "placeholder": true,
+  "source": "tools/assets/make-scroll-placeholder.py: INTRO frames 1..270 sampled 48x, 960x540, Cycles CPU 10 spp",
+  "bytes": {
+    "960": 412644,
+    "1600": 815628
+  }
+}

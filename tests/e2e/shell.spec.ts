@@ -11,16 +11,16 @@ function collectErrors(page: Page): string[] {
   return errors;
 }
 
-test('landing renders and Start enters Phase 1', async ({ page }) => {
+test('a fresh visit starts at Phase 1', async ({ page }) => {
   const errors = collectErrors(page);
-  await page.goto('/?test=1');
+  await page.goto('/?test=1#/play');
   await expect.poll(() => page.evaluate(() => typeof (window as any).__nonla?.state)).toBe('function');
   await expect.poll(() => page.evaluate(() => (window as any).__nonla.state())).toBe('p1');
   expect(errors).toEqual([]);
 });
 
 test('language toggle switches every bound string', async ({ page }) => {
-  await page.goto('/?test=1');
+  await page.goto('/?test=1#/play');
   await expect.poll(() => page.evaluate(() => (window as any).__nonla?.lang?.())).toBe('en');
   await page.locator('.lang-toggle button[data-lang="vi"]').first().click();
   await expect.poll(() => page.evaluate(() => (window as any).__nonla.lang())).toBe('vi');

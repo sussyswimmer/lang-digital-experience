@@ -24,6 +24,8 @@ export default defineConfig({
     },
   },
   server: { host: true },
+  // jspdf is imported lazily (certificate PDF); pre-bundle it so the first click in dev doesn't re-optimise
+  optimizeDeps: { include: ['jspdf'] },
   test: {
     environment: 'node',
     include: ['tests/unit/**/*.test.ts'],
