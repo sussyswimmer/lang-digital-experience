@@ -1,0 +1,165 @@
+{
+  "task": "T3",
+  "attempt": 1,
+  "state": "done",
+  "started_at": "2026-10-26T04:33:41Z",
+  "finished_at": "2026-10-26T05:27:02.129Z",
+  "outputs": [
+    {
+      "path": "raw-assets/renders/cover/cover.png",
+      "sha256": "aae7fdec44700e4a692fdcedf303bda166bd4afccdc05f7dedd4fbdb5b0f8d58",
+      "bytes": 3295333
+    },
+    {
+      "path": "raw-assets/renders/stills/brim-closeup.png",
+      "sha256": "753f1356f1d9b559f41728aa0c6414e491584bb43c7ebe064accc63a5bbb44be",
+      "bytes": 1571479
+    },
+    {
+      "path": "raw-assets/renders/stills/build-01-frame.png",
+      "sha256": "612eeb11dec9d1e690b173f01c951fd894f8c9d96d3f3f55535544175ce9ca69",
+      "bytes": 1095800
+    },
+    {
+      "path": "raw-assets/renders/stills/build-02-leaf-inner.png",
+      "sha256": "d7ed55d83abbba3aab53929453bd3fc6c2adf5db17d1cc32cf49804d4c897031",
+      "bytes": 880353
+    },
+    {
+      "path": "raw-assets/renders/stills/build-03-poem-art.png",
+      "sha256": "c365a5237dbc5ee21ca5f2c0908827329399fac6f95aaaff15ee4d736aeb5235",
+      "bytes": 562168
+    },
+    {
+      "path": "raw-assets/renders/stills/build-04-leaf-outer.png",
+      "sha256": "ba2f590cf7e1f09f5896b49afe9d64b5e8e8404aded89dc0f80b6382a044fc23",
+      "bytes": 969417
+    },
+    {
+      "path": "raw-assets/renders/stills/build-05-stitches.png",
+      "sha256": "dd2da869e6f5bca5c73878dda842ae30ec0d71e9ebda59026552d31eddbc844b",
+      "bytes": 1058603
+    },
+    {
+      "path": "raw-assets/renders/stills/build-06-strap.png",
+      "sha256": "75279df357758b3332b16dbbfbc61465e5e7d3eb774d2018857d659c5953e41a",
+      "bytes": 684074
+    },
+    {
+      "path": "raw-assets/renders/stills/hat-full.png",
+      "sha256": "2aec542693cc77a54b5bd127764889d339c32ece7986fdb625614da294f7519f",
+      "bytes": 1151312
+    },
+    {
+      "path": "raw-assets/renders/stills/piece-mo-bark.png",
+      "sha256": "9e5a76319e7bdb3ede9ec777b6ab3d0166e6989945ee83944391c29e9e41db80",
+      "bytes": 1044758
+    },
+    {
+      "path": "raw-assets/renders/stills/underside-green.png",
+      "sha256": "d1a1dd220265193dfe865a38c31e94e5d6e078c6286c1abe897d7ccbcdbb5e69",
+      "bytes": 924371
+    },
+    {
+      "path": "raw-assets/renders/stills/underside-peach.png",
+      "sha256": "7ffa1482e0ce8d6043ec171056349d1308599562237ef6ec506fbd55b5a1dbbc",
+      "bytes": 925607
+    },
+    {
+      "path": "raw-assets/renders/stills/underside-purple.png",
+      "sha256": "2c53eac6ab29aa99005ed194f670d5a4dbd3b6ea77db481a26774c3dc322fa9c",
+      "bytes": 921200
+    },
+    {
+      "path": "raw-assets/renders/quiz/q2-no-rings-floppy.png",
+      "sha256": "e8aad5d46760b611ba476f180156538b809aaa8a8dfd0d328f78ab41dc73779e",
+      "bytes": 637348
+    },
+    {
+      "path": "raw-assets/renders/quiz/q2-shinier.png",
+      "sha256": "12d4213899811dad94f5ce5dfecb3d345664e2bad0bde75324c0c7246c9db15b",
+      "bytes": 688815
+    },
+    {
+      "path": "raw-assets/renders/quiz/q2-tight-strap.png",
+      "sha256": "79357dcf4f8ace1c660c4c3a2477112dd6f4eee68c0d4c6e72319c2a890b0d7f",
+      "bytes": 643605
+    },
+    {
+      "path": "raw-assets/renders/quiz/q3-leaf-gap.png",
+      "sha256": "041213f98fa174457add1b263e5cd5cd8346a7f4d68994acf5cc7697da0d6f62",
+      "bytes": 735469
+    },
+    {
+      "path": "raw-assets/renders/quiz/q3-strap-new-colour.png",
+      "sha256": "f348aec36b2dc0ae64745fbc7709cb4b23fe84813ca246541482119ce9734708",
+      "bytes": 674901
+    },
+    {
+      "path": "raw-assets/renders/quiz/q3-tiny-rings.png",
+      "sha256": "f439a3e160c5c45e78b03c7ac4c97edbcdfcb498b276829fb6059dfa50b35154",
+      "bytes": 545116
+    },
+    {
+      "path": "raw-assets/renders/quiz/q4-rings-08.png",
+      "sha256": "fcb0b7f0f6a56db5fb1b07add0ee4354ef92eea628d25f9b9840da3094fb79b4",
+      "bytes": 593687
+    },
+    {
+      "path": "raw-assets/renders/quiz/q4-rings-16.png",
+      "sha256": "0b39260fee530e9c006bf07edda4c344e5b177f66f3f1511e8458e60c78045ef",
+      "bytes": 658541
+    },
+    {
+      "path": "raw-assets/renders/quiz/q4-rings-30.png",
+      "sha256": "bf94d948f344a628be7d688e5f33b5f9dbd551e88f0c7151b3d2503695bcae2c",
+      "bytes": 735032
+    },
+    {
+      "path": "raw-assets/renders/lineart/page-1-plain.png",
+      "sha256": "a554a67d49ead08b1fba343b67317e6acdef349458d7dcc0eec37f0e1ecc7aea",
+      "bytes": 4270726
+    },
+    {
+      "path": "raw-assets/renders/lineart/page-2-strap.png",
+      "sha256": "e64674261aa577666f358f88b86d96fb3bc95ec055a4b09d7f9a314d02d00993",
+      "bytes": 4327163
+    },
+    {
+      "path": "raw-assets/renders/intro-preview/intro_720p.mp4",
+      "sha256": "cb7ee58f61e5e9321fb47cd848cac1755cffa504d81b31d34ad23cffa1569f9f",
+      "bytes": 1258015
+    },
+    {
+      "path": "raw-assets/renders/intro-preview/contact.jpg",
+      "sha256": "f73c5a8891bd8ade85c4bd90cd701465d1fcd95bb9a26a6dc61cd23df602a715",
+      "bytes": 76186
+    },
+    {
+      "path": "raw-assets/renders/manifest.json",
+      "sha256": "517d9c1dfd7dbcbc506e054ae443514ea91f4277133cdd3a5a91f4afe47bff19",
+      "bytes": 7208
+    }
+  ],
+  "tools": [
+    {
+      "name": "Blender",
+      "version": "5.2.1 LTS (9e2066aef7ef, 2026-08-25)"
+    },
+    {
+      "name": "GPU",
+      "version": "NVIDIA GeForce RTX 3070 8 GB, driver 617.42, Cycles OPTIX"
+    },
+    {
+      "name": "ffmpeg",
+      "version": "9.0-full_build-www.gyan.dev"
+    },
+    {
+      "name": "node (verification/manifest)",
+      "version": "24.15.0"
+    }
+  ],
+  "notes": "Device OPTIX (no CUDA fallback needed). Blender run 2026-10-26T04:35:53Z -> 05:25:30Z, script total 2970s (49.5 min), exit 0; only log warning was HIPEW (no AMD HIP library, harmless). Per job: intro 270 frames 2696.3s = 9.99 s/frame (frame 1 17s incl. kernel warm-up, then 9-10.6 s); cover 24.5s; stills 12 x 9.48s; quiz 9 x 5.38s; lineart 2 x 42.85s (Freestyle). Intro: exactly frame_0001..0270.png in D:/nonla-work/T3/intro, all 1920x1080 RGBA 16-bit (rgba64be); ffmpeg blackdetect: 0 black segments. Kept on D: for T4, NOT committed. intro_720p.mp4: h264 1280x720 30 fps, 270 frames, 9.0 s, 1258015 bytes (alpha dropped by yuv420p, so the preview is on black). contact.jpg: every 24th frame, 4x3 tiles of 480x270. Stills: the job renders 12 images (8 build layers incl. piece-mo-bark + hat-full, 3 underside strap colours, brim-closeup), not 13 as the packet said; all 12 delivered. All committed PNGs are 8-bit RGBA. manifest.json is an object {device, total_seconds, jobs{images, seconds, seconds_per_image, max_seconds}, intro_frames, files[{path, bytes, sha256, width, height, bit_depth}]} so the timings sit next to the file list. Visual review (cosmetic, nothing changed): the shadow-catcher floor's far edge shows as a thin dark horizontal line in the low-angle underside-* stills; the cast shadow falls far to the lower left and is cut by the frame edge in cover / quiz / intro frames. No blender/ script changes were needed. Running render_jobs.py was first refused by the PC permission classifier (external code); Max approved it directly before the run. Blender TEMP/TMP pointed at D:/nonla-work/tmp. Untracked blender/__pycache__/ (from importing nonla_build) left out of the commit.",
+  "errors": [],
+  "needs_user": []
+}
