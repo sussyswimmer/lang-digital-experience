@@ -1,0 +1,137 @@
+[
+    {
+        "file":  "diverse-1.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  1350428,
+        "width":  2160,
+        "height":  2688,
+        "sha256":  "d00b2d2b8a8b847db4377df69951cea18c074162221fe8bf66fd584bb29fa0ff",
+        "source_sha256":  "13b54ad704fe7ab3fb05400ca113767c45d3efa4e961b5bf4e914de4e0848e12"
+    },
+    {
+        "file":  "diverse-2.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  1056832,
+        "width":  3082,
+        "height":  2160,
+        "sha256":  "446643656b9e73b1e2fa241dc45293411469ca1210d82d76f53bb1c221b3c99c",
+        "source_sha256":  "5aab9736f25561780a13b4845b3662c3ca87359b501dda30da71936bffd106f1"
+    },
+    {
+        "file":  "diverse-3.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  1024845,
+        "width":  2880,
+        "height":  2160,
+        "sha256":  "abe656cd26250e055a1e8d214061344d66b396ff6a8fbc97a81fc8b66a2fed51",
+        "source_sha256":  "6d4b117c559385d965b6a314d0b472e1d84d87766749a7f7d2ba5b2a53ddd65b"
+    },
+    {
+        "file":  "diverse-4.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  1573398,
+        "width":  3692,
+        "height":  2160,
+        "sha256":  "daa13686210e3fb6371317de1eeed882a76395e69de365a79d471e25a2b2107b",
+        "source_sha256":  "d9b000eac8e8a18d653e6ad4dc0c6110a46feb196cfc3570eab6c690c02f1c12"
+    },
+    {
+        "file":  "p1-aodai.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  555827,
+        "width":  2581,
+        "height":  2160,
+        "sha256":  "ae40e6fd808a813ab0f6db36ec4aaae852ab95271ba2581ddc5cc71f4c8295b9",
+        "source_sha256":  "45a2898e76b91b43904e9a135ab3808d3ce2d3ceaf8ef5eec4fbbd7fa3773da5"
+    },
+    {
+        "file":  "p1-farmers.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  843681,
+        "width":  3258,
+        "height":  2160,
+        "sha256":  "c517416bd5dc794becfdebd6a6845deb54e761c58a4b3a2fdf71e278a0e5866b",
+        "source_sha256":  "878466858bb4193f43e7496c5af9df8ae7d1009df1433901a251d42ea6ad769a"
+    },
+    {
+        "file":  "p1-market.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  1229916,
+        "width":  2608,
+        "height":  2160,
+        "sha256":  "79bdc191fbe40b614855007b96420ef3f1aca3a78dbc11509e1806afc905fbca",
+        "source_sha256":  "7db1597718bc8ac66262775f14bdfbc27d5697588304c8a22684d6570d42c5cc"
+    },
+    {
+        "file":  "p1-rain.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  808060,
+        "width":  3258,
+        "height":  2160,
+        "sha256":  "ea9764d66d7ce840851e0fbf0bd6fb488f43692aaca1b7d569cbab02b397fe45",
+        "source_sha256":  "2ccedab76f33fa99626291d11c203b2a752cc023a197815d27fff1ee0eca0f2c"
+    },
+    {
+        "file":  "p2-16-rims.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  944152,
+        "width":  3240,
+        "height":  2160,
+        "sha256":  "3f64d9ec13a151de47402bae66a8cbc6078243e8c2dbbef4cc834844dc30bb59",
+        "source_sha256":  "b1fa77209cd018b8884303080b9e47b66af25cf5cf3cc99b981aa6f8ef9c8eb2"
+    },
+    {
+        "file":  "p2-chin-straps.jpg",
+        "recipe":  "nonla-slight-denoise.json",
+        "bytes":  363201,
+        "width":  3240,
+        "height":  2160,
+        "sha256":  "d4dda9461557f1e57ec22fbd86a5dd0685253406bc581f630056515b3d30e387",
+        "source_sha256":  "6bd79f8283a66142e30a4864f343d1b7fab73040e840c95a97bd391ded98b094"
+    },
+    {
+        "file":  "p2-layering-leaves.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  802192,
+        "width":  2160,
+        "height":  3260,
+        "sha256":  "25ff05e2966e2c28b13757e39fc604af4d9084bdb9dae3e638d1f3d20bdfb3dd",
+        "source_sha256":  "ce3a4dc3901aa9ff7a94f94f4b6d4c549067f61476fe1762122b786d65846296"
+    },
+    {
+        "file":  "p2-stitching.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  745490,
+        "width":  3216,
+        "height":  2160,
+        "sha256":  "4d7a1f0b46145d8260d0b00007e08a67e116d3cd2810f65f218691099c7ed3c8",
+        "source_sha256":  "a9f9fb6615c9460bfd6d04de3d56999d4a7232c495090bdef39274eefec86855"
+    },
+    {
+        "file":  "p3-identity.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  916499,
+        "width":  3230,
+        "height":  2160,
+        "sha256":  "e97e82546d7b4e1b2fde0cd6075a62413430d3ebffcef0b87474db1e36d2c926",
+        "source_sha256":  "7e32162a09f5a092041f4d463fbce297668e2680af3c1c72b56020975180bb3c"
+    },
+    {
+        "file":  "p3-poem.jpg",
+        "recipe":  "nonla-slight-nosharpen.json",
+        "bytes":  1255928,
+        "width":  2160,
+        "height":  2160,
+        "sha256":  "a2f98b85d3510fe38511bb1ef12c3291c355c9f76d4395e9bdcbaebc232a4923",
+        "source_sha256":  "f7cbb9ce039260b77a8cf8f044a559d33a046575a211a974deba05cc3321e6a2"
+    },
+    {
+        "file":  "p3-protection.jpg",
+        "recipe":  "nonla-slight.json",
+        "bytes":  631210,
+        "width":  3260,
+        "height":  2160,
+        "sha256":  "c6fe7f9709d4a394fd70297c8d3875d9c751da3ea4c3698c7549d9287d553a49",
+        "source_sha256":  "87a361ef7798aeadec306c3349ee1e28df84b39793621bf521f4918eb206f545"
+    }
+]

@@ -12,7 +12,12 @@ Get-ChildItem $in -Filter *.jpg | Sort-Object Name | ForEach-Object {
   $recipe = if ($special.ContainsKey($_.Name)) { $special[$_.Name] } else { "photocraft\nonla-slight.json" }
   $steps = Get-Content $recipe -Raw | ConvertFrom-Json
   $cliArgs = @("run", $_.FullName)
-  foreach ($s in $steps) { $cliArgs += @("--cmd", $s[0], "--params", ($s[1] | ConvertTo-Json -Compress)) }
+  foreach ($s in $steps) {
+    $params = $s[1] | ConvertTo-Json -Compress
+    # Windows PowerShell 5.1 (legacy native argument passing) strips unescaped inner quotes from native args
+    if ($PSNativeCommandArgumentPassing -notin "Standard", "Windows") { $params = $params -replace '"', '\"' }
+    $cliArgs += @("--cmd", $s[0], "--params", $params)
+  }
   $dest = Join-Path $out $_.Name
   $cliArgs += @("--out", $dest, "--quality", "92", "--jpeg-format", "progressive")
   & $cli @cliArgs | Out-Null
@@ -27,5 +32,7 @@ Get-ChildItem $in -Filter *.jpg | Sort-Object Name | ForEach-Object {
   }
   Write-Host "edited $($_.Name) with $recipe"
 }
-$manifest | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 (Join-Path $out "manifest.json")
+# UTF-8 without BOM and LF endings: 5.1's Set-Content -Encoding utf8 adds a BOM (breaks JSON.parse), and git stores LF
+$json = ($manifest | ConvertTo-Json -Depth 4).Replace("`r`n", "`n") + "`n"
+[IO.File]::WriteAllText((Join-Path $out "manifest.json"), $json, (New-Object System.Text.UTF8Encoding $false))
 Write-Host "done: $($manifest.Count) photos"

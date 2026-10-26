@@ -1,0 +1,117 @@
+{
+  "task": "T2",
+  "attempt": 1,
+  "state": "done",
+  "started_at": "2026-10-26T04:04:37Z",
+  "finished_at": "2026-10-26T04:09:20.041Z",
+  "outputs": [
+    {
+      "path": "raw-assets/photos/edited/diverse-1.jpg",
+      "sha256": "d00b2d2b8a8b847db4377df69951cea18c074162221fe8bf66fd584bb29fa0ff",
+      "bytes": 1350428
+    },
+    {
+      "path": "raw-assets/photos/edited/diverse-2.jpg",
+      "sha256": "446643656b9e73b1e2fa241dc45293411469ca1210d82d76f53bb1c221b3c99c",
+      "bytes": 1056832
+    },
+    {
+      "path": "raw-assets/photos/edited/diverse-3.jpg",
+      "sha256": "abe656cd26250e055a1e8d214061344d66b396ff6a8fbc97a81fc8b66a2fed51",
+      "bytes": 1024845
+    },
+    {
+      "path": "raw-assets/photos/edited/diverse-4.jpg",
+      "sha256": "daa13686210e3fb6371317de1eeed882a76395e69de365a79d471e25a2b2107b",
+      "bytes": 1573398
+    },
+    {
+      "path": "raw-assets/photos/edited/p1-aodai.jpg",
+      "sha256": "ae40e6fd808a813ab0f6db36ec4aaae852ab95271ba2581ddc5cc71f4c8295b9",
+      "bytes": 555827
+    },
+    {
+      "path": "raw-assets/photos/edited/p1-farmers.jpg",
+      "sha256": "c517416bd5dc794becfdebd6a6845deb54e761c58a4b3a2fdf71e278a0e5866b",
+      "bytes": 843681
+    },
+    {
+      "path": "raw-assets/photos/edited/p1-market.jpg",
+      "sha256": "79bdc191fbe40b614855007b96420ef3f1aca3a78dbc11509e1806afc905fbca",
+      "bytes": 1229916
+    },
+    {
+      "path": "raw-assets/photos/edited/p1-rain.jpg",
+      "sha256": "ea9764d66d7ce840851e0fbf0bd6fb488f43692aaca1b7d569cbab02b397fe45",
+      "bytes": 808060
+    },
+    {
+      "path": "raw-assets/photos/edited/p2-16-rims.jpg",
+      "sha256": "3f64d9ec13a151de47402bae66a8cbc6078243e8c2dbbef4cc834844dc30bb59",
+      "bytes": 944152
+    },
+    {
+      "path": "raw-assets/photos/edited/p2-chin-straps.jpg",
+      "sha256": "d4dda9461557f1e57ec22fbd86a5dd0685253406bc581f630056515b3d30e387",
+      "bytes": 363201
+    },
+    {
+      "path": "raw-assets/photos/edited/p2-layering-leaves.jpg",
+      "sha256": "25ff05e2966e2c28b13757e39fc604af4d9084bdb9dae3e638d1f3d20bdfb3dd",
+      "bytes": 802192
+    },
+    {
+      "path": "raw-assets/photos/edited/p2-stitching.jpg",
+      "sha256": "4d7a1f0b46145d8260d0b00007e08a67e116d3cd2810f65f218691099c7ed3c8",
+      "bytes": 745490
+    },
+    {
+      "path": "raw-assets/photos/edited/p3-identity.jpg",
+      "sha256": "e97e82546d7b4e1b2fde0cd6075a62413430d3ebffcef0b87474db1e36d2c926",
+      "bytes": 916499
+    },
+    {
+      "path": "raw-assets/photos/edited/p3-poem.jpg",
+      "sha256": "a2f98b85d3510fe38511bb1ef12c3291c355c9f76d4395e9bdcbaebc232a4923",
+      "bytes": 1255928
+    },
+    {
+      "path": "raw-assets/photos/edited/p3-protection.jpg",
+      "sha256": "c6fe7f9709d4a394fd70297c8d3875d9c751da3ea4c3698c7549d9287d553a49",
+      "bytes": 631210
+    },
+    {
+      "path": "raw-assets/photos/edited/manifest.json",
+      "sha256": "cc326f67808a0ea13fdd8371d7c17f45457f9be4192648472efd3df5db808e7d",
+      "bytes": 5177
+    },
+    {
+      "path": "photocraft/run_slight_edit.ps1",
+      "sha256": "b3883d19271856300c26582e0f24ad3c11c7a1a962e8d929c008e4a270802223",
+      "bytes": 2407
+    }
+  ],
+  "tools": [
+    {
+      "name": "photocraft-cli",
+      "version": "0.16.0 (b1794c6e0, 2026-10-25)"
+    },
+    {
+      "name": "Windows PowerShell",
+      "version": "5.1.26100.9444"
+    },
+    {
+      "name": "node (verification only)",
+      "version": "24.15.0"
+    },
+    {
+      "name": "ffmpeg (preview crops only)",
+      "version": "9.0-full_build-www.gyan.dev"
+    }
+  ],
+  "notes": "All 15 upscaled inputs matched raw-assets/photos/upscaled/manifest.json (sha256, bytes, pixel size). Single-file test (p1-farmers, nonla-slight.json, q92 progressive) -> valid JPEG 3258x2160; the script's p1-farmers output is byte-identical to it (sha256 c517416b...), so the recipe params reach photocraft-cli intact and the edit is deterministic. Fixed photocraft/run_slight_edit.ps1 for Windows PowerShell 5.1: (1) 5.1 strips unescaped double quotes from native-command args, so photocraft-cli got {temperature:8,...} and exited 2; params are now escaped as \\\" when $PSNativeCommandArgumentPassing is not Standard/Windows (no-op on PowerShell 7.3+). (2) manifest.json is now written UTF-8 without BOM and with LF (Set-Content -Encoding utf8 in 5.1 adds a BOM, which JSON.parse rejects). Ran as `powershell -NoProfile -File photocraft\\run_slight_edit.ps1` from the repo root: `-ExecutionPolicy Bypass` was refused by the PC's permission classifier and is unnecessary here (LocalMachine policy is Unrestricted, script has no Zone.Identifier). 15/15 edited at the same pixel sizes as their inputs; recipes: nonla-slight x13, nonla-slight-denoise (p2-chin-straps), nonla-slight-nosharpen (p3-poem). Spot-checked p2-chin-straps (3240x2160) and p3-poem (2160x2160) with photocraft-cli info: 8-bit RGB, 1 layer. Visual before/after of p1-farmers and p2-chin-straps: slight warmth/lift, no clipping. RIGHTS FLAG (not a T2 failure): visible third-party marks in the team's photos, carried through original -> upscaled -> edited: p2-chin-straps = 'dreamstime ©' watermark across the hat underside (stock preview); p3-identity = '© Doan Duc Minh' caption bottom-right; p1-aodai = vertical stock credit with ID 0893527 on the left edge; p3-poem = 'Vieanhinfoprenem' credit bottom-right. Not removed (that would be watermark removal).",
+  "errors": [],
+  "needs_user": [
+    "Rights check by Max/the team before publishing the site: p2-chin-straps carries a Dreamstime watermark (unlicensed preview); p3-identity, p1-aodai and p3-poem carry photographer/stock credits. Replace with licensed or own photos, or confirm permission. Note the repo is public, so originals/upscaled/edited copies are already visible on GitHub."
+  ]
+}
