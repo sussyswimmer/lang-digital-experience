@@ -162,9 +162,12 @@ export class Sfx {
     src.stop(t + dur + 0.05);
   }
 
-  /** A soft, endless rain/breeze bed built from filtered noise (fallback for ambient files). */
-  ambientNoise(kind: 'rain' | 'breeze' | 'market'): { stop: () => void } {
-    if (!this.ctx || !this.out) return { stop: () => {} };
+  /**
+   * A soft, endless rain/breeze bed built from filtered noise (fallback for ambient files).
+   * setLevel(v) uses the same 0…1 scale as the ambient files (0.8 = full bed).
+   */
+  ambientNoise(kind: 'rain' | 'breeze' | 'market', level = 0.8): { stop: () => void; setLevel: (v: number) => void } {
+    if (!this.ctx || !this.out) return { stop: () => {}, setLevel: () => {} };
     const ctx = this.ctx;
     const src = ctx.createBufferSource();
     src.buffer = this.noise;
@@ -172,9 +175,10 @@ export class Sfx {
     const f = ctx.createBiquadFilter();
     f.type = kind === 'rain' ? 'highpass' : 'lowpass';
     f.frequency.value = kind === 'rain' ? 1200 : kind === 'breeze' ? 700 : 900;
+    const base = (kind === 'rain' ? 0.12 : 0.07) / 0.8;
     const g = ctx.createGain();
     g.gain.value = 0;
-    g.gain.linearRampToValueAtTime(kind === 'rain' ? 0.12 : 0.07, ctx.currentTime + 0.8);
+    g.gain.linearRampToValueAtTime(base * level, ctx.currentTime + 0.8);
     src.connect(f).connect(g).connect(this.out);
     src.start();
     let lfo: OscillatorNode | null = null;
@@ -191,6 +195,11 @@ export class Sfx {
         g.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
         src.stop(ctx.currentTime + 0.7);
         lfo?.stop(ctx.currentTime + 0.7);
+      },
+      setLevel: (v) => {
+        g.gain.cancelScheduledValues(ctx.currentTime);
+        g.gain.setValueAtTime(g.gain.value, ctx.currentTime);
+        g.gain.linearRampToValueAtTime(base * v, ctx.currentTime + 0.3);
       },
     };
   }

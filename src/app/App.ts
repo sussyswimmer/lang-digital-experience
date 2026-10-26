@@ -15,7 +15,7 @@ import { IdleHint } from '../a11y/idleHint';
 import { motion } from '../a11y/motion';
 import { i18n } from '../i18n/i18n';
 import { el } from '../ui/el';
-import { getViewer } from '../three/HatViewer';
+import { getViewer, type HatViewer } from '../three/HatViewer';
 
 const SCREENS: Record<Exclude<FlowState, 'landing'>, () => Promise<ScreenModule>> = {
   p1: () => import('../phases/phase1/Phase1Screen'),
@@ -35,6 +35,8 @@ export class App {
   private screenState: FlowState | null = null;
   private mountToken = 0;
   private onLeave: () => void;
+  /** the shared hat, once a screen has asked for it */
+  private hat: HatViewer | null = null;
 
   constructor(opts: { audio: AudioEngine; settings: Store<Settings>; onLeave: () => void }) {
     this.onLeave = opts.onLeave;
@@ -81,7 +83,11 @@ export class App {
       narration,
       idle,
       layers,
-      viewer: () => getViewer(layers.stage),
+      viewer: () =>
+        getViewer(layers.stage).then((v) => {
+          if (!this.hat) this.releaseHat((this.hat = v));
+          return v;
+        }),
       go,
       completeP1: () => {
         progress.set(completeP1);
@@ -153,6 +159,13 @@ export class App {
     this.ctx.layers.ui.replaceChildren();
     // the old screen's i18n bindings would otherwise keep its whole DOM (and the screen) alive
     i18n.prune();
+    if (this.hat) this.releaseHat(this.hat);
+  }
+
+  /** The hat outlives screens: point its sound hook back at the shell, so a screen's closure can't keep that screen alive. */
+  private releaseHat(v: HatViewer): void {
+    const sfx = this.ctx.audio.sfx;
+    v.sound = (id, o) => sfx.play(id, o);
   }
 
   get currentState(): FlowState | null {

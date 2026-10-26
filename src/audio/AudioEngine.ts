@@ -21,10 +21,14 @@ const AMBIENT_FILES: Record<AmbientId, string> = {
 /** Ambient files that exist (written by tools/audio); others fall back to a synthesised bed. */
 import ambientIndex from '../../content/ambient-index.json';
 
+/** ambient loop volume, and while narration speaks (about 30 %) */
+const AMBIENT_LEVEL = 0.8;
+const DUCKED_LEVEL = 0.25;
+
 export class AudioEngine {
   readonly sfx = new Sfx();
   private unlocked = false;
-  private ambients = new Map<AmbientId, { stop: () => void }>();
+  private ambients = new Map<AmbientId, { stop: () => void; setLevel: (v: number) => void }>();
   private ducked = false;
   volume = 1;
   muted = false;
@@ -74,17 +78,22 @@ export class AudioEngine {
     if ((ambientIndex as string[]).includes(id)) {
       const howl = new Howl({ src: [assetUrl(AMBIENT_FILES[id])], loop: true, volume: 0, html5: false });
       howl.play();
-      howl.fade(0, this.ducked ? 0.25 : 0.8, 600);
+      howl.fade(0, this.level(), 600);
       this.ambients.set(id, {
         stop: () => {
           howl.fade(howl.volume(), 0, 500);
           setTimeout(() => howl.unload(), 600);
         },
+        setLevel: (v) => howl.fade(howl.volume(), v, 300),
       });
     } else {
       const kind = id === 'rain' || id === 'rainMarket' ? 'rain' : id === 'market' || id === 'school' ? 'market' : 'breeze';
-      this.ambients.set(id, this.sfx.ambientNoise(kind));
+      this.ambients.set(id, this.sfx.ambientNoise(kind, this.level()));
     }
+  }
+
+  private level(): number {
+    return this.ducked ? DUCKED_LEVEL : AMBIENT_LEVEL;
   }
 
   stopAmbient(id?: AmbientId): void {
@@ -96,8 +105,11 @@ export class AudioEngine {
     }
   }
 
+  /** Narration start/end: every running loop fades down to ~30 % and back. */
   duck(on: boolean): void {
+    if (on === this.ducked) return;
     this.ducked = on;
+    for (const a of this.ambients.values()) a.setLevel(this.level());
   }
 
   /** visibilitychange: pause everything while the tab is hidden */
