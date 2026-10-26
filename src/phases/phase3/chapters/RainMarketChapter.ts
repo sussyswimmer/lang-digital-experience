@@ -11,8 +11,8 @@ import { picture } from '../../../assets/manifest';
 import { speak } from '../../phase1/speak';
 import { ANN } from '../annotations';
 import { P3_ICONS } from '../art';
-import { dist, type Pt } from '../geometry';
-import { buildHats, hatAt, type Hat } from '../hats';
+import type { Pt } from '../geometry';
+import { badgeSpot, buildHats, hatAt, type Hat } from '../hats';
 import { RainSim } from '../rain/RainSim';
 import type { Chapter, ChapterHost } from './types';
 
@@ -289,20 +289,6 @@ export class RainMarketChapter implements Chapter {
     this.countLayer.prepend(...this.hatButtons);
   }
 
-  /**
-   * A badge goes on the hat's centre, unless that would cover a number already placed (some hats
-   * overlap, with centres closer than a badge is wide): then it moves up its cone, towards the apex.
-   */
-  private placeBadge(i: number, size: number): Pt {
-    const { w, h } = this.size;
-    const hat = this.hats[i];
-    const taken = [...this.spots.values()].map((s) => ({ x: s.x * w, y: s.y * h }));
-    let p = hat.centre;
-    for (let k = 0; k < 4 && taken.some((t) => dist(t, p) < size); k++) p = { x: p.x - hat.nrm.x * size * 0.8, y: p.y - hat.nrm.y * size * 0.8 };
-    const r = size / 2;
-    return { x: Math.min(w - r, Math.max(r, p.x)) / w, y: Math.min(h - r, Math.max(r, p.y)) / h };
-  }
-
   private countHat(i: number): void {
     if (!this.counting) return;
     const ctx = this.host.ctx;
@@ -318,7 +304,11 @@ export class RainMarketChapter implements Chapter {
     const badge = el('span.p3-badge', { 'aria-hidden': 'true', dataset: { n: String(n) } }, String(n));
     this.badges.set(i, badge);
     this.countLayer.appendChild(badge);
-    const spot = this.placeBadge(i, badge.offsetWidth || 40);
+    // neighbouring hats can sit closer than a badge is wide: keep every number readable
+    const { w, h } = this.size;
+    const taken = [...this.spots.values()].map((s) => ({ x: s.x * w, y: s.y * h }));
+    const p = badgeSpot(this.hats[i], taken, badge.offsetWidth || 40, w, h);
+    const spot = { x: p.x / w, y: p.y / h };
     this.spots.set(i, spot);
     Object.assign(badge.style, { left: `${spot.x * 100}%`, top: `${spot.y * 100}%` });
     this.host.g.add(() => gsap.from(badge, { scale: 0, duration: motion.dur(0.45), ease: 'back.out(2.2)' }));

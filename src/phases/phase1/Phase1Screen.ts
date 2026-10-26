@@ -29,7 +29,7 @@ gsap.registerPlugin(Flip, MotionPathPlugin);
 const INTRO = ['p1.intro.1', 'p1.intro.2', 'p1.intro.3'];
 const TILE_SIZES = '(max-width: 700px) 60vw, 32vw';
 /** how long the convergence waits for the 3D hat (fetched since the collage opened), and for its flight */
-const HAT_WAIT_MS = 5000;
+const HAT_WAIT_MS = 8000;
 const HAT_PLAY_MS = 12000;
 
 function prefetch3d(): void {

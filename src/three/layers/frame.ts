@@ -3,6 +3,8 @@
  * a tap sends the shells away and the 16 rings count off from the wide brim (1) to the tip (16),
  * stretching apart so they're easy to count, then settle. Joints light up in turn (staggered),
  * and callouts show "≈ 2 cm between rings" and "40–50 cm across".
+ * The rings end at home spacing on purpose (the 2 cm callout must be true); L4's "frame flies back"
+ * is a stretch-and-close of its own (StrapLayer.assemble). This supersedes integration correction 2.
  */
 import * as THREE from 'three';
 import { motion } from '../../a11y/motion';

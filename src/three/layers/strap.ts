@@ -106,16 +106,20 @@ export class StrapLayer extends LayerBase {
       });
       t += gap;
     };
-    // the bamboo frame "arrives": the rings ripple up from the brim and snap into place
+    // the bamboo frame "flies back": L3 left the rings home (its 2 cm callout must stay true), so they
+    // spring apart along the axis and close up again before the shells arrive
     beat(() => {
+      if (reduced) return;
       for (let i = 1; i <= 16; i++) {
         const name = `ring_${pad(i)}`;
         if (!hat.has(name)) continue;
         const ring = hat.get(name);
         const y = hat.home(ring).position.y;
-        this.anim.fromTo(ring.position, { y: y * 1.35 + 0.01 }, { y, duration: 0.5, delay: i * 0.02, ease: 'bounce.out' });
+        this.anim.to(ring.position, { y: y * 2.2 + 0.01, duration: 0.3, delay: i * 0.02, ease: 'power2.out' });
+        this.anim.to(ring.position, { y, duration: 0.6, delay: 0.3 + i * 0.02, ease: 'power2.inOut' });
       }
     }, 'ringSnap', 'p2.part.frame');
+    t += reduced ? 0 : 0.6;
     const inner = [
       ['leaf_inner', 'p2.part.innerLeaves', 'snap'],
       ['mo_bark', 'p2.part.mo', 'leafRustle'],

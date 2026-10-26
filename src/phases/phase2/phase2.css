@@ -243,6 +243,15 @@
   color: var(--forest-700);
 }
 
+/* the name is a button: tap it to hear it again */
+.p2-panel__say {
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  touch-action: manipulation;
+}
+
 .p2-panel__photo {
   position: relative;
   flex: 1 1 180px;
@@ -321,10 +330,20 @@
   flex: none;
 }
 
+/* the nav and the Next CTA stay in view even when the sheet has to scroll: the foot sticks to the
+   bottom of the content box, and a paper skirt over the padding hides what scrolls under it (the
+   3 px ring stays visible) */
 .p2-panel__foot {
   flex: none;
   display: grid;
   gap: 12px;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin-top: -6px;
+  padding-top: 6px;
+  background: var(--paper);
+  box-shadow: 0 13px 0 var(--paper);
 }
 
 .p2-nav {
@@ -542,6 +561,27 @@
 
 /* ---------- narrower screens ---------- */
 
+/* short screens (an iPad in landscape once the browser bars are in): the photo gives way first, so
+   the whole sheet fits without scrolling */
+@media (max-height: 860px) {
+  .p2-panel {
+    gap: 8px;
+  }
+
+  .p2-panel__photo {
+    flex: 1 1 64px;
+    min-height: 56px;
+  }
+
+  .p2-panel__sub {
+    display: none;
+  }
+
+  .p2-chip {
+    min-height: 56px;
+  }
+}
+
 @media (max-width: 1000px) {
   .p2 .topbar__title {
     display: none;
@@ -689,6 +729,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    box-shadow: 0 11px 0 var(--paper);
   }
 
   .p2-panel__nav {

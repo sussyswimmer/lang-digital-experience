@@ -28,7 +28,7 @@ import { PoemHatChapter } from './chapters/PoemHatChapter';
 import { RainMarketChapter } from './chapters/RainMarketChapter';
 
 /** how long the cover waits for the 3D hat to be ready, and for its celebration */
-const HAT_WAIT_MS = 5000;
+const HAT_WAIT_MS = 8000;
 const HAT_PLAY_MS = 20000;
 
 function pick(c: string | undefined): ChapterId {

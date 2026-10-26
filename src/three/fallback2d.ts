@@ -87,12 +87,24 @@ export function createFallbackViewer(host: HTMLElement): HatViewer {
   }
   const row3 = rows[1];
 
-  // --- placement
+  // --- placement: the notice sits at the top of the hat's frame (never under a panel), the drawing below it
   let rect: ScreenRect | null = null;
+  let noticeOn = true;
+  let layers = 0;
   const layout = () => {
-    const r = rect ?? defaultFrame(host.clientWidth || window.innerWidth, host.clientHeight || window.innerHeight);
+    const f = rect ?? defaultFrame(host.clientWidth || window.innerWidth, host.clientHeight || window.innerHeight);
+    Object.assign(notice.style, { left: `${f.x + f.width / 2}px`, top: `${f.y}px`, maxWidth: `${Math.max(200, f.width - 24)}px` });
+    const nh = noticeOn ? notice.offsetHeight + 8 : 0;
+    const r = { ...f, y: f.y + nh, height: Math.max(120, f.height - nh) };
     const scale = Math.min(r.width / 400, r.height / 430);
     Object.assign(svg.style, { left: `${r.x + (r.width - 400 * scale) / 2}px`, top: `${r.y + (r.height - 430 * scale) / 2}px`, width: `${400 * scale}px`, height: `${430 * scale}px` });
+  };
+  /** the grown-ups have read it by the second layer (and heard it as p2.fallback) */
+  const dropNotice = () => {
+    if (!noticeOn) return;
+    noticeOn = false;
+    gsap.to(notice, { autoAlpha: 0, duration: 0.4 });
+    layout();
   };
   window.addEventListener('resize', layout);
   layout();
@@ -310,6 +322,7 @@ export function createFallbackViewer(host: HTMLElement): HatViewer {
     },
     layer: (id, cb) => {
       current?.dispose();
+      if (++layers > 1) dropNotice();
       current = makeLayer(id, cb);
       return current;
     },
@@ -318,6 +331,7 @@ export function createFallbackViewer(host: HTMLElement): HatViewer {
     },
     celebrateAndShrinkTo: async (r) => {
       current?.dispose();
+      dropNotice();
       reset(0);
       gsap.set(strap, { opacity: 1 });
       viewer.show();

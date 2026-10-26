@@ -120,3 +120,40 @@ test('without WebGL a layered drawing stands in and the layers still work', asyn
   await page.mouse.click(hint.points[0].x, hint.points[0].y);
   await expect.poll(() => hook<number>(page, 'ringsShown'), { timeout: 30_000 }).toBe(16);
 });
+
+test('if the hat model fails to load, the drawing stands in instead of a dead end', async ({ page }) => {
+  await page.route('**/models/nonla.glb', (r) => r.abort('failed'));
+  await open(page, 'stitches');
+  await expect(page.locator('.hat2d')).toBeVisible();
+  await expect(page.locator('.p2-skip')).toHaveCount(0);
+});
+
+test('switching EN/VI mid-insight does not stall the sheet; Next layer still appears', async ({ page }) => {
+  // a first run (no review flag): Next layer only shows once the insight has played through
+  await page.addInitScript(() => {
+    if (sessionStorage.getItem('seeded')) return;
+    sessionStorage.setItem('seeded', '1');
+    localStorage.setItem(
+      'nonla.progress.v1',
+      JSON.stringify({
+        v: 1,
+        firstRunComplete: false,
+        p1: { seenTiles: [], done: true },
+        p2: { layers: { stitches: 'active', leaves: 'locked', frame: 'locked', strap: 'locked' } },
+        p3: { chapters: { protection: 'active', heritage: 'locked', identity: 'locked' } },
+        games: { build: { completed: 0 }, colour: { saved: 0 }, quiz: { best: 0, badges: [] } },
+      }),
+    );
+  });
+  await page.goto('/?test=1&no3d=1#/play/p2/stitches');
+  await page.waitForFunction(() => (window as any).__nonla?.p2?.phase?.() === 'question', null, { timeout: 60_000 });
+  await hook(page, 'finish');
+  await page.waitForFunction(() => (window as any).__nonla.p2.chunk() === 0, null, { timeout: 60_000, polling: 50 });
+  await page.locator('.lang-toggle [data-lang="vi"]').click();
+  await expect.poll(() => hook<string>(page, 'phase'), { timeout: 90_000 }).toBe('done');
+  const next = page.locator('[data-test="next"]');
+  await expect(next).toBeVisible();
+  // the CTA sits wholly inside the sheet (it used to fall below its fold on short screens)
+  const [b, p] = await Promise.all([next.boundingBox(), page.locator('.p2-panel').boundingBox()]);
+  expect(b!.y + b!.height).toBeLessThanOrEqual(p!.y + p!.height + 1);
+});

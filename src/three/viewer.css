@@ -169,11 +169,13 @@ button.hat-label::before {
   cursor: pointer;
 }
 
+/* placed at the top of the hat's frame by fallback2d.ts layout() */
 .hat2d__notice {
   position: absolute;
   left: 50%;
-  bottom: calc(150px + var(--safe-bottom));
+  top: 96px;
   transform: translateX(-50%);
+  width: max-content;
   max-width: min(560px, calc(100vw - 32px));
   padding: 10px 18px;
   border-radius: var(--radius-m);

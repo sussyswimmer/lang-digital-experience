@@ -92,6 +92,49 @@ export function runoffTarget(hat: Hat, p: Pt): Pt {
   return hat.apex.y > tip.y ? hat.apex : tip;
 }
 
+/** badge offsets to try, in badge sizes: [up the cone, along the brim] */
+const NUDGES: [number, number][] = [
+  [0, 0],
+  [0.8, 0],
+  [0, -0.8],
+  [0, 0.8],
+  [0.8, -0.8],
+  [0.8, 0.8],
+  [-0.8, 0],
+  [1.6, 0],
+  [0, -1.6],
+  [0, 1.6],
+  [-0.8, -0.8],
+  [-0.8, 0.8],
+  [1.6, -0.8],
+  [1.6, 0.8],
+];
+
+/**
+ * Where a counting badge goes (px): the hat's centre, unless that would cover a number already
+ * placed (some hats overlap, with centres closer than a badge is wide). Then a step up the cone or
+ * along the brim; the first spot clear of every other badge wins, else the one with the most room.
+ * Always inside the w × h photo.
+ */
+export function badgeSpot(hat: Hat, taken: Pt[], size: number, w: number, h: number): Pt {
+  const r = size / 2;
+  let best = hat.centre;
+  let room = -1;
+  for (const [up, along] of NUDGES) {
+    const p = {
+      x: Math.min(w - r, Math.max(r, hat.centre.x + (-hat.nrm.x * up + hat.dir.x * along) * size)),
+      y: Math.min(h - r, Math.max(r, hat.centre.y + (-hat.nrm.y * up + hat.dir.y * along) * size)),
+    };
+    const near = Math.min(Infinity, ...taken.map((t) => dist(t, p)));
+    if (near >= size) return p;
+    if (near > room) {
+      room = near;
+      best = p;
+    }
+  }
+  return best;
+}
+
 /** The hat a tap at p means: inside a hat's shape or within its reach; the nearest centre wins. */
 export function hatAt(hats: Hat[], p: Pt, skip?: (i: number) => boolean): number {
   let best = -1;
