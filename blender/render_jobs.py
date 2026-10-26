@@ -81,6 +81,9 @@ def setup(scene):
                 for d in cp.devices:
                     d.use = d.type == dev
                 scene.cycles.device = "GPU"
+                # denoise on the GPU too: CPU OIDN took ~38 of the ~47 s per 1440p frame on Max's PC (T6)
+                if hasattr(scene.cycles, "denoising_use_gpu"):
+                    scene.cycles.denoising_use_gpu = True
                 log("device", dev)
                 break
     if scene.cycles.device == "CPU":

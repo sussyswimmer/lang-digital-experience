@@ -10,12 +10,12 @@
   ],
   "bg": {
     "top": "#E3D5B4",
-    "bottom": "#B98B51"
+    "bottom": "#AB814B"
   },
   "placeholder": false,
-  "source": "Blender intro (PC GPU, 270 frames) \u2192 EffectCraft INTRO_SCROLL \u2192 every 2nd frame",
+  "source": "Blender intro (PC GPU, 270 frames) \u2192 EffectCraft INTRO_SCROLL (scroll-intro-fx-1440p.mp4) \u2192 every 2nd frame",
   "bytes": {
-    "960": 1002682,
-    "1600": 2313474
+    "960": 1073326,
+    "1600": 3116664
   }
 }
