@@ -67,7 +67,7 @@
     "viStatus": "machine"
   },
   "p3.ch1.title": {
-    "kind": "ui",
+    "kind": "label",
     "en": "Protection & Care",
     "vi": "Che chở và chăm sóc",
     "viStatus": "machine"
@@ -97,7 +97,7 @@
     "viStatus": "machine"
   },
   "p3.ch2.title": {
-    "kind": "ui",
+    "kind": "label",
     "en": "Handcraft Heritage",
     "vi": "Di sản nghề thủ công",
     "viStatus": "machine"
@@ -145,7 +145,7 @@
     "viStatus": "machine"
   },
   "p3.ch3.title": {
-    "kind": "ui",
+    "kind": "label",
     "en": "Cultural Identity",
     "vi": "Bản sắc văn hoá",
     "viStatus": "machine"

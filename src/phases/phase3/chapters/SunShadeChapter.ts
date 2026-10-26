@@ -22,7 +22,7 @@ const PHOTO_AR = A.width / A.height;
 export class SunShadeChapter implements Chapter {
   readonly id = 'protection' as const;
   readonly icon = P3_ICONS.ch1;
-  readonly story = ['p3.ch1.story'];
+  readonly story = ['p3.ch1.title', 'p3.ch1.story'];
   readonly firstPrompt = 'p3.ch1.prompt';
   readonly pic: HTMLDivElement;
   readonly actions: HTMLDivElement;
@@ -77,7 +77,12 @@ export class SunShadeChapter implements Chapter {
     this.wireDrag(this.sky);
     this.img.decoding = 'async';
     this.img.onload = () => this.draw();
-    this.img.src = assetUrl(`img/photos/${A.photo}-1280.jpg`);
+    // AVIF is less than half the JPEG's size; the JPEG is only for browsers that can't decode it
+    this.img.onerror = () => {
+      this.img.onerror = null;
+      this.img.src = assetUrl(`img/photos/${A.photo}-1280.jpg`);
+    };
+    this.img.src = assetUrl(`img/photos/${A.photo}-1280.avif`);
     this.offLang = i18n.onChange(() => {
       this.photoBox.setAttribute('aria-label', i18n.t('p3.ch1.alt'));
       this.sun.setAttribute('aria-label', i18n.t('p3.ch1.prompt'));
@@ -99,7 +104,7 @@ export class SunShadeChapter implements Chapter {
   dispose(): void {
     this.stop();
     cancelAnimationFrame(this.raf);
-    this.img.onload = null;
+    this.img.onload = this.img.onerror = null;
     this.offLang();
   }
 

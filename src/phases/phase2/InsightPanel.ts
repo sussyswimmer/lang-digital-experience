@@ -14,6 +14,8 @@ export interface InsightHandlers {
   onPrev(): void;
   onNext(): void;
   onReplay(): void;
+  /** the layer's name was tapped: say it again */
+  onName(): void;
   onDone(): void;
   onPhoto(): void;
 }
@@ -31,7 +33,7 @@ export class InsightPanel {
   private altId = '';
   private offLang: () => void;
 
-  constructor(h: InsightHandlers) {
+  constructor(private h: InsightHandlers) {
     this.header = el('div.p2-panel__head');
     this.photo = el('button.p2-panel__photo', { type: 'button', 'data-touch': '', onclick: () => h.onPhoto() });
     this.extras = el('div.p2-panel__extras');
@@ -71,7 +73,7 @@ export class InsightPanel {
   setLayer(s: LayerScript, last: boolean): void {
     this.header.replaceChildren(
       el('span.p2-panel__icon', {}, svg(LAYER_ICONS[s.layer], 'p2-layer-icon')),
-      el('span.p2-panel__titles', {}, i18n.bind(el('span.p2-panel__step'), 'p2.layer.label', { n: s.index + 1 }), i18n.bind(el('h2.p2-panel__name'), s.name)),
+      el('span.p2-panel__titles', {}, i18n.bind(el('span.p2-panel__step'), 'p2.layer.label', { n: s.index + 1 }), el('h2.p2-panel__name', {}, i18n.bind(el('button.p2-panel__say', { type: 'button', onclick: () => this.h.onName() }), s.name))),
     );
     this.altId = s.photo.alt;
     const pic = picture({ stem: s.photo.stem, alt: i18n.t(s.photo.alt), focal: [0.5, 0.5] }, { sizes: '(max-width: 700px) 30vw, 360px', className: 'p2-panel__img' });

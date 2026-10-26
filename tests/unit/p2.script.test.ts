@@ -5,6 +5,8 @@ import { LAYERS } from '../../src/app/types';
 
 type Entry = { kind: string; en: string; vi: string; viStatus?: string };
 const S = strings as Record<string, Entry>;
+/** the code that hands string ids to the narration (layers emit 'say' with them) */
+const SOURCES = import.meta.glob(['../../src/phases/phase2/Phase2Screen.ts', '../../src/three/layers/*.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
 /** The brief's English, word for word (Phase 2). The chunks must add back up to exactly this. */
 const BRIEF = {
@@ -72,6 +74,18 @@ describe('Phase 2 script and strings', () => {
     expect(SCRIPT.stitches.cues[2]).toBe('thirdRim'); // "The sewing begins at the third rim…"
     expect(SCRIPT.stitches.cues[3]).toBe('brim'); // red thread + bamboo wires
     expect(SCRIPT.strap.cues[3]).toBe('knots'); // "third, fourth, and fifth rings"
+  });
+
+  it('gives every line the app speaks a voice (kind narration or label, which the TTS planner records)', () => {
+    const src = Object.values(SOURCES).join('\n');
+    const literal = [...src.matchAll(/'(p2\.(?:label|part|l\d|fallback|loadError)[\w.]*)'/g)].map((m) => m[1]);
+    const spoken = [
+      ...LAYERS.flatMap((l) => [SCRIPT[l].name, SCRIPT[l].question, ...SCRIPT[l].chunks]),
+      ...['purple', 'peach', 'green'].map((c) => `p2.colour.${c}`),
+      ...literal,
+    ];
+    expect(literal.length).toBeGreaterThan(10);
+    for (const id of spoken) expect(['narration', 'label'], id).toContain(S[id]?.kind);
   });
 
   it('steps through chunks and recognises layer ids', () => {

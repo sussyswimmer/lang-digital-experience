@@ -17,6 +17,7 @@ import type { AppContext, Screen } from '../../app/context';
 import type { Gesture } from '../../a11y/idleHint';
 import type { SfxId } from '../../audio/sfx';
 import type { HatViewer, LayerController, ScreenRect } from '../../three/HatViewer';
+import { speak, speakLine } from '../phase1/speak';
 import { InsightPanel } from './InsightPanel';
 import { LAYER_ICONS, PANEL_ICONS } from './icons';
 import { SCRIPT, isLayer, nextChunk, prevChunk, type LayerScript } from './script';
@@ -39,6 +40,7 @@ export default function Phase2Screen(): Screen {
   let token = 0;
   let alive = true;
   let fallbackSaid = false;
+  let cycleIds: number[] = [];
   const timers = new Set<number>();
   const offs: (() => void)[] = [];
 
@@ -74,6 +76,10 @@ export default function Phase2Screen(): Screen {
       if (n !== null) playChunk(n, true);
     },
     onReplay: () => playChunk(Math.max(0, chunk), true),
+    onName: () => {
+      play('tap');
+      ctx.narration.say(script.name);
+    },
     onDone: () => done(),
     onPhoto: () => openPhoto(),
   });
@@ -81,12 +87,13 @@ export default function Phase2Screen(): Screen {
 
   // ---- helpers
 
-  const later = (ms: number, fn: () => void) => {
+  const later = (ms: number, fn: () => void): number => {
     const id = window.setTimeout(() => {
       timers.delete(id);
       if (alive) fn();
     }, ms);
     timers.add(id);
+    return id;
   };
 
   const play = (id: SfxId, step?: number) => ctx.audio.sfx.play(id, step === undefined ? {} : { step });
@@ -156,6 +163,7 @@ export default function Phase2Screen(): Screen {
     ctrl = null;
     ctx.idle.clear();
     ctx.narration.stop();
+    stopCycle();
     layer = next;
     script = SCRIPT[next];
     chunk = -1;
@@ -187,7 +195,7 @@ export default function Phase2Screen(): Screen {
     if (viewer.kind === '2d' && !fallbackSaid) {
       // first tell the grown-ups why the hat is a drawing, then ask the question
       fallbackSaid = true;
-      void ctx.narration.queue(['p2.fallback', script.question]);
+      void speak(ctx.narration, ['p2.fallback', script.question], () => alive && my === token && phase === 'question');
     } else {
       ctx.narration.say(script.question);
     }
@@ -229,12 +237,26 @@ export default function Phase2Screen(): Screen {
       root.dataset.phase = phase;
       question.hidden = true;
       panel.el.classList.add('is-open');
+      panel.setChunk(-1, script.chunks.length);
       buildExtras();
       const revisit = ctx.flags.review || ctx.progress.get().p2.layers[layer] === 'done';
       panel.doneBtn.hidden = !revisit;
       // let the sheet lay out, then slide the hat into the free space
       requestAnimationFrame(() => placeHat(0.9));
-      playChunk(0, false);
+      watchInsight();
+      // the layer's name first (it carries the Vietnamese part name: Chỉ Khâu, Lá Nón…), then the insight
+      void speakLine(ctx.narration, script.name, () => alive && my === token && chunk < 0).then((ok) => {
+        if (ok && my === token && chunk < 0) playChunk(0, false);
+      });
+    });
+  }
+
+  /** if the sheet goes quiet (a line was cut short), the hand points at More, or at Next on the last chunk */
+  function watchInsight(): void {
+    ctx.idle.watch({
+      stepId: `p2.${layer}.more`,
+      gesture: 'tap',
+      target: () => (chunk >= script.chunks.length - 1 ? panel.doneBtn : panel.nextBtn).getBoundingClientRect(),
     });
   }
 
@@ -249,8 +271,10 @@ export default function Phase2Screen(): Screen {
     else if (cue) ctrl?.cue?.(cue);
     const last = i === script.chunks.length - 1;
     if (last) panel.doneBtn.hidden = false;
-    ctx.narration.say(script.chunks[i]).then((r) => {
-      if (my !== token || chunk !== i || r !== 'ended') return;
+    if (phase === 'insight') watchInsight();
+    // speakLine, not say(): the EN/VI toggle and "hear it again" restart the line, which must not stall the sheet
+    void speakLine(ctx.narration, script.chunks[i], () => alive && my === token && chunk === i).then((ok) => {
+      if (!ok || my !== token || chunk !== i) return;
       const n = nextChunk(i, script.chunks.length);
       if (n !== null) later(900, () => chunk === i && my === token && playChunk(n, false));
       else insightDone();
@@ -322,6 +346,7 @@ export default function Phase2Screen(): Screen {
 
   function pickColour(c: StrapColour, byChild: boolean): void {
     if (byChild) {
+      stopCycle();
       play('fillPop');
       ctx.settings.patch({ strapColour: c });
       ctx.narration.say(`p2.colour.${c}`);
@@ -330,11 +355,19 @@ export default function Phase2Screen(): Screen {
     panel.extras.querySelectorAll<HTMLElement>('.p2-swatch').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.colour === c)));
   }
 
-  /** "purple, peach pink, or light green": show each, then back to the child's choice */
+  /** "purple, peach pink, or light green": show each, then back to the child's choice (a tap ends the show) */
   function cycleColours(): void {
-    const keep = ctx.settings.get().strapColour;
-    COLOURS.forEach((c, i) => later(i * 1600 + 600, () => layer === 'strap' && pickColour(c, false)));
-    later(COLOURS.length * 1600 + 900, () => layer === 'strap' && pickColour(keep, false));
+    stopCycle();
+    COLOURS.forEach((c, i) => cycleIds.push(later(i * 1600 + 600, () => layer === 'strap' && pickColour(c, false))));
+    cycleIds.push(later(COLOURS.length * 1600 + 900, () => layer === 'strap' && pickColour(ctx.settings.get().strapColour, false)));
+  }
+
+  function stopCycle(): void {
+    for (const id of cycleIds) {
+      window.clearTimeout(id);
+      timers.delete(id);
+    }
+    cycleIds = [];
   }
 
   function openPhoto(): void {

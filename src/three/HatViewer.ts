@@ -103,7 +103,18 @@ export interface HatViewer {
 
 let instance: Promise<HatViewer> | null = null;
 
+/**
+ * The shared viewer. It resolves once the hat can be shown: the 3D hat, or the 2D drawing when WebGL
+ * or the model fails. If even the code can't load, it rejects and the next call tries again.
+ */
 export function getViewer(host: HTMLElement): Promise<HatViewer> {
-  if (!instance) instance = import('./stage').then((m) => m.createViewer(host));
+  if (!instance) {
+    instance = import('./stage')
+      .then((m) => m.createViewer(host))
+      .catch((err) => {
+        instance = null;
+        throw err;
+      });
+  }
   return instance;
 }

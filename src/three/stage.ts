@@ -31,8 +31,23 @@ export async function createViewer(host: HTMLElement): Promise<HatViewer> {
     if (import.meta.env.DEV) console.warn('[hat] WebGL unavailable, using the 2D hat', err);
     return createFallbackViewer(host);
   }
-  return new Viewer3D(stage);
+  // a model that fails (or never arrives on flaky school Wi-Fi) must not strand the child either
+  const viewer = new Viewer3D(stage);
+  let timer = 0;
+  try {
+    const late = new Promise<never>((_, reject) => (timer = window.setTimeout(() => reject(new Error('model load timed out')), LOAD_TIMEOUT_MS)));
+    await Promise.race([viewer.ready, late]);
+  } catch (err) {
+    console.error('[hat] could not load the model, using the 2D hat', err);
+    viewer.dispose();
+    return createFallbackViewer(host);
+  } finally {
+    window.clearTimeout(timer);
+  }
+  return viewer;
 }
+
+const LOAD_TIMEOUT_MS = 45_000;
 
 function webglAvailable(): boolean {
   if (new URLSearchParams(location.search).has('no3d')) return false;
@@ -58,18 +73,19 @@ class Viewer3D implements HatViewer {
   private hadLayer = false;
   private lastRings = 0;
   private fade: gsap.core.Tween | null = null;
+  private disposed = false;
 
   constructor(private stage: Stage) {
     this.canvas = stage.canvas;
     stage.canvas.style.opacity = '0';
     stage.overlay.style.opacity = '0';
     this.ready = loadHat().then((hat) => {
+      if (this.disposed) return;
       this.rig = new Rig(stage, hat);
       this.rig.sound = (id, opts) => this.sound(id, opts);
       this.rig.resetAll();
       stage.invalidate();
     });
-    this.ready.catch((err) => console.error('[hat] could not load the model', err));
     stage.canvas.addEventListener('webglcontextlost', (e) => e.preventDefault());
     stage.canvas.addEventListener('webglcontextrestored', () => stage.invalidate());
   }
@@ -189,6 +205,7 @@ class Viewer3D implements HatViewer {
   }
 
   dispose(): void {
+    this.disposed = true;
     this.current?.dispose();
     this.rig?.dispose();
     this.fade?.kill();

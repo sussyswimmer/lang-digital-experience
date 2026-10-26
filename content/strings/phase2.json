@@ -12,9 +12,9 @@
   "p2.ui.strapColours": { "kind": "ui", "en": "Pick a strap colour", "vi": "Chọn màu quai nón", "viStatus": "machine" },
   "p2.ui.rings": { "kind": "ui", "en": "rings", "vi": "vòng", "viStatus": "machine" },
   "p2.ui.legend": { "kind": "ui", "en": "Two kinds of thread", "vi": "Hai loại chỉ", "viStatus": "machine" },
-  "p2.colour.purple": { "kind": "ui", "en": "Purple", "vi": "Tím", "viStatus": "machine" },
-  "p2.colour.peach": { "kind": "ui", "en": "Peach pink", "vi": "Hồng đào", "viStatus": "machine" },
-  "p2.colour.green": { "kind": "ui", "en": "Light green", "vi": "Xanh lá nhạt", "viStatus": "machine" },
+  "p2.colour.purple": { "kind": "label", "en": "Purple", "vi": "Tím", "viStatus": "machine" },
+  "p2.colour.peach": { "kind": "label", "en": "Peach pink", "vi": "Hồng đào", "viStatus": "machine" },
+  "p2.colour.green": { "kind": "label", "en": "Light green", "vi": "Xanh lá nhạt", "viStatus": "machine" },
   "p2.fallback": { "kind": "narration", "en": "This device can't show the 3D hat, so here is a drawing of it instead.", "vi": "Thiết bị này chưa hiện được chiếc nón 3D, mình cùng xem hình vẽ chiếc nón nhé.", "viStatus": "machine" },
   "p2.loadError": { "kind": "narration", "en": "Oh no, the hat didn't arrive. Let's carry on with the story!", "vi": "Ôi, chiếc nón chưa tới được. Mình cùng đi tiếp câu chuyện nhé!", "viStatus": "machine" },
 

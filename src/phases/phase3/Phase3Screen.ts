@@ -16,7 +16,9 @@ import { motion } from '../../a11y/motion';
 import { isOpen } from '../../app/flow';
 import { CHAPTERS, type ChapterId } from '../../app/types';
 import type { AppContext, Screen } from '../../app/context';
+import type { HatViewer } from '../../three/HatViewer';
 import { speak } from '../phase1/speak';
+import { within } from '../phase1/within';
 import { Cover, renderedHat } from './Cover';
 import { P3_ICONS } from './art';
 import { confetti } from './confetti';
@@ -24,6 +26,10 @@ import type { Chapter, ChapterHost } from './chapters/types';
 import { SunShadeChapter } from './chapters/SunShadeChapter';
 import { PoemHatChapter } from './chapters/PoemHatChapter';
 import { RainMarketChapter } from './chapters/RainMarketChapter';
+
+/** how long the cover waits for the 3D hat to be ready, and for its celebration */
+const HAT_WAIT_MS = 5000;
+const HAT_PLAY_MS = 20000;
 
 function pick(c: string | undefined): ChapterId {
   return (CHAPTERS as readonly string[]).includes(c ?? '') ? (c as ChapterId) : 'protection';
@@ -71,6 +77,7 @@ class Phase3 implements Screen {
       isCurrent: (c) => this.alive && this.coverOpen && this.started === c,
       prompt: (sid) => this.setPrompt(sid),
       done: () => this.refreshNav(),
+      hintNext: () => this.watchNext(),
       setDark: (on) => root.classList.toggle('p3--dark', on),
     };
     this.chapters = {
@@ -195,16 +202,23 @@ class Phase3 implements Screen {
       const told = speak(ctx.narration, ['p3.transition'], () => this.alive && !this.coverOpen);
       let handedOff = false;
       if (ctx.layers.stage.childElementCount > 0) {
-        const viewer = await ctx.viewer();
-        if (!this.alive) return;
-        viewer.sound = (id, o) => ctx.audio.sfx.play(id, o);
-        const r = this.cover.hatRect();
-        const t0 = performance.now();
-        await viewer.celebrateAndShrinkTo({ x: r.left, y: r.top, width: r.width, height: r.height });
-        handedOff = performance.now() - t0 > 120;
+        // a 3D hat that failed (or hangs) must not keep the cover shut: the drawn hat takes over
+        let viewer: HatViewer | null = null;
+        try {
+          viewer = await within<HatViewer>(ctx.viewer().then((v) => v.ready.then(() => v)), HAT_WAIT_MS);
+          if (!this.alive) return;
+          viewer.sound = (id, o) => ctx.audio.sfx.play(id, o);
+          const r = this.cover.hatRect();
+          const t0 = performance.now();
+          await within(viewer.celebrateAndShrinkTo({ x: r.left, y: r.top, width: r.width, height: r.height }), HAT_PLAY_MS);
+          handedOff = performance.now() - t0 > 120;
+        } catch (err) {
+          console.warn('[p3] the 3D hat could not celebrate, using the drawn hat', err);
+          viewer?.hide();
+        }
         if (handedOff && this.alive) {
           await this.cover.reveal(this.g);
-          viewer.hide({ fade: 0.4 });
+          viewer?.hide({ fade: 0.4 });
         }
       }
       if (!this.alive) return;
@@ -275,6 +289,8 @@ class Phase3 implements Screen {
     if (this.started) this.chapters[this.started].stop();
     this.started = null;
     this.current = id;
+    // the other pages sit off-screen in the track: keep Tab (and its scrolling) out of them
+    for (const c of CHAPTERS) this.pages[c].el.inert = c !== id;
     this.root.classList.remove('p3--dark');
     ctx.narration.stop();
     ctx.idle.clear();
@@ -328,9 +344,11 @@ class Phase3 implements Screen {
       d.classList.toggle('is-locked', locked);
       d.setAttribute('aria-current', String(id === this.current));
     });
-    if (this.started && this.chapters[this.current].complete) {
-      this.ctx.idle.watch({ stepId: `p3.next.${this.current}`, gesture: 'tap', target: () => this.nextBtn.getBoundingClientRect() });
-    }
+    if (this.started && this.chapters[this.current].complete) this.watchNext();
+  }
+
+  private watchNext(): void {
+    this.ctx.idle.watch({ stepId: `p3.next.${this.current}`, gesture: 'tap', target: () => this.nextBtn.getBoundingClientRect() });
   }
 
   private onPrev(): void {

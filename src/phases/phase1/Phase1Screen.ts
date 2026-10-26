@@ -17,16 +17,20 @@ import { motion } from '../../a11y/motion';
 import { assetUrl, picture } from '../../assets/manifest';
 import { seeTile } from '../../app/flow';
 import type { AppContext, Screen } from '../../app/context';
-import type { ScreenRect } from '../../three/HatViewer';
+import type { HatViewer, ScreenRect } from '../../three/HatViewer';
 import { DECOS, TILES, VIDEO_READY, type TileSpec } from './tiles';
 import { exploreReady, placeTiles, spiralPath } from './layout';
 import { hatArt, P1_ICONS } from './art';
 import { speak } from './speak';
+import { within } from './within';
 
 gsap.registerPlugin(Flip, MotionPathPlugin);
 
 const INTRO = ['p1.intro.1', 'p1.intro.2', 'p1.intro.3'];
 const TILE_SIZES = '(max-width: 700px) 60vw, 32vw';
+/** how long the convergence waits for the 3D hat (fetched since the collage opened), and for its flight */
+const HAT_WAIT_MS = 5000;
+const HAT_PLAY_MS = 12000;
 
 function prefetch3d(): void {
   void import('../../three/stage').catch(() => {});
@@ -281,6 +285,8 @@ class Phase1 implements Screen {
       close,
     );
     this.root.appendChild(overlay);
+    // a modal: the collage and top bar behind it are out of reach for keyboards too
+    for (const n of this.root.children) if (n !== overlay) (n as HTMLElement).inert = true;
     const state = Flip.getState(view.photo);
     view.photo.replaceWith(holder);
     frame.appendChild(view.photo);
@@ -311,6 +317,7 @@ class Phase1 implements Screen {
         ),
       );
     }
+    open.close.focus({ preventScroll: true });
     this.busy = false;
     this.hint();
   }
@@ -368,6 +375,8 @@ class Phase1 implements Screen {
     this.open = null;
     this.busy = false;
     if (!this.alive) return;
+    for (const n of this.root.children) (n as HTMLElement).inert = false;
+    view.tile.focus({ preventScroll: true });
     // resume the intro first, so "Let's explore" isn't spoken only to be cut off by it
     if (!this.introDone && !this.introRunning) void this.runIntro(this.introAt);
     this.maybeShowExplore();
@@ -395,7 +404,7 @@ class Phase1 implements Screen {
   private showExplore(announce: boolean): void {
     if (this.exploreShown) return;
     this.exploreShown = true;
-    const warm = window.setTimeout(() => this.alive && !this.converging && void this.ctx.viewer(), 1200);
+    const warm = window.setTimeout(() => this.alive && !this.converging && void this.ctx.viewer().catch(() => {}), 1200);
     this.cleanups.push(() => window.clearTimeout(warm));
     const b = this.explore;
     b.hidden = false;
@@ -481,7 +490,12 @@ class Phase1 implements Screen {
       const r = s.getBoundingClientRect();
       return { x: r.left, y: r.top, width: r.width, height: r.height };
     });
-    const images = views.map((v) => assetUrl(`img/photos/${v.spec.stem}-640.jpg`));
+    // the pixels already on screen: new files would still be downloading while the photos fly
+    const images = views.map((v) => {
+      const m = v.media;
+      const src = m instanceof HTMLVideoElement ? m.poster : m.querySelector('img')?.currentSrc;
+      return src || assetUrl(`img/photos/${v.spec.stem}-640.jpg`);
+    });
     const flash = el('div.p1-flash');
     this.root.appendChild(flash);
     this.root.classList.add('is-converging');
@@ -490,14 +504,24 @@ class Phase1 implements Screen {
       gsap.to(slots, { opacity: 0, duration: motion.dur(0.3), delay: 0.15 });
       gsap.to(gather, { opacity: 0, scale: 1.6, duration: motion.dur(0.6), delay: 0.2 });
     });
-    const viewer = await ctx.viewer();
+    // if the model fails, or is still loading after a few seconds, the drawn hat lands the moment
+    // and Phase 2 shows its own loading or error state
+    let handedOff = false;
+    let viewer: HatViewer | null = null;
+    try {
+      viewer = await within<HatViewer>(ctx.viewer().then((v) => v.ready.then(() => v)), HAT_WAIT_MS);
+      if (!this.alive) return;
+      viewer.sound = (id, o) => ctx.audio.sfx.play(id, o);
+      const t0 = performance.now();
+      await within(viewer.convergeFrom(rects, images), HAT_PLAY_MS);
+      // the 2D viewer returns at once: finish with a DOM hat so the moment still lands
+      handedOff = performance.now() - t0 >= 120;
+    } catch (err) {
+      console.warn('[p1] the 3D hat could not take the photos, using the drawn hat', err);
+      viewer?.hide();
+    }
     if (!this.alive) return;
-    viewer.sound = (id, o) => ctx.audio.sfx.play(id, o);
-    const t0 = performance.now();
-    await viewer.convergeFrom(rects, images);
-    if (!this.alive) return;
-    // the WebGL hand-off is still a stub: finish with a DOM hat so the moment still lands
-    if (performance.now() - t0 < 120) await this.finale();
+    if (!handedOff) await this.finale();
     if (this.alive) ctx.completeP1();
   }
 

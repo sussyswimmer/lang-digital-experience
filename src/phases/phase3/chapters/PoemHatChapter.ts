@@ -6,7 +6,7 @@
 import { el, svg } from '../../../ui/el';
 import { i18n } from '../../../i18n/i18n';
 import { motion } from '../../../a11y/motion';
-import { assetUrl, picture } from '../../../assets/manifest';
+import { picture } from '../../../assets/manifest';
 import { speak } from '../../phase1/speak';
 import { ANN } from '../annotations';
 import { P3_ICONS } from '../art';
@@ -20,7 +20,7 @@ const FADE_MS = 1500;
 export class PoemHatChapter implements Chapter {
   readonly id = 'heritage' as const;
   readonly icon = P3_ICONS.ch2;
-  readonly story = ['p3.ch2.story'];
+  readonly story = ['p3.ch2.title', 'p3.ch2.story'];
   readonly firstPrompt = 'p3.ch2.prompt';
   readonly pic: HTMLDivElement;
   readonly actions: HTMLDivElement;
@@ -28,6 +28,7 @@ export class PoemHatChapter implements Chapter {
   lit = false;
 
   private glow: HTMLCanvasElement;
+  private photo: HTMLImageElement;
   private tap: HTMLButtonElement;
   private keyed: Promise<void> | null = null;
   private storyTold = false;
@@ -45,6 +46,7 @@ export class PoemHatChapter implements Chapter {
       onclick: () => this.toggle(),
     });
     const base = picture({ stem: A.photo, alt: i18n.t('p3.ch2.alt') }, { sizes: '(max-width: 700px) 90vw, 50vw', className: 'p3-poem__base' });
+    this.photo = base.querySelector('img')!;
     // the backlight glow stays inside the hat, so the backdrop really is pitch dark
     const light = el('div.p3-poem__light', { style: `clip-path:polygon(${A.hatRegion.map(([x, y]) => `${x * 100}% ${y * 100}%`).join(',')})` });
     this.pic = el('div.p3-pic.p3-poem', { style: '--ar:1' }, base, light, this.glow, this.tap);
@@ -89,28 +91,30 @@ export class PoemHatChapter implements Chapter {
     if (r.result === 'ended' && alive() && !this.complete && !this.lit) void ctx.narration.say(this.firstPrompt);
   }
 
-  /** build the glowing "backlit" layer once, from the photo's own pixels */
+  /** build the glowing "backlit" layer once, from the pixels of the photo on screen (no second download) */
   private prepare(): Promise<void> {
     if (this.keyed) return this.keyed;
-    this.keyed = new Promise<void>((resolve) => {
-      const img = new Image();
-      img.decoding = 'async';
-      img.onload = () => {
-        const off = document.createElement('canvas');
-        off.width = off.height = KEY_SIZE;
-        const oc = off.getContext('2d', { willReadFrequently: true });
-        const gc = this.glow.getContext('2d');
-        if (!oc || !gc) return resolve();
-        oc.drawImage(img, 0, 0, KEY_SIZE, KEY_SIZE);
-        const src = oc.getImageData(0, 0, KEY_SIZE, KEY_SIZE);
-        const mask = polygonMask(A.hatRegion.map(([x, y]) => ({ x, y })), KEY_SIZE, KEY_SIZE);
-        const out = new ImageData(keyGlow(src.data, mask), KEY_SIZE, KEY_SIZE);
-        gc.putImageData(out, 0, 0);
-        resolve();
-      };
-      img.onerror = () => resolve();
-      img.src = assetUrl(`img/photos/${A.photo}-1280.jpg`);
-    });
+    const img = this.photo;
+    this.keyed = (async () => {
+      if (!img.complete) {
+        await new Promise((r) => {
+          img.addEventListener('load', r, { once: true });
+          img.addEventListener('error', r, { once: true });
+        });
+      }
+      await img.decode().catch(() => {});
+      if (!img.naturalWidth) return;
+      const off = document.createElement('canvas');
+      off.width = off.height = KEY_SIZE;
+      const oc = off.getContext('2d', { willReadFrequently: true });
+      const gc = this.glow.getContext('2d');
+      if (!oc || !gc) return;
+      oc.drawImage(img, 0, 0, KEY_SIZE, KEY_SIZE);
+      const src = oc.getImageData(0, 0, KEY_SIZE, KEY_SIZE);
+      const mask = polygonMask(A.hatRegion.map(([x, y]) => ({ x, y })), KEY_SIZE, KEY_SIZE);
+      const out = new ImageData(keyGlow(src.data, mask), KEY_SIZE, KEY_SIZE);
+      gc.putImageData(out, 0, 0);
+    })();
     return this.keyed;
   }
 
@@ -154,7 +158,7 @@ export class PoemHatChapter implements Chapter {
 
   hint(): void {
     const ctx = this.host.ctx;
-    if (this.complete && !this.lit) return;
+    if (this.complete && !this.lit) return this.host.hintNext();
     ctx.idle.watch({
       stepId: this.lit ? 'p3.ch2.restore' : 'p3.ch2.tap',
       gesture: 'tap',

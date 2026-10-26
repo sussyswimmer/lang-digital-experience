@@ -32,6 +32,7 @@ export function clearGlow(meshes: THREE.Mesh[]): void {
 export function setXray(meshes: THREE.Mesh[], amount: number): void {
   for (const mat of materialsOf(meshes)) {
     const baseOpacity = mat.userData.baseOpacity ?? 1;
+    const wasTransparent = mat.transparent;
     if (amount <= 0) {
       mat.opacity = baseOpacity;
       mat.transparent = mat.userData.baseTransparent ?? false;
@@ -41,6 +42,7 @@ export function setXray(meshes: THREE.Mesh[], amount: number): void {
       mat.opacity = baseOpacity * (1 - amount * 0.75);
       mat.depthWrite = amount < 0.5;
     }
+    refreshProgram(mat, wasTransparent);
   }
 }
 
@@ -49,6 +51,7 @@ export function setOpacity(meshes: THREE.Mesh[], opacity: number): void {
   for (const m of meshes) {
     const mat = m.material as StdMat;
     const base = mat.userData.baseOpacity ?? 1;
+    const wasTransparent = mat.transparent;
     if (opacity >= 1) {
       mat.opacity = base;
       mat.transparent = mat.userData.baseTransparent ?? false;
@@ -58,7 +61,16 @@ export function setOpacity(meshes: THREE.Mesh[], opacity: number): void {
       mat.opacity = base * opacity;
       mat.depthWrite = opacity > 0.6;
     }
+    refreshProgram(mat, wasTransparent);
   }
+}
+
+/**
+ * three draws a transparent double-sided material in two single-sided passes, leaving the
+ * front-side non-opaque program bound; when `transparent` flips, ask for a fresh one (else dark leaves)
+ */
+function refreshProgram(mat: THREE.Material, wasTransparent: boolean): void {
+  if (mat.transparent !== wasTransparent) mat.needsUpdate = true;
 }
 
 // ---------------------------------------------------------------- halo shell

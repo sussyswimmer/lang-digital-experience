@@ -12,6 +12,8 @@ export interface ChapterHost {
   prompt(id: string): void;
   /** the chapter's interaction is done: the Next arrow unlocks and pulses */
   done(id: ChapterId): void;
+  /** point the idle hand at Next / Finish (the chapter has nothing left to show) */
+  hintNext(): void;
   /** Chapter 2 turns the whole book dark */
   setDark(on: boolean): void;
 }
