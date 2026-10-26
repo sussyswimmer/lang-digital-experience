@@ -1598,5 +1598,1165 @@
  "vi/num.49": {
   "hash": "e0759e98b55f",
   "seconds": 1.15
+ },
+ "en/build.intro": {
+  "hash": "df066892b5aa",
+  "seconds": 5.64
+ },
+ "en/build.how": {
+  "hash": "320a75ba9a9b",
+  "seconds": 4.18
+ },
+ "en/build.tap-hat": {
+  "hash": "6bdc11053195",
+  "seconds": 2.23
+ },
+ "en/build.piece.frame": {
+  "hash": "694cd2a6fcd9",
+  "seconds": 2.14
+ },
+ "en/build.piece.leaf-inner": {
+  "hash": "70b662c649e0",
+  "seconds": 1.18
+ },
+ "en/build.piece.poem-art": {
+  "hash": "10a09cb166be",
+  "seconds": 1.51
+ },
+ "en/build.piece.leaf-outer": {
+  "hash": "40b5940c85e8",
+  "seconds": 1.27
+ },
+ "en/build.piece.stitches": {
+  "hash": "fa17c085b0c5",
+  "seconds": 1.22
+ },
+ "en/build.piece.strap": {
+  "hash": "ea4f06100f2b",
+  "seconds": 1.08
+ },
+ "en/build.placed.frame": {
+  "hash": "8a3dcddcf5b5",
+  "seconds": 3.96
+ },
+ "en/build.placed.leaf-inner": {
+  "hash": "22c973ce01a1",
+  "seconds": 3
+ },
+ "en/build.placed.poem-art": {
+  "hash": "c82d22901fe1",
+  "seconds": 3
+ },
+ "en/build.placed.leaf-outer": {
+  "hash": "c7d874bd34f3",
+  "seconds": 2.74
+ },
+ "en/build.placed.stitches": {
+  "hash": "56363aca10b6",
+  "seconds": 3.07
+ },
+ "en/build.placed.strap": {
+  "hash": "6fe2cd7de635",
+  "seconds": 2.59
+ },
+ "en/build.hint.leaves-first": {
+  "hash": "07c3ae364ea4",
+  "seconds": 2.71
+ },
+ "en/build.hint.need-frame": {
+  "hash": "703d866e6ebd",
+  "seconds": 3.79
+ },
+ "en/build.hint.need-leaf-inner": {
+  "hash": "026196b45f1e",
+  "seconds": 3.36
+ },
+ "en/build.hint.poem-between": {
+  "hash": "599c4841895c",
+  "seconds": 5.26
+ },
+ "en/build.hint.need-poem-art": {
+  "hash": "7ccd2b9e1e1c",
+  "seconds": 4.61
+ },
+ "en/build.hint.need-leaf-outer": {
+  "hash": "fc3e152e73fe",
+  "seconds": 3.17
+ },
+ "en/build.hint.stitches-need-leaves": {
+  "hash": "450d198c8bab",
+  "seconds": 2.23
+ },
+ "en/build.hint.need-stitches": {
+  "hash": "e4066024ad28",
+  "seconds": 3.84
+ },
+ "en/build.hint.strap-last": {
+  "hash": "56672878ffa4",
+  "seconds": 3.65
+ },
+ "en/build.hint.need-strap": {
+  "hash": "a6b9c65e8955",
+  "seconds": 1.85
+ },
+ "en/build.hint.already": {
+  "hash": "c5a7fa926934",
+  "seconds": 2.23
+ },
+ "en/build.done": {
+  "hash": "32db9a91932a",
+  "seconds": 4.7
+ },
+ "en/build.badge.name": {
+  "hash": "c8824fd4c964",
+  "seconds": 1.46
+ },
+ "en/build.badge.earned": {
+  "hash": "77878edbecb0",
+  "seconds": 2.66
+ },
+ "en/cert.intro": {
+  "hash": "4241aeb43c2f",
+  "seconds": 6.6
+ },
+ "en/cert.look": {
+  "hash": "b8c3b6bcdc14",
+  "seconds": 2.83
+ },
+ "en/cert.earned.0": {
+  "hash": "3c9dcc62080a",
+  "seconds": 4.44
+ },
+ "en/cert.earned.1": {
+  "hash": "23168018f648",
+  "seconds": 2.95
+ },
+ "en/cert.earned.2": {
+  "hash": "d2faac3379ad",
+  "seconds": 2.9
+ },
+ "en/cert.earned.3": {
+  "hash": "ed4cdba5f08e",
+  "seconds": 2.9
+ },
+ "en/cert.earned.4": {
+  "hash": "9f56bc8ae64d",
+  "seconds": 2.9
+ },
+ "en/cert.earned.5": {
+  "hash": "fa7af4ef6314",
+  "seconds": 3.74
+ },
+ "en/cert.missing": {
+  "hash": "2c8bf7053dbe",
+  "seconds": 3.05
+ },
+ "en/cert.ask": {
+  "hash": "4c704d7a59a3",
+  "seconds": 5.18
+ },
+ "en/colour.question": {
+  "hash": "a3adfce19d92",
+  "seconds": 2.23
+ },
+ "en/colour.pick": {
+  "hash": "11a6e17716b4",
+  "seconds": 1.78
+ },
+ "en/colour.page.plain": {
+  "hash": "66587de868a6",
+  "seconds": 1.68
+ },
+ "en/colour.page.strap": {
+  "hash": "e020060736e6",
+  "seconds": 2.16
+ },
+ "en/colour.page.poem": {
+  "hash": "140b969a6b8a",
+  "seconds": 2.88
+ },
+ "en/colour.page.market": {
+  "hash": "63a761ad7b33",
+  "seconds": 2.06
+ },
+ "en/colour.loading": {
+  "hash": "6843e19faff1",
+  "seconds": 1.66
+ },
+ "en/colour.load-error": {
+  "hash": "1eb83f801dc1",
+  "seconds": 4.46
+ },
+ "en/colour.tip.fill": {
+  "hash": "9a7a851e04e7",
+  "seconds": 2.35
+ },
+ "en/colour.tip.brush": {
+  "hash": "dab15f10e23e",
+  "seconds": 1.63
+ },
+ "en/colour.tip.eraser": {
+  "hash": "3d649a2aca34",
+  "seconds": 2.95
+ },
+ "en/colour.c.purple": {
+  "hash": "32576f4fedc0",
+  "seconds": 0.86
+ },
+ "en/colour.c.peach": {
+  "hash": "8656b62920b3",
+  "seconds": 1.13
+ },
+ "en/colour.c.lightgreen": {
+  "hash": "12294ab62223",
+  "seconds": 1.13
+ },
+ "en/colour.c.straw": {
+  "hash": "c2b64f98ddc0",
+  "seconds": 1.18
+ },
+ "en/colour.c.mango": {
+  "hash": "d87b4bea428f",
+  "seconds": 1.46
+ },
+ "en/colour.c.yellow": {
+  "hash": "3526f607bcd4",
+  "seconds": 0.86
+ },
+ "en/colour.c.terracotta": {
+  "hash": "8be6e64eb5c3",
+  "seconds": 1.1
+ },
+ "en/colour.c.red": {
+  "hash": "cc9db3a79557",
+  "seconds": 0.77
+ },
+ "en/colour.c.dragon": {
+  "hash": "d4f9e2e8a71c",
+  "seconds": 1.68
+ },
+ "en/colour.c.leaf": {
+  "hash": "2537c58cac82",
+  "seconds": 1.13
+ },
+ "en/colour.c.forest": {
+  "hash": "8eb0003aa276",
+  "seconds": 1.37
+ },
+ "en/colour.c.sky": {
+  "hash": "be96829112a0",
+  "seconds": 1.22
+ },
+ "en/colour.c.river": {
+  "hash": "a68f6fc8634f",
+  "seconds": 1.2
+ },
+ "en/colour.c.wood": {
+  "hash": "ce0d3634635c",
+  "seconds": 1.13
+ },
+ "en/colour.c.sand": {
+  "hash": "b36fbc6e8df6",
+  "seconds": 0.84
+ },
+ "en/colour.c.white": {
+  "hash": "37619fc13053",
+  "seconds": 0.84
+ },
+ "en/colour.c.grey": {
+  "hash": "1ced325ddd79",
+  "seconds": 0.79
+ },
+ "en/colour.c.black": {
+  "hash": "b406fb57b29f",
+  "seconds": 0.79
+ },
+ "en/colour.saved": {
+  "hash": "4235b62fd4a2",
+  "seconds": 3.48
+ },
+ "en/colour.save-empty": {
+  "hash": "65f4b3c71160",
+  "seconds": 1.68
+ },
+ "en/colour.save-failed": {
+  "hash": "2d1da3b23b1e",
+  "seconds": 3.65
+ },
+ "en/colour.session": {
+  "hash": "f9bfe9c507da",
+  "seconds": 4.85
+ },
+ "en/colour.clear.ask": {
+  "hash": "7adcf900c87c",
+  "seconds": 3.34
+ },
+ "en/build.title": {
+  "hash": "94046fe6711f",
+  "seconds": 1.58
+ },
+ "en/colour.title": {
+  "hash": "a072d95a0df8",
+  "seconds": 1.58
+ },
+ "en/quiz.title": {
+  "hash": "89fd349f8401",
+  "seconds": 1.92
+ },
+ "en/gallery.intro": {
+  "hash": "419f7cc02937",
+  "seconds": 1.97
+ },
+ "en/gallery.empty": {
+  "hash": "7dbbc20b16c7",
+  "seconds": 2.64
+ },
+ "en/gallery.hold-more": {
+  "hash": "4960dcb0626d",
+  "seconds": 2.04
+ },
+ "en/gallery.deleted": {
+  "hash": "7ff9cbc1f7b1",
+  "seconds": 1.63
+ },
+ "en/gallery.session": {
+  "hash": "6560a183c8bb",
+  "seconds": 5.11
+ },
+ "en/gallery.load-error": {
+  "hash": "9b7ca54b96e7",
+  "seconds": 2.64
+ },
+ "en/hub.intro": {
+  "hash": "981ae8eb4e6e",
+  "seconds": 1.49
+ },
+ "en/hub.intro.more": {
+  "hash": "0558c6c7d2cd",
+  "seconds": 5.26
+ },
+ "en/hub.pick.layer": {
+  "hash": "3d51c98ffacc",
+  "seconds": 2.88
+ },
+ "en/hub.pick.chapter": {
+  "hash": "f27463a38a74",
+  "seconds": 2.23
+ },
+ "en/hub.badge.locked.quiz": {
+  "hash": "5a768b59b00c",
+  "seconds": 2.28
+ },
+ "en/hub.badge.locked.build": {
+  "hash": "c37b2d0d404d",
+  "seconds": 2.45
+ },
+ "en/p2.colour.purple": {
+  "hash": "32576f4fedc0",
+  "seconds": 1.03
+ },
+ "en/p2.colour.peach": {
+  "hash": "8656b62920b3",
+  "seconds": 1.15
+ },
+ "en/p2.colour.green": {
+  "hash": "12294ab62223",
+  "seconds": 1.13
+ },
+ "en/p3.ch1.title": {
+  "hash": "d3cb09ab9f51",
+  "seconds": 1.66
+ },
+ "en/p3.ch2.title": {
+  "hash": "45e01fe03ccf",
+  "seconds": 1.8
+ },
+ "en/p3.ch3.title": {
+  "hash": "46bad3492ed0",
+  "seconds": 1.63
+ },
+ "en/quiz.intro": {
+  "hash": "56ac28b0f881",
+  "seconds": 6.89
+ },
+ "en/quiz.yes.1": {
+  "hash": "af66b534aaf6",
+  "seconds": 1.68
+ },
+ "en/quiz.yes.2": {
+  "hash": "12532d83ae47",
+  "seconds": 1.22
+ },
+ "en/quiz.yes.3": {
+  "hash": "a299173ee099",
+  "seconds": 1.13
+ },
+ "en/quiz.oops.1": {
+  "hash": "47a03b15cd6d",
+  "seconds": 2.47
+ },
+ "en/quiz.oops.2": {
+  "hash": "e5f8882d261b",
+  "seconds": 2.16
+ },
+ "en/quiz.q1.prompt": {
+  "hash": "d352a8e80d5b",
+  "seconds": 7.63
+ },
+ "en/quiz.q1.a.thread": {
+  "hash": "d4ceb53e3dab",
+  "seconds": 1.37
+ },
+ "en/quiz.q1.a.leaves": {
+  "hash": "47f0267ebfe8",
+  "seconds": 1.46
+ },
+ "en/quiz.q1.a.strap": {
+  "hash": "910944610d0a",
+  "seconds": 1.25
+ },
+ "en/quiz.q1.explain": {
+  "hash": "e3591226b165",
+  "seconds": 6.34
+ },
+ "en/quiz.q2.prompt": {
+  "hash": "cdf8697467c4",
+  "seconds": 7.58
+ },
+ "en/quiz.q2.a.shape": {
+  "hash": "c2668b1823a5",
+  "seconds": 1.94
+ },
+ "en/quiz.q2.a.shiny": {
+  "hash": "af4ef911b15b",
+  "seconds": 1.85
+ },
+ "en/quiz.q2.a.tight": {
+  "hash": "3deb213a8f58",
+  "seconds": 2.47
+ },
+ "en/quiz.q2.explain": {
+  "hash": "67581634c0c4",
+  "seconds": 7.82
+ },
+ "en/quiz.q3.prompt": {
+  "hash": "0bba8eafb01a",
+  "seconds": 7.06
+ },
+ "en/quiz.q3.a.gap": {
+  "hash": "da1984dc209a",
+  "seconds": 3.02
+ },
+ "en/quiz.q3.a.rings": {
+  "hash": "04368eb42bc9",
+  "seconds": 2.69
+ },
+ "en/quiz.q3.a.colour": {
+  "hash": "62f88e798765",
+  "seconds": 2.5
+ },
+ "en/quiz.q3.explain": {
+  "hash": "bac11236961c",
+  "seconds": 10.75
+ },
+ "en/quiz.q4.prompt": {
+  "hash": "aff7afcfe712",
+  "seconds": 4.49
+ },
+ "en/quiz.q4.a.8": {
+  "hash": "e5ba079a9270",
+  "seconds": 1.3
+ },
+ "en/quiz.q4.a.16": {
+  "hash": "614d431ab3fa",
+  "seconds": 1.61
+ },
+ "en/quiz.q4.a.30": {
+  "hash": "d3018e9c4bad",
+  "seconds": 1.42
+ },
+ "en/quiz.q4.explain": {
+  "hash": "81879773d666",
+  "seconds": 7.1
+ },
+ "en/quiz.q5.prompt": {
+  "hash": "fb40e895fe91",
+  "seconds": 5.52
+ },
+ "en/quiz.q5.a.poems": {
+  "hash": "70bcc0b1e600",
+  "seconds": 2.21
+ },
+ "en/quiz.q5.a.coins": {
+  "hash": "2bef474e8add",
+  "seconds": 0.94
+ },
+ "en/quiz.q5.a.rice": {
+  "hash": "efd397fb2363",
+  "seconds": 1.25
+ },
+ "en/quiz.q5.explain": {
+  "hash": "5b563878a522",
+  "seconds": 7.9
+ },
+ "en/quiz.badge.q1": {
+  "hash": "a880a557a12a",
+  "seconds": 1.27
+ },
+ "en/quiz.badge.q2": {
+  "hash": "7576e44c3deb",
+  "seconds": 1.46
+ },
+ "en/quiz.badge.q3": {
+  "hash": "69e079865a6b",
+  "seconds": 1.27
+ },
+ "en/quiz.badge.q4": {
+  "hash": "53b3c2324b82",
+  "seconds": 1.2
+ },
+ "en/quiz.badge.q5": {
+  "hash": "c0cc27c00123",
+  "seconds": 1.27
+ },
+ "en/quiz.badge.q1.earned": {
+  "hash": "9844acb9cd7d",
+  "seconds": 2.42
+ },
+ "en/quiz.badge.q2.earned": {
+  "hash": "0745bdcc6073",
+  "seconds": 2.64
+ },
+ "en/quiz.badge.q3.earned": {
+  "hash": "8663b7b17ac6",
+  "seconds": 2.57
+ },
+ "en/quiz.badge.q4.earned": {
+  "hash": "ab3e60ceb75d",
+  "seconds": 2.45
+ },
+ "en/quiz.badge.q5.earned": {
+  "hash": "a633a29d051d",
+  "seconds": 2.45
+ },
+ "en/site.story.1": {
+  "hash": "0789a47c3282",
+  "seconds": 1.99
+ },
+ "en/site.story.2": {
+  "hash": "2035f901e6f0",
+  "seconds": 2.78
+ },
+ "en/site.story.3": {
+  "hash": "73b12a2ec72e",
+  "seconds": 1.56
+ },
+ "en/site.story.4": {
+  "hash": "90b8f02cdbfa",
+  "seconds": 1.39
+ },
+ "en/site.inside.lead": {
+  "hash": "72fb2949c5ad",
+  "seconds": 4.25
+ },
+ "en/site.inside.1": {
+  "hash": "015f29951b01",
+  "seconds": 7.08
+ },
+ "en/site.inside.2": {
+  "hash": "e8da03a5d1e0",
+  "seconds": 8.64
+ },
+ "en/site.inside.3": {
+  "hash": "d351fca93980",
+  "seconds": 8.33
+ },
+ "en/site.inside.4": {
+  "hash": "81e9a0db290a",
+  "seconds": 5.21
+ },
+ "en/site.footer.ask": {
+  "hash": "98defe0b7974",
+  "seconds": 1.82
+ },
+ "vi/build.intro": {
+  "hash": "a7af9a956978",
+  "seconds": 6.12
+ },
+ "vi/build.how": {
+  "hash": "b61cbac0eef8",
+  "seconds": 3.7
+ },
+ "vi/build.tap-hat": {
+  "hash": "8ff6d725e0e3",
+  "seconds": 2.81
+ },
+ "vi/build.piece.frame": {
+  "hash": "000c35ca5cea",
+  "seconds": 2.54
+ },
+ "vi/build.piece.leaf-inner": {
+  "hash": "aa1d4d1e4b42",
+  "seconds": 1.22
+ },
+ "vi/build.piece.poem-art": {
+  "hash": "8147bc729944",
+  "seconds": 1.25
+ },
+ "vi/build.piece.leaf-outer": {
+  "hash": "7b9d9a2af34b",
+  "seconds": 1.32
+ },
+ "vi/build.piece.stitches": {
+  "hash": "db2cffa9b387",
+  "seconds": 1.13
+ },
+ "vi/build.piece.strap": {
+  "hash": "654cf2b1a988",
+  "seconds": 0.98
+ },
+ "vi/build.placed.frame": {
+  "hash": "3a9f823abff7",
+  "seconds": 3.22
+ },
+ "vi/build.placed.leaf-inner": {
+  "hash": "cd27ea4db16f",
+  "seconds": 4.08
+ },
+ "vi/build.placed.poem-art": {
+  "hash": "549f181b99dc",
+  "seconds": 2.64
+ },
+ "vi/build.placed.leaf-outer": {
+  "hash": "51922c075661",
+  "seconds": 2.4
+ },
+ "vi/build.placed.stitches": {
+  "hash": "38d67b78fbba",
+  "seconds": 2.71
+ },
+ "vi/build.placed.strap": {
+  "hash": "37ab67ab9c8f",
+  "seconds": 4.68
+ },
+ "vi/build.hint.leaves-first": {
+  "hash": "a5443b996ad9",
+  "seconds": 2.69
+ },
+ "vi/build.hint.need-frame": {
+  "hash": "8fb50f08544a",
+  "seconds": 5.04
+ },
+ "vi/build.hint.need-leaf-inner": {
+  "hash": "82d87d58ccd4",
+  "seconds": 2.38
+ },
+ "vi/build.hint.poem-between": {
+  "hash": "9df2ad0169b5",
+  "seconds": 5.3
+ },
+ "vi/build.hint.need-poem-art": {
+  "hash": "efce3988d6ca",
+  "seconds": 4.87
+ },
+ "vi/build.hint.need-leaf-outer": {
+  "hash": "fec48f94b453",
+  "seconds": 2.54
+ },
+ "vi/build.hint.stitches-need-leaves": {
+  "hash": "cd535c7e4a72",
+  "seconds": 2.23
+ },
+ "vi/build.hint.need-stitches": {
+  "hash": "b97d64528cf5",
+  "seconds": 4.18
+ },
+ "vi/build.hint.strap-last": {
+  "hash": "218fd132ec96",
+  "seconds": 3.19
+ },
+ "vi/build.hint.need-strap": {
+  "hash": "af36503d397a",
+  "seconds": 1.54
+ },
+ "vi/build.hint.already": {
+  "hash": "7a9863878a40",
+  "seconds": 1.85
+ },
+ "vi/build.done": {
+  "hash": "ec1366b9c42c",
+  "seconds": 5.26
+ },
+ "vi/build.badge.name": {
+  "hash": "e90d2638a8e2",
+  "seconds": 1.75
+ },
+ "vi/build.badge.earned": {
+  "hash": "fe634a41397b",
+  "seconds": 2.71
+ },
+ "vi/cert.intro": {
+  "hash": "9e6333b5a294",
+  "seconds": 7.61
+ },
+ "vi/cert.look": {
+  "hash": "3d8ec8f4efd9",
+  "seconds": 3.58
+ },
+ "vi/cert.earned.0": {
+  "hash": "c2cde8e9a6dc",
+  "seconds": 4.03
+ },
+ "vi/cert.earned.1": {
+  "hash": "fa11c613a507",
+  "seconds": 2.42
+ },
+ "vi/cert.earned.2": {
+  "hash": "1b8a260f707f",
+  "seconds": 2.16
+ },
+ "vi/cert.earned.3": {
+  "hash": "0f6c9786d5ed",
+  "seconds": 2.33
+ },
+ "vi/cert.earned.4": {
+  "hash": "2c08ae9a8835",
+  "seconds": 2.47
+ },
+ "vi/cert.earned.5": {
+  "hash": "0de6d59f2b76",
+  "seconds": 3.34
+ },
+ "vi/cert.missing": {
+  "hash": "363990dcb4b1",
+  "seconds": 2.76
+ },
+ "vi/cert.ask": {
+  "hash": "75f6f137aa2c",
+  "seconds": 4.63
+ },
+ "vi/colour.question": {
+  "hash": "281081216e9b",
+  "seconds": 3.26
+ },
+ "vi/colour.pick": {
+  "hash": "6a5327d7acf1",
+  "seconds": 2.11
+ },
+ "vi/colour.page.plain": {
+  "hash": "792225c26d4b",
+  "seconds": 1.51
+ },
+ "vi/colour.page.strap": {
+  "hash": "ee7db1869273",
+  "seconds": 1.39
+ },
+ "vi/colour.page.poem": {
+  "hash": "ce78b82d33b5",
+  "seconds": 1.3
+ },
+ "vi/colour.page.market": {
+  "hash": "4f6f2a44df69",
+  "seconds": 1.54
+ },
+ "vi/colour.loading": {
+  "hash": "fa716ffb69ac",
+  "seconds": 1.58
+ },
+ "vi/colour.load-error": {
+  "hash": "b1f542426ed1",
+  "seconds": 3.6
+ },
+ "vi/colour.tip.fill": {
+  "hash": "c41c3b757e26",
+  "seconds": 1.99
+ },
+ "vi/colour.tip.brush": {
+  "hash": "fef0097eaf82",
+  "seconds": 1.85
+ },
+ "vi/colour.tip.eraser": {
+  "hash": "f977fb4a18a8",
+  "seconds": 4.25
+ },
+ "vi/colour.c.purple": {
+  "hash": "15f40550d028",
+  "seconds": 1.03
+ },
+ "vi/colour.c.peach": {
+  "hash": "501f854c63ba",
+  "seconds": 1.06
+ },
+ "vi/colour.c.lightgreen": {
+  "hash": "06eb28d5da9c",
+  "seconds": 1.34
+ },
+ "vi/colour.c.straw": {
+  "hash": "a4d1e65c2c8a",
+  "seconds": 1.85
+ },
+ "vi/colour.c.mango": {
+  "hash": "35b2bbd8b6ca",
+  "seconds": 1.32
+ },
+ "vi/colour.c.yellow": {
+  "hash": "635fff5ccb64",
+  "seconds": 1.01
+ },
+ "vi/colour.c.terracotta": {
+  "hash": "0edf40c74676",
+  "seconds": 0.98
+ },
+ "vi/colour.c.red": {
+  "hash": "e6717f400ad9",
+  "seconds": 0.84
+ },
+ "vi/colour.c.dragon": {
+  "hash": "f7d36ee1684c",
+  "seconds": 1.13
+ },
+ "vi/colour.c.leaf": {
+  "hash": "a8dcd2885018",
+  "seconds": 1.27
+ },
+ "vi/colour.c.forest": {
+  "hash": "0e7ad24882df",
+  "seconds": 1.22
+ },
+ "vi/colour.c.sky": {
+  "hash": "0b2ba0a87d7e",
+  "seconds": 2.62
+ },
+ "vi/colour.c.river": {
+  "hash": "431967879471",
+  "seconds": 1.42
+ },
+ "vi/colour.c.wood": {
+  "hash": "99c868b3b857",
+  "seconds": 1.32
+ },
+ "vi/colour.c.sand": {
+  "hash": "4761c2475dd0",
+  "seconds": 0.86
+ },
+ "vi/colour.c.white": {
+  "hash": "cadb14d80d82",
+  "seconds": 1.1
+ },
+ "vi/colour.c.grey": {
+  "hash": "5c9702dc3576",
+  "seconds": 1.01
+ },
+ "vi/colour.c.black": {
+  "hash": "d1ae4d8df10d",
+  "seconds": 0.86
+ },
+ "vi/colour.saved": {
+  "hash": "4be85e09a8c0",
+  "seconds": 3.53
+ },
+ "vi/colour.save-empty": {
+  "hash": "7ddbd3d2b826",
+  "seconds": 1.85
+ },
+ "vi/colour.save-failed": {
+  "hash": "be5ba064e23d",
+  "seconds": 3.34
+ },
+ "vi/colour.session": {
+  "hash": "c5e6e73e9914",
+  "seconds": 3.6
+ },
+ "vi/colour.clear.ask": {
+  "hash": "4e1e4dec2dc4",
+  "seconds": 3.43
+ },
+ "vi/build.title": {
+  "hash": "e2fdda2eca3c",
+  "seconds": 1.73
+ },
+ "vi/colour.title": {
+  "hash": "9d9cc01ac244",
+  "seconds": 1.66
+ },
+ "vi/quiz.title": {
+  "hash": "fe941cd7f679",
+  "seconds": 2.47
+ },
+ "vi/gallery.intro": {
+  "hash": "71ff071fd1fe",
+  "seconds": 1.97
+ },
+ "vi/gallery.empty": {
+  "hash": "4751791c711b",
+  "seconds": 2.93
+ },
+ "vi/gallery.hold-more": {
+  "hash": "6e2fec08c144",
+  "seconds": 2.28
+ },
+ "vi/gallery.deleted": {
+  "hash": "c21fd5c2a3bd",
+  "seconds": 1.85
+ },
+ "vi/gallery.session": {
+  "hash": "ce3920cc2024",
+  "seconds": 4.51
+ },
+ "vi/gallery.load-error": {
+  "hash": "210f7d73785f",
+  "seconds": 2.5
+ },
+ "vi/hub.intro": {
+  "hash": "c1f36827eed4",
+  "seconds": 1.68
+ },
+ "vi/hub.intro.more": {
+  "hash": "4d1df3833dcb",
+  "seconds": 5.52
+ },
+ "vi/hub.pick.layer": {
+  "hash": "2a245f1abaad",
+  "seconds": 4.56
+ },
+ "vi/hub.pick.chapter": {
+  "hash": "eefa86c37f56",
+  "seconds": 1.63
+ },
+ "vi/hub.badge.locked.quiz": {
+  "hash": "75a875803c11",
+  "seconds": 1.97
+ },
+ "vi/hub.badge.locked.build": {
+  "hash": "63b509e22191",
+  "seconds": 2.42
+ },
+ "vi/p2.colour.purple": {
+  "hash": "684e59662905",
+  "seconds": 0.82
+ },
+ "vi/p2.colour.peach": {
+  "hash": "dc21b0567f81",
+  "seconds": 0.96
+ },
+ "vi/p2.colour.green": {
+  "hash": "a01390c254cf",
+  "seconds": 1.54
+ },
+ "vi/p3.ch1.title": {
+  "hash": "89fbc1195a3e",
+  "seconds": 1.97
+ },
+ "vi/p3.ch2.title": {
+  "hash": "32cc6db61495",
+  "seconds": 2.93
+ },
+ "vi/p3.ch3.title": {
+  "hash": "30aaa0d64a88",
+  "seconds": 1.54
+ },
+ "vi/quiz.intro": {
+  "hash": "83dc0dad27bb",
+  "seconds": 6.41
+ },
+ "vi/quiz.yes.1": {
+  "hash": "0825fa60e79e",
+  "seconds": 0.84
+ },
+ "vi/quiz.yes.2": {
+  "hash": "61d811303b52",
+  "seconds": 1.32
+ },
+ "vi/quiz.yes.3": {
+  "hash": "726e3adafb33",
+  "seconds": 1.27
+ },
+ "vi/quiz.oops.1": {
+  "hash": "486a8597251f",
+  "seconds": 2.88
+ },
+ "vi/quiz.oops.2": {
+  "hash": "418b3aaa5305",
+  "seconds": 2.66
+ },
+ "vi/quiz.q1.prompt": {
+  "hash": "9d69a6d8581d",
+  "seconds": 7.08
+ },
+ "vi/quiz.q1.a.thread": {
+  "hash": "5af22d22e251",
+  "seconds": 1.3
+ },
+ "vi/quiz.q1.a.leaves": {
+  "hash": "7b9d9a2af34b",
+  "seconds": 1.39
+ },
+ "vi/quiz.q1.a.strap": {
+  "hash": "654cf2b1a988",
+  "seconds": 1.01
+ },
+ "vi/quiz.q1.explain": {
+  "hash": "4aeee37f6327",
+  "seconds": 6.38
+ },
+ "vi/quiz.q2.prompt": {
+  "hash": "7d3f628f45b8",
+  "seconds": 7.34
+ },
+ "vi/quiz.q2.a.shape": {
+  "hash": "ea6210275372",
+  "seconds": 1.75
+ },
+ "vi/quiz.q2.a.shiny": {
+  "hash": "e6a5f9ce4040",
+  "seconds": 1.3
+ },
+ "vi/quiz.q2.a.tight": {
+  "hash": "0b9249148324",
+  "seconds": 1.63
+ },
+ "vi/quiz.q2.explain": {
+  "hash": "0a993046234c",
+  "seconds": 10.01
+ },
+ "vi/quiz.q3.prompt": {
+  "hash": "d24c0bd63642",
+  "seconds": 6
+ },
+ "vi/quiz.q3.a.gap": {
+  "hash": "b6cd8853d8d7",
+  "seconds": 3.29
+ },
+ "vi/quiz.q3.a.rings": {
+  "hash": "9152ad4652b9",
+  "seconds": 2.14
+ },
+ "vi/quiz.q3.a.colour": {
+  "hash": "97befb01da40",
+  "seconds": 2.02
+ },
+ "vi/quiz.q3.explain": {
+  "hash": "8a3c42e47221",
+  "seconds": 10.06
+ },
+ "vi/quiz.q4.prompt": {
+  "hash": "56cf7ee90656",
+  "seconds": 2.83
+ },
+ "vi/quiz.q4.a.8": {
+  "hash": "0292be46c621",
+  "seconds": 0.98
+ },
+ "vi/quiz.q4.a.16": {
+  "hash": "c50d70b0a062",
+  "seconds": 1.15
+ },
+ "vi/quiz.q4.a.30": {
+  "hash": "9d2d2ddbfd69",
+  "seconds": 1.15
+ },
+ "vi/quiz.q4.explain": {
+  "hash": "800881f45cd7",
+  "seconds": 6.36
+ },
+ "vi/quiz.q5.prompt": {
+  "hash": "0f5462151cc0",
+  "seconds": 4.92
+ },
+ "vi/quiz.q5.a.poems": {
+  "hash": "b476565f109e",
+  "seconds": 2.04
+ },
+ "vi/quiz.q5.a.coins": {
+  "hash": "408ed04238af",
+  "seconds": 1.06
+ },
+ "vi/quiz.q5.a.rice": {
+  "hash": "e4d63720dbc6",
+  "seconds": 1.58
+ },
+ "vi/quiz.q5.explain": {
+  "hash": "2e2fab3bf1a0",
+  "seconds": 10.32
+ },
+ "vi/quiz.badge.q1": {
+  "hash": "5fceac7ebd9a",
+  "seconds": 1.37
+ },
+ "vi/quiz.badge.q2": {
+  "hash": "b8d0bf0c8a03",
+  "seconds": 1.27
+ },
+ "vi/quiz.badge.q3": {
+  "hash": "75690abef0a5",
+  "seconds": 1.2
+ },
+ "vi/quiz.badge.q4": {
+  "hash": "95eed2835216",
+  "seconds": 19.56
+ },
+ "vi/quiz.badge.q5": {
+  "hash": "30da3763a175",
+  "seconds": 1.25
+ },
+ "vi/quiz.badge.q1.earned": {
+  "hash": "d90b4e019953",
+  "seconds": 2.59
+ },
+ "vi/quiz.badge.q2.earned": {
+  "hash": "a02c79a01d9c",
+  "seconds": 2.54
+ },
+ "vi/quiz.badge.q3.earned": {
+  "hash": "ba793424fc92",
+  "seconds": 2.23
+ },
+ "vi/quiz.badge.q4.earned": {
+  "hash": "ebffbeb9823f",
+  "seconds": 2.62
+ },
+ "vi/quiz.badge.q5.earned": {
+  "hash": "be5ee59207ae",
+  "seconds": 2.71
+ },
+ "vi/site.story.1": {
+  "hash": "93b4f69cce51",
+  "seconds": 2.26
+ },
+ "vi/site.story.2": {
+  "hash": "7188a9e96e60",
+  "seconds": 2.52
+ },
+ "vi/site.story.3": {
+  "hash": "9d1bda841819",
+  "seconds": 1.8
+ },
+ "vi/site.story.4": {
+  "hash": "396281154d86",
+  "seconds": 1.8
+ },
+ "vi/site.inside.lead": {
+  "hash": "745c2afa879a",
+  "seconds": 4.49
+ },
+ "vi/site.inside.1": {
+  "hash": "312f5ed7a0f8",
+  "seconds": 6.53
+ },
+ "vi/site.inside.2": {
+  "hash": "db877452a166",
+  "seconds": 6.48
+ },
+ "vi/site.inside.3": {
+  "hash": "16563dc6f2ac",
+  "seconds": 8.42
+ },
+ "vi/site.inside.4": {
+  "hash": "76760f830a88",
+  "seconds": 6.29
+ },
+ "vi/site.footer.ask": {
+  "hash": "d51b8e9cdc0d",
+  "seconds": 1.56
  }
 }
