@@ -3,9 +3,11 @@ import { defineConfig, devices } from '@playwright/test';
 // E2E runs against a production build served at / (BASE_PATH=/), in a desktop and a touch-tablet viewport.
 export default defineConfig({
   testDir: 'tests/e2e',
-  timeout: 60_000,
-  expect: { timeout: 10_000 },
-  fullyParallel: true,
+  // software WebGL renders at ~5–7 fps on a 4-core runner: one worker, generous timeouts
+  timeout: 240_000,
+  expect: { timeout: 20_000 },
+  fullyParallel: false,
+  workers: 1,
   retries: 0,
   reporter: [['list']],
   use: {

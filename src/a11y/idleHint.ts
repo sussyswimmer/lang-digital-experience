@@ -47,6 +47,8 @@ export class IdleHint {
     host.appendChild(this.hand);
     const reset = () => this.reset();
     for (const ev of ['pointerdown', 'keydown', 'wheel']) window.addEventListener(ev, reset, { capture: true, passive: true });
+    // a long trace or drag is activity too, not just its first touch
+    window.addEventListener('pointermove', (e) => e.buttons && reset(), { capture: true, passive: true });
   }
 
   watch(step: IdleStep): void {

@@ -70,13 +70,30 @@
   flex: none;
 }
 
+/* the glow ring is a pseudo-element animated with transform/opacity only, so the pulse never repaints the page */
 .pulse {
+  position: relative;
   animation: pulse 1.6s ease-in-out infinite;
 }
 
+.pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 6px rgba(224, 169, 59, 0.55);
+  pointer-events: none;
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+
 @keyframes pulse {
-  0%, 100% { transform: scale(1); box-shadow: var(--shadow-soft), 0 0 0 0 rgba(224, 169, 59, 0.6); }
-  50% { transform: scale(1.04); box-shadow: var(--shadow-lift), 0 0 0 14px rgba(224, 169, 59, 0); }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.18); opacity: 0; }
 }
 
 /* ---------- top bar ---------- */
@@ -110,6 +127,17 @@
   border-radius: 999px;
   background: rgba(255, 249, 236, 0.9);
   box-shadow: var(--shadow-soft);
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* phones: the title would wrap into the language toggle; the screen itself says where you are */
+@media (max-width: 600px) {
+  .topbar__title {
+    display: none;
+  }
 }
 
 .lang-toggle {
