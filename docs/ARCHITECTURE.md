@@ -11,8 +11,9 @@ npm run build        # typecheck + production build
 npm run test:e2e     # Playwright (tests/e2e), Chromium in /opt/pw-browsers
 ```
 
-Dev query flags: `?test=1` (app starts immediately, narration ×20 speed, idle hint after 0.5 s, `window.__nonla` hooks),
-`?review=1` (every phase unlocked), `?debug=1`.
+Dev query flags: `?test=1` (on a `#/play…` link the app starts immediately; narration ×20 speed, idle hint after 0.5 s,
+`window.__nonla` hooks), `?review=1` (every phase unlocked), `?no3d=1` (force the 2D layered-drawing fallback of the hat),
+`?lineart=svg` (colouring pages from the hand-drawn SVGs instead of the Blender/Higgsfield PNGs), `?debug=1`.
 
 ---
 
@@ -98,6 +99,18 @@ nonla_root
 ```
 - One material per mesh. Names are `[a-z0-9_]` (safe through three.js name sanitising). `userData` (glTF extras) carries `layer`, `ring_index`, `panel_index`, `az_deg`, `count`, `sew_order`, …
 - **Peel hinges**: each `leaf_outer_panel_NN_hinge` node's local axes are tangent **+X**, slant-to-brim **−Z**, outward **+Y**. Peel = rotate the hinge about its local +X (sign so the brim end lifts outward), optionally curl in a vertex shader.
+- **Poem art** texture: Higgsfield paper-cut silhouettes baked onto the poem shell's UVs by `blender/poem_texture.py` (unrolled-cone warp, so they sit upright on the front of the hat).
+
+### Viewer API (`src/three/HatViewer.ts`, built in `stage.ts`)
+`getViewer(host)` lazily creates one shared viewer. Beyond the original contract it has: `kind` (`'3d'`, or `'2d'` for the
+layered drawing used when WebGL can't start or with `?no3d=1`), `sound(id, opts)` (screens point it at `ctx.audio.sfx.play`),
+`setFrame(rect | null)` (the screen area the hat should sit in, e.g. beside an open panel) and `debug()` (test hooks). A
+`LayerController` may also offer `hint()` (where the 5-second hand should point), `assist()` ("show me" / keyboard) and
+`cue(name)` (visual cues fired by insight chunks: `thirdRim`, `brim`, `joints`, …).
+- Screens drawn over the hat must give their full-screen containers the class **`pass-through`** (pointer-events: none),
+  or touches never reach the canvas; only real controls take pointer events.
+- 3D labels are DOM nodes in an overlay inside `#stage`, positioned from `project(name)` each frame.
+- With `?test=1` the viewer turns off GSAP lag smoothing and the hat's endless decorative loops so software WebGL keeps up.
 - **Stitches**: each `stitch_white_row_NN` mesh has the vertex attribute `_stitch_t` (0…1 = which stitch along the row, k/(n−1)) for per-stitch glow (DataTexture lookup), plus `meta.stitch_rows[i].points/normals` (hat space) for screen-space tracing.
 - **meta** keys: `params` (brim_d 0.48, height 0.21, ring_pitch 0.02, …), `rings[{name,index,s,r,y,joint_az_deg,joint_point}]`, `panels[{name,hinge,az_deg,len,hinge_point}]`, `stitch_rows[{name,ring,count,sew_order,points,normals}]`, `trace_rows`, `cascade_order` (`03, 02, RED_BRIM, 04…16`), `strap{anchor_L,anchor_R,rest_points[25],width,length,colors,attach_rings}`, `anchors`, `inside_out`, `build_order`.
 - Strap colours: purple `#8E5BA8`, peach pink `#F4A79A`, light green `#A9D8A0`.
@@ -112,14 +125,15 @@ Everything served lives under `public/assets/` with stable names (a final asset 
 |---|---|
 | Photos | `img/photos/<stem>-<640|1280|1920>.<avif|webp|jpg>` (heroes also 2560). Sizes in `content/photos.json` |
 | Model | `models/nonla.glb`, `models/nonla.meta.json` |
-| Build-game layers | `img/layers/build-0{1..6}-{frame,leaf-inner,poem-art,leaf-outer,stitches,strap}.webp` (Blender renders, one locked camera) |
-| Line art | `img/lineart/page-{1-plain,2-strap,3-poem,4-market}.png` |
-| Quiz pictures | `img/quiz/<question>-<answer>.webp` |
+| Build-game layers | `img/layers/build-0{1..6}-{frame,leaf-inner,poem-art,leaf-outer,stitches,strap}.webp` (Blender renders, one locked camera; each is cut by the layers below it so they stack like the real hat) + `build-00-shadow.webp` (the whole hat's floor shadow, under the stack) + `thumb-0N-*.webp` (whole piece, trimmed, for the tray) |
+| Renders | `img/renders/{hat-full,cover,cover-hat,underside-{purple,peach,green},brim-closeup,piece-mo-bark}.webp` (`cover-hat` is trimmed to the hat, no floor: the storybook cover) |
+| Line art | `img/lineart/page-{1-plain,2-strap,3-poem,4-market}.png`: 2400×1800 black ink on transparent (paint goes underneath). Pages 1–2 Blender Freestyle, 3–4 Higgsfield; hand-drawn `.svg` versions are the fallback |
+| Quiz pictures | `img/quiz/<question>-<answer>.webp` (+ `-600`): Q2–Q4 Blender renders, Q1 from Blender stills, Q5 Higgsfield; `q1-scene`, `q3-scene` are Higgsfield illustrations |
 | Illustrations | `img/art/*.webp`, UI art `img/ui/*` |
 | Narration | `audio/narration/{en,vi}/<stringId>.mp3` |
 | Ambient | `audio/ambient/{rain-on-hat,market-chatter,breeze-leaves,workshop,schoolyard,rain-market}.mp3` |
 | Video loops | `video/p1-<tile>.{mp4,webm}` + `-poster.webp` |
-| Scroll intro frames | `scroll/{960,1600}/f_0001.webp …` |
+| Scroll intro frames | `scroll/{960,1600}/f_0001.webp …` + `scroll/manifest.json` (`count`, `widths`, `aspect`, `bg`, `placeholder`, `bytes`) |
 | Lottie | `lottie/{hand-tap,hand-swipe,hand-trace,hand-drag,badge-pop,sparkle,…}.json` |
 
 Photo stems (team photos → PhotoCraft slight edit → encoded):
@@ -136,6 +150,9 @@ Photo stems (team photos → PhotoCraft slight edit → encoded):
 | `p3-poem` | Tây Hồ poem hat on black (Ch2) | storybook chapter 2 |
 | `p3-identity` | Quảng Trị market in the rain (Ch3) | storybook chapter 3 |
 | `diverse-1`, `diverse-2`, `diverse-4` | jars; artisan & hat stacks; hats against blue sky | landing, hub, certificate |
+
+Asset pipeline: `npm run assets:photos | assets:glb | assets:renders | assets:video`, narration `npm run tts:plan` →
+Higgsfield → `npm run tts:ingest` (only kinds `narration` and `label` are voiced; button labels are not spoken by the app).
 
 **If an asset you need doesn't exist yet**: draw a tasteful CSS/SVG placeholder in code (or reuse a photo) so the screen still works, and add an entry to `content/asset-requests.json` (`[{ "path", "what", "source": "blender|higgsfield|effectcraft|photocraft|tts", "notes" }]`). Don't block on assets.
 
