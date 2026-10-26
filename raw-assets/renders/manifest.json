@@ -54,7 +54,7 @@
     {
       "path": "raw-assets/renders/stills/brim-closeup.png",
       "bytes": 1467520,
-      "sha256": "9d68954c2a18afceba095099fffe87277b1be98b48742152ea9d93431271fed7",
+      "sha256": "1168bf688636ca25afb6486cf6be77f987c8d51ad5a6652e004b83ef85d50d2f",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -62,8 +62,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-01-frame.png",
-      "bytes": 847347,
-      "sha256": "1781d3d3d70cee8d937dd7c6f37d588ea79b5cd1a9497cfc1cc74b74e1fca148",
+      "bytes": 812965,
+      "sha256": "cf2fc02b934764de89feb54721a78f5b0aa578447edb44fe0b213a8e2623f4bc",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -71,8 +71,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-02-leaf-inner.png",
-      "bytes": 719619,
-      "sha256": "dd38201bdc76d1e241031cd57015497af2b9a24d1ef2a8b294724844482c8469",
+      "bytes": 729678,
+      "sha256": "dd7128e23f131538b0c23bd04f0db09f2041d5526528e850a1b11d23d60cd2fb",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -80,8 +80,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-03-poem-art.png",
-      "bytes": 450213,
-      "sha256": "89c3f1b095ed7a433a41dab55cedbcd47e7e6fb0c2592ada4e9751e835564c32",
+      "bytes": 528510,
+      "sha256": "8226f72f3da4c7b0ad3e97c5618d6e1d1989a9fee0e0e9e6d0d2602d7c898a4d",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -89,8 +89,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-04-leaf-outer.png",
-      "bytes": 805568,
-      "sha256": "b222418fcec27986d9eb7c144e1762d2c9d9858b6b5931e073c214f671c937e6",
+      "bytes": 805359,
+      "sha256": "bbcf47d18b8696dd7db379e37f27ed4b9d08781e1577417aee0c69e2790fc2f0",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -98,8 +98,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-05-stitches.png",
-      "bytes": 781382,
-      "sha256": "e40b72a40cd020ad1f8cbf0ae316e560f673b1fcee7a967a1de42e273cbddb6a",
+      "bytes": 655533,
+      "sha256": "fb83c7ce5cbdc74f992039e58465596ca0697b4eeac369a1e184e13ad3e77d5d",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -107,8 +107,8 @@
     },
     {
       "path": "raw-assets/renders/stills/build-06-strap.png",
-      "bytes": 533867,
-      "sha256": "3bc432d3f50ffc0ad6328dc543168c6b3193546d0587b8832e9e36c7005d18e2",
+      "bytes": 475707,
+      "sha256": "4a47998128fc0f5d721ade42af632e96240b16ee7c8c3a437269e0e4b0ea2923",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -116,8 +116,8 @@
     },
     {
       "path": "raw-assets/renders/stills/hat-full.png",
-      "bytes": 1127366,
-      "sha256": "3f27a183cf507d13fd4da05f2703174deb1b348f11bb81e41b4950af00258160",
+      "bytes": 1127347,
+      "sha256": "80dff33b61b10368b5d3e6ed483e99e51d6e3129c76fc33ae08018ec812d6bec",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -126,7 +126,7 @@
     {
       "path": "raw-assets/renders/stills/piece-mo-bark.png",
       "bytes": 807745,
-      "sha256": "4191572edc4988ffb227e168291a09c469cfb4bd70689313867baec7536567b5",
+      "sha256": "d45fef78a7744ca6c20c86e7883206c5cd1036a96261f004ccd1063aa021796c",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -135,7 +135,7 @@
     {
       "path": "raw-assets/renders/stills/underside-green.png",
       "bytes": 888532,
-      "sha256": "a505de8eaef7c3aaa6e00753d2d9799650c4359e05830ba434302ac87a4bb57a",
+      "sha256": "d5d6f0b890cca99da90bd1ac2c0b66b8e1f0c5b63975fcab461a4547ebb395f6",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -144,7 +144,7 @@
     {
       "path": "raw-assets/renders/stills/underside-peach.png",
       "bytes": 890302,
-      "sha256": "93d9769ca69ae090fe9392d0d8b12ac97b19b44558b05534d44c86de03e41d5e",
+      "sha256": "b881319441c4468aa201aef8c48db66111be12446b904392298eb40f2445a9e0",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -153,7 +153,7 @@
     {
       "path": "raw-assets/renders/stills/underside-purple.png",
       "bytes": 890008,
-      "sha256": "a8fa8b5dbcc508875caea661160333a880178e49e46ff9f92229baf75dfc1950",
+      "sha256": "7b91417d0bf0a8a9afba1304923c6c10d5dc39e4f09e07ff260e9b85c6c91977",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -273,7 +273,70 @@
     {
       "path": "raw-assets/renders/stills/build-00-shadow.png",
       "bytes": 655582,
-      "sha256": "f1095ba3b7ad1e9ac2be9eefbc9c997c3de32a6a77e641fad7b774ee14969695",
+      "sha256": "6a3f8ae7141f1a3fc662c82500f75309eabacb2a89496dd193fd57fb353b46cc",
+      "width": 1600,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
+    },
+    {
+      "path": "raw-assets/renders/cover/cover-hat.png",
+      "bytes": 984861,
+      "sha256": "e1dc3c43487cf61d6ae4e7555b1bf64b7ef955557d17ebfe8b7653b85f4d3b5e",
+      "width": 1200,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
+    },
+    {
+      "path": "raw-assets/renders/stills/piece-01-frame.png",
+      "bytes": 812965,
+      "sha256": "fa754c5fa439a86355c5ff3583fd9321c7882fb110887154c30851dd42a2b0d0",
+      "width": 1600,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
+    },
+    {
+      "path": "raw-assets/renders/stills/piece-02-leaf-inner.png",
+      "bytes": 719619,
+      "sha256": "e98dcd502697c0f35a37a80fc1044beb540c103fe2edc8e9a7b056f6815e7bbd",
+      "width": 1600,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
+    },
+    {
+      "path": "raw-assets/renders/stills/piece-03-poem-art.png",
+      "bytes": 528511,
+      "sha256": "bc836b30794259f7ba1a5a6fc9032e9c5e2c0b9761e2531807d2651f046ef2bf",
+      "width": 1600,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
+    },
+    {
+      "path": "raw-assets/renders/stills/piece-04-leaf-outer.png",
+      "bytes": 805568,
+      "sha256": "1de8ab209710cfcbd57accccbe39b4af676213c0be4b450d51e2dfcff2c2ef79",
+      "width": 1600,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
+    },
+    {
+      "path": "raw-assets/renders/stills/piece-05-stitches.png",
+      "bytes": 781382,
+      "sha256": "279d6cb20c33a6cfd59ae6aa5a2f00110292f7956d8a0e45c49869e2a31fb9b9",
+      "width": 1600,
+      "height": 1200,
+      "bit_depth": 8,
+      "source": "cloud-cpu-rerender"
+    },
+    {
+      "path": "raw-assets/renders/stills/piece-06-strap.png",
+      "bytes": 533867,
+      "sha256": "16acd2ed06e81814e4452febb8b356e4f58c09fb7808fd45ff02fe8675a5350e",
       "width": 1600,
       "height": 1200,
       "bit_depth": 8,
@@ -287,6 +350,7 @@
     "denoise": "OpenImageDenoise",
     "seconds": 3000,
     "files": 23,
-    "kept_from_pc": "intro frames (D: drive), intro-preview, lineart"
+    "kept_from_pc": "intro frames (D: drive), intro-preview, lineart",
+    "second_pass": "stills again (build layers cut by the layers below via holdouts, piece-0N tray renders, real poem-art texture) + cover-hat (no floor)"
   }
 }
