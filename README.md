@@ -28,7 +28,7 @@ Bilingual (English / Tiếng Việt) with narration for every on-screen text.
 Two things make reviewing quicker:
 
 - **Language**: the EN / VI switch is in the top bar on every screen. The voice follows the switch.
-- **Skip the first run**: the first visit plays Phases 1 → 4 in order, as the brief asks. After that, the Activity Hub (`…/#/play/hub`) opens everything. Add `?review=1` to the address to open any screen directly, e.g. `…/?review=1#/play/p3/identity`.
+- **Skip the first run**: the first visit plays Phases 1 → 4 in order, as the brief asks. After that, the Activity Hub (`…/#/play/hub`) opens everything. Add `?review=1` to the address to open any screen directly, e.g. `…/?review=1#/play/p3/identity`. The landing page shows first; tap **Continue**, which also switches the sound on.
 
 ### Changing words
 
