@@ -20,6 +20,8 @@ const UP = new THREE.Vector3(0, 1, 0);
 const STRAP_YAW = THREE.MathUtils.degToRad(55);
 const STRAP_PITCH = THREE.MathUtils.degToRad(-20);
 const STRAP_LIFT = 0.07;
+/** a fingertip: a tap this close to the strap counts, as it may still be swinging from its drop */
+const TAP_SLOP_PX = 44;
 
 export class StrapLayer extends LayerBase {
   private phase: 'assembling' | 'invite' | 'swaying' | 'done' = 'assembling';
@@ -261,7 +263,14 @@ export class StrapLayer extends LayerBase {
   }
 
   private hitStrap(p: PointerSample): boolean {
-    return !!this.rig.stage.hit(p.x, p.y, [this.rig.strap.proxy, this.rig.strap.ribbon]);
+    const strap = this.rig.strap;
+    if (this.rig.stage.hit(p.x, p.y, [strap.proxy, strap.ribbon])) return true;
+    const w = new THREE.Vector3();
+    for (let i = 0; i < strap.rope.n; i += 2) {
+      const s = this.screen(this.rig.hat.toWorld(strap.rope.point(i), w));
+      if (Math.hypot(s.x - p.x, s.y - p.y) < TAP_SLOP_PX) return true;
+    }
+    return false;
   }
 
   private tap(p: PointerSample): boolean {
