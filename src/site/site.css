@@ -1414,3 +1414,59 @@
     font-size: 1.6rem;
   }
 }
+
+/* ---------- the live hat (StoryHat): the same paper table and light as the experience ---------- */
+
+.story[data-render='3d'],
+.story[data-render='3d'] .story__sticky {
+  background:
+    radial-gradient(52% 44% at 50% 50%, rgba(255, 247, 222, 0.95), rgba(255, 247, 222, 0) 100%),
+    radial-gradient(120% 100% at 50% 40%, var(--paper) 0%, var(--bg) 70%, #e3d2ac 100%);
+}
+
+.story__hat {
+  position: absolute;
+  inset: 0;
+}
+
+.story__hat[hidden] {
+  display: none;
+}
+
+.story__hat canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.story__hat .hat-overlay {
+  display: none;
+}
+
+/* reduced motion: the stills are rendered here, out of sight */
+.story__hat.is-offstage {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* the finished hat as a picture until the model has drawn its first frame */
+.story__poster {
+  position: absolute;
+  inset: 12vh 10vw 22vh;
+  width: calc(100% - 20vw);
+  height: calc(100% - 34vh);
+  object-fit: contain;
+}
+
+.story__poster[hidden] {
+  display: none;
+}
+
+/* the live hat already sits on paper: a lighter vignette than the image sequence's grade */
+.story[data-render='3d'] .story__grain {
+  background:
+    radial-gradient(120% 90% at 50% 45%, transparent 60%, rgba(90, 63, 40, 0.22)),
+    var(--grain) 0 0 / 240px 240px;
+}

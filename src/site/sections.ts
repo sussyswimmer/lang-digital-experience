@@ -130,7 +130,6 @@ export function buildParents(): HTMLElement {
 
 const TEAM: [string, string, string][] = [
   ['T', 'site.credits.tram', 'terracotta'],
-  ['M', 'site.credits.meri', 'forest'],
   ['M', 'site.credits.max', 'mango'],
 ];
 const TOOLS: [SiteIcon, string][] = [

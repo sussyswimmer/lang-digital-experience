@@ -151,7 +151,7 @@ Everything served lives under `public/assets/` with stable names (a final asset 
 | Narration | `audio/narration/{en,vi}/<stringId>.mp3` |
 | Ambient | `audio/ambient/{rain-on-hat,market-chatter,breeze-leaves,workshop,schoolyard,rain-market}.mp3` |
 | Video loops | `video/p1-<tile>.{mp4,webm}` + `-poster.webp` |
-| Scroll intro frames | `scroll/{960,1600}/f_0001.webp …` + `scroll/manifest.json` (`count`, `widths`, `aspect`, `bg`, `placeholder`, `bytes`) |
+| Scroll intro | Drawn live by `src/site/StoryHat.ts`: the experience's GLB, lights and materials, posed by scroll along the Blender `build_intro` timeline (270 frames; the caption beats in `storyBeats.ts` are keyed to it). Under reduced motion the four stills are rendered from it too. The image sequence `scroll/{960,1600}/f_0001.webp …` + `scroll/manifest.json` (`count`, `widths`, `aspect`, `bg`, `placeholder`, `bytes`) is the fallback when WebGL or the model is missing (`?no3d` forces it). |
 | Lottie | `lottie/{badge-pop,sparkle,tap-ripple}.json` (EffectCraft exports, played once by `src/ui/lottie.ts`: badge-pop when a quiz or Build badge lands, sparkle on a tapped earned badge or Phase 1 decoration, tap-ripple under the idle hand; nothing plays under reduced motion) |
 
 Photo stems (team photos → PhotoCraft slight edit → encoded):

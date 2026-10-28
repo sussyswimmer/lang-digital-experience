@@ -45,7 +45,6 @@
   "site.credits.title": { "kind": "ui", "en": "Credits", "vi": "Đội ngũ thực hiện", "viStatus": "machine" },
   "site.credits.team": { "kind": "ui", "en": "The team", "vi": "Nhóm thực hiện", "viStatus": "machine" },
   "site.credits.tram": { "kind": "ui", "en": "Tram: content, photos & sounds", "vi": "Tram: nội dung, hình ảnh và âm thanh", "viStatus": "machine", "notes": "Team names kept as written by the team" },
-  "site.credits.meri": { "kind": "ui", "en": "Meri: Vietnamese wording", "vi": "Meri: lời văn tiếng Việt", "viStatus": "machine" },
   "site.credits.max": { "kind": "ui", "en": "Max: design & build", "vi": "Max: thiết kế và lập trình", "viStatus": "machine" },
   "site.credits.tools": { "kind": "ui", "en": "Made with", "vi": "Công cụ", "viStatus": "machine" },
   "site.credits.tool.blender": { "kind": "ui", "en": "Blender: the 3D hat and the intro animation", "vi": "Blender: chiếc nón 3D và đoạn phim mở đầu", "viStatus": "machine" },

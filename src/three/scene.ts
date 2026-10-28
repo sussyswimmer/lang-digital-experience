@@ -60,6 +60,8 @@ export class Stage {
   private envTex: THREE.Texture;
   private lastTime = 0;
   private afterRender = new Set<() => void>();
+  /** device-pixel-ratio cap (a full-window stage may want less than the app's 2×) */
+  maxDpr = 2;
 
   constructor(readonly host: HTMLElement) {
     this.canvas = document.createElement('canvas');
@@ -273,7 +275,7 @@ export class Stage {
     const w = Math.max(1, Math.round(r.width || window.innerWidth));
     const h = Math.max(1, Math.round(r.height || window.innerHeight));
     this.size = { w, h, left: r.left, top: r.top };
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, this.maxDpr));
     this.renderer.setSize(w, h, false);
     this.camera.aspect = w / h;
     // a narrower lens on phones keeps the hat from looking stretched at the edges
