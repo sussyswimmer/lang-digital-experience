@@ -184,6 +184,7 @@ included, kind `label`, not `ui`). `assets:photos` publishes only the stems in t
 
 Tokens in `src/styles/tokens.css` (straw, terracotta, forest, wood, dragon fruit, mango, leaf; fonts Fraunces for titles, Be Vietnam Pro for UI and body, Playpen Sans for captions and stickers, all with Vietnamese subsets; see `docs/DESIGN.md`).
 Shared classes in `src/styles/components.css`: `.btn` (`--cta`, `--straw`, `--ghost`, `--round`), `.pulse`, `.bubble`, `.caption`, `.ph`.
+Paper primitives in `src/styles/paper.css` (docs/DESIGN.md §4): `.sheet` (`--b`, `--flat`, `--deep`, `--tilt-l/-r`, `--tape`), `.stitch` (`--short`, `--sew`), `.stitched` (`--thread`), `.tag`, `.stamp` (`--forest`, `--mango`, `--dragon`), `.settle` with `--settle-i`, `.grain`. Grain and fibre are background layers multiplied under the paper colour, so they never cover content. `#tabletop` (index.html) lays grain and a vignette over the 3D stage; the pool of light under the hat is `#app`'s background.
 Each area adds its own stylesheet next to its code (e.g. `src/phases/phase3/phase3.css`) and imports it from its screen module.
 - Touch targets ≥ 64 px (`--tap-min`), primary CTAs 88 px. Mark them `data-touch`.
 - Keep controls out of the bottom 120 px of `.screen` (the caption band). On phones (≤ 600 px) the caption shows only the
