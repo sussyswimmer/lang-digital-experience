@@ -47,22 +47,29 @@ for (const f of await pngs('stills')) {
 for (const f of await pngs('quiz')) {
   await webp(path.join(SRC, 'quiz', f), path.join(OUT, 'quiz', path.basename(f, '.png')), [1200, 600]);
 }
-// quiz answers built from other renders / Higgsfield art (Q1: which part keeps the hat on; Q5: what is hidden)
+// quiz answers built from other renders / Higgsfield art (Q1: which part keeps the hat on; Q5: what is hidden).
+// Blender pieces are centred on transparent; the Đông Hồ prints are paper edge to edge, so they are cropped.
 const QUIZ_EXTRA = {
-  'q1-thread': 'raw-assets/renders/stills/brim-closeup.png',
-  'q1-leaves': 'raw-assets/renders/stills/piece-04-leaf-outer.png',
-  'q1-strap': 'raw-assets/renders/stills/underside-purple.png',
-  'q5-poems': 'raw-assets/higgsfield/art/quiz-q5-poems.png',
-  'q5-coins': 'raw-assets/higgsfield/art/quiz-q5-coins.png',
-  'q5-rice': 'raw-assets/higgsfield/art/quiz-q5-rice.png',
+  'q1-thread': ['raw-assets/renders/stills/brim-closeup.png', 'contain'],
+  'q1-leaves': ['raw-assets/renders/stills/piece-04-leaf-outer.png', 'contain'],
+  'q1-strap': ['raw-assets/renders/stills/underside-purple.png', 'contain'],
+  'q5-poems': ['raw-assets/higgsfield/art/quiz-q5-poems.png', 'cover'],
+  'q5-coins': ['raw-assets/higgsfield/art/quiz-q5-coins.png', 'cover'],
+  'q5-rice': ['raw-assets/higgsfield/art/quiz-q5-rice.png', 'cover'],
 };
-for (const [id, src] of Object.entries(QUIZ_EXTRA)) {
+for (const [id, [src, fit]] of Object.entries(QUIZ_EXTRA)) {
   if (!existsSync(src)) continue;
   const tmp = path.join('node_modules/.cache', `${id}.png`);
   await mkdir(path.dirname(tmp), { recursive: true });
-  // same 4:3 card as the rendered answers; pieces are centred on transparent
-  await sharp(src).resize(1200, 900, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toFile(tmp);
+  // the same 4:3 card as the rendered answers
+  await sharp(src).resize(1200, 900, { fit, background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toFile(tmp);
   await webp(tmp, path.join(OUT, 'quiz', id), [1200, 600]);
+}
+// the question pictures (Q1 wind, Q3 torn leaf): 16:9 strips beside the prompt
+for (const [id, src] of Object.entries({ 'q1-scene': 'raw-assets/higgsfield/art/dongho-q1-scene.png', 'q3-scene': 'raw-assets/higgsfield/art/dongho-q3-scene.png' })) {
+  if (!existsSync(src)) continue;
+  await sharp(src).resize(800, 452, { fit: 'cover' }).webp({ quality: 84, effort: 5 }).toFile(path.join(OUT, 'quiz', `${id}-800.webp`));
+  console.log(`quiz/${id}-800`);
 }
 for (const f of await pngs('cover')) {
   if (f === 'cover.png') {
