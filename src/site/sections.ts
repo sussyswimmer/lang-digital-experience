@@ -13,18 +13,22 @@ interface PhaseCard {
   /** a team photo stem, or an illustration under img/art/ */
   photo?: { stem: string; focal?: [number, number] };
   art?: string;
-  tone: 'terracotta' | 'forest' | 'mango' | 'dragon';
+  /** the ink of the card's number stamp (paper.css .stamp--*) */
+  stamp: 'thread' | 'forest' | 'mango' | 'dragon';
 }
 
 const PHASES: PhaseCard[] = [
-  { titleId: 'p1.title', textId: 'site.inside.1', altId: 'site.inside.1.alt', photo: { stem: 'p1-market', focal: [0.5, 0.45] }, tone: 'terracotta' },
-  { titleId: 'p2.title', textId: 'site.inside.2', altId: 'site.inside.2.alt', photo: { stem: 'p2-16-rims', focal: [0.45, 0.5] }, tone: 'forest' },
-  { titleId: 'p3.title', textId: 'site.inside.3', altId: 'site.inside.3.alt', photo: { stem: 'p3-protection', focal: [0.6, 0.4] }, tone: 'mango' },
-  { titleId: 'hub.title', textId: 'site.inside.4', altId: 'site.inside.4.alt', art: 'hub-build', tone: 'dragon' },
+  { titleId: 'p1.title', textId: 'site.inside.1', altId: 'site.inside.1.alt', photo: { stem: 'p1-market', focal: [0.5, 0.45] }, stamp: 'thread' },
+  { titleId: 'p2.title', textId: 'site.inside.2', altId: 'site.inside.2.alt', photo: { stem: 'p2-16-rims', focal: [0.45, 0.5] }, stamp: 'forest' },
+  { titleId: 'p3.title', textId: 'site.inside.3', altId: 'site.inside.3.alt', photo: { stem: 'p3-protection', focal: [0.6, 0.4] }, stamp: 'mango' },
+  { titleId: 'hub.title', textId: 'site.inside.4', altId: 'site.inside.4.alt', art: 'hub-build', stamp: 'dragon' },
 ];
 
+/** a short running stitch under a heading */
+const stitch = () => el('span.stitch.stitch--short', { 'aria-hidden': 'true' });
+
 function sectionHead(titleId: string, leadId: string | null, readAloud: ReadAloud | null, idPrefix: string): HTMLElement {
-  const head = el('div.site-section__head', {}, i18n.bind(el('h2', { id: `${idPrefix}-title` }), titleId));
+  const head = el('div.site-section__head', {}, i18n.bind(el('h2', { id: `${idPrefix}-title` }), titleId), stitch());
   if (leadId) {
     head.append(el('div.site-section__lead', {}, i18n.bind(el('p'), leadId), readAloud ? readAloud.button(leadId) : null));
   }
@@ -54,15 +58,17 @@ export function buildInside(readAloud: ReadAloud): HTMLElement {
       altSync(img, p.altId);
       media = img;
     }
+    // four sheets of paper taped to the table, each a little askew, the photo pasted on with a hairline edge
+    const tilt = i % 2 ? 'sheet--tilt-r' : 'sheet--tilt-l';
+    const ink = p.stamp === 'thread' ? '' : `.stamp--${p.stamp}`;
     return el(
-      `article.phase-card.phase-card--${p.tone}`,
+      `article.phase-card.sheet.${tilt}.sheet--tape`,
       {},
       el(
         'div.phase-card__media',
         {},
-        media,
-        el('span.phase-card__num', { 'aria-hidden': 'true' }, String(i + 1)),
-        readAloud.button(p.textId, 'phase-card__listen'),
+        el('div.phase-card__photo', {}, media),
+        el(`span.phase-card__num.stamp${ink}`, { 'aria-hidden': 'true' }, String(i + 1)),
       ),
       el(
         'div.phase-card__body',
@@ -70,6 +76,7 @@ export function buildInside(readAloud: ReadAloud): HTMLElement {
         el('p.phase-card__step', {}, i18n.bind(el('span'), 'site.inside.step', { n: i + 1 })),
         i18n.bind(el('h3'), p.titleId),
         i18n.bind(el('p.phase-card__text'), p.textId),
+        readAloud.button(p.textId, 'phase-card__listen'),
       ),
     );
   });
@@ -96,24 +103,29 @@ export function buildParents(): HTMLElement {
     'div.parents__card',
     {},
     el('h3', {}, svg(SITE_ICONS.star), i18n.bind(el('span'), 'site.parents.goals.title')),
+    stitch(),
     el('ul.parents__list.parents__list--goals', {}, ...GOALS.map((id) => el('li', {}, svg(SITE_ICONS.check), i18n.bind(el('span'), id)))),
   );
   const how = el(
     'div.parents__card',
     {},
     el('h3', {}, svg(SITE_ICONS.book), i18n.bind(el('span'), 'site.parents.how.title')),
+    stitch(),
     el(
       'ul.parents__list',
       {},
       ...HOW.map(([icon, id]) => el('li', {}, svg(icon === 'speaker' ? ICONS.speaker : SITE_ICONS[icon]), i18n.bind(el('span'), id))),
     ),
   );
-  return el(
-    'section.site-section.parents',
-    { 'aria-labelledby': 'parents-title' },
+  // one folded note of green paper, stitched round the edge, with a dog-eared corner
+  const note = el(
+    'div.parents__note.stitched',
+    {},
     sectionHead('site.parents.title', 'site.parents.lead', null, 'parents'),
     el('div.parents__grid', {}, goals, how),
+    el('span.parents__fold', { 'aria-hidden': 'true' }),
   );
+  return el('section.site-section.parents', { 'aria-labelledby': 'parents-title' }, note);
 }
 
 const TEAM: [string, string, string][] = [
@@ -133,22 +145,25 @@ export function buildCredits(): HTMLElement {
     'div.credits__col',
     {},
     el('h3', {}, svg(SITE_ICONS.people), i18n.bind(el('span'), 'site.credits.team')),
+    stitch(),
     el(
       'ul.credits__list',
       {},
-      ...TEAM.map(([initial, id, tone]) => el('li', {}, el(`span.credits__avatar.tone-${tone}`, { 'aria-hidden': 'true' }, initial), i18n.bind(el('span'), id))),
+      ...TEAM.map(([initial, id, tone]) => el('li', {}, el(`span.credits__avatar.stamp.tone-${tone}`, { 'aria-hidden': 'true' }, initial), i18n.bind(el('span'), id))),
     ),
   );
   const tools = el(
     'div.credits__col',
     {},
     el('h3', {}, svg(SITE_ICONS.puzzle), i18n.bind(el('span'), 'site.credits.tools')),
-    el('ul.credits__list', {}, ...TOOLS.map(([icon, id]) => el('li', {}, el('span.credits__badge', {}, svg(SITE_ICONS[icon])), i18n.bind(el('span'), id)))),
+    stitch(),
+    el('ul.credits__list', {}, ...TOOLS.map(([icon, id]) => el('li', {}, el('span.credits__badge.stamp.stamp--forest', {}, svg(SITE_ICONS[icon])), i18n.bind(el('span'), id)))),
   );
   const photos = el(
     'div.credits__col',
     {},
     el('h3', {}, svg(SITE_ICONS.camera), i18n.bind(el('span'), 'site.credits.photos')),
+    stitch(),
     i18n.bind(el('p'), 'site.credits.photos.note'),
     i18n.bind(el('p.credits__copy'), 'site.credits.photos.market'),
   );

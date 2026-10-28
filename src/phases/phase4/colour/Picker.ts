@@ -1,6 +1,8 @@
 /**
- * "How would you paint your own Nón Lá?": the four pages as big picture cards. A page with an
- * unfinished drawing shows the child's colours under its lines and a "Keep colouring" badge.
+ * "How would you paint your own Nón Lá?": the question on a sheet of paper, then the four pages
+ * as sheets lying askew on the table, each with a stamped number and its line art on a mount. A
+ * page with an unfinished drawing shows the child's colours under its lines and a "Keep
+ * colouring" sticker.
  */
 import { gsap } from 'gsap';
 import { el, svg } from '../../../ui/el';
@@ -44,14 +46,15 @@ export class Picker {
       svg(ICONS.speaker),
       i18n.bind(el('span.visually-hidden'), 'ui.replay'),
     );
+    // the question on a sheet taped to the table: a one-ink hat stamp, the title, the hint hand-written
     const head = el(
       'div.cp-head',
       {},
       el(
-        'div.bubble.cp-bubble',
+        'div.sheet.sheet--tape.cp-sheet',
         {},
-        svg(ICONS.hat, 'cp-bubble__hat'),
-        el('div.cp-bubble__text', {}, i18n.bind(el('h2.cp-question'), 'colour.question'), i18n.bind(el('p.cp-sub'), 'colour.pick')),
+        el('span.stamp.stamp--forest.cp-sheet__stamp', { 'aria-hidden': 'true' }, svg(COLOUR_ICONS.hat)),
+        el('div.cp-sheet__text', {}, i18n.bind(el('h2.cp-question'), 'colour.question'), i18n.bind(el('p.cp-sub'), 'colour.pick')),
         listen,
       ),
     );
@@ -59,11 +62,12 @@ export class Picker {
     PAGES.forEach((page, i) => {
       const line = el('img.cp-thumb__line', { alt: '', draggable: false, decoding: 'async' });
       const thumb = el('div.cp-thumb', {}, line);
+      // sheets lie a little askew, alternately left and right
       const btn = el(
-        'button.cp-card',
+        `button.cp-card.sheet.${i % 2 ? 'sheet--tilt-r' : 'sheet--tilt-l'}`,
         { type: 'button', 'data-touch': '', 'data-test': `page-${page.id}`, role: 'listitem', onclick: () => this.pick(page) },
         thumb,
-        el('span.cp-card__num', { 'aria-hidden': 'true' }, String(i + 1)),
+        el('span.cp-card__num.stamp', { 'aria-hidden': 'true' }, String(i + 1)),
         el('span.cp-card__draft', { hidden: true }, svg(COLOUR_ICONS.brush), i18n.bind(el('span'), 'colour.draft')),
         i18n.bind(el('span.cp-card__name'), page.nameId),
       );
@@ -82,8 +86,9 @@ export class Picker {
       } else full();
     });
     this.countBadge = el('span.cp-gallery__count', { hidden: true });
+    // "Tranh của con" on a paper luggage tag
     this.galleryBtn = el(
-      'button.btn.btn--straw.cp-gallery',
+      'button.tag.cp-gallery',
       { type: 'button', 'data-touch': '', 'data-test': 'open-gallery', onclick: () => host.onGallery() },
       svg(COLOUR_ICONS.gallery),
       i18n.bind(el('span'), 'gallery.name'),

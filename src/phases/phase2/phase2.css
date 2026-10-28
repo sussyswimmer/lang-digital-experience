@@ -1,19 +1,52 @@
-/* Phase 2 · Uncover the Secrets of the Nón Lá. The 3D hat sits under this screen; only the
-   pieces below take touches, the rest of the screen passes them through to the hat. */
+/* Phase 2 · Uncover the Secrets of the Nón Lá. The 3D hat stands on the lit table under this
+   screen; only the pieces below take touches, the rest of the screen passes them through to the
+   hat. Everything here is paper and red thread (docs/DESIGN.md): tags on a thread for the layer
+   picker, a paper bubble for the question, a stitched sheet for the insight, a red stamp for the
+   ring count. */
 
 .screen.p2 {
   --p2-panel-w: min(400px, 36vw);
+  /* a vertical running stitch: the spine of the insight sheet */
+  --p2-spine: repeating-linear-gradient(180deg, var(--thread) 0 10px, transparent 10px 18px);
 }
 
-/* ---------- layer dots (in the top bar) ---------- */
+/* ---------- layer tags (in the top bar): four paper tags hanging on one red thread ---------- */
 
 .p2-dots {
+  position: relative;
   display: flex;
-  gap: 8px;
-  padding: 4px;
-  border-radius: 999px;
-  background: rgba(255, 249, 236, 0.9);
-  box-shadow: var(--shadow-soft);
+  align-items: flex-start;
+  gap: 10px;
+  align-self: flex-start;
+  margin-top: -6px;
+  padding: 14px 8px 0;
+}
+
+/* the thread runs the width of the row, a little past the outer tags */
+.p2-dots__thread {
+  position: absolute;
+  top: 6px;
+  left: -4px;
+  right: -4px;
+  margin: 0;
+}
+
+/* knotted at both ends */
+.p2-dots__thread::before,
+.p2-dots__thread::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--thread);
+}
+
+.p2-dots__thread::after {
+  left: auto;
+  right: -3px;
 }
 
 .p2-dot {
@@ -21,29 +54,52 @@
   display: grid;
   place-items: center;
   width: var(--tap-min);
-  height: var(--tap-min);
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--straw-100);
-  box-shadow: inset 0 0 0 2px rgba(122, 90, 58, 0.18);
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s, background 0.2s;
+  min-height: var(--tap-min);
+  padding: 8px 0 2px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  /* the punched hole near the top edge, then grain, then paper */
+  background:
+    radial-gradient(circle at 50% 8px, var(--bg) 2.5px, var(--wood-500) 3px, var(--wood-500) 4px, transparent 4.5px),
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: normal, multiply, normal;
+  box-shadow: var(--shadow-paper);
+  color: var(--ink);
+  rotate: var(--hang, 0deg);
+  transform-origin: 50% 8px;
+  transition: translate 0.2s var(--ease-out), box-shadow 0.2s, opacity 0.2s;
   touch-action: manipulation;
 }
 
+/* the loop of thread from the hole up over the line */
+.p2-dot::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -14px;
+  width: 2px;
+  height: 22px;
+  translate: -50% 0;
+  background: var(--thread);
+  pointer-events: none;
+}
+
+/* each tag hangs a touch differently */
+.p2-dot:nth-of-type(1) { --hang: -1.2deg; }
+.p2-dot:nth-of-type(2) { --hang: 0.8deg; }
+.p2-dot:nth-of-type(3) { --hang: -0.6deg; }
+.p2-dot:nth-of-type(4) { --hang: 1deg; }
+
 .p2-dot .p2-layer-icon {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
 }
 
+/* the current tag hangs a little lower and carries the thread outline (.stitched--thread) */
 .p2-dot.is-current {
-  background: #fff;
-  box-shadow: 0 0 0 4px var(--forest-700), var(--shadow-soft);
-  transform: scale(1.06);
-}
-
-.p2-dot.is-done {
-  background: var(--straw-200);
+  translate: 0 3px;
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .p2-dot.is-locked,
@@ -52,49 +108,51 @@
   filter: grayscale(0.7);
 }
 
-.p2-dot__tick {
+/* done: a small red stamp tick in the corner */
+.p2-dot .p2-dot__tick {
   position: absolute;
-  right: -2px;
-  bottom: -2px;
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--forest-500);
-  color: #fff;
-  box-shadow: 0 0 0 2px #fff;
+  right: -8px;
+  bottom: -8px;
+  width: 26px;
+  height: 26px;
+  border-width: 1.5px;
+  box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3px currentColor;
+  rotate: 10deg;
 }
 
-.p2-dot__tick svg {
-  width: 16px;
-  height: 16px;
+.p2-dot .p2-dot__tick svg {
+  width: 14px;
+  height: 14px;
 }
 
 /* ---------- guided question ---------- */
 
 .p2-question {
   position: absolute;
-  top: calc(92px + var(--safe-top));
+  top: calc(100px + var(--safe-top));
   left: calc(20px + var(--safe-left));
   max-width: min(640px, calc(100% - 40px));
   padding: 10px 12px 10px 10px;
-  border: 3px solid var(--straw-300);
+  anchor-name: --p2-q;
 }
 
+/* the tail: a folded corner of the same paper, pointing at the hat */
 .p2-question::after {
-  /* speech-bubble tail pointing at the hat */
-  content: "";
+  content: '';
   position: absolute;
-  left: 64px;
-  bottom: -14px;
-  width: 26px;
-  height: 26px;
-  background: var(--paper);
-  border-right: 3px solid var(--straw-300);
-  border-bottom: 3px solid var(--straw-300);
+  left: 58px;
+  bottom: -11px;
+  width: 22px;
+  height: 22px;
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  border-right: var(--deckle);
+  border-bottom: var(--deckle);
+  border-radius: 0 0 5px 0;
   transform: rotate(45deg);
-  border-radius: 0 0 6px 0;
+  box-shadow: 2px 2px 3px -1px rgba(59, 42, 28, 0.12);
 }
 
 .p2-question[hidden] {
@@ -103,19 +161,40 @@
 
 .p2-question__say {
   flex: none;
-  background: var(--straw-200);
 }
 
 .p2-question__text {
   flex: 1;
-  color: var(--wood-900);
+  color: var(--forest-900);
 }
 
+/* "Show me": a straw tag with a hole and a loop of thread */
 .p2-showme {
   flex: none;
   min-height: var(--tap-min);
-  padding: 0 18px 0 12px;
+  padding: 0 18px 0 30px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    radial-gradient(circle at 14px 50%, var(--paper) 3px, var(--wood-700) 3.5px, var(--wood-700) 4.5px, transparent 5px),
+    var(--grain) 0 0 / 240px 240px,
+    var(--straw-300);
+  background-blend-mode: normal, multiply, normal;
   font-size: 1.1rem;
+}
+
+.p2-showme::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  translate: -60% -50%;
+  border: 2px solid var(--thread);
+  border-radius: 50%;
+  clip-path: inset(0 55% 0 0);
+  pointer-events: none;
 }
 
 .p2-showme .icon {
@@ -127,20 +206,19 @@
   display: none;
 }
 
-/* ---------- ring counter (layer 3) ---------- */
+/* ---------- ring counter (layer 3): a red ink stamp ---------- */
 
 .p2-counter {
   position: absolute;
-  top: calc(110px + var(--safe-top));
-  right: calc(32px + var(--safe-right));
+  top: calc(104px + var(--safe-top));
+  right: calc(36px + var(--safe-right));
+  width: 124px;
+  height: 124px;
   display: grid;
+  align-content: center;
   justify-items: center;
-  min-width: 132px;
-  padding: 10px 18px 12px;
-  border-radius: var(--radius-l);
-  background: rgba(255, 249, 236, 0.94);
-  box-shadow: var(--shadow-lift);
-  font-family: var(--font-head);
+  border-width: 2.5px;
+  box-shadow: inset 0 0 0 4px var(--paper), inset 0 0 0 6px currentColor;
   pointer-events: none !important;
   opacity: 0;
   transform: scale(0.6);
@@ -153,18 +231,17 @@
 }
 
 .p2-counter__n {
-  font-size: clamp(3.2rem, 7vw, 5.2rem);
-  font-weight: 800;
-  line-height: 1;
-  color: var(--mango-400);
-  -webkit-text-stroke: 2px var(--wood-700);
-  paint-order: stroke fill;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 0.9;
+  transform-origin: 50% 90%;
 }
 
 .p2-counter__w {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--wood-700);
+  margin-top: 2px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 [data-phase="insight"] .p2-counter,
@@ -172,8 +249,9 @@
   right: calc(var(--p2-panel-w) + 44px);
 }
 
-/* ---------- insight panel ---------- */
+/* ---------- insight sheet ---------- */
 
+/* a sheet of rice paper with the red thread sewn down its left edge */
 .p2-panel {
   position: absolute;
   top: calc(96px + var(--safe-top));
@@ -182,15 +260,20 @@
   width: var(--p2-panel-w);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
+  gap: 10px;
+  padding: 18px 18px 18px 32px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  border-radius: var(--radius-l);
+  border: var(--deckle);
+  border-radius: var(--corner-b);
   background:
-    radial-gradient(120% 60% at 100% 0%, rgba(246, 166, 35, 0.12), transparent 60%),
+    var(--grain) 0 0 / 240px 240px,
+    var(--fibre) 0 0 / 320px 320px,
+    var(--p2-spine) 15px 0 / 2px 100% no-repeat,
     var(--paper);
-  box-shadow: var(--shadow-lift), inset 0 0 0 3px rgba(224, 169, 59, 0.35);
+  background-blend-mode: multiply, multiply, normal, normal;
+  box-shadow: var(--shadow-paper-lift);
+  color: var(--ink);
   transform: translateX(calc(100% + 40px));
   visibility: hidden;
   transition: transform 0.55s var(--ease-out), visibility 0s 0.55s;
@@ -203,44 +286,45 @@
 }
 
 .p2-panel__head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 4px 12px;
 }
 
+/* the layer's picture, drawn straight on the sheet */
 .p2-panel__icon {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--straw-200);
-  box-shadow: inset 0 0 0 3px var(--straw-300);
+  width: 54px;
+  height: 54px;
+  margin-top: 4px;
+  rotate: -6deg;
 }
 
 .p2-panel__icon .p2-layer-icon {
-  width: 40px;
-  height: 40px;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 1px 0 rgba(59, 42, 28, 0.18));
 }
 
 .p2-panel__titles {
+  min-width: 0;
   display: grid;
   gap: 2px;
 }
 
+/* "Layer 1 of 4", pencilled in */
 .p2-panel__step {
+  font-family: var(--font-hand);
+  font-weight: 600;
   font-size: 0.95rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--terracotta-600);
+  color: var(--ink-soft);
 }
 
 .p2-panel__name {
   margin: 0;
-  font-size: clamp(1.3rem, 2.2vw, 1.65rem);
-  color: var(--forest-700);
+  font-size: clamp(1.6rem, 2.2vw, 2rem);
+  line-height: 1.02;
+  color: var(--forest-900);
 }
 
 /* the name is a button: tap it to hear it again */
@@ -248,31 +332,83 @@
   padding: 0;
   border: 0;
   background: none;
+  font: inherit;
+  font-variation-settings: inherit;
+  letter-spacing: inherit;
+  color: inherit;
   text-align: left;
   touch-action: manipulation;
 }
 
+/* the Vietnamese name: a hand-written sticker taped on a little askew */
+.p2-panel__vi.sheet {
+  display: inline-block;
+  margin: 6px 0 0 2px;
+  padding: 5px 12px 6px;
+  border-radius: var(--corner-s);
+  font-family: var(--font-hand);
+  font-variation-settings: normal;
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--ink);
+  vertical-align: middle;
+  rotate: -2.5deg;
+}
+
+.p2-panel__vi.sheet--tape::after {
+  top: -7px;
+  width: 44px;
+  height: 14px;
+  rotate: -4deg;
+}
+
+/* the running stitch under the heading sews in once the sheet has slid in */
+.p2-panel__stitch {
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+}
+
+.p2-panel.is-open .p2-panel__stitch {
+  animation: stitch-sew 0.8s var(--ease-out) 0.45s both;
+}
+
+/* the real photo on a paper mount, its label hand-written under it */
 .p2-panel__photo {
   position: relative;
   flex: 1 1 180px;
-  max-height: clamp(150px, 30vh, 320px);
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-m);
-  overflow: hidden;
-  background: var(--straw-200);
-  box-shadow: var(--shadow-soft);
-  min-height: 110px;
+  min-height: 120px;
+  max-height: clamp(170px, 32vh, 340px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 8px 6px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
+  text-align: left;
   cursor: zoom-in;
 }
 
-.p2-panel__photo picture,
-.p2-panel__img {
-  width: 100%;
-  height: 100%;
+.p2-panel__photo picture {
+  rotate: 0.8deg;
+  display: block;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+  border: var(--deckle);
+  border-radius: 6px 5px 7px 4px / 5px 7px 4px 6px;
+  background: var(--straw-200);
 }
 
 .p2-panel__img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   transition: transform 0.6s var(--ease-out);
 }
@@ -282,29 +418,26 @@
 }
 
 .p2-panel__photo-tag {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
+  flex: none;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px 4px 8px;
-  border-radius: 999px;
-  background: rgba(255, 249, 236, 0.94);
-  color: var(--wood-900);
-  font-family: var(--font-head);
-  font-weight: 700;
+  padding: 0 2px;
+  color: var(--ink-soft);
+  font-family: var(--font-hand);
+  font-weight: 600;
   font-size: 0.95rem;
+  line-height: 1.2;
 }
 
 .p2-panel__photo-tag svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .p2-panel__extras {
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 
 .p2-panel__extras:empty {
@@ -313,8 +446,13 @@
 
 .p2-panel__sub {
   margin: 0;
-  font-size: 1.05rem;
-  color: var(--wood-700);
+  font-family: var(--font-ui);
+  font-variation-settings: normal;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+  color: var(--ink-soft);
 }
 
 .p2-panel__nav {
@@ -330,19 +468,22 @@
   flex: none;
 }
 
-/* the nav and the Next CTA stay in view even when the sheet has to scroll: the foot sticks to the
-   bottom of the content box, and a paper skirt over the padding hides what scrolls under it (the
-   3 px ring stays visible) */
+/* the nav and the Next button stay in view even when the sheet has to scroll: the foot sticks to
+   the bottom of the content box, and a paper skirt over the padding hides what scrolls under it
+   (the spine sits in the left padding, outside the skirt, so it stays visible) */
 .p2-panel__foot {
   flex: none;
   display: grid;
-  gap: 12px;
+  gap: 10px;
   position: sticky;
   bottom: 0;
   z-index: 1;
   margin-top: -6px;
   padding-top: 6px;
-  background: var(--paper);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
   box-shadow: 0 13px 0 var(--paper);
 }
 
@@ -356,42 +497,45 @@
   height: 26px;
 }
 
+/* chunk progress: a running stitch, one stitch per chunk, a knot at the current one */
 .p2-panel__dots {
-  flex: none;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
-  margin-top: auto;
-  padding-top: 4px;
+  align-items: center;
+  gap: 6px;
+  min-height: 9px;
 }
 
 .p2-panel__dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--straw-300);
-  transition: transform 0.25s var(--ease-out), background 0.25s;
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(59, 42, 28, 0.22);
+  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out), background 0.25s;
 }
 
 .p2-panel__dot.is-seen {
-  background: var(--straw-700);
+  background: var(--thread);
 }
 
 .p2-panel__dot.is-on {
-  background: var(--terracotta-600);
-  transform: scale(1.45);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--thread);
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 3.5px var(--thread);
 }
 
 .p2-replay {
   flex: none;
-  background: var(--straw-200);
 }
 
 .p2-done {
   flex: none;
   width: 100%;
-  font-size: 1.5rem;
+  min-height: 72px;
+  font-size: 1.45rem;
 }
 
 .p2-done[hidden] {
@@ -403,74 +547,73 @@
   height: 34px;
 }
 
-/* legend chips (layer 1) */
+/* legend tags (layer 1): the two threads, each on a paper tag */
 
-.p2-chip {
+.p2-chip.tag {
   display: flex;
   align-items: center;
   gap: 12px;
   min-height: var(--tap-min);
-  padding: 6px 14px 6px 10px;
-  border: 0;
-  border-radius: var(--radius-m);
-  background: #fff;
-  box-shadow: var(--shadow-soft);
-  font-family: var(--font-head);
+  padding: 6px 14px 6px 30px;
   font-size: 1.05rem;
-  font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
   text-align: left;
+  transition: transform 0.15s var(--ease-out), box-shadow 0.15s;
   touch-action: manipulation;
 }
 
 .p2-chip__icon {
   flex: none;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
 }
 
-.p2-chip--white {
-  box-shadow: var(--shadow-soft), inset 0 0 0 3px #e4ddcd;
-}
-
-.p2-chip--red {
-  box-shadow: var(--shadow-soft), inset 0 0 0 3px #c0261c;
+.p2-chip:hover {
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .p2-chip:active {
-  transform: scale(0.97);
+  transform: scale(0.97) rotate(-0.4deg);
 }
 
-/* strap colour swatches (layer 4) */
+/* strap colour swatches (layer 4): dabs of paint, the chosen one ringed with thread */
 
 .p2-swatches {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
 }
 
 .p2-swatch {
   display: grid;
   justify-items: center;
-  gap: 6px;
+  align-content: start;
+  gap: 8px;
   min-height: 92px;
-  padding: 10px 4px 8px;
+  padding: 10px 4px 6px;
   border: 0;
-  border-radius: var(--radius-m);
-  background: #fff;
-  box-shadow: var(--shadow-soft);
-  font-family: var(--font-head);
+  border-radius: var(--corner-s);
+  background: transparent;
+  font-family: var(--font-ui);
   font-weight: 700;
-  font-size: 0.98rem;
-  line-height: 1.1;
+  font-size: 0.95rem;
+  line-height: 1.15;
+  color: var(--ink-soft);
   touch-action: manipulation;
 }
 
 .p2-swatch__blob {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.12);
+  width: 46px;
+  height: 46px;
+  border-radius: 54% 46% 48% 52% / 48% 56% 44% 52%;
+  box-shadow:
+    inset -3px -4px 0 rgba(59, 42, 28, 0.14),
+    inset 3px 3px 0 rgba(255, 255, 255, 0.22),
+    0 1px 2px rgba(59, 42, 28, 0.25);
+  outline: 2px dashed transparent;
+  outline-offset: 5px;
+  rotate: -12deg;
+  transition: transform 0.2s var(--ease-out), outline-color 0.2s;
 }
 
 .p2-swatch--purple .p2-swatch__blob { background: var(--strap-purple); }
@@ -478,7 +621,12 @@
 .p2-swatch--green .p2-swatch__blob { background: var(--strap-green); }
 
 .p2-swatch[aria-checked="true"] {
-  box-shadow: 0 0 0 4px var(--forest-700), var(--shadow-soft);
+  color: var(--ink);
+}
+
+.p2-swatch[aria-checked="true"] .p2-swatch__blob {
+  outline-color: var(--thread);
+  transform: scale(1.08);
 }
 
 /* ---------- loading / error ---------- */
@@ -492,11 +640,16 @@
   align-items: center;
   gap: 14px;
   padding: 14px 24px;
-  border-radius: 999px;
-  background: rgba(255, 249, 236, 0.95);
-  box-shadow: var(--shadow-soft);
-  font-family: var(--font-head);
-  font-weight: 700;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
+  font-weight: 600;
   font-size: 1.3rem;
 }
 
@@ -508,7 +661,7 @@
 
 .p2-loading.is-error {
   max-width: min(520px, calc(100vw - 32px));
-  border-radius: var(--radius-l);
+  border-radius: var(--corner-a);
   text-align: center;
 }
 
@@ -545,11 +698,15 @@
   max-height: 100%;
 }
 
+/* the photo on a wide paper mount */
 .p2-lightbox__img {
   max-width: min(92vw, 1400px);
   max-height: 80vh;
-  border-radius: var(--radius-m);
-  box-shadow: var(--shadow-lift);
+  padding: 10px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background: var(--paper);
+  box-shadow: var(--shadow-paper-lift);
   object-fit: contain;
 }
 
@@ -566,19 +723,44 @@
 @media (max-height: 860px) {
   .p2-panel {
     gap: 8px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .p2-panel__stitch {
+    display: none;
+  }
+
+  .p2-panel__vi.sheet {
+    margin-top: 4px;
+    padding: 3px 10px 4px;
+    font-size: 1rem;
   }
 
   .p2-panel__photo {
     flex: 1 1 64px;
-    min-height: 56px;
+    min-height: 72px;
+    padding: 5px 5px 4px;
+  }
+
+  .p2-panel__photo picture {
+    min-height: 96px;
+  }
+
+  .p2-panel__photo-tag {
+    font-size: 0.85rem;
   }
 
   .p2-panel__sub {
     display: none;
   }
 
-  .p2-chip {
-    min-height: 56px;
+  .p2-chip.tag {
+    min-height: var(--tap-min);
+  }
+
+  .p2-done {
+    min-height: 68px;
   }
 }
 
@@ -588,27 +770,26 @@
   }
 }
 
-/* phones and portrait tablets: dots under the bar, panel as a bottom sheet */
+/* phones and portrait tablets: the tags under the bar, the sheet drops in from the top */
 @media (max-width: 719px), (max-aspect-ratio: 21/20) {
   .p2-dots {
     position: absolute;
-    top: 72px;
+    top: calc(68px + var(--safe-top));
     left: 50%;
-    transform: translateX(-50%);
+    margin: 0;
+    padding: 14px 6px 0;
     gap: 6px;
+    transform: translateX(-50%);
   }
 
   .p2-question {
-    top: calc(152px + var(--safe-top));
+    top: calc(172px + var(--safe-top));
     left: 12px;
     right: 12px;
     max-width: none;
-    font-size: 1.15rem;
-  }
-
-  .p2-question {
     padding: 8px;
     gap: 10px;
+    font-size: 1.15rem;
   }
 
   /* a picture button with a small word under it, so the question keeps its width */
@@ -618,9 +799,16 @@
     width: 76px;
     min-height: 72px;
     padding: 4px;
-    border-radius: var(--radius-m);
+    background:
+      var(--grain) 0 0 / 240px 240px,
+      var(--straw-300);
+    background-blend-mode: multiply, normal;
     font-size: 0.8rem;
     line-height: 1.1;
+  }
+
+  .p2-showme::before {
+    display: none;
   }
 
   .p2-showme .icon {
@@ -628,11 +816,21 @@
     height: 32px;
   }
 
+  /* the stamp sits under the bubble's right end (anchored to it where the browser can) */
   .p2-counter {
-    top: calc(156px + var(--safe-top));
+    top: calc(300px + var(--safe-top));
+    top: calc(anchor(--p2-q bottom) + 10px);
     right: 14px;
-    min-width: 96px;
-    padding: 6px 12px 8px;
+    width: 92px;
+    height: 92px;
+  }
+
+  .p2-counter__n {
+    font-size: 2.6rem;
+  }
+
+  .p2-counter__w {
+    font-size: 0.85rem;
   }
 
   /* the sheet takes the top of the screen here; the count lives on in the narration */
@@ -644,55 +842,65 @@
   /* on a phone the sheet drops in from the top: the caption strip at the bottom can grow to
      several lines and must never cover the buttons */
   .p2-panel {
-    top: calc(144px + var(--safe-top));
+    top: calc(168px + var(--safe-top));
     left: calc(10px + var(--safe-left));
     right: calc(10px + var(--safe-right));
     bottom: auto;
     width: auto;
     max-height: 44vh;
     display: grid;
-    grid-template-columns: 112px 1fr;
+    grid-template-columns: 104px 1fr;
     grid-auto-rows: auto;
     align-items: center;
     gap: 10px 12px;
-    padding: 14px;
+    padding: 12px 12px 12px 26px;
+    background-position: 0 0, 0 0, 11px 0, 0 0;
     transform: translateY(calc(-100% - 160px));
   }
 
   .p2-panel__head {
     grid-column: 2;
     grid-row: 1;
+    grid-template-columns: 1fr;
   }
 
-  .p2-panel__icon {
-    width: 48px;
-    height: 48px;
+  /* the tags above already carry the picture; the sheet is narrow */
+  .p2-panel__icon,
+  .p2-panel__stitch {
+    display: none;
   }
 
-  .p2-panel__icon .p2-layer-icon {
-    width: 32px;
-    height: 32px;
+  .p2-panel__name {
+    font-size: 1.45rem;
+  }
+
+  .p2-panel__vi.sheet {
+    margin-top: 4px;
+    padding: 3px 9px 4px;
+    font-size: 0.95rem;
   }
 
   .p2-panel__photo {
     grid-column: 1;
     grid-row: 1 / span 2;
-    aspect-ratio: 1;
     max-height: none;
     min-height: 0;
+    padding: 6px 6px 4px;
   }
 
-  .p2-panel__dots {
-    grid-column: 1 / -1;
-    margin: 0;
-    padding: 0;
+  .p2-panel__photo picture {
+    flex: none;
+    aspect-ratio: 1;
   }
 
   .p2-panel__photo-tag {
-    left: 4px;
-    bottom: 4px;
-    padding: 2px 8px 2px 4px;
+    gap: 4px;
     font-size: 0.8rem;
+  }
+
+  /* the mount is narrow: the word alone, so it stays on one line */
+  .p2-panel__photo-tag svg {
+    display: none;
   }
 
   .p2-panel__extras {
@@ -704,32 +912,41 @@
     display: none;
   }
 
-  .p2-chip {
-    min-height: 56px;
+  .p2-chip.tag {
+    min-height: var(--tap-min);
+    padding: 4px 10px 4px 26px;
+    gap: 8px;
     font-size: 0.95rem;
   }
 
   .p2-chip__icon {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
   }
 
   .p2-swatch {
     min-height: 72px;
+    padding: 8px 2px 4px;
     font-size: 0.85rem;
   }
 
   .p2-swatch__blob {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
   }
 
   .p2-panel__foot {
     grid-column: 1 / -1;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     box-shadow: 0 11px 0 var(--paper);
+  }
+
+  /* the stitches on their own line above the buttons */
+  .p2-panel__dots {
+    flex: 1 0 100%;
   }
 
   .p2-panel__nav {
@@ -754,8 +971,10 @@
     flex: 1;
     width: auto;
     min-height: 72px;
-    padding: 0 16px;
-    font-size: 1.3rem;
+    padding: 0 10px;
+    gap: 8px;
+    font-size: 1.2rem;
+    white-space: nowrap;
   }
 
   .p2-done .icon {
@@ -771,7 +990,25 @@
   }
 }
 
+/* paper shadows must not swallow the keyboard focus ring */
+.p2-dot:focus-visible,
+.p2-showme:focus-visible,
+.p2-question__say:focus-visible,
+.p2-panel__say:focus-visible,
+.p2-panel__photo:focus-visible,
+.p2-chip.tag:focus-visible,
+.p2-swatch:focus-visible,
+.p2-nav:focus-visible,
+.p2-replay:focus-visible,
+.p2-done:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
 .reduced-motion .p2-panel,
 .reduced-motion .p2-counter {
   transition-duration: 0.15s;
+}
+
+.reduced-motion .p2-panel__stitch {
+  animation: none;
 }

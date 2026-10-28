@@ -1,11 +1,10 @@
-/* Colour Your Nón Lá: page picker (.cp-*) and studio (.cs-*). Tablet landscape first. */
+/* Colour Your Nón Lá: page picker (.cp-*) and studio (.cs-*), laid out on the hat-maker's table
+   (docs/DESIGN.md). The table itself (paper ground, pool of light, grain) is the shared #app
+   background; everything here is paper, ink dots, paint dabs and red thread. Tablet landscape
+   first. */
 
 .colour-screen {
   --paper-sheet: #FFFDF7;
-  padding-bottom: calc(100px + var(--safe-bottom));
-  background:
-    radial-gradient(70% 55% at 12% 100%, rgba(169, 216, 160, 0.35), transparent 70%),
-    radial-gradient(60% 50% at 95% 0%, rgba(244, 167, 154, 0.3), transparent 70%);
 }
 
 /* ---------- top bar additions ---------- */
@@ -32,21 +31,27 @@
   height: 34px;
 }
 
+/* how many pictures are on the wall: a small straw stamp on the button's corner (like the hub's) */
 .cs-nav__count,
 .cp-gallery__count {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 28px;
-  height: 28px;
-  padding: 0 7px;
-  border-radius: 999px;
-  background: var(--dragon-600);
-  color: #fff;
-  font-size: 0.95rem;
-  line-height: 28px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(59, 42, 28, 0.3);
+  top: -10px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  border: 2px solid var(--straw-700);
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3.5px var(--straw-700);
+  color: var(--straw-700);
+  font-family: var(--font-hand);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  rotate: 8deg;
 }
 
 .cs-nav__count[hidden],
@@ -69,32 +74,47 @@
   display: none;
 }
 
-.cp-bubble {
-  max-width: min(760px, 92vw);
-  padding: 14px 14px 14px 18px;
+/* the question on a sheet taped to the table (the tape pokes above its top edge) */
+.cp-head {
+  padding-top: 10px;
 }
 
-.cp-bubble__hat {
-  width: 64px;
-  height: 64px;
+.cp-sheet {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: min(780px, 92vw);
+  padding: 16px 16px 16px 20px;
+}
+
+.cp-sheet__stamp {
   flex: none;
+  width: 56px;
+  height: 56px;
 }
 
-.cp-bubble__text {
+.cp-sheet__stamp svg {
+  width: 30px;
+  height: 30px;
+}
+
+.cp-sheet__text {
   flex: 1;
+  min-width: 0;
 }
 
 .cp-question {
   margin: 0;
-  font-size: clamp(1.35rem, 2.6vw, 2rem);
-  color: var(--forest-700);
+  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+  color: var(--forest-900);
 }
 
+/* the hint, hand-written under the question */
 .cp-sub {
-  margin: 2px 0 0;
-  font-family: var(--font-body);
+  margin: 4px 0 0;
+  font-family: var(--font-hand);
   font-size: clamp(1rem, 1.6vw, 1.2rem);
-  font-weight: 700;
+  font-weight: 600;
   color: var(--ink-soft);
 }
 
@@ -110,92 +130,109 @@
   gap: clamp(14px, 2vw, 26px);
 }
 
+/* a page is a sheet of paper (grain, deckle, corners and shadow come from .sheet) lying a little
+   askew; it straightens up under the hand */
 .cp-card {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 10px;
-  padding: 12px 12px 14px;
-  border: 0;
-  border-radius: 26px;
-  background: var(--paper);
-  box-shadow: var(--shadow-soft);
-  font-family: var(--font-head);
+  padding: 10px 10px 12px;
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
   text-align: center;
-  transition: transform 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out);
+  transition: translate 0.18s var(--ease-out), rotate 0.18s var(--ease-out), scale 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out);
   touch-action: manipulation;
 }
 
-.cp-card:nth-child(4n + 1) { --tilt: -1.2deg; }
-.cp-card:nth-child(4n + 2) { --tilt: 0.8deg; }
-.cp-card:nth-child(4n + 3) { --tilt: -0.6deg; }
-.cp-card:nth-child(4n + 4) { --tilt: 1.1deg; }
-
-.cp-card {
-  transform: rotate(var(--tilt, 0deg));
-}
-
 .cp-card:hover {
-  transform: rotate(0deg) translateY(-4px);
-  box-shadow: var(--shadow-lift);
+  translate: 0 -4px;
+  rotate: 0deg;
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .cp-card:active {
-  transform: scale(0.97);
+  scale: 0.97;
 }
 
+/* the line art on a mount of deeper paper with a hairline deckle round the print */
 .cp-thumb {
   position: relative;
   aspect-ratio: 4 / 3;
-  border-radius: 16px;
+  padding: 6px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper-deep);
+  background-blend-mode: multiply, normal;
   overflow: hidden;
+}
+
+.cp-thumb::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 8px 6px 9px 5px / 6px 9px 5px 8px;
   background: var(--paper-sheet);
-  box-shadow: inset 0 0 0 2px rgba(122, 90, 58, 0.18);
+}
+
+.cp-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: var(--deckle);
+  border-radius: 8px 6px 9px 5px / 6px 9px 5px 8px;
+  pointer-events: none;
 }
 
 .cp-thumb img {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  max-width: none;
   object-fit: contain;
 }
 
-.cp-thumb.is-missing {
+.cp-thumb.is-missing::before {
   background: repeating-linear-gradient(45deg, var(--straw-200), var(--straw-200) 12px, var(--straw-300) 12px, var(--straw-300) 24px);
 }
 
+/* the page number, stamped in red ink on the corner */
 .cp-card__num {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--mango-400);
-  color: var(--wood-900);
-  font-size: 1.4rem;
-  font-weight: 800;
-  line-height: 44px;
-  box-shadow: 0 3px 8px rgba(59, 42, 28, 0.25);
+  z-index: 1;
+  top: -10px;
+  left: -8px;
+  width: 46px;
+  height: 46px;
+  font-size: 1.3rem;
 }
 
+/* "Keep colouring": a paper sticker stuck on the picture, hand-written */
 .cp-card__draft {
   position: absolute;
-  top: 18px;
-  right: 18px;
+  z-index: 1;
+  top: 14px;
+  right: -6px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px 4px 6px;
-  border-radius: 999px;
-  background: var(--dragon-600);
-  color: #fff;
+  padding: 5px 12px 5px 8px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
+  color: var(--dragon-600);
+  font-family: var(--font-hand);
   font-size: 0.95rem;
   font-weight: 700;
-  box-shadow: 0 3px 8px rgba(59, 42, 28, 0.25);
-  --swatch: #fff;
+  rotate: 4deg;
+  --swatch: var(--dragon-600);
 }
 
 .cp-card__draft[hidden] {
@@ -210,8 +247,8 @@
 .cp-card__name {
   font-size: clamp(1.05rem, 1.7vw, 1.35rem);
   font-weight: 700;
-  line-height: 1.15;
-  color: var(--wood-900);
+  line-height: 1.12;
+  color: var(--forest-900);
   min-height: 2.3em;
   display: grid;
   place-items: center;
@@ -222,16 +259,30 @@
   justify-content: center;
 }
 
+/* "My Pictures · Tranh của con" on a luggage tag, the name hand-written */
 .cp-gallery {
-  position: relative;
-  min-height: 76px;
-  padding: 0 32px 0 22px;
-  font-size: 1.45rem;
+  min-height: 72px;
+  padding: 8px 26px 8px 34px;
+  gap: 12px;
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.3rem;
+  transition: translate 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
+  touch-action: manipulation;
+}
+
+.cp-gallery:hover {
+  translate: 0 -2px;
+  box-shadow: var(--shadow-paper-lift);
+}
+
+.cp-gallery:active {
+  scale: 0.97;
 }
 
 .cp-gallery .icon {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
 }
 
 /* ---------- studio ---------- */
@@ -241,7 +292,7 @@
   position: relative;
   height: 100%;
   display: grid;
-  grid-template-columns: 108px minmax(0, 1fr) 236px;
+  grid-template-columns: 112px minmax(0, 1fr) 236px;
   gap: 14px;
 }
 
@@ -257,13 +308,21 @@
   min-height: 0;
 }
 
+/* the rail: a flat sheet (.sheet--flat) the tools lie on */
+.cs-rail {
+  padding: 8px 6px;
+  border-radius: var(--corner-b);
+}
+
 .cs-tools {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
+/* a tool: icon over its name, on paper; the one in hand is an ink block with a stitched edge */
 .cs-btn {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -272,12 +331,14 @@
   min-width: var(--tap-min);
   min-height: 76px;
   padding: 6px 4px;
-  border: 0;
-  border-radius: 20px;
-  background: var(--paper);
-  color: var(--wood-900);
-  box-shadow: var(--shadow-soft);
-  font-family: var(--font-head);
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  color: var(--ink);
+  font-family: var(--font-ui);
   transition: transform 0.15s var(--ease-out), background 0.15s, box-shadow 0.15s;
   touch-action: manipulation;
 }
@@ -302,27 +363,41 @@
 }
 
 .cs-btn__label {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   line-height: 1.05;
   text-align: center;
 }
 
 .cs-tool[aria-pressed="true"] {
+  border-color: transparent;
   background: var(--forest-700);
-  color: var(--cream);
-  box-shadow: 0 0 0 4px var(--mango-400), var(--shadow-lift);
-  transform: translateX(4px);
+  color: var(--paper);
+  box-shadow: var(--shadow-paper);
 }
 
+.cs-tool[aria-pressed="true"]::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 2px dashed currentColor;
+  border-radius: inherit;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* brush sizes: three ink dots on a strip of deeper paper */
 .cs-sizes {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 6px;
-  border-radius: 24px;
-  background: rgba(255, 249, 236, 0.75);
-  box-shadow: inset 0 0 0 2px rgba(122, 90, 58, 0.12);
+  gap: 2px;
+  padding: 4px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper-deep);
+  background-blend-mode: multiply, normal;
 }
 
 .cs-size {
@@ -330,12 +405,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 3px;
   min-height: var(--tap-min);
   border: 0;
-  border-radius: 18px;
+  border-radius: var(--corner-s);
   background: transparent;
-  font-family: var(--font-head);
+  color: var(--ink);
+  font-family: var(--font-ui);
   touch-action: manipulation;
 }
 
@@ -343,31 +419,36 @@
   width: var(--d);
   height: var(--d);
   border-radius: 50%;
-  background: var(--swatch);
-  box-shadow: 0 0 0 2px #fff, 0 1px 4px rgba(59, 42, 28, 0.35);
+  background: var(--ink);
+  transition: box-shadow 0.15s;
 }
 
 .cs-size__label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
   line-height: 1;
 }
 
+/* the chosen size: its dot gets the thread ring */
 .cs-size[aria-pressed="true"] {
-  background: var(--straw-300);
+  background: var(--paper);
+}
+
+.cs-size[aria-pressed="true"] .cs-size__dot {
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px var(--thread);
 }
 
 .cs-size.is-muted {
-  opacity: 0.55;
-}
-
-.cs-size.is-muted[aria-pressed="true"] {
-  background: rgba(238, 211, 154, 0.5);
+  opacity: 0.5;
 }
 
 .cs[data-tool="eraser"] .cs-size__dot {
-  background: #fff;
-  box-shadow: 0 0 0 2px var(--wood-500);
+  background: var(--paper-sheet);
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+.cs[data-tool="eraser"] .cs-size[aria-pressed="true"] .cs-size__dot {
+  box-shadow: inset 0 0 0 2px var(--ink), 0 0 0 3px var(--paper), 0 0 0 5px var(--thread);
 }
 
 .cs-grow {
@@ -375,30 +456,66 @@
   min-height: 4px;
 }
 
+/* undo · redo · clear · save: paper discs with a hand-written name under each */
+.cs-act,
+.cs-save {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  gap: 4px;
+}
+
+.cs-act .cs-btn__icon,
+.cs-save .cs-btn__icon {
+  box-sizing: border-box;
+  width: 60px;
+  height: 60px;
+  padding: 13px;
+  border: var(--deckle);
+  border-radius: 50%;
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
+  transition: box-shadow 0.15s;
+}
+
+.cs-act .cs-btn__label,
+.cs-save .cs-btn__label {
+  font-family: var(--font-hand);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.cs-act:hover .cs-btn__icon,
+.cs-save:hover .cs-btn__icon {
+  box-shadow: var(--shadow-paper-lift);
+}
+
+/* Save is the one disc sewn round with red thread */
 .cs-save {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  min-height: 92px;
-  border: 0;
-  border-radius: 24px;
-  background: var(--terracotta-600);
-  color: #fff;
-  font-family: var(--font-head);
-  box-shadow: var(--shadow-soft);
+  color: var(--ink);
+  font-family: var(--font-ui);
   transition: transform 0.15s var(--ease-out);
   touch-action: manipulation;
 }
 
 .cs-save .cs-btn__icon {
-  width: 42px;
-  height: 42px;
+  width: 68px;
+  height: 68px;
+  padding: 14px;
+  box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 5px var(--thread), var(--shadow-paper);
 }
 
 .cs-save .cs-btn__label {
-  font-size: 1.25rem;
+  font-size: 1rem;
+  color: var(--thread);
 }
 
 .cs-save:active {
@@ -409,17 +526,22 @@
   opacity: 0.45;
 }
 
-.cs-save.is-ready {
+/* three strokes in and nothing saved yet: the thread ring breathes */
+.cs-save.is-ready .cs-btn__icon {
   animation: cs-glow 1.8s ease-in-out infinite;
 }
 
 @keyframes cs-glow {
-  0%, 100% { box-shadow: var(--shadow-soft), 0 0 0 0 rgba(246, 166, 35, 0.75); }
-  50% { box-shadow: var(--shadow-lift), 0 0 0 12px rgba(246, 166, 35, 0); }
+  0%, 100% { box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 5px var(--thread), var(--shadow-paper), 0 0 0 0 rgba(200, 57, 43, 0.5); }
+  50% { box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 5px var(--thread), var(--shadow-paper-lift), 0 0 0 12px rgba(200, 57, 43, 0); }
 }
 
-.cs-save.is-saved {
-  background: var(--forest-500);
+.cs-save.is-saved .cs-btn__icon {
+  box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 5px var(--forest-500), var(--shadow-paper);
+}
+
+.cs-save.is-saved .cs-btn__label {
+  color: var(--forest-700);
 }
 
 .cs-save.is-busy {
@@ -434,20 +556,20 @@
   justify-content: center;
   min-width: 0;
   min-height: 0;
-  padding: 14px;
+  padding: 16px;
 }
 
+/* the page: a print on a mount of deeper paper with a deckle edge, lifted off the table */
 .cs-board {
   position: relative;
   flex: none;
-  border-radius: 14px;
-  background:
-    radial-gradient(120% 90% at 30% 20%, rgba(255, 255, 255, 0.9), transparent 60%),
-    var(--paper-sheet);
+  border-radius: 6px;
+  background: var(--paper-sheet);
   box-shadow:
-    0 0 0 9px var(--wood-500),
-    0 0 0 12px var(--wood-700),
-    0 18px 36px rgba(59, 42, 28, 0.3);
+    0 0 0 12px var(--paper-deep),
+    0 0 0 13px rgba(59, 42, 28, 0.16),
+    0 2px 3px 13px rgba(59, 42, 28, 0.08),
+    0 22px 44px 8px rgba(59, 42, 28, 0.22);
   touch-action: none;
   cursor: crosshair;
   outline: none;
@@ -455,9 +577,11 @@
 
 .cs-board:focus-visible {
   box-shadow:
-    0 0 0 9px var(--wood-500),
-    0 0 0 12px var(--mango-400),
-    0 18px 36px rgba(59, 42, 28, 0.3);
+    0 0 0 12px var(--paper-deep),
+    0 0 0 13px rgba(59, 42, 28, 0.16),
+    0 0 0 17px var(--mango-400),
+    0 0 0 19px var(--forest-700),
+    0 22px 44px 8px rgba(59, 42, 28, 0.22);
 }
 
 .cs-board canvas {
@@ -465,7 +589,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  border-radius: 14px;
+  border-radius: 6px;
   touch-action: none;
 }
 
@@ -484,14 +608,14 @@
   top: 0;
   display: none;
   border-radius: 50%;
-  border: 2px solid var(--wood-900);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
+  border: 2px solid var(--ink);
+  box-shadow: 0 0 0 2px rgba(255, 253, 247, 0.8);
   background: color-mix(in srgb, var(--swatch) 35%, transparent);
   pointer-events: none;
 }
 
 .cs[data-tool="eraser"] .cs-cursor {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 253, 247, 0.5);
   border-style: dashed;
 }
 
@@ -517,11 +641,12 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  border-radius: 14px;
+  border-radius: 6px;
   background: rgba(255, 253, 247, 0.92);
-  font-family: var(--font-head);
-  font-size: 1.4rem;
-  color: var(--wood-700);
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--ink-soft);
   text-align: center;
   padding: 24px;
 }
@@ -550,45 +675,37 @@
   50% { transform: rotate(8deg) translateY(-6px); }
 }
 
-/* right column: undo · redo · clear, then the paint box */
+/* right column: undo · redo · clear discs, then the paint box */
 
 .cs-acts {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
+  padding: 4px 0;
 }
 
 .cs-act {
-  min-height: 74px;
+  min-height: 84px;
 }
 
-.cs-act .cs-btn__icon {
-  width: 32px;
-  height: 32px;
-}
-
-.cs-act .cs-btn__label {
-  font-size: 0.92rem;
-}
-
+/* the paint box: a flat sheet (.sheet--flat) with the dabs of paint on it */
 .cs-palette {
   padding: 10px 10px 12px;
-  border-radius: 24px;
-  background: var(--paper);
-  box-shadow: var(--shadow-soft);
+  border-radius: var(--corner-b);
   min-height: 0;
   overflow: auto;
 }
 
+/* "Strap colours", hand-written above the first row */
 .cs-straplabel {
   display: flex;
   align-items: center;
   gap: 6px;
   margin: 0 0 4px 4px;
-  font-family: var(--font-head);
-  font-weight: 700;
+  font-family: var(--font-hand);
+  font-weight: 600;
   font-size: 0.95rem;
-  color: var(--wood-700);
+  color: var(--ink-soft);
 }
 
 .cs-straplabel__hat {
@@ -616,42 +733,54 @@
   touch-action: manipulation;
 }
 
+/* a round dab of paint, flat and a little uneven at the edge */
 .cs-swatch__blob {
-  width: 52px;
-  height: 52px;
-  border-radius: 46% 54% 50% 50% / 52% 48% 52% 48%;
+  width: 50px;
+  height: 50px;
+  border-radius: 47% 53% 50% 50% / 52% 48% 52% 48%;
   background: var(--c);
-  box-shadow: inset 0 -5px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 rgba(255, 255, 255, 0.3), 0 3px 6px rgba(59, 42, 28, 0.28);
+  box-shadow: 0 1px 2px rgba(59, 42, 28, 0.3);
   transition: transform 0.15s var(--ease-out), box-shadow 0.15s;
 }
 
 .cs-swatch--light .cs-swatch__blob {
-  box-shadow: inset 0 0 0 2px rgba(122, 90, 58, 0.25), inset 0 -5px 0 rgba(0, 0, 0, 0.06), 0 3px 6px rgba(59, 42, 28, 0.2);
+  box-shadow: inset 0 0 0 2px rgba(59, 42, 28, 0.22), 0 1px 2px rgba(59, 42, 28, 0.2);
 }
 
-.cs-swatch--strap::after {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: 50%;
-  border: 2px dashed rgba(142, 91, 168, 0.45);
-  pointer-events: none;
+/* the three strap colours sit on a little round mount of deeper paper */
+.cs-swatch--strap {
+  background: radial-gradient(circle, var(--paper-deep) 29px, rgba(59, 42, 28, 0.16) 29.5px, rgba(59, 42, 28, 0.16) 30.5px, transparent 31px);
 }
 
 .cs-swatch:active .cs-swatch__blob {
   transform: scale(0.9);
 }
 
+/* the paint in hand: a ring of red thread sewn round the dab */
+.cs-swatch::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 2px dashed var(--thread);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+}
+
+.cs-swatch[aria-pressed="true"]::before {
+  opacity: 0.95;
+}
+
 .cs-swatch[aria-pressed="true"] .cs-swatch__blob {
-  transform: scale(1.08);
-  box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--forest-700), 0 4px 10px rgba(59, 42, 28, 0.35);
+  transform: scale(0.92);
 }
 
 .cs-swatch__tick {
   position: absolute;
-  width: 26px;
-  height: 26px;
-  color: #fff;
+  width: 24px;
+  height: 24px;
+  color: var(--paper);
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
   opacity: 0;
   pointer-events: none;
@@ -661,7 +790,7 @@
 .cs-swatch[data-hex="#FFD84D"] .cs-swatch__tick,
 .cs-swatch[data-hex="#A9D8A0"] .cs-swatch__tick,
 .cs-swatch[data-hex="#EDC9A0"] .cs-swatch__tick {
-  color: var(--wood-900);
+  color: var(--ink);
   filter: none;
 }
 
@@ -678,13 +807,14 @@
   display: grid;
   place-items: center;
   border-radius: 28px;
-  background: rgba(18, 48, 31, 0.45);
+  background: rgba(31, 30, 20, 0.45);
 }
 
 .cs-confirm[hidden] {
   display: none;
 }
 
+/* the question on a sheet laid over the page */
 .cs-confirm__card {
   display: flex;
   flex-direction: column;
@@ -692,23 +822,25 @@
   gap: 14px;
   max-width: min(560px, 90vw);
   padding: 26px 28px 24px;
-  border-radius: var(--radius-l);
-  background: var(--paper);
-  box-shadow: var(--shadow-lift);
+  border-radius: var(--corner-b);
+  box-shadow: var(--shadow-paper-lift);
   text-align: center;
 }
 
 .cs-confirm__icon {
   width: 72px;
   height: 72px;
-  color: var(--wood-700);
+  color: var(--ink);
 }
 
 .cs-confirm__q {
   margin: 0;
-  font-family: var(--font-head);
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
+  font-weight: 700;
   font-size: clamp(1.3rem, 2.4vw, 1.75rem);
   line-height: 1.2;
+  color: var(--forest-900);
 }
 
 .cs-confirm__btns {
@@ -722,25 +854,25 @@
   min-height: 76px;
 }
 
-.cs-confirm__yes {
-  background: var(--terracotta-600);
-  color: #fff;
-}
-
 .cs-fly {
   position: fixed;
   z-index: 50;
-  border-radius: 12px;
-  box-shadow: 0 0 0 6px #fff, var(--shadow-lift);
+  border-radius: 4px;
+  box-shadow: 0 0 0 6px var(--paper), 0 0 0 7px rgba(59, 42, 28, 0.16), var(--shadow-paper-lift);
   pointer-events: none;
   transform-origin: 50% 50%;
+}
+
+/* keyboard focus: the shared .btn shadow (and a pressed tool's) would hide the ring */
+.colour-screen :is(.btn, .cs-btn, .cs-size, .cs-save):focus-visible {
+  box-shadow: var(--focus-ring);
 }
 
 /* ---------- smaller tablets / landscape phones ---------- */
 
 @media (max-width: 1000px) {
   .cs {
-    grid-template-columns: 96px minmax(0, 1fr) 222px;
+    grid-template-columns: 100px minmax(0, 1fr) 222px;
     gap: 10px;
   }
   .cs-nav__label {
@@ -760,14 +892,24 @@
     width: 30px;
     height: 30px;
   }
-  .cs-save {
+  .cs-act {
     min-height: 76px;
+  }
+  .cs-act .cs-btn__icon {
+    width: 54px;
+    height: 54px;
+    padding: 12px;
+  }
+  .cs-save .cs-btn__icon {
+    width: 60px;
+    height: 60px;
+    padding: 12px;
   }
   .cs-swatches {
     grid-template-columns: repeat(4, 64px);
   }
   .cs {
-    grid-template-columns: 96px minmax(0, 1fr) 302px;
+    grid-template-columns: 100px minmax(0, 1fr) 302px;
   }
 }
 
@@ -775,7 +917,7 @@
 
 @media (max-width: 700px) {
   .colour-screen {
-    padding: calc(150px + var(--safe-top)) 10px calc(10px + var(--safe-bottom));
+    padding: calc(150px + var(--safe-top)) 10px calc(120px + var(--safe-bottom));
   }
   .colour-screen .topbar__title {
     display: none;
@@ -786,7 +928,7 @@
     left: 0;
   }
   .colour-screen[data-view="picker"] {
-    padding: calc(88px + var(--safe-top)) 12px calc(96px + var(--safe-bottom));
+    padding: calc(88px + var(--safe-top)) 12px calc(120px + var(--safe-bottom));
     overflow-y: auto;
   }
   .colour-screen[data-view="picker"] .cs-navgroup {
@@ -803,13 +945,48 @@
   .cp {
     height: auto;
     justify-content: flex-start;
+    gap: 18px;
   }
+  /* the picker scrolls here and the top bar's gallery button is hidden, so the tag is the only
+     way to the gallery: it lies under the question sheet, in view before any scrolling */
   .cp-grid {
+    order: 1;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .cp-bubble__hat {
+  .cp-sheet {
+    gap: 10px;
+    padding: 12px 10px 12px 12px;
+  }
+  .cp-sheet__stamp {
     width: 44px;
     height: 44px;
+  }
+  .cp-sheet__stamp svg {
+    width: 24px;
+    height: 24px;
+  }
+  .cp-card__num {
+    top: -8px;
+    left: -6px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.15rem;
+  }
+  .cp-card__draft {
+    top: 10px;
+    right: -4px;
+    font-size: 0.85rem;
+  }
+  .cp-gallery {
+    min-height: var(--tap-min);
+    padding: 6px 20px 6px 32px;
+    gap: 10px;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+  .cp-gallery .icon {
+    width: 34px;
+    height: 34px;
   }
 
   .cs {
@@ -820,18 +997,37 @@
       "fill brush eraser undo redo"
       "sizes sizes sizes clear save"
       "pal pal pal pal pal";
-    gap: 6px;
+    gap: 5px;
   }
+  /* the rail and the side column dissolve into the grid: the discs and tools sit straight on the table */
   .cs-rail,
   .cs-side,
   .cs-tools,
   .cs-acts {
     display: contents;
   }
+  /* the page a touch narrower than the screen, so its paper mount has room all round and the
+     paint box below still clears the caption bar */
   .cs-cell {
     grid-area: cell;
-    height: calc((100vw - 20px) * 0.75 + 16px);
+    width: calc(100% - 24px);
+    height: calc((100vw - 44px) * 0.75 + 16px);
+    justify-self: center;
     padding: 8px;
+  }
+  .cs-board {
+    box-shadow:
+      0 0 0 7px var(--paper-deep),
+      0 0 0 8px rgba(59, 42, 28, 0.16),
+      0 12px 26px 4px rgba(59, 42, 28, 0.2);
+  }
+  .cs-board:focus-visible {
+    box-shadow:
+      0 0 0 7px var(--paper-deep),
+      0 0 0 8px rgba(59, 42, 28, 0.16),
+      0 0 0 11px var(--mango-400),
+      0 0 0 13px var(--forest-700),
+      0 12px 26px 4px rgba(59, 42, 28, 0.2);
   }
   [data-test="tool-fill"] { grid-area: fill; }
   [data-test="tool-brush"] { grid-area: brush; }
@@ -840,19 +1036,46 @@
   [data-test="redo"] { grid-area: redo; }
   [data-test="clear"] { grid-area: clear; }
   .cs-btn {
-    min-height: 68px;
+    min-height: var(--tap-min);
     padding: 4px 2px;
+    box-shadow: var(--shadow-paper);
   }
   .cs-btn__icon {
     width: 28px;
     height: 28px;
   }
-  .cs-btn__label,
-  .cs-act .cs-btn__label {
-    font-size: 0.82rem;
+  .cs-btn__label {
+    font-size: 0.8rem;
   }
-  .cs-tool[aria-pressed="true"] {
-    transform: translateY(-2px);
+  .cs-act,
+  .cs-save {
+    min-height: var(--tap-min);
+    padding: 0 2px;
+    gap: 2px;
+    box-shadow: none;
+  }
+  .cs-act .cs-btn__icon {
+    width: 46px;
+    height: 46px;
+    padding: 9px;
+  }
+  .cs-save .cs-btn__icon {
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 4px var(--thread), var(--shadow-paper);
+  }
+  .cs-save.is-saved .cs-btn__icon {
+    box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 4px var(--forest-500), var(--shadow-paper);
+  }
+  .cs-act .cs-btn__label,
+  .cs-save .cs-btn__label {
+    font-size: 0.78rem;
+  }
+  /* "Lưu tranh" would wrap in its narrow column and push the whole row down */
+  .cs-save .cs-btn__label {
+    font-size: 0.74rem;
+    white-space: nowrap;
   }
   .cs-sizes {
     grid-area: sizes;
@@ -869,21 +1092,13 @@
   }
   .cs-save {
     grid-area: save;
-    min-height: 68px;
-  }
-  .cs-save .cs-btn__icon {
-    width: 30px;
-    height: 30px;
-  }
-  .cs-save .cs-btn__label {
-    font-size: 0.95rem;
   }
   .cs-download {
     grid-column: 1 / -1;
   }
   .cs-palette {
     grid-area: pal;
-    padding: 6px 8px 8px;
+    padding: 4px 6px;
     overflow: hidden;
   }
   .cs-straplabel {
@@ -896,12 +1111,11 @@
     grid-auto-flow: column;
     grid-auto-columns: 64px;
     justify-content: start;
-    gap: 4px 6px;
+    gap: 3px 6px;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
     touch-action: pan-x;
-    padding-bottom: 2px;
   }
   .cs-swatches::-webkit-scrollbar {
     display: none;

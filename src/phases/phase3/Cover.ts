@@ -1,7 +1,7 @@
 /**
- * The storybook cover the hat shrinks into at the end of Phase 2: forest-green cloth, a golden frame
- * and a glowing nón lá (the Blender render of the same hat, so the 3D hat lands on its own picture).
- * Tapping it swings the cover open in 3D.
+ * The storybook cover the hat shrinks into at the end of Phase 2: forest-green cloth, a golden frame,
+ * a glowing nón lá (the Blender render of the same hat, so the 3D hat lands on its own picture), a
+ * stitched paper label and a red thread bookmark. Tapping it swings the cover open in 3D.
  */
 import { gsap } from 'gsap';
 import { el, svg } from '../../ui/el';
@@ -36,7 +36,7 @@ export class Cover {
     this.hat = el('div.p3-book__hat');
     this.hat.append(renderedHat());
     // the title stays live text on top of the art, so it follows the EN/VI toggle
-    const plate = el('div.p3-book__plate', {}, i18n.bind(el('span.p3-book__title'), 'p3.title'), i18n.bind(el('span.p3-book__sub'), 'p3.cover.sub'));
+    const plate = el('div.p3-book__plate.stitched.stitched--thread', {}, i18n.bind(el('span.p3-book__title'), 'p3.title'), i18n.bind(el('span.p3-book__sub'), 'p3.cover.sub'));
     const art = COVER_ART_READY
       ? el('div.p3-book__frame.p3-book__frame--art', {}, el('img.p3-book__art', { src: assetUrl('img/art/storybook-cover.webp'), alt: '' }), plate)
       : el('div.p3-book__frame', {}, el('div.p3-book__glow'), this.hat, plate);
@@ -46,7 +46,8 @@ export class Cover {
       el('div.p3-book__front', {}, el('div.p3-book__spine'), art),
       el('div.p3-book__inside', {}, el('div.p3-book__endpaper')),
     );
-    this.book = el('div.p3-book', {}, el('div.p3-book__pages'), this.face);
+    // the bookmark hangs out from between the pages, so it sits under them in the DOM
+    this.book = el('div.p3-book', {}, el('div.p3-book__ribbon'), el('div.p3-book__pages'), this.face);
     this.cta = el(
       'button.btn.btn--cta.p3-cover-cta',
       { type: 'button', 'data-touch': '', 'data-test': 'cover-open', onclick: onOpen },

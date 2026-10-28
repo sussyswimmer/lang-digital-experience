@@ -1,7 +1,8 @@
 /**
- * The Nón Lá Explorer certificate: the drawn certificate, an optional child's name typed by a
- * grown-up (kept on this device only), and Save picture / Save PDF / Print. Arriving straight from
- * the quiz it celebrates with confetti and tells the child how many badges they collected.
+ * The Nón Lá Explorer certificate: the drawn certificate lying on the table, and beside it on a
+ * sheet of paper an optional child's name typed by a grown-up (kept on this device only) and
+ * Save picture / Save PDF / Print. Arriving straight from the quiz it celebrates with confetti
+ * and tells the child how many badges they collected.
  */
 import '../hub/p4.css';
 import './certificate.css';
@@ -68,13 +69,14 @@ class Certificate implements Screen {
       this.input,
       i18n.bind(el('p.p4c-name__note'), 'cert.name.private'),
     );
-    const png = labelButton('button.p4-action.p4-action--cta', P4_ICONS.download, 'cert.png', () => void this.savePng(), { 'data-test': 'save-png' });
-    const pdf = labelButton('button.p4-action', P4_ICONS.pdf, 'cert.pdf', () => void this.savePdf(), { 'data-test': 'save-pdf' });
-    const print = labelButton('button.p4-action', P4_ICONS.print, 'cert.print', () => void this.print(), { 'data-test': 'print' });
+    // "Save picture" is the one red thing; the other ways of saving and going on are plain paper
+    const png = labelButton('button.btn.btn--cta', P4_ICONS.download, 'cert.png', () => void this.savePng(), { 'data-test': 'save-png' });
+    const pdf = labelButton('button.btn.btn--ghost', P4_ICONS.pdf, 'cert.pdf', () => void this.savePdf(), { 'data-test': 'save-pdf' });
+    const print = labelButton('button.btn.btn--ghost', P4_ICONS.print, 'cert.print', () => void this.print(), { 'data-test': 'print' });
     this.buttons = [png, pdf, print];
-    const again = labelButton('button.p4-action.p4-action--light', P4_ICONS.again, 'cert.again', () => this.go('quiz'), { 'data-test': 'again' });
-    const hub = labelButton('button.p4-action.p4-action--light', P4_ICONS.grid, 'hub.back', () => this.go('hub'), { 'data-test': 'to-hub' });
-    const panel = el('aside.p4c-panel', {}, nameBox, el('div.p4c-save', {}, png, pdf, print), el('div.p4c-more', {}, again, hub));
+    const again = labelButton('button.btn.btn--ghost', P4_ICONS.again, 'cert.again', () => this.go('quiz'), { 'data-test': 'again' });
+    const hub = labelButton('button.btn.btn--ghost', P4_ICONS.grid, 'hub.back', () => this.go('hub'), { 'data-test': 'to-hub' });
+    const panel = el('aside.p4c-panel.sheet', {}, nameBox, el('div.p4c-save', {}, png, pdf, print), el('div.p4c-more', {}, again, hub));
     root.append(TopBar(ctx, { titleId: 'cert.title' }), el('div.p4c-layout', {}, sheet, panel));
 
     // the print stylesheet shows only this picture

@@ -1,6 +1,8 @@
 /**
- * Hero: the title on a cream panel beside a window whose forest-green shutters swing open onto the
- * team's photo of hats against a blue sky (diverse-4, eager AVIF). Fruit from the market on the sill.
+ * Hero: the title set large straight on the paper, with the kicker on a luggage tag and the three
+ * facts on tags pinned under the Start button; beside it, overlapping the title block, a window
+ * whose forest-green shutters swing open onto the team's photo of hats against a blue sky
+ * (diverse-4, eager AVIF). Fruit stickers from the market on the sill.
  */
 import { el, svg } from '../ui/el';
 import { i18n } from '../i18n/i18n';
@@ -23,12 +25,20 @@ const MANGO = `<svg viewBox="0 0 110 90"><path d="M14 54C10 30 34 12 62 16c26 4 
 <path d="M71 6c10-4 22-2 28 6-10 4-20 3-28-6z" fill="#5f9e3f" stroke="#2f5d46" stroke-width="2"/>
 <ellipse cx="38" cy="38" rx="12" ry="7" fill="#fff" opacity=".28" transform="rotate(-20 38 38)"/></svg>`;
 
-const SWOOSH = `<svg viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M4 16C80 4 200 2 296 12" fill="none" stroke="#E0A93B" stroke-width="7" stroke-linecap="round"/></svg>`;
+/* a hand-drawn arrow: one wobbly stroke of red thread pointing down */
+const ARROW = `<svg viewBox="0 0 36 60" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18.5 4c-4.5 11 4.5 21-1 33-2 4.5 1.5 10 .5 17"/><path d="M8 43.5c3.5 4 7 8 10 12.5 3-5 7-9.5 11-13.5"/></svg>`;
 
 function fruit(markup: string, kind: string): SVGSVGElement {
   const s = svg(markup, 'hero__fruit');
   s.classList.add(`hero__fruit--${kind}`);
   return s;
+}
+
+/** the entrance: each piece settles onto the table in turn (paper.css .settle) */
+function settle<T extends HTMLElement>(node: T, order: number): T {
+  node.classList.add('settle');
+  node.style.setProperty('--settle-i', String(order));
+  return node;
 }
 
 export interface HeroParts {
@@ -39,7 +49,7 @@ export interface HeroParts {
 export function buildHero(opts: { startButton: HTMLElement; readAloud: ReadAloud; reduced: boolean; onScrollCue: () => void }): HeroParts {
   const photo = picture(
     { stem: 'diverse-4', widths: [640, 1280, 1920, 2560], alt: i18n.t('site.hero.alt'), focal: [0.42, 0.5] },
-    { eager: true, sizes: '(max-width: 760px) 100vw, 55vw', className: 'hero__photo' },
+    { eager: true, sizes: '(max-width: 760px) 100vw, 45vw', className: 'hero__photo' },
   );
   const img = photo.querySelector('img')!;
   img.setAttribute('fetchpriority', 'high');
@@ -70,24 +80,29 @@ export function buildHero(opts: { startButton: HTMLElement; readAloud: ReadAloud
       .then(() => requestAnimationFrame(() => (window.clearTimeout(t), open())));
   }
 
-  const chip = (icon: string, id: string) => el('li.hero__chip', {}, svg(icon), i18n.bind(el('span'), id));
+  const chip = (icon: string, id: string) => el('li.hero__chip.tag', {}, svg(icon), i18n.bind(el('span'), id));
   const scrollCue = el(
     'button.hero__scroll',
     { type: 'button', 'data-touch': '', onclick: opts.onScrollCue },
-    i18n.bind(el('span'), 'site.hero.scroll'),
-    el('span.hero__scroll-arrow', { 'aria-hidden': 'true' }, svg(SITE_ICONS.chevronDown)),
+    i18n.bind(el('span.hero__scroll-label'), 'site.hero.scroll'),
+    svg(ARROW, 'hero__scroll-arrow'),
   );
 
-  const panel = el(
-    'div.hero__panel',
+  // on a phone the copy block dissolves (display: contents) so the window can sit between the tagline and Start
+  const copy = el(
+    'div.hero__copy',
     {},
-    el('p.hero__kicker', {}, svg(SITE_ICONS.family), i18n.bind(el('span'), 'site.kicker')),
-    el('h1.hero__title', { tabindex: '-1' }, i18n.bind(el('span'), 'site.title'), svg(SWOOSH, 'hero__swoosh')),
-    el('div.hero__tagline', {}, i18n.bind(el('p'), 'site.tagline'), opts.readAloud.button('site.tagline')),
-    el('div.hero__actions', {}, opts.startButton),
-    el('ul.hero__chips', {}, chip(ICONS.speaker, 'site.chip.sound'), chip(SITE_ICONS.clock, 'site.chip.time'), chip(SITE_ICONS.tablet, 'site.chip.tablet')),
+    settle(el('p.hero__kicker.tag', {}, svg(SITE_ICONS.family), i18n.bind(el('span'), 'site.kicker')), 0),
+    settle(
+      el('h1.hero__title', { tabindex: '-1' }, i18n.bind(el('span'), 'site.title'), el('span.stitch.stitch--sew.hero__stitch', { 'aria-hidden': 'true' })),
+      1,
+    ),
+    settle(el('div.hero__tagline', {}, i18n.bind(el('p'), 'site.tagline'), opts.readAloud.button('site.tagline')), 2),
+    settle(el('div.hero__actions', {}, opts.startButton), 4),
+    settle(el('ul.hero__chips', {}, chip(ICONS.speaker, 'site.chip.sound'), chip(SITE_ICONS.clock, 'site.chip.time'), chip(SITE_ICONS.tablet, 'site.chip.tablet')), 5),
   );
+  settle(windowBox, 3);
 
-  const hero = el('header.hero', {}, el('div.hero__inner', {}, panel, windowBox), scrollCue);
+  const hero = el('header.hero', {}, el('div.hero__inner', {}, copy, windowBox), scrollCue);
   return { el: hero, scrollCue };
 }

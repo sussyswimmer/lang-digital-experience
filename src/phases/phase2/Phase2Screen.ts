@@ -65,7 +65,8 @@ export default function Phase2Screen(): Screen {
     showMe,
   );
   const loading = el('div.p2-loading', { role: 'status' }, el('span.p2-loading__hat', {}, svg(ICONS.hat)), i18n.bind(el('span'), 'p2.ui.loading'));
-  const counter = el('div.p2-counter', { 'aria-live': 'polite' }, el('span.p2-counter__n', {}, '0'), i18n.bind(el('span.p2-counter__w'), 'p2.ui.rings'));
+  // a red ink stamp that counts the rings
+  const counter = el('div.p2-counter.stamp', { 'aria-live': 'polite' }, el('span.p2-counter__n', {}, '0'), i18n.bind(el('span.p2-counter__w'), 'p2.ui.rings'));
   const panel = new InsightPanel({
     onPrev: () => {
       const p = prevChunk(chunk);
@@ -124,10 +125,12 @@ export default function Phase2Screen(): Screen {
     viewer?.setFrame(frameRect(), { duration });
   }
 
+  /** four paper tags on one red thread: the current one outlined in thread, done ones stamped */
   function paintDots(): void {
     const prog = ctx.progress.get().p2.layers;
     const open = ctx.flags.review || ctx.progress.get().firstRunComplete;
     dots.replaceChildren(
+      el('span.stitch.p2-dots__thread', { 'aria-hidden': 'true' }),
       ...LAYERS.map((l, i) => {
         const locked = !open && prog[l] === 'locked';
         const state = l === layer ? 'current' : locked ? 'locked' : prog[l] === 'done' ? 'done' : 'open';
@@ -147,9 +150,10 @@ export default function Phase2Screen(): Screen {
             },
           },
           svg(LAYER_ICONS[l], 'p2-layer-icon'),
-          prog[l] === 'done' && l !== layer ? el('span.p2-dot__tick', {}, svg(ICONS.check)) : null,
+          prog[l] === 'done' && l !== layer ? el('span.stamp.p2-dot__tick', {}, svg(ICONS.check)) : null,
         );
         b.classList.add(`is-${state}`);
+        if (state === 'current') b.classList.add('stitched', 'stitched--thread');
         return b;
       }),
     );
@@ -225,7 +229,7 @@ export default function Phase2Screen(): Screen {
     counter.classList.add('is-on');
     const num = counter.querySelector('.p2-counter__n')!;
     num.textContent = String(n);
-    gsap.fromTo(num, { scale: 1.5 }, { scale: 1, duration: 0.35, ease: 'back.out(3)' });
+    gsap.fromTo(num, { scale: 1.25 }, { scale: 1, duration: 0.35, ease: 'back.out(3)' });
   }
 
   function interactionDone(my: number): void {
@@ -303,7 +307,7 @@ export default function Phase2Screen(): Screen {
     if (layer === 'stitches') {
       const chip = (icon: string, id: string, cue: string, tone: string) =>
         el(
-          `button.p2-chip.p2-chip--${tone}` as 'button',
+          `button.tag.p2-chip.p2-chip--${tone}` as 'button',
           {
             type: 'button',
             'data-touch': '',

@@ -1,8 +1,5 @@
-/* "Tranh của con": a warm wall of pegged-up pictures, and a large view. */
-
-.gallery-screen {
-  padding-bottom: calc(100px + var(--safe-bottom));
-}
+/* "Tranh của con": the child's pictures lie on the table as paper photos held down with washi
+   tape (docs/DESIGN.md); tap one for the large view, a print on a sheet laid over the table. */
 
 .gl {
   height: 100%;
@@ -19,29 +16,49 @@
   flex-wrap: wrap;
 }
 
+/* the title in the storybook face beside a one-ink stamp, a short running stitch under it */
 .gl-title {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .gl-title h2 {
-  margin: 0;
+  position: relative;
+  margin: 0 0 12px;
   font-size: clamp(1.8rem, 3.4vw, 2.6rem);
-  color: var(--forest-700);
+  color: var(--forest-900);
   /* on a phone "My Pictures ·" / "Tranh của con", not a lone "của con" */
   text-wrap: balance;
 }
 
-.gl-title__icon {
-  width: 64px;
-  height: 64px;
-  color: var(--wood-700);
+.gl-title h2::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  bottom: -8px;
+  width: 96px;
+  height: 2px;
+  background: var(--stitch);
+  opacity: 0.9;
 }
 
+.gl-title__stamp {
+  flex: none;
+  width: 56px;
+  height: 56px;
+}
+
+.gl-title__stamp svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* "3 pictures", hand-written under the title */
 .gl-count {
   display: block;
-  font-weight: 700;
+  font-family: var(--font-hand);
+  font-weight: 600;
   color: var(--ink-soft);
 }
 
@@ -53,6 +70,7 @@
   display: none;
 }
 
+/* "Colour a picture": the one red thing on the screen */
 .gl-colour {
   --swatch: #fff;
   min-height: 76px;
@@ -67,16 +85,24 @@
   --swatch: #fff;
 }
 
+/* "these pictures stay only for this visit": a note on a strip of paper, hand-written */
 .gl-banner {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 18px;
-  border-radius: var(--radius-m);
-  background: var(--paper);
-  border: 3px dashed var(--mango-400);
-  font-weight: 700;
-  font-size: 1.1rem;
+  padding: 10px 18px 10px 14px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  rotate: -0.4deg;
 }
 
 .gl-banner[hidden] {
@@ -84,13 +110,14 @@
 }
 
 .gl-banner__icon {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   flex: none;
-  color: var(--terracotta-600);
+  color: var(--thread);
 }
 
-/* the wall: woven straw with a soft wood rail along the top */
+/* the table itself: the photos lie straight on the paper ground, no wall or rail of their own
+   (the tape pokes above each one, so the top padding leaves it room) */
 .gl-wall {
   flex: 1;
   min-height: 0;
@@ -100,15 +127,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(220px, 42vw), 1fr));
   align-content: start;
-  gap: 34px 26px;
-  padding: 30px 24px 28px;
-  border-radius: var(--radius-l);
-  background:
-    linear-gradient(var(--wood-500), var(--wood-500)) top / 100% 10px no-repeat,
-    repeating-linear-gradient(45deg, rgba(184, 134, 42, 0.12) 0 10px, transparent 10px 20px),
-    repeating-linear-gradient(-45deg, rgba(184, 134, 42, 0.12) 0 10px, transparent 10px 20px),
-    var(--straw-200);
-  box-shadow: inset 0 2px 12px rgba(59, 42, 28, 0.18);
+  gap: 34px 28px;
+  padding: 22px 18px 30px;
   touch-action: pan-y;
 }
 
@@ -116,64 +136,61 @@
   display: none;
 }
 
+/* a paper photo (grain, deckle and shadow from .sheet, the tape from .sheet--tape) lying a little
+   askew; it straightens up under the hand */
 .gl-tile {
   position: relative;
-  padding: 0;
-  border: 0;
-  background: transparent;
+  padding: 9px 9px 16px;
+  border-radius: var(--corner-s);
   transform: rotate(var(--tilt, 0deg));
-  transition: transform 0.2s var(--ease-out);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
   touch-action: manipulation;
+}
+
+.gl-tile.sheet--tape::after {
+  rotate: var(--tape-tilt, -2.5deg);
 }
 
 .gl-tile:hover {
   transform: rotate(0deg) scale(1.03);
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .gl-tile:active {
   transform: scale(0.97);
 }
 
+/* the print on a mount of deeper paper with a hairline deckle round it */
 .gl-tile__paper {
+  position: relative;
   display: block;
-  padding: 10px;
-  border-radius: 6px;
-  background: #fff;
-  box-shadow: 0 10px 20px rgba(59, 42, 28, 0.22), 0 2px 4px rgba(59, 42, 28, 0.12);
+  padding: 6px;
+  border: var(--deckle);
+  border-radius: 8px 6px 9px 5px / 6px 9px 5px 8px;
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper-deep);
+  background-blend-mode: multiply, normal;
+}
+
+.gl-tile__paper::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: var(--deckle);
+  border-radius: 6px 4px 7px 5px / 4px 7px 5px 6px;
+  pointer-events: none;
 }
 
 .gl-tile__paper img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: 2px;
+  border-radius: 6px 4px 7px 5px / 4px 7px 5px 6px;
   background: #FFFDF7;
 }
 
-/* a little wooden clothes peg */
-.gl-tile__peg {
-  position: absolute;
-  z-index: 1;
-  top: -16px;
-  left: 50%;
-  width: 18px;
-  height: 40px;
-  margin-left: -9px;
-  border-radius: 5px;
-  background: linear-gradient(90deg, #C9A15A, #E3C182 45%, #B8862A);
-  box-shadow: 0 3px 4px rgba(59, 42, 28, 0.3);
-}
-
-.gl-tile__peg::after {
-  content: "";
-  position: absolute;
-  left: 3px;
-  right: 3px;
-  top: 16px;
-  height: 4px;
-  border-radius: 2px;
-  background: #8A6A3C;
-}
+/* ---------- nothing on the table yet ---------- */
 
 .gl-empty {
   flex: 1;
@@ -181,7 +198,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 28px;
+  padding-top: 12px;
   text-align: center;
 }
 
@@ -189,16 +207,29 @@
   display: none;
 }
 
+/* a sheet taped to the table with a drawing and the note; the button stays level under it */
+.gl-empty__sheet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: min(440px, 100%);
+  padding: 28px 28px 22px;
+}
+
 .gl-empty__art svg {
-  width: min(320px, 70vw);
+  width: min(220px, 56vw);
   height: auto;
 }
 
+/* "No pictures yet", hand-written */
 .gl-empty__text {
   margin: 0;
-  font-family: var(--font-head);
-  font-size: clamp(1.4rem, 2.8vw, 2rem);
-  color: var(--wood-700);
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: clamp(1.25rem, 2.3vw, 1.6rem);
+  line-height: 1.3;
+  color: var(--ink);
 }
 
 /* ---------- large view ---------- */
@@ -210,13 +241,14 @@
   display: grid;
   place-items: center;
   padding: calc(84px + var(--safe-top)) 20px calc(96px + var(--safe-bottom));
-  background: rgba(18, 48, 31, 0.6);
+  background: rgba(31, 30, 20, 0.45);
 }
 
 .gl-view[hidden] {
   display: none;
 }
 
+/* a sheet of paper laid over the table (paper, deckle and corners from .sheet) */
 .gl-view__card {
   position: relative;
   display: flex;
@@ -226,9 +258,8 @@
   width: min(980px, 100%);
   max-height: 100%;
   padding: 18px 18px 16px;
-  border-radius: var(--radius-l);
-  background: var(--paper);
-  box-shadow: var(--shadow-lift);
+  border-radius: var(--corner-b);
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .gl-view__close {
@@ -241,13 +272,27 @@
   font-size: 1.1rem;
 }
 
+/* the print on a mount of deeper paper with a hairline deckle round it */
 .gl-view__frame {
+  position: relative;
   min-height: 0;
+  margin: 4px;
   padding: 10px;
-  border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 0 0 8px var(--wood-500), 0 0 0 11px var(--wood-700), 0 12px 24px rgba(59, 42, 28, 0.25);
-  margin: 10px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper-deep);
+  background-blend-mode: multiply, normal;
+}
+
+.gl-view__frame::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: var(--deckle);
+  border-radius: 6px 4px 7px 5px / 4px 7px 5px 6px;
+  pointer-events: none;
 }
 
 .gl-view__img {
@@ -257,6 +302,8 @@
   max-height: calc(100dvh - 84px - 96px - 230px);
   aspect-ratio: 4 / 3;
   object-fit: contain;
+  border-radius: 6px 4px 7px 5px / 4px 7px 5px 6px;
+  background: #FFFDF7;
 }
 
 .gl-view__row {
@@ -274,11 +321,14 @@
   gap: 8px;
 }
 
+/* the page's name in the storybook face */
 .gl-view__name {
   margin: 0;
-  font-family: var(--font-head);
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
   font-weight: 700;
   font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  color: var(--forest-900);
   text-align: center;
 }
 
@@ -293,16 +343,14 @@
   visibility: hidden;
 }
 
+/* hold to delete: plain paper (.btn--ghost) whose ring fills with red thread while you hold */
 .gl-del {
-  background: var(--paper);
-  color: var(--terracotta-600);
-  box-shadow: inset 0 0 0 3px var(--terracotta-400), var(--shadow-soft);
   user-select: none;
   -webkit-user-select: none;
 }
 
 .gl-del.is-holding {
-  background: #FBE3D8;
+  background-color: var(--paper-deep);
   transform: scale(0.97);
 }
 
@@ -323,15 +371,15 @@
 
 .gl-del__ring circle {
   fill: none;
-  stroke-width: 5;
+  stroke-width: 4;
 }
 
 .gl-del__track {
-  stroke: rgba(169, 71, 42, 0.18);
+  stroke: rgba(200, 57, 43, 0.2);
 }
 
 .gl-del__prog {
-  stroke: var(--terracotta-600);
+  stroke: var(--thread);
   stroke-linecap: round;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -343,19 +391,49 @@
   top: 9px;
   width: 28px !important;
   height: 28px !important;
+  color: var(--ink);
+}
+
+/* keyboard focus: the shared .btn shadow would hide the ring (components.css loads after base.css) */
+.gl .btn:focus-visible,
+.gl-view .btn:focus-visible {
+  box-shadow: var(--focus-ring);
 }
 
 @media (max-width: 700px) {
-  .gl-title__icon {
+  .gl-title {
+    gap: 10px;
+  }
+  .gl-title__stamp {
     width: 48px;
     height: 48px;
+  }
+  .gl-title__stamp svg {
+    width: 26px;
+    height: 26px;
   }
   .gl-colour {
     width: 100%;
   }
   .gl-wall {
-    padding: 26px 14px 20px;
-    gap: 28px 16px;
+    padding: 20px 10px 24px;
+    gap: 28px 18px;
+  }
+  .gl-tile {
+    padding: 7px 7px 12px;
+  }
+  .gl-empty__sheet {
+    padding: 22px 18px 18px;
+  }
+  /* "Colour a picture" on one line (the shared CTA size would wrap it in 390px) */
+  .gl-empty .btn {
+    padding: 0 26px;
+    font-size: 1.3rem;
+    white-space: nowrap;
+  }
+  .gl-empty .btn .icon {
+    width: 32px;
+    height: 32px;
   }
   .gl-view {
     padding: calc(80px + var(--safe-top)) 10px calc(90px + var(--safe-bottom));

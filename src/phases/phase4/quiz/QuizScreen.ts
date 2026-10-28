@@ -1,13 +1,15 @@
 /**
- * Phase 4c: the Nón Lá Memory Quiz. Five questions; every answer is a big picture card with a
- * label. Narration reads the question, then each answer while its card glows. A correct first tap
- * earns that question's badge (it flies to the shelf); a wrong tap wobbles gently, the right card
- * lights up and the explanation is read. Every child reaches the certificate.
+ * Phase 4c: the Nón Lá Memory Quiz. Five questions; every answer is a picture on a sheet of paper
+ * lying a little askew on the table. Narration reads the question, then each answer while its
+ * sheet glows. A correct first tap earns that question's badge (it flies to the bamboo rod); a
+ * wrong tap wobbles gently, the right sheet gets the stamp and the explanation is read. The
+ * chosen sheet is sewn round with red thread. Every child reaches the certificate.
  */
 import '../hub/p4.css';
 import './quiz.css';
 import { gsap } from 'gsap';
 import { el, svg } from '../../../ui/el';
+import { ICONS } from '../../../ui/icons';
 import { burst, preload } from '../../../ui/lottie';
 import { TopBar } from '../../../ui/TopBar';
 import { i18n } from '../../../i18n/i18n';
@@ -53,10 +55,10 @@ class Quiz implements Screen {
     void preload('badge-pop');
 
     this.count = el('span.p4q-count');
+    // five knots on a length of red thread; the current one is pulled tight
     const progress = el('div.p4q-progress', { 'aria-hidden': 'true' });
     this.dots = QUESTIONS.map(() => {
       const d = el('span.p4q-dot');
-      d.innerHTML = '<svg viewBox="0 0 32 24"><path d="M16 2 31 19Q16 25 1 19Z"/></svg>';
       progress.appendChild(d);
       return d;
     });
@@ -109,14 +111,15 @@ class Quiz implements Screen {
     i18n.bind(this.count, 'quiz.qnum', { n: index + 1 });
     this.dots.forEach((d, i) => d.classList.toggle('is-current', i === index));
 
-    const scene = q.scene ? art({ src: q.scene.image, altId: q.scene.altId, svg: '' }, 'p4q-scene') : null;
-    const listen = labelButton('button.p4-action.p4-action--light.p4q-listen', P4_ICONS.speaker, 'ui.replay', () => {
+    // the little picture is taped onto the question sheet
+    const scene = q.scene ? art({ src: q.scene.image, altId: q.scene.altId, svg: '' }, 'p4q-scene sheet sheet--tape') : null;
+    const listen = labelButton('button.btn.btn--ghost.p4q-listen', P4_ICONS.speaker, 'ui.replay', () => {
       ctx.audio.sfx.play('tap');
       this.readAloud();
     }, { 'data-test': 'listen' });
     this.actions = el('div.p4q-actions', {}, listen);
     const prompt = i18n.bind(el('h2.p4q-prompt', { id: `p4q-prompt-${q.id}` }), q.promptId);
-    const panel = el('div.p4q-question', { dataset: { source: q.source } }, scene, prompt, this.actions);
+    const panel = el('div.p4q-question.sheet', { dataset: { source: q.source } }, scene, prompt, this.actions);
 
     this.cards = q.answers.map((a, i) => {
       const picture = art(
@@ -131,8 +134,9 @@ class Quiz implements Screen {
       );
       // the card's own label names the answer; the picture needn't be read twice
       picture.setAttribute('aria-hidden', 'true');
+      // a sheet of paper lying askew (alternately left and right); the right answer gets an ink stamp
       const card = el(
-        'button.p4q-card',
+        `button.p4q-card.sheet.${i % 2 ? 'sheet--tilt-r' : 'sheet--tilt-l'}`,
         {
           type: 'button',
           'data-touch': '',
@@ -142,7 +146,7 @@ class Quiz implements Screen {
         },
         picture,
         i18n.bind(el('span.p4q-card__label'), a.labelId),
-        el('span.p4q-card__mark', { 'aria-hidden': 'true' }, svg('<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#2F5D46"/><path d="m6.5 12.5 3.6 3.6 7.4-8" fill="none" stroke="#FFF9EC" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>')),
+        el('span.p4q-card__mark.stamp.stamp--forest', { 'aria-hidden': 'true' }, svg(ICONS.check)),
       );
       return card;
     });
@@ -186,14 +190,16 @@ class Quiz implements Screen {
     this.run = outcome.run;
     const right = correctIndex(q);
     const chosen = this.cards[i];
+    // the chosen sheet is sewn round with red thread; the right one (if different) with a plain stitch
     this.cards.forEach((c, k) => {
       c.classList.remove('is-told');
       c.classList.add('is-locked');
       c.setAttribute('aria-disabled', 'true');
       c.classList.toggle('is-correct', k === right);
+      c.classList.toggle('stitched', k === right || k === i);
       c.classList.toggle('is-dim', k !== right && k !== i);
     });
-    chosen.classList.add(outcome.correct ? 'is-right' : 'is-wrong');
+    chosen.classList.add(outcome.correct ? 'is-right' : 'is-wrong', 'stitched--thread');
     this.dots[this.run.index].classList.add(outcome.correct ? 'is-won' : 'is-done');
 
     let lines: string[];
@@ -254,7 +260,7 @@ class Quiz implements Screen {
   private showNext(): void {
     const last = this.run.index === QUESTIONS.length - 1;
     const next = labelButton(
-      'button.p4-action.p4-action--cta.p4q-next',
+      'button.btn.btn--cta.p4q-next',
       last ? P4_ICONS.scroll : P4_ICONS.next,
       last ? 'quiz.finish' : 'quiz.next',
       () => this.onNext(),

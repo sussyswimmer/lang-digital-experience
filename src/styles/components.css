@@ -354,3 +354,15 @@
 .hand-hint .lottie-burst {
   z-index: -1;
 }
+
+/* ---------- keyboard focus ---------- */
+
+/* the paper shadows share base.css's :focus-visible specificity and load after it; the ring wins here */
+.btn:focus-visible,
+.lang-toggle button:focus-visible,
+.tag:focus-visible,
+.p4-action:focus-visible,
+button.sheet:focus-visible,
+button.hat-label:focus-visible {
+  box-shadow: var(--focus-ring);
+}

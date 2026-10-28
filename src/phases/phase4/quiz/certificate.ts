@@ -2,6 +2,8 @@
  * The "Nón Lá Explorer" certificate, drawn on an A4-landscape canvas (2480×1754 ≈ 300 dpi) so
  * it can be saved as a PNG, wrapped in a PDF or printed. All text is painted into the picture, so
  * the PDF needs no Vietnamese font; the web fonts are loaded first so the diacritics render.
+ * It is a sheet of rice paper (docs/DESIGN.md): grain and fibres, a red running stitch sewn round
+ * the edge, the explorer's picture taped on, the medals in a row and a round red ink stamp.
  */
 import type { Lang } from '../../../app/types';
 import { i18n } from '../../../i18n/i18n';
@@ -15,17 +17,17 @@ export const CERT_H = 1754;
 const HEAD = '"Fraunces Variable", "Fraunces", Georgia, serif';
 const BODY = '"Be Vietnam Pro", system-ui, sans-serif';
 
+/* the table's palette (src/styles/tokens.css): paper, deep forest for headings, ink for text,
+   bamboo brown for small print and the red thread as the one accent */
 const C = {
-  paper: '#FBF3DF',
-  cream: '#FFF9EC',
-  straw: '#E0A93B',
-  strawDark: '#B8862A',
-  terracotta: '#A9472A',
-  forest: '#1F4D3A',
+  paper: '#FBF5E6',
+  paperDeep: '#F1E6CB',
+  forest: '#12301F',
+  ink: '#1E2A22',
   wood: '#5A3F28',
-  ink: '#3B2A1C',
-  dragon: '#C21F66',
-  seal: '#B3261E',
+  thread: '#C8392B',
+  deckle: 'rgba(59,42,28,0.14)',
+  tape: 'rgba(246,166,35,0.5)',
 };
 
 export interface CertData {
@@ -141,49 +143,41 @@ export async function drawCertificate(canvas: HTMLCanvasElement, data: CertData)
 
   paper(g);
   border(g);
-  if (hatImg) corners(g, hatImg);
 
-  // ---- title (both languages, the child's language first) ----
+  // ---- title (both languages, the child's language first), a short stitch under it ----
   const [big, small] = data.lang === 'vi' ? (['vi', 'en'] as const) : (['en', 'vi'] as const);
   g.textAlign = 'center';
   g.textBaseline = 'alphabetic';
   g.fillStyle = C.forest;
   const titleSize = fitSize((s) => ((g.font = `800 ${s}px ${HEAD}`), g.measureText(t('cert.heading', big)).width), 1760, 124, 80);
   g.font = `800 ${titleSize}px ${HEAD}`;
-  g.fillText(t('cert.heading', big), CERT_W / 2, 360);
-  g.fillStyle = C.terracotta;
-  g.font = `700 70px ${HEAD}`;
-  g.fillText(t('cert.heading', small), CERT_W / 2, 455);
-  divider(g, CERT_W / 2, 512, hatImg);
+  g.fillText(t('cert.heading', big), CERT_W / 2, 350);
+  g.fillStyle = C.wood;
+  g.font = `700 66px ${HEAD}`;
+  g.fillText(t('cert.heading', small), CERT_W / 2, 440);
+  stitch(g, CERT_W / 2 - 170, CERT_W / 2 + 170, 494, 6);
 
-  // ---- the picture medallion ----
-  medallion(g, 640, 980, 330, hero, hatImg);
+  // ---- the explorer's picture, taped on ----
+  print(g, 640, 1000, 700, hero, hatImg);
 
   // ---- who and why ----
   const cx = 1590;
   const colW = 1100;
   g.fillStyle = C.wood;
   g.font = `600 56px ${BODY}`;
-  g.fillText(t('cert.given'), cx, 660);
+  g.fillText(t('cert.given'), cx, 640);
   const name = data.name.trim();
   if (name) {
     const size = fitSize((s) => ((g.font = `800 ${s}px ${HEAD}`), g.measureText(name).width), colW, 150, 70);
     g.font = `800 ${size}px ${HEAD}`;
-    g.fillStyle = C.dragon;
-    g.fillText(name, cx, 830);
+    g.fillStyle = C.forest;
+    g.fillText(name, cx, 820);
   }
-  g.strokeStyle = C.strawDark;
-  g.lineWidth = 5;
-  g.setLineDash([2, 14]);
-  g.lineCap = 'round';
-  g.beginPath();
-  g.moveTo(cx - colW / 2, 868);
-  g.lineTo(cx + colW / 2, 868);
-  g.stroke();
-  g.setLineDash([]);
+  // the line the name is written on is sewn in red thread
+  stitch(g, cx - colW / 2, cx + colW / 2, 862, 5);
   g.fillStyle = C.ink;
   g.font = `600 50px ${BODY}`;
-  wrapLines((s) => g.measureText(s).width, t('cert.for'), colW).forEach((line, i) => g.fillText(line, cx, 960 + i * 66));
+  wrapLines((s) => g.measureText(s).width, t('cert.for'), colW).forEach((line, i) => g.fillText(line, cx, 950 + i * 66));
 
   // ---- badges ----
   const defs: BadgeDef[] = [...QUIZ_BADGES, MAKER_BADGE];
@@ -193,8 +187,8 @@ export async function drawCertificate(canvas: HTMLCanvasElement, data: CertData)
     const img = medals[i];
     const earned = b.id === MAKER_BADGE.id ? data.maker : data.badges.includes(b.id);
     if (img) g.drawImage(img, xs[i] - 80, top, 160, 198);
-    g.fillStyle = earned ? C.ink : 'rgba(59,42,28,0.4)';
-    g.font = `800 28px ${BODY}`;
+    g.fillStyle = earned ? C.ink : 'rgba(30,42,34,0.4)';
+    g.font = `700 28px ${BODY}`;
     wrapLines((s) => g.measureText(s).width, t(b.nameId), 180)
       .slice(0, 2)
       .forEach((line, k) => g.fillText(line, xs[i], top + 236 + k * 34));
@@ -203,34 +197,48 @@ export async function drawCertificate(canvas: HTMLCanvasElement, data: CertData)
   g.font = `700 54px ${HEAD}`;
   g.fillText(t('cert.count'), cx, 1430);
 
-  // ---- date and seal ----
+  // ---- date and stamp ----
   g.textAlign = 'left';
   g.fillStyle = C.wood;
-  g.font = `800 40px ${BODY}`;
+  g.font = `700 40px ${BODY}`;
   const dateLabel = `${t('cert.date')}:`;
   g.fillText(dateLabel, cx - colW / 2, 1540);
   const lw = g.measureText(dateLabel).width;
   g.font = `600 40px ${BODY}`;
   g.fillText(formatDate(data.date, data.lang), cx - colW / 2 + lw + 16, 1540);
-  seal(g, 2080, 1494, 118, t('cert.seal'), hatImg);
+  stamp(g, 2080, 1494, 118, t('cert.seal'));
 }
 
+/** rice paper: the paper colour, a fine grain of ink specks (drawn at half size and scaled up,
+    so they soften) and a few long fibres running mostly across the sheet */
 function paper(g: CanvasRenderingContext2D): void {
   g.fillStyle = C.paper;
   g.fillRect(0, 0, CERT_W, CERT_H);
-  const glow = g.createRadialGradient(CERT_W / 2, CERT_H * 0.45, 100, CERT_W / 2, CERT_H / 2, CERT_W * 0.65);
-  glow.addColorStop(0, 'rgba(255,255,255,0.65)');
-  glow.addColorStop(1, 'rgba(232,201,146,0.35)');
-  g.fillStyle = glow;
-  g.fillRect(0, 0, CERT_W, CERT_H);
-  // a few soft paper fibres
   const r = rng(11);
-  g.lineWidth = 1.4;
-  for (let i = 0; i < 900; i++) {
+  const gw = CERT_W / 2;
+  const gh = CERT_H / 2;
+  const noise = document.createElement('canvas');
+  noise.width = gw;
+  noise.height = gh;
+  const ng = noise.getContext('2d');
+  if (ng) {
+    const img = ng.createImageData(gw, gh);
+    const d = img.data;
+    for (let i = 0; i < d.length; i += 4) {
+      d[i] = 59;
+      d[i + 1] = 42;
+      d[i + 2] = 28;
+      d[i + 3] = Math.floor(r() * 26);
+    }
+    ng.putImageData(img, 0, 0);
+    g.drawImage(noise, 0, 0, CERT_W, CERT_H);
+  }
+  g.lineWidth = 1.6;
+  for (let i = 0; i < 700; i++) {
     const x = r() * CERT_W;
     const y = r() * CERT_H;
-    const a = r() * Math.PI;
-    const l = 6 + r() * 18;
+    const a = (r() - 0.5) * 0.5;
+    const l = 10 + r() * 40;
     g.strokeStyle = `rgba(122,90,58,${(0.04 + r() * 0.06).toFixed(3)})`;
     g.beginPath();
     g.moveTo(x, y);
@@ -244,209 +252,126 @@ function roundRect(g: CanvasRenderingContext2D, x: number, y: number, w: number,
   g.roundRect(x, y, w, h, r);
 }
 
-/** terracotta band, a woven straw band, then a fine forest line and a dashed gold line */
-function border(g: CanvasRenderingContext2D): void {
-  roundRect(g, 36, 36, CERT_W - 72, CERT_H - 72, 46);
-  g.fillStyle = C.terracotta;
-  g.fill();
-  roundRect(g, 64, 64, CERT_W - 128, CERT_H - 128, 34);
-  const straw = g.createLinearGradient(0, 0, CERT_W, CERT_H);
-  straw.addColorStop(0, '#EED39A');
-  straw.addColorStop(0.5, '#E0A93B');
-  straw.addColorStop(1, '#D9A13A');
-  g.fillStyle = straw;
-  g.fill();
-  // weave: the straw band is criss-crossed like a hat's leaf rows
+/** a horizontal running stitch of red thread */
+function stitch(g: CanvasRenderingContext2D, x1: number, x2: number, y: number, width: number): void {
   g.save();
-  roundRect(g, 64, 64, CERT_W - 128, CERT_H - 128, 34);
-  g.clip();
-  g.strokeStyle = 'rgba(122,82,38,0.28)';
-  g.lineWidth = 3;
-  for (let d = -CERT_H; d < CERT_W; d += 22) {
-    g.beginPath();
-    g.moveTo(d, 0);
-    g.lineTo(d + CERT_H, CERT_H);
-    g.stroke();
-    g.beginPath();
-    g.moveTo(d + CERT_H, 0);
-    g.lineTo(d, CERT_H);
-    g.stroke();
-  }
-  g.restore();
-  roundRect(g, 118, 118, CERT_W - 236, CERT_H - 236, 24);
-  g.fillStyle = C.paper;
-  g.fill();
-  g.strokeStyle = C.forest;
-  g.lineWidth = 6;
-  g.stroke();
-  roundRect(g, 140, 140, CERT_W - 280, CERT_H - 280, 16);
-  g.strokeStyle = C.straw;
-  g.lineWidth = 4;
-  g.setLineDash([18, 12]);
-  g.stroke();
-  g.setLineDash([]);
-  // repaint the paper glow inside the frame
-  const glow = g.createRadialGradient(CERT_W / 2, CERT_H * 0.45, 100, CERT_W / 2, CERT_H / 2, CERT_W * 0.6);
-  glow.addColorStop(0, 'rgba(255,255,255,0.55)');
-  glow.addColorStop(1, 'rgba(255,255,255,0)');
-  g.fillStyle = glow;
-  g.fillRect(150, 150, CERT_W - 300, CERT_H - 300);
-}
-
-function leaf(g: CanvasRenderingContext2D, x: number, y: number, len: number, angle: number, colour: string): void {
-  g.save();
-  g.translate(x, y);
-  g.rotate(angle);
-  g.beginPath();
-  g.moveTo(0, 0);
-  g.quadraticCurveTo(len * 0.5, -len * 0.28, len, 0);
-  g.quadraticCurveTo(len * 0.5, len * 0.28, 0, 0);
-  g.fillStyle = colour;
-  g.fill();
-  g.strokeStyle = 'rgba(18,48,31,0.5)';
-  g.lineWidth = 3;
-  g.beginPath();
-  g.moveTo(len * 0.08, 0);
-  g.lineTo(len * 0.92, 0);
-  g.stroke();
-  g.restore();
-}
-
-/** a little hat with two leaves in each inner corner */
-function corners(g: CanvasRenderingContext2D, hat: HTMLImageElement): void {
-  const spots: [number, number, number][] = [
-    [190, 190, 0],
-    [CERT_W - 190, 190, Math.PI / 2],
-    [CERT_W - 190, CERT_H - 190, Math.PI],
-    [190, CERT_H - 190, -Math.PI / 2],
-  ];
-  for (const [x, y, rot] of spots) {
-    g.save();
-    g.translate(x, y);
-    g.rotate(rot);
-    leaf(g, 6, 6, 150, 0.12, '#2F5D46');
-    leaf(g, 6, 6, 150, Math.PI / 2 - 0.12, '#7FBF5E');
-    g.restore();
-    g.drawImage(hat, x - 70, y - 62, 140, 105);
-  }
-}
-
-function divider(g: CanvasRenderingContext2D, cx: number, y: number, hat: HTMLImageElement | null): void {
-  g.strokeStyle = C.straw;
-  g.lineWidth = 5;
+  g.strokeStyle = C.thread;
+  g.lineWidth = width;
   g.lineCap = 'round';
-  for (const s of [-1, 1]) {
-    g.beginPath();
-    g.moveTo(cx + s * 90, y);
-    g.lineTo(cx + s * 420, y);
-    g.stroke();
-    g.fillStyle = C.terracotta;
-    g.beginPath();
-    g.arc(cx + s * 440, y, 9, 0, Math.PI * 2);
-    g.fill();
-  }
-  if (hat) g.drawImage(hat, cx - 64, y - 52, 128, 96);
-}
-
-/** the painted explorer (or the drawn hat) in a gold-ringed circle */
-function medallion(g: CanvasRenderingContext2D, cx: number, cy: number, r: number, hero: HTMLImageElement | null, hat: HTMLImageElement | null): void {
-  g.save();
-  g.shadowColor = 'rgba(59,42,28,0.35)';
-  g.shadowBlur = 40;
-  g.shadowOffsetY = 16;
-  g.beginPath();
-  g.arc(cx, cy, r + 26, 0, Math.PI * 2);
-  g.fillStyle = C.straw;
-  g.fill();
-  g.restore();
-  g.beginPath();
-  g.arc(cx, cy, r + 26, 0, Math.PI * 2);
-  g.strokeStyle = C.strawDark;
-  g.lineWidth = 6;
-  g.stroke();
-  g.save();
-  g.beginPath();
-  g.arc(cx, cy, r, 0, Math.PI * 2);
-  g.clip();
-  if (hero) {
-    // cover-fit, nudged so the child and her magnifying glass sit in the circle
-    const s = Math.max((2 * r) / hero.width, (2 * r) / hero.height) * 1.08;
-    const w = hero.width * s;
-    const h = hero.height * s;
-    g.drawImage(hero, cx - w * 0.42, cy - h / 2, w, h);
-  } else {
-    g.fillStyle = '#F6E7C4';
-    g.fillRect(cx - r, cy - r, 2 * r, 2 * r);
-    if (hat) g.drawImage(hat, cx - r * 0.9, cy - r * 0.62, r * 1.8, r * 1.35);
-  }
-  g.restore();
-  g.beginPath();
-  g.arc(cx, cy, r, 0, Math.PI * 2);
-  g.strokeStyle = C.cream;
-  g.lineWidth = 8;
-  g.stroke();
-  // ribbon tails under the medallion
-  for (const s of [-1, 1]) {
-    g.beginPath();
-    g.moveTo(cx + s * 60, cy + r + 10);
-    g.lineTo(cx + s * 150, cy + r + 190);
-    g.lineTo(cx + s * 100, cy + r + 170);
-    g.lineTo(cx + s * 70, cy + r + 220);
-    g.lineTo(cx + s * 4, cy + r + 30);
-    g.closePath();
-    g.fillStyle = s < 0 ? C.forest : '#2F5D46';
-    g.fill();
-  }
-}
-
-/** a round red stamp with the hat in the middle and the words running round the edge */
-function seal(g: CanvasRenderingContext2D, cx: number, cy: number, r: number, text: string, hat: HTMLImageElement | null): void {
-  g.save();
-  g.translate(cx, cy);
-  g.rotate(-0.12);
+  g.setLineDash([width * 4, width * 3]);
   g.globalAlpha = 0.92;
   g.beginPath();
-  for (let i = 0; i <= 48; i++) {
-    const a = (i / 48) * Math.PI * 2;
-    const rr = r + (i % 2 ? 0 : 7);
-    g.lineTo(Math.cos(a) * rr, Math.sin(a) * rr);
-  }
-  g.closePath();
-  g.fillStyle = C.seal;
+  g.moveTo(x1, y);
+  g.lineTo(x2, y);
+  g.stroke();
+  g.restore();
+}
+
+/** the red running stitch sewn round the sheet, a little in from the edge */
+function border(g: CanvasRenderingContext2D): void {
+  const inset = 96;
+  g.save();
+  g.strokeStyle = C.thread;
+  g.lineWidth = 7;
+  g.lineCap = 'round';
+  g.setLineDash([30, 22]);
+  g.globalAlpha = 0.92;
+  roundRect(g, inset, inset, CERT_W - 2 * inset, CERT_H - 2 * inset, 30);
+  g.stroke();
+  g.restore();
+}
+
+/** the explorer's picture: a print on a mount of deeper paper, taped to the sheet at a slant */
+function print(g: CanvasRenderingContext2D, cx: number, cy: number, size: number, hero: HTMLImageElement | null, hat: HTMLImageElement | null): void {
+  const half = size / 2;
+  const m = 22;
+  g.save();
+  g.translate(cx, cy);
+  g.rotate(-0.035);
+  // the mount, lifted a touch off the sheet, with a hairline deckle
+  g.save();
+  g.shadowColor = 'rgba(59,42,28,0.22)';
+  g.shadowBlur = 30;
+  g.shadowOffsetY = 10;
+  g.fillStyle = C.paperDeep;
+  roundRect(g, -half - m, -half - m, size + 2 * m, size + 2 * m, 14);
   g.fill();
-  g.globalAlpha = 1;
-  g.strokeStyle = 'rgba(255,244,214,0.9)';
-  g.lineWidth = 4;
-  g.beginPath();
-  g.arc(0, 0, r - 16, 0, Math.PI * 2);
+  g.restore();
+  g.strokeStyle = C.deckle;
+  g.lineWidth = 2;
+  roundRect(g, -half - m, -half - m, size + 2 * m, size + 2 * m, 14);
   g.stroke();
-  g.beginPath();
-  g.arc(0, 0, r - 62, 0, Math.PI * 2);
-  g.stroke();
-  if (hat) {
-    g.save();
-    g.beginPath();
-    g.arc(0, 0, r - 66, 0, Math.PI * 2);
-    g.clip();
-    g.fillStyle = '#FFF4D6';
-    g.fill();
-    g.drawImage(hat, -58, -48, 116, 87);
-    g.restore();
+  // the print
+  g.save();
+  roundRect(g, -half, -half, size, size, 8);
+  g.clip();
+  if (hero) {
+    // cover-fit, centred: the square print shows the whole square picture
+    const s = Math.max(size / hero.width, size / hero.height);
+    const w = hero.width * s;
+    const h = hero.height * s;
+    g.drawImage(hero, -w / 2, -h / 2, w, h);
+  } else {
+    g.fillStyle = C.paperDeep;
+    g.fillRect(-half, -half, size, size);
+    if (hat) g.drawImage(hat, -half * 0.9, -half * 0.62, half * 1.8, half * 1.35);
   }
+  g.restore();
+  roundRect(g, -half, -half, size, size, 8);
+  g.stroke();
+  // a strip of washi tape over the top edge, striped like .sheet--tape
+  g.save();
+  g.translate(0, -half - m);
+  g.rotate(-0.06);
+  g.globalCompositeOperation = 'multiply';
+  g.fillStyle = C.tape;
+  g.fillRect(-110, -26, 220, 54);
+  g.fillStyle = 'rgba(246,166,35,0.25)';
+  for (let x = -110; x < 110; x += 24) g.fillRect(x, -26, 12, 54);
+  g.restore();
+  g.restore();
+}
+
+/** a round red ink stamp: a thick ring and a thin one, the words running round between them and
+    the hat glyph (the hub's one-ink icon) in the middle; pressed a little askew */
+function stamp(g: CanvasRenderingContext2D, cx: number, cy: number, r: number, text: string): void {
+  g.save();
+  g.translate(cx, cy);
+  g.rotate(-0.14);
+  g.globalAlpha = 0.9;
+  g.globalCompositeOperation = 'multiply';
+  g.strokeStyle = C.thread;
+  g.fillStyle = C.thread;
+  g.lineCap = 'round';
+  g.lineJoin = 'round';
+  g.lineWidth = 9;
+  g.beginPath();
+  g.arc(0, 0, r - 4, 0, Math.PI * 2);
+  g.stroke();
+  g.lineWidth = 3;
+  g.beginPath();
+  g.arc(0, 0, r - 66, 0, Math.PI * 2);
+  g.stroke();
+  g.save();
+  g.scale(4.6, 4.6);
+  g.translate(-12, -11.6);
+  g.lineWidth = 1.9;
+  g.stroke(new Path2D('M12 4.5 20 15.5Q12 18.6 4 15.5Z'));
+  g.stroke(new Path2D('M7.2 17.2c1.4 2.6 8.2 2.6 9.6 0'));
+  g.restore();
   // lettering round the ring: once if it's long (Vietnamese), twice if short, sized to fit
-  g.fillStyle = '#FFF4D6';
   g.textAlign = 'center';
   g.textBaseline = 'middle';
-  const radius = r - 39;
+  const radius = r - 37;
   const room = Math.PI * 2 * radius * 0.94;
-  let size = 28;
-  g.font = `800 ${size}px ${BODY}`;
+  let size = 26;
+  g.font = `700 ${size}px ${BODY}`;
   const once = `${text} • `;
   const label = g.measureText(once).width * 2 <= room ? once + once : once;
   const full = g.measureText(label).width;
   if (full > room) {
     size = Math.max(14, Math.floor((size * room) / full));
-    g.font = `800 ${size}px ${BODY}`;
+    g.font = `700 ${size}px ${BODY}`;
   }
   const total = g.measureText(label).width;
   // spread the letters evenly round the whole ring, each at its own width

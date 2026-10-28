@@ -1,4 +1,5 @@
-/* Phase 4a: Build Your Nón Lá */
+/* Phase 4a: Build Your Nón Lá. A wooden workbench with a sheet of paper on it where the hat is
+   built, six knots of red thread counting the pieces, and the pieces themselves on paper tags. */
 
 .p4b-layout {
   height: 100%;
@@ -11,57 +12,35 @@
 
 /* ---------- the workbench ---------- */
 
+/* real wood: two sets of grain streaks at slightly different angles over a bamboo-brown base,
+   the paper fibre multiplied on top, and a plank seam every so often */
 .p4b-bench {
   position: relative;
   display: flex;
   flex-direction: column;
   min-height: 0;
-  padding: 16px 16px 14px;
-  border-radius: 32px;
+  padding: 16px 16px 12px;
+  border-radius: 14px 12px 15px 11px / 12px 15px 11px 14px;
   background:
-    linear-gradient(180deg, transparent 0 66%, #a07a52 66%, #8a6440 68%, #7a5a3a 100%),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 2px, transparent 2px 60px),
-    linear-gradient(180deg, #fdf5e2, #f6e5bf);
-  box-shadow: var(--shadow-lift);
+    var(--fibre) 0 0 / 320px 320px,
+    repeating-linear-gradient(179deg, transparent 0 23px, rgba(90, 63, 40, 0.5) 23px 25px, transparent 25px 41px),
+    repeating-linear-gradient(181.5deg, transparent 0 37px, rgba(90, 63, 40, 0.34) 37px 40px, transparent 40px 67px),
+    repeating-linear-gradient(180.5deg, transparent 0 53px, rgba(238, 211, 154, 0.09) 53px 56px, transparent 56px 89px),
+    repeating-linear-gradient(90deg, transparent 0 236px, rgba(59, 42, 28, 0.5) 236px 239px),
+    linear-gradient(180deg, var(--wood-500), var(--wood-700));
+  background-blend-mode: multiply, normal, normal, normal, normal, normal;
+  box-shadow: var(--shadow-paper-lift), inset 0 0 0 1px rgba(59, 42, 28, 0.45), inset 0 2px 0 rgba(238, 211, 154, 0.12);
   overflow: hidden;
 }
 
-/* plank lines on the table top */
-.p4b-bench::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 34%;
-  background:
-    repeating-linear-gradient(180deg, transparent 0 34px, rgba(59, 42, 28, 0.22) 34px 36px),
-    repeating-linear-gradient(90deg, transparent 0 180px, rgba(59, 42, 28, 0.12) 180px 182px);
-  pointer-events: none;
-}
-
-/* a forest-green shutter peeking in at the top left */
-.p4b-bench::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 22px;
-  width: 64px;
-  height: 120px;
-  border-radius: 0 0 10px 10px;
-  background: repeating-linear-gradient(180deg, #2f5d46 0 10px, #1f4d3a 10px 14px);
-  box-shadow: 4px 4px 10px rgba(31, 77, 58, 0.25);
-  opacity: 0.85;
-  pointer-events: none;
-}
-
+/* the sheet of paper the hat is built on (paper, deckle and corners from .sheet) */
 .p4b-hatbox {
-  position: relative;
   z-index: 1;
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
   place-items: center;
+  padding: 10px;
   container-type: size;
 }
 
@@ -71,7 +50,7 @@
   aspect-ratio: 4 / 3;
   padding: 0;
   border: 0;
-  border-radius: 40px;
+  border-radius: var(--corner-a);
   background: none;
   touch-action: manipulation;
 }
@@ -109,7 +88,7 @@
 /* Blender renders frame the hat smaller than the workbench: zoom them all the same way */
 .p4b-stack.is-renders {
   overflow: hidden;
-  border-radius: 36px;
+  border-radius: inherit;
 }
 
 .p4b-stack.is-renders .p4b-layer img,
@@ -122,21 +101,23 @@
 }
 
 /* the zoomed floor shadow runs past the stack's clip (bottom edge at 77.9% of the picture, left at
-   14.3%): fade it out just inside both, so the table shows a soft shadow, not a straight cut */
+   14.3%): fade it out just inside both, so the paper shows a soft shadow, not a straight cut
+   (and a lighter one: on paper the full render shadow reads as a smudge) */
 .p4b-stack.is-renders .p4b-ghost img {
+  opacity: 0.6;
   -webkit-mask-image: linear-gradient(to bottom, #000 69%, transparent 77.5%), linear-gradient(to right, transparent 14.5%, #000 24%);
   -webkit-mask-composite: source-in;
   mask-image: linear-gradient(to bottom, #000 69%, transparent 77.5%), linear-gradient(to right, transparent 14.5%, #000 24%);
   mask-composite: intersect;
 }
 
-/* "put it here": a warm glow under the hat while a piece is held */
+/* "put it here": a pool of warm light on the paper while a piece is held */
 .p4b-hat::before {
   content: '';
   position: absolute;
   inset: 4% 2% 2%;
   border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(246, 166, 35, 0.45), rgba(246, 166, 35, 0));
+  background: radial-gradient(closest-side, rgba(224, 169, 59, 0.4), rgba(224, 169, 59, 0));
   opacity: 0;
   transform: scale(0.9);
   transition: opacity 0.25s, transform 0.25s var(--ease-out);
@@ -150,7 +131,7 @@
 }
 
 .p4b-hat.is-over::before {
-  background: radial-gradient(closest-side, rgba(127, 191, 94, 0.55), rgba(127, 191, 94, 0));
+  background: radial-gradient(closest-side, rgba(224, 169, 59, 0.6), rgba(224, 169, 59, 0));
   transform: scale(1.06);
 }
 
@@ -165,19 +146,25 @@
   50% { transform: scale(1.04); }
 }
 
+/* a hand-written note pinned at the top of the paper */
 .p4b-drop {
   position: absolute;
   left: 50%;
-  top: 4%;
-  padding: 8px 18px;
-  border-radius: 999px;
-  background: var(--mango-400);
-  color: var(--wood-900);
-  font-family: var(--font-head);
+  top: 3%;
+  padding: 6px 16px 7px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  color: var(--thread);
+  font-family: var(--font-hand);
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 700;
   white-space: nowrap;
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--shadow-paper);
+  rotate: -2deg;
   transform: translate(-50%, -8px);
   opacity: 0;
   transition: opacity 0.2s, transform 0.2s var(--ease-out);
@@ -189,49 +176,71 @@
   transform: translate(-50%, 0);
 }
 
-/* ---------- order steps ---------- */
+/* ---------- order steps: six knots on one thread ---------- */
 
 .p4b-steps {
   position: relative;
   z-index: 1;
   display: flex;
   justify-content: center;
-  gap: 10px;
-  padding-top: 8px;
+  gap: 12px;
+  padding-top: 12px;
 }
 
+/* the thread running through the knots */
+.p4b-steps::before {
+  content: '';
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: calc(50% + 6px);
+  height: 2px;
+  background: var(--stitch);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* a stitch waiting for its piece: a dashed ring of thread with the number written inside */
 .p4b-step {
   position: relative;
   display: grid;
   place-items: center;
   width: 52px;
   height: 52px;
-  border: 3px dashed rgba(255, 244, 214, 0.75);
+  border: 2px dashed var(--thread);
   border-radius: 50%;
-  color: rgba(255, 244, 214, 0.9);
-  font-family: var(--font-head);
-  font-weight: 800;
+  background: rgba(251, 245, 230, 0.28);
+  box-shadow: 0 0 0 1px rgba(251, 245, 230, 0.35);
+  color: var(--paper);
+  font-family: var(--font-hand);
+  font-weight: 700;
   font-size: 1.2rem;
 }
 
+/* tied: a knot of paper with the piece on it and its number stamped on the corner */
 .p4b-step.is-done {
-  border: 3px solid var(--straw-500);
-  background: var(--paper);
-  box-shadow: var(--shadow-soft);
+  border: 2px solid var(--thread);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
 }
 
 .p4b-step.is-done .p4b-step__n {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -9px;
+  right: -9px;
   width: 24px;
   height: 24px;
+  border: 2px solid var(--thread);
   border-radius: 50%;
-  background: var(--forest-700);
-  color: var(--cream);
+  background: var(--paper);
+  color: var(--thread);
   font-size: 0.85rem;
-  line-height: 24px;
+  line-height: 20px;
   text-align: center;
+  rotate: 8deg;
 }
 
 .p4b-step__art {
@@ -239,13 +248,20 @@
   height: 32px;
 }
 
-.p4b-step__art svg {
+.p4b-step__art svg,
+.p4b-step__art img {
   width: 100%;
   height: 100%;
 }
 
+.p4b-step__art img {
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
 /* ---------- hint bubble ---------- */
 
+/* the hat maker speaks on a scrap of paper */
 .p4b-bubble {
   position: absolute;
   z-index: 4;
@@ -258,11 +274,18 @@
   width: max-content;
   max-width: calc(100% - 32px);
   padding: 10px 20px 10px 10px;
-  border-radius: 26px;
-  background: var(--paper);
-  box-shadow: var(--shadow-lift);
-  font-family: var(--font-head);
-  font-weight: 700;
+  border: var(--deckle);
+  border-radius: var(--corner-a);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--fibre) 0 0 / 320px 320px,
+    var(--paper);
+  background-blend-mode: multiply, multiply, normal;
+  box-shadow: var(--shadow-paper-lift);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
+  font-weight: 600;
   font-size: clamp(1.1rem, 1.8vw, 1.4rem);
   line-height: 1.2;
 }
@@ -279,6 +302,8 @@
   width: 24px;
   height: 24px;
   background: var(--paper);
+  border-right: var(--deckle);
+  border-bottom: var(--deckle);
   transform: translateX(-50%) rotate(45deg);
   border-radius: 4px;
 }
@@ -310,13 +335,17 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-rows: minmax(0, 1fr);
   gap: 14px;
+  /* the thread loops hang out of the tags' left edges */
+  padding-left: 8px;
 }
 
 .p4b-tray[hidden] {
   display: none;
 }
 
+/* each piece on a paper tag: a punched hole in the top left corner with a loop of thread through it */
 .p4b-piece {
+  --hole: 17px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -325,18 +354,38 @@
   gap: 4px;
   min-height: 0;
   padding: 10px 10px 12px;
-  border: 0;
-  border-radius: 26px;
-  background: var(--paper);
-  box-shadow: var(--shadow-soft);
+  border: var(--deckle);
+  border-radius: var(--corner-b);
+  background:
+    radial-gradient(circle at var(--hole) var(--hole), var(--bg) 3.5px, var(--wood-500) 4px, var(--wood-500) 5px, transparent 5.5px),
+    var(--grain) 0 0 / 240px 240px,
+    var(--fibre) 0 0 / 320px 320px,
+    var(--paper);
+  background-blend-mode: normal, multiply, multiply, normal;
+  box-shadow: var(--shadow-paper);
+  color: var(--ink);
   cursor: grab;
   touch-action: none;
   transition: translate 0.18s var(--ease-out), scale 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out), opacity 0.2s;
 }
 
+.p4b-piece::before {
+  content: '';
+  position: absolute;
+  left: var(--hole);
+  top: var(--hole);
+  width: 18px;
+  height: 18px;
+  translate: -92% -50%;
+  border: 2px solid var(--thread);
+  border-radius: 50%;
+  clip-path: inset(0 55% 0 0);
+  pointer-events: none;
+}
+
 .p4b-piece:hover {
   translate: 0 -3px;
-  box-shadow: var(--shadow-lift);
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .p4b-piece__art {
@@ -347,14 +396,21 @@
   place-items: center;
 }
 
-.p4b-piece__art svg {
+.p4b-piece__art svg,
+.p4b-piece__art img {
   width: 100%;
   height: 100%;
   max-height: 140px;
 }
 
+/* the prints are square on their own paper margin: show the whole print, blended into the card */
+.p4b-piece__art img {
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
 .p4b-piece__label {
-  font-family: var(--font-head);
+  font-family: var(--font-ui);
   font-size: clamp(1rem, 1.6vw, 1.2rem);
   font-weight: 700;
   line-height: 1.08;
@@ -377,10 +433,34 @@
   height: 100%;
 }
 
+/* the chosen piece: a red thread sewn round the tag (the same inset stitch as .stitched--thread);
+   the piece to try after two misses: the same thread, breathing */
+.p4b-piece.is-selected::after,
+.p4b-piece.is-glow::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  z-index: 2;
+  border: 2px dashed var(--thread);
+  border-radius: inherit;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.p4b-piece.is-glow::after {
+  box-shadow: 0 0 0 6px rgba(224, 169, 59, 0.35);
+  animation: p4b-glow 1.3s ease-in-out infinite;
+}
+
+@keyframes p4b-glow {
+  0%, 100% { opacity: 1; scale: 1; }
+  50% { opacity: 0.45; scale: 1.02; }
+}
+
 .p4b-piece.is-selected {
   translate: 0 -5px;
   scale: 1.03;
-  box-shadow: var(--shadow-lift), 0 0 0 5px var(--forest-500);
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .p4b-piece.is-lifted {
@@ -388,12 +468,13 @@
   scale: 0.95;
 }
 
+/* a tag whose piece is on the hat lies flat on the table */
 .p4b-piece.is-used,
 .p4b-piece[disabled] {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: default;
   box-shadow: none;
-  background: rgba(255, 249, 236, 0.6);
+  background-color: var(--paper-deep);
   translate: none;
   scale: none;
 }
@@ -424,6 +505,7 @@
 
 /* ---------- finished ---------- */
 
+/* the medal on a sheet of paper with a stitched edge (paper and the thread from .sheet/.stitched) */
 .p4b-done {
   flex: 1;
   display: flex;
@@ -432,11 +514,13 @@
   justify-content: center;
   gap: 14px;
   padding: 24px;
-  border-radius: 32px;
-  background:
-    radial-gradient(60% 50% at 50% 35%, rgba(255, 230, 166, 0.75), rgba(255, 230, 166, 0) 70%),
-    var(--paper);
-  box-shadow: var(--shadow-lift);
+  border-radius: var(--corner-b);
+  background-image:
+    radial-gradient(60% 50% at 50% 35%, rgba(255, 230, 166, 0.6), rgba(255, 230, 166, 0) 70%),
+    var(--grain),
+    var(--fibre);
+  background-size: auto, 240px 240px, 320px 320px;
+  background-blend-mode: normal, multiply, multiply;
   text-align: center;
 }
 
@@ -458,7 +542,7 @@
 .p4b-done__name {
   margin: 0;
   font-size: clamp(1.7rem, 3vw, 2.3rem);
-  color: var(--terracotta-600);
+  color: var(--forest-900);
 }
 
 .p4b-done__actions {
@@ -485,19 +569,30 @@
 
   .p4b-bench {
     padding: 10px 10px 8px;
-    border-radius: 26px;
   }
 
-  .p4b-bench::after {
-    width: 40px;
-    height: 70px;
-    left: 12px;
+  .p4b-hatbox {
+    padding: 6px;
+  }
+
+  .p4b-steps {
+    gap: 8px;
+    padding-top: 8px;
   }
 
   .p4b-step {
     width: 40px;
     height: 40px;
     font-size: 1rem;
+  }
+
+  .p4b-step.is-done .p4b-step__n {
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    font-size: 0.72rem;
+    line-height: 16px;
   }
 
   .p4b-step__art {
@@ -508,11 +603,18 @@
   .p4b-tray {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
+    padding-left: 6px;
   }
 
   .p4b-piece {
+    --hole: 12px;
     padding: 6px 4px 8px;
-    border-radius: 18px;
+    border-radius: var(--corner-s);
+  }
+
+  .p4b-piece::before {
+    width: 14px;
+    height: 14px;
   }
 
   .p4b-piece__label {
@@ -529,18 +631,42 @@
     height: 40px;
   }
 
+  /* the finished sheet shares the screen with the bench: a small medal and the two buttons one
+     above the other (each still 64 px tall), so nothing runs under the caption */
   .p4b-done {
-    padding: 14px;
-    gap: 8px;
+    padding: 10px 12px;
+    gap: 6px;
   }
 
   .p4b-done__medal {
-    width: 110px;
-    height: 136px;
+    width: 72px;
+    height: 88px;
+  }
+
+  .p4b-done__name {
+    font-size: 1.35rem;
+  }
+
+  .p4b-done__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 2px;
+  }
+
+  .p4b-done .btn {
+    padding: 0 16px;
+    font-size: 1.05rem;
+    gap: 8px;
+  }
+
+  .p4b-done .btn .p4-icon {
+    width: 26px;
+    height: 26px;
   }
 }
 
-/* with renders the dashed outline is only a guide for the empty bench */
+/* with renders the stitched outline is only a guide for the empty bench */
 .p4b-stack.is-renders .p4b-ghost svg {
   transition: opacity 0.3s;
 }

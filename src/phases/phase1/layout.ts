@@ -28,8 +28,9 @@ export const LANDSCAPE: Record<string, Slot> = {
   farmers: { x: 0.18, y: 0.25, w: 0.245, rot: -5, z: 3 },
   market: { x: 0.5, y: 0.225, w: 0.24, rot: 3, z: 4 },
   aodai: { x: 0.82, y: 0.25, w: 0.245, rot: -3, z: 3 },
-  rain: { x: 0.28, y: 0.655, w: 0.24, rot: 4, z: 5 },
-  craft: { x: 0.73, y: 0.655, w: 0.245, rot: -4, z: 5 },
+  // the bottom pair sits in from the edges so their stamps stay clear of the explore sheet
+  rain: { x: 0.25, y: 0.655, w: 0.24, rot: 4, z: 5 },
+  craft: { x: 0.75, y: 0.655, w: 0.245, rot: -4, z: 5 },
 };
 
 /** phones: the five scenes zig-zag down the screen (no room for the decorative extras) */
@@ -38,7 +39,7 @@ export const PORTRAIT: Record<string, Slot> = {
   market: { x: 0.72, y: 0.28, w: 0.5, rot: 4, z: 4 },
   aodai: { x: 0.28, y: 0.44, w: 0.5, rot: -3, z: 3 },
   rain: { x: 0.72, y: 0.6, w: 0.5, rot: 4, z: 4 },
-  craft: { x: 0.3, y: 0.76, w: 0.5, rot: -4, z: 5 },
+  craft: { x: 0.3, y: 0.69, w: 0.5, rot: -4, z: 5 },
 };
 
 /** polaroid proportions: photo is 4:3, white border all round and a deeper strip at the bottom */

@@ -8,7 +8,7 @@
   z-index: 1;
 }
 
-/* ---------- labels pinned to the hat ---------- */
+/* ---------- labels pinned to the hat: small paper tags ---------- */
 
 .hat-label {
   position: absolute;
@@ -19,13 +19,16 @@
   gap: 8px;
   max-width: 260px;
   padding: 8px 14px;
-  border: 0;
-  border-radius: 999px;
-  background: rgba(255, 249, 236, 0.96);
-  box-shadow: var(--shadow-soft);
-  color: var(--wood-900);
-  font-family: var(--font-head);
-  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
   font-weight: 700;
   line-height: 1.15;
   text-align: left;
@@ -54,49 +57,56 @@ button.hat-label::before {
   inset: -10px;
 }
 
+button.hat-label:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
 .hat-label__text {
   display: block;
 }
 
+/* a knot of thread beside the words; white thread and the strap keep their own colour */
 .hat-label__dot {
   flex: none;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: var(--straw-500);
-  box-shadow: inset 0 0 0 2px rgba(59, 42, 28, 0.25);
+  background: var(--thread);
+  box-shadow: inset 0 0 0 2px rgba(251, 245, 230, 0.45);
 }
 
-.hat-label--white .hat-label__dot { background: #fbfaf6; box-shadow: inset 0 0 0 2px #c9bfa8, 0 0 8px 2px rgba(255, 210, 122, 0.8); }
-.hat-label--red .hat-label__dot { background: #c0261c; box-shadow: inset 0 0 0 3px #c9a15a; }
-.hat-label--gold .hat-label__dot { background: var(--mango-400); }
-.hat-label--green .hat-label__dot { background: var(--leaf-500); }
-.hat-label--bark .hat-label__dot { background: #9c6b3f; }
+.hat-label--white .hat-label__dot { background: #fbfaf6; box-shadow: inset 0 0 0 2px #c9bfa8; }
 .hat-label--strap .hat-label__dot { background: var(--strap-current, var(--strap-purple)); }
 
-.hat-label--red { border: 3px solid #c0261c; }
-.hat-label--white { border: 3px solid #fff; outline: 2px solid rgba(201, 191, 168, 0.8); }
-
+/* a callout asks for something ("Tap to sew them back"): the same tag, stitched round the edge */
 .hat-label--callout {
-  background: var(--forest-700);
-  color: var(--cream);
+  padding: 9px 16px;
 }
 
-.hat-label--callout.hat-label--red {
-  background: var(--terracotta-600);
-  border: 0;
+.hat-label--callout::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 2px dashed var(--thread);
+  border-radius: inherit;
+  opacity: 0.75;
+  pointer-events: none;
 }
 
+/* ring numbers: little red stamps */
 .hat-label--num {
   justify-content: center;
   min-width: 40px;
   height: 40px;
   min-height: 40px;
-  padding: 0 8px;
-  background: var(--mango-400);
-  color: var(--wood-900);
-  font-size: 1.3rem;
-  box-shadow: 0 0 0 3px #fff9ec, var(--shadow-soft);
+  padding: 0 6px;
+  border: 2px solid var(--thread);
+  border-radius: 50%;
+  color: var(--thread);
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3.5px var(--thread), var(--shadow-paper);
+  rotate: -6deg;
 }
 
 .hat-label--num.is-shown {
@@ -109,13 +119,29 @@ button.hat-label::before {
   100% { scale: 1; }
 }
 
+/* "Whoosh!": hand-written big on a sheet taped over the hat */
 .hat-label--pop {
-  padding: 10px 26px;
-  background: var(--dragon-600);
-  color: #fff;
+  padding: 10px 28px 12px;
+  border-radius: var(--corner-a);
+  color: var(--thread);
+  font-family: var(--font-hand);
   font-size: clamp(1.6rem, 3vw, 2.4rem);
-  box-shadow: var(--shadow-lift);
+  box-shadow: var(--shadow-paper-lift);
   rotate: -4deg;
+}
+
+.hat-label--pop::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 72px;
+  height: 20px;
+  translate: -50% 0;
+  rotate: -3deg;
+  background: repeating-linear-gradient(90deg, rgba(246, 166, 35, 0.55) 0 7px, rgba(246, 166, 35, 0.32) 7px 14px);
+  mix-blend-mode: multiply;
+  pointer-events: none;
 }
 
 .hat-label--pop.is-shown {
@@ -194,8 +220,8 @@ button.hat-label::before {
   }
 
   .hat-label__dot {
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
   }
 }
 

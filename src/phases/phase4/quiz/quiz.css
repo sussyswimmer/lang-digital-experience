@@ -1,4 +1,6 @@
-/* Phase 4c: Nón Lá Memory Quiz */
+/* Phase 4c: Nón Lá Memory Quiz. The question on a sheet with its little picture taped on, five
+   knots of red thread for the progress, the medals on a split-bamboo rod, and the answers as
+   sheets of paper lying askew on the table; the chosen one is sewn round with red thread. */
 
 .p4q-layout {
   height: 100%;
@@ -14,7 +16,7 @@
 
 .p4q-head {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
 }
@@ -23,68 +25,91 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 6px 16px 6px 12px;
-  border-radius: 999px;
-  background: rgba(255, 249, 236, 0.9);
-  box-shadow: var(--shadow-soft);
+  padding: 10px 6px 12px;
 }
 
+/* a length of red thread with a knot for each question */
 .p4q-progress {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  padding: 0 2px;
+}
+
+.p4q-progress::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--thread);
+  opacity: 0.9;
 }
 
 .p4q-dot {
-  width: 30px;
-  height: 24px;
-  transition: scale 0.25s var(--ease-out);
+  position: relative;
+  z-index: 1;
+  width: 16px;
+  height: 16px;
+  border: 2.5px solid var(--thread);
+  border-radius: 50%;
+  background: var(--paper);
+  transition: scale 0.25s var(--ease-out), background 0.25s;
 }
 
-.p4q-dot svg {
-  width: 100%;
-  height: 100%;
-  fill: var(--straw-200);
-  stroke: var(--straw-700);
-  stroke-width: 2;
-  stroke-linejoin: round;
-}
-
+/* the knot we are at is pulled tight (filled) */
 .p4q-dot.is-current {
   scale: 1.3;
+  background: var(--thread);
 }
 
-.p4q-dot.is-current svg {
-  fill: var(--mango-400);
-  stroke: var(--wood-700);
+.p4q-dot.is-won {
+  background: var(--thread);
 }
 
-.p4q-dot.is-won svg {
-  fill: var(--straw-500);
-  stroke: var(--forest-700);
+/* answered, no badge: a plain knot in ink */
+.p4q-dot.is-done {
+  border-color: var(--ink-soft);
+  background: var(--ink-soft);
 }
 
-.p4q-dot.is-done svg {
-  fill: #d8c7a6;
-}
-
+/* "Question 2 of 5", hand-written beside the thread */
 .p4q-count {
-  font-family: var(--font-head);
-  font-weight: 800;
-  font-size: 1.2rem;
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--ink);
   white-space: nowrap;
 }
 
+/* the medals stand on a split-bamboo rod like the hub's: straw, darker underneath, two knot bands */
 .p4q-shelf {
+  position: relative;
   display: flex;
   gap: 6px;
-  padding: 4px 14px 2px;
-  border-radius: 999px;
-  background: rgba(255, 249, 236, 0.9);
-  box-shadow: var(--shadow-soft);
+  padding: 2px 10px 12px;
+}
+
+.p4q-shelf::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 12px;
+  border-radius: 3px;
+  background:
+    linear-gradient(90deg, transparent 0 31.5%, rgba(90, 63, 40, 0.5) 31.5% 33.5%, transparent 33.5% 65.5%, rgba(90, 63, 40, 0.5) 65.5% 67.5%, transparent 67.5%),
+    linear-gradient(180deg, var(--straw-300), var(--straw-500) 55%, var(--straw-700));
+  box-shadow: 0 3px 6px rgba(59, 42, 28, 0.3), inset 0 -2px 0 rgba(59, 42, 28, 0.22);
 }
 
 .p4q-slot {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 44px;
   height: 54px;
@@ -105,28 +130,33 @@
   min-height: 0;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
-  gap: 14px;
+  gap: 16px;
 }
 
+/* the question on a sheet (paper, deckle and shadow from .sheet); it holds a button, so it lies level */
 .p4q-question {
   display: flex;
   align-items: center;
   gap: 18px;
-  min-height: 104px;
-  padding: 12px 14px 12px 14px;
-  border-radius: 28px;
-  background: var(--paper);
-  box-shadow: var(--shadow-soft);
+  min-height: 108px;
+  padding: 14px 16px;
+  border-radius: var(--corner-b);
 }
 
+/* the little picture: a print on its own small sheet, taped onto the question at a slant */
 .p4q-scene {
-  position: relative;
   flex: none;
   width: 176px;
-  aspect-ratio: 16 / 9;
-  border-radius: 18px;
-  overflow: hidden;
-  background: var(--straw-200);
+  padding: 5px;
+  border-radius: var(--corner-s);
+  rotate: -2deg;
+  margin: 4px 6px 0 2px;
+}
+
+.p4q-scene::after {
+  top: -8px;
+  width: 64px;
+  height: 18px;
 }
 
 .p4q-scene[data-art='svg'] {
@@ -135,16 +165,18 @@
 
 .p4q-scene img {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
+  border-radius: 6px 4px 7px 5px / 4px 7px 5px 6px;
+  background: var(--straw-200);
 }
 
 .p4q-prompt {
   flex: 1;
-  margin: 0 0 0 6px;
-  font-size: clamp(1.15rem, 1.95vw, 1.55rem);
-  line-height: 1.25;
-  color: var(--ink);
+  margin: 0 0 0 4px;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.2;
+  color: var(--forest-900);
 }
 
 .p4q-actions {
@@ -153,27 +185,22 @@
   gap: 10px;
 }
 
+/* "Hear it again" on plain paper; Next is the one red thing on the screen */
 .p4q-listen {
   min-height: 64px;
+  padding: 0 20px 0 16px;
   font-size: 1.1rem;
-  border: 2px solid var(--straw-300);
-  box-shadow: none;
 }
 
 .p4q-next {
-  position: relative;
+  min-height: 76px;
+  padding: 0 30px 0 24px;
+  font-size: 1.35rem;
 }
 
-/* a ring that breathes round the Next button (the button itself stays still) */
-.p4q-next::after {
-  content: '';
-  position: absolute;
-  inset: -7px;
-  border: 4px solid var(--mango-400);
-  border-radius: inherit;
-  opacity: 0;
-  pointer-events: none;
-  animation: p4-ring 1.6s ease-in-out 1.2s infinite;
+/* keyboard focus: the shared .btn shadow would hide the ring (components.css loads after base.css) */
+.p4q-actions .btn:focus-visible {
+  box-shadow: var(--focus-ring);
 }
 
 /* ---------- answer cards ---------- */
@@ -182,82 +209,104 @@
   min-height: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: 22px;
+  padding: 4px 6px 8px;
 }
 
+/* an answer is a sheet of paper (grain, deckle, corners and shadow from .sheet) lying a little
+   askew; the tilt comes from .sheet--tilt-l / --tilt-r */
 .p4q-card {
-  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   min-height: 0;
   padding: 10px 10px 12px;
-  border: 0;
-  border-radius: 28px;
-  background: var(--paper);
-  box-shadow: var(--shadow-lift);
-  transition: box-shadow 0.2s var(--ease-out), opacity 0.3s, filter 0.3s;
+  transition: translate 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), opacity 0.3s, filter 0.3s;
   touch-action: manipulation;
 }
 
 .p4q-card:not(.is-locked):hover {
-  box-shadow: var(--shadow-lift), 0 0 0 4px var(--straw-300);
+  translate: 0 -4px;
+  box-shadow: var(--shadow-paper-lift);
 }
 
+/* the picture on a mount of deeper paper with a hairline deckle round the print */
 .p4q-card__pic {
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
-  border-radius: 20px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper-deep);
+  background-blend-mode: multiply, normal;
   overflow: hidden;
-  background: radial-gradient(120% 95% at 50% 38%, #fffaf0, #f6e7c4);
 }
 
 .p4q-card__pic svg,
 .p4q-card__pic img {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: 7px;
+  width: calc(100% - 14px);
+  height: calc(100% - 14px);
   max-width: none;
   object-fit: contain;
 }
 
+.p4q-card__pic::after {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: var(--deckle);
+  border-radius: 8px 6px 9px 5px / 6px 9px 5px 8px;
+  pointer-events: none;
+}
+
+/* the answer, set in the storybook face under the picture */
 .p4q-card__label {
   display: grid;
   place-items: center;
   min-height: 2.3em;
   padding: 0 6px;
-  font-family: var(--font-head);
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
   font-weight: 700;
-  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
   line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--forest-900);
   text-align: center;
 }
 
+/* the right answer's mark: a forest ink stamp with a tick, pressed on the corner */
 .p4q-card__mark {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 46px;
-  height: 46px;
+  z-index: 2;
+  top: -10px;
+  right: -8px;
+  width: 54px;
+  height: 54px;
   opacity: 0;
   scale: 0.4;
   transition: opacity 0.25s, scale 0.35s var(--ease-out);
-  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.25));
 }
 
-.p4q-card__mark svg {
-  width: 100%;
-  height: 100%;
+.p4q-card .p4q-card__mark svg {
+  width: 30px;
+  height: 30px;
 }
 
 .p4q-card.is-locked {
   cursor: default;
 }
 
+/* the right answer lifts off the table and gets its stamp; the chosen sheet is sewn round with
+   red thread (.stitched--thread, added by the screen), a wrong choice fades a little */
 .p4q-card.is-correct {
-  box-shadow: var(--shadow-lift), 0 0 0 6px var(--leaf-500), 0 0 28px 10px rgba(127, 191, 94, 0.45);
+  z-index: 1;
+  translate: 0 -4px;
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .p4q-card.is-correct .p4q-card__mark {
@@ -266,8 +315,7 @@
 }
 
 .p4q-card.is-wrong {
-  opacity: 0.75;
-  box-shadow: var(--shadow-soft), 0 0 0 4px var(--terracotta-400);
+  opacity: 0.8;
 }
 
 .p4q-card.is-dim {
@@ -275,7 +323,7 @@
   filter: saturate(0.5);
 }
 
-/* the badge flying to the shelf */
+/* the badge flying to the rod */
 .p4q-fly {
   position: absolute;
   left: 0;
@@ -316,16 +364,17 @@
 
   .p4q-where {
     gap: 8px;
-    padding: 4px 10px 4px 8px;
+    padding: 6px 2px 8px;
   }
 
   .p4q-progress {
-    gap: 3px;
+    gap: 7px;
   }
 
   .p4q-dot {
-    width: 20px;
-    height: 16px;
+    width: 13px;
+    height: 13px;
+    border-width: 2px;
   }
 
   .p4q-count {
@@ -334,7 +383,11 @@
 
   .p4q-shelf {
     gap: 2px;
-    padding: 2px 8px;
+    padding: 2px 8px 9px;
+  }
+
+  .p4q-shelf::after {
+    height: 9px;
   }
 
   .p4q-slot {
@@ -349,8 +402,8 @@
   .p4q-question {
     flex-wrap: wrap;
     gap: 8px;
-    padding: 10px 12px;
-    border-radius: 22px;
+    min-height: 0;
+    padding: 12px 12px 10px;
   }
 
   .p4q-scene {
@@ -360,7 +413,7 @@
   .p4q-prompt {
     flex-basis: 100%;
     margin: 0;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
   }
 
   .p4q-actions {
@@ -368,47 +421,65 @@
     justify-content: flex-end;
   }
 
+  .p4q-next {
+    min-height: 68px;
+    padding: 0 22px 0 18px;
+    font-size: 1.15rem;
+  }
+
   .p4q-answers {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    gap: 10px;
+    padding: 2px 4px 6px;
   }
 
   .p4q-card {
     flex-direction: row;
     align-items: stretch;
     padding: 6px;
-    border-radius: 20px;
     gap: 10px;
   }
 
   .p4q-card__pic {
     flex: 0 0 40%;
-    border-radius: 16px;
+  }
+
+  .p4q-card__pic svg,
+  .p4q-card__pic img,
+  .p4q-card__pic::after {
+    inset: 5px;
+  }
+
+  .p4q-card__pic svg,
+  .p4q-card__pic img {
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
   }
 
   .p4q-card__label {
     flex: 1;
     place-items: center start;
     text-align: left;
-    font-size: 1.02rem;
+    font-size: 1.1rem;
   }
 
   .p4q-card__mark {
-    top: 8px;
-    right: 8px;
-    width: 34px;
-    height: 34px;
+    top: -8px;
+    right: -6px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .p4q-card .p4q-card__mark svg {
+    width: 24px;
+    height: 24px;
   }
 }
 
-/* narrow phones: the "Question 2 of 5" text is enough, the hat dots make room for the badges */
+/* narrow phones: "Question 2 of 5" is enough; the knots make room for the medals */
 @media (max-width: 480px) {
   .p4q-progress {
     display: none;
-  }
-
-  .p4q-where {
-    padding: 4px 12px;
   }
 }

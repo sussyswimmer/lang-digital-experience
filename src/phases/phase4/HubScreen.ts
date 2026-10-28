@@ -23,10 +23,11 @@ import { getGallery } from './gallery/galleryDb';
 
 type Activity = 'build' | 'colour' | 'quiz';
 
-const CARDS: { id: Activity; titleId: string; altId: string; icon: string; svg: () => string }[] = [
-  { id: 'build', titleId: 'build.title', altId: 'hub.art.build', icon: P4_PICTURES.frame, svg: buildCardSvg },
-  { id: 'colour', titleId: 'colour.title', altId: 'hub.art.colour', icon: P4_PICTURES.crayon, svg: colourCardSvg },
-  { id: 'quiz', titleId: 'quiz.title', altId: 'hub.art.quiz', icon: P4_PICTURES.question, svg: quizCardSvg },
+/** each card is a sheet of paper taped to the table, its title stamped in one ink colour */
+const CARDS: { id: Activity; titleId: string; altId: string; icon: string; stamp: string; svg: () => string }[] = [
+  { id: 'build', titleId: 'build.title', altId: 'hub.art.build', icon: P4_ICONS.hat, stamp: 'stamp--forest', svg: buildCardSvg },
+  { id: 'colour', titleId: 'colour.title', altId: 'hub.art.colour', icon: P4_ICONS.brush, stamp: 'stamp--dragon', svg: colourCardSvg },
+  { id: 'quiz', titleId: 'quiz.title', altId: 'hub.art.quiz', icon: P4_ICONS.question, stamp: 'stamp--mango', svg: quizCardSvg },
 ];
 
 const LAYER_PICS: Record<LayerId, string> = {
@@ -114,10 +115,15 @@ class Hub implements Screen {
         'p4h-card__art',
       );
       const card = el(
-        'button.p4h-card',
+        'button.p4h-card.sheet.sheet--tape',
         { type: 'button', 'data-touch': '', 'data-test': `card-${c.id}`, dataset: { activity: c.id }, onclick: () => this.open(c.id) },
         picture,
-        el('span.p4h-card__label', {}, svg(c.icon, 'p4h-card__icon'), i18n.bind(el('span.p4h-card__title'), c.titleId)),
+        el(
+          'span.p4h-card__label',
+          {},
+          el(`span.stamp.${c.stamp}.p4h-card__stamp`, { 'aria-hidden': 'true' }, svg(c.icon, 'p4h-card__icon')),
+          i18n.bind(el('span.p4h-card__title'), c.titleId),
+        ),
       );
       this.cards.set(c.id, card);
       box.appendChild(card);
@@ -156,17 +162,17 @@ class Hub implements Screen {
   // ---------- revisit ----------
 
   private buildRevisit(): HTMLElement {
-    const p1 = labelButton('button.p4h-chip', P4_PICTURES.photos, 'hub.revisit.p1', () => this.open('p1'), { 'data-test': 'revisit-p1' });
-    const p2 = labelButton('button.p4h-chip', P4_PICTURES.layers, 'hub.revisit.p2', () => this.openPicker('layer', p2), {
+    const p1 = labelButton('button.p4h-chip.tag', P4_PICTURES.photos, 'hub.revisit.p1', () => this.open('p1'), { 'data-test': 'revisit-p1' });
+    const p2 = labelButton('button.p4h-chip.tag', P4_PICTURES.layers, 'hub.revisit.p2', () => this.openPicker('layer', p2), {
       'data-test': 'revisit-p2',
       'aria-haspopup': 'dialog',
     });
-    const p3 = labelButton('button.p4h-chip', P4_PICTURES.book, 'hub.revisit.p3', () => this.openPicker('chapter', p3), {
+    const p3 = labelButton('button.p4h-chip.tag', P4_PICTURES.book, 'hub.revisit.p3', () => this.openPicker('chapter', p3), {
       'data-test': 'revisit-p3',
       'aria-haspopup': 'dialog',
     });
     return el(
-      'section.p4h-panel.p4h-revisit',
+      'section.p4h-panel.p4h-revisit.sheet',
       {},
       el('h2.p4h-panel__title', {}, svg(P4_ICONS.book, 'p4-icon'), i18n.bind(el('span'), 'hub.revisit')),
       el('div.p4h-revisit__row', {}, p1, p2, p3),
@@ -174,7 +180,7 @@ class Hub implements Screen {
   }
 
   private buildPicker(): HTMLDivElement {
-    this.pickerSheet = el('div.p4h-picker__sheet', { role: 'dialog', 'aria-modal': 'true' });
+    this.pickerSheet = el('div.p4h-picker__sheet.sheet', { role: 'dialog', 'aria-modal': 'true' });
     return el(
       'div.p4h-picker',
       { hidden: true },
@@ -191,10 +197,10 @@ class Hub implements Screen {
     const options =
       kind === 'layer'
         ? LAYERS.map((l) =>
-            labelButton('button.p4h-option', LAYER_PICS[l], `hub.layer.${l}`, () => this.open('p2', { layer: l }), { 'data-test': `layer-${l}` }),
+            labelButton('button.p4h-option.tag', LAYER_PICS[l], `hub.layer.${l}`, () => this.open('p2', { layer: l }), { 'data-test': `layer-${l}` }),
           )
         : CHAPTERS.map((c) =>
-            labelButton('button.p4h-option', CHAPTER_PICS[c], `hub.chapter.${c}`, () => this.open('p3', { chapter: c }), { 'data-test': `chapter-${c}` }),
+            labelButton('button.p4h-option.tag', CHAPTER_PICS[c], `hub.chapter.${c}`, () => this.open('p3', { chapter: c }), { 'data-test': `chapter-${c}` }),
           );
     const close = el(
       'button.btn.btn--round.btn--ghost.p4h-picker__close',
@@ -229,8 +235,18 @@ class Hub implements Screen {
 
   // ---------- gallery, badges, certificate ----------
 
+  /** a paper tag with an ink stamp (red unless a stamp colour is given): the "go and look" buttons beside the shelf */
+  private stampTag(tag: `button.${string}`, icon: string, textId: string, onClick: () => void, test: string, stamp = ''): HTMLButtonElement {
+    return el(
+      tag as 'button',
+      { type: 'button', 'data-touch': '', 'data-test': test, onclick: onClick },
+      el(`span.stamp.p4h-tag__stamp${stamp && `.${stamp}`}`, { 'aria-hidden': 'true' }, svg(icon, 'p4-icon')),
+      i18n.bind(el('span.p4-btn__text'), textId),
+    );
+  }
+
   private buildGallery(): HTMLElement {
-    const btn = labelButton('button.p4h-gallery', P4_PICTURES.gallery, 'gallery.name', () => this.open('gallery'), { 'data-test': 'gallery' });
+    const btn = this.stampTag('button.p4h-gallery.tag', P4_ICONS.photo, 'gallery.name', () => this.open('gallery'), 'gallery', 'stamp--forest');
     // count the pictures really on the wall: progress only counts saves, and deleting doesn't undo
     // those (nothing saved yet: no need to open the store at all)
     if (this.ctx.progress.get().games.colour.saved > 0) {
@@ -273,7 +289,7 @@ class Hub implements Screen {
       return slot;
     });
     return el(
-      'section.p4h-panel.p4h-shelf',
+      'section.p4h-panel.p4h-shelf.sheet',
       {},
       el('h2.p4h-panel__title', {}, svg(P4_ICONS.medal, 'p4-icon'), i18n.bind(el('span'), 'hub.badges')),
       el('div.p4h-shelf__row', {}, ...slots),
@@ -282,7 +298,7 @@ class Hub implements Screen {
 
   private buildCertificate(): HTMLElement | null {
     if (!this.ctx.progress.get().games.quiz.certificateAt) return null;
-    return labelButton('button.p4h-cert', P4_PICTURES.certificate, 'hub.cert', () => this.open('certificate'), { 'data-test': 'certificate' });
+    return this.stampTag('button.p4h-cert.tag', P4_ICONS.cert, 'hub.cert', () => this.open('certificate'), 'certificate');
   }
 }
 

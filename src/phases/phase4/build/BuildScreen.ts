@@ -87,7 +87,8 @@ class Build implements Screen {
 
     this.buildBench();
     this.tray = i18n.bindAttr(el('div.p4b-tray', { role: 'group' }), 'aria-label', 'build.tray');
-    this.done = el('div.p4b-done', { hidden: true });
+    // the finished hat's medal lies on a sheet of paper with a stitched edge
+    this.done = el('div.p4b-done.sheet.stitched.stitched--thread', { hidden: true });
     this.layout = el('div.p4b-layout', {}, this.bench, el('div.p4b-side', {}, this.tray, this.done));
     root.append(TopBar(ctx, { titleId: 'build.title' }), this.layout);
     this.fillTray();
@@ -159,16 +160,31 @@ class Build implements Screen {
       steps.appendChild(s);
       return s;
     });
-    this.bench = el('div.p4b-bench', {}, this.bubble, el('div.p4b-hatbox', {}, this.hat), steps);
+    // a sheet of paper on the wooden bench is where the hat is built; the step knots sit on the wood
+    this.bench = el('div.p4b-bench', {}, this.bubble, el('div.p4b-hatbox.sheet', {}, this.hat), steps);
+  }
+
+  /** the piece's Đông Hồ print (the strap in the child's colour); the SVG drawing if it fails to load */
+  private pieceArt(piece: PieceId, className = 'p4b-piece__art'): HTMLElement {
+    const box = el(`span.${className}`, { 'aria-hidden': 'true' });
+    const drawSvg = () => {
+      box.innerHTML = trayArt(piece, this.strapColour);
+    };
+    const stem = piece === 'strap' ? `piece-strap-${this.strap}` : `piece-${piece}`;
+    const img = el('img', { decoding: 'async', draggable: false, alt: '' });
+    img.addEventListener('error', drawSvg, { once: true });
+    img.srcset = `${assetUrl(`img/art/${stem}-400.webp`)} 400w, ${assetUrl(`img/art/${stem}-800.webp`)} 800w`;
+    img.sizes = className === 'p4b-step__art' ? '40px' : '(max-width: 900px) 30vw, 220px';
+    img.src = assetUrl(`img/art/${stem}-400.webp`);
+    box.appendChild(img);
+    return box;
   }
 
   private fillTray(): void {
     this.tray.replaceChildren();
     this.cards.clear();
     for (const piece of shuffledTray()) {
-      const art = el('span.p4b-piece__art');
-      art.innerHTML = trayArt(piece, this.strapColour);
-      art.firstElementChild?.setAttribute('aria-hidden', 'true');
+      const art = this.pieceArt(piece);
       const card = el(
         'button.p4b-piece',
         { type: 'button', 'data-touch': '', 'data-piece': piece, 'data-test': `piece-${piece}` },
@@ -377,8 +393,7 @@ class Build implements Screen {
     this.stack.appendChild(layer);
     const step = this.steps[this.placed.length - 1];
     step.classList.add('is-done');
-    const mini = el('span.p4b-step__art');
-    mini.innerHTML = trayArt(piece, this.strapColour);
+    const mini = this.pieceArt(piece, 'p4b-step__art');
     step.appendChild(mini);
 
     const ghost = this.takeGhost() ?? this.flyingCopy(card);
@@ -569,8 +584,8 @@ class Build implements Screen {
     const ctx = this.ctx;
     const medal = el('div.p4b-done__medal', { 'aria-hidden': 'true' });
     medal.innerHTML = badgeSvg(MAKER_BADGE);
-    const again = labelButton('button.p4-action.p4-action--straw', P4_ICONS.again, 'build.again', () => this.restart(), { 'data-test': 'again' });
-    const hub = labelButton('button.p4-action', P4_ICONS.grid, 'hub.back', () => {
+    const again = labelButton('button.btn.btn--straw', P4_ICONS.again, 'build.again', () => this.restart(), { 'data-test': 'again' });
+    const hub = labelButton('button.btn', P4_ICONS.grid, 'hub.back', () => {
       ctx.audio.sfx.play('tap');
       ctx.go({ state: 'hub', params: {} });
     }, { 'data-test': 'to-hub' });
@@ -594,7 +609,7 @@ class Build implements Screen {
             burst(this.root, 'badge-pop', centreOf(medal), { size: 420 });
           },
         });
-        enter(this.done.querySelectorAll('h2, .p4-action'), { y: 20, opacity: 0 }, { duration: 0.4, stagger: 0.08, delay: 0.9 });
+        enter(this.done.querySelectorAll('h2, .btn'), { y: 20, opacity: 0 }, { duration: 0.4, stagger: 0.08, delay: 0.9 });
       }
     });
   }

@@ -18,6 +18,11 @@ export const P4_ICONS = {
   speaker: s('<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6"/>'),
   close: s('<path d="M6 6l12 12M18 6 6 18"/>', 2.8),
   next: s('<path d="M9 5l7 7-7 7"/>', 2.8),
+  /* one-ink stamps for the hub's paper tags: a nón lá, a brush, a question, a certificate */
+  hat: s('<path d="M12 4.5 20 15.5Q12 18.6 4 15.5Z"/><path d="M7.2 17.2c1.4 2.6 8.2 2.6 9.6 0"/>', 2.2),
+  brush: s('<path d="M19.5 4.5 11.5 12.5"/><path d="M12.6 11.4 14.6 13.4 11 17c-1.5 1.5-3.8 1.6-6 .8 1-2 .8-4.3 2.4-6z"/>', 2.2),
+  question: s('<path d="M9.1 9.3a2.9 2.9 0 1 1 4.2 2.6c-.9.5-1.3 1.1-1.3 2v1.1"/><path d="M12 18.6h.01"/>', 2.4),
+  cert: s('<rect x="3.5" y="5" width="17" height="12" rx="2"/><path d="M7 9h10M7 12.5h5.5"/><circle cx="16.5" cy="15.5" r="2.4"/><path d="m15 17.6-.8 3.4 2.3-1.3 2.3 1.3-.8-3.4"/>', 2),
 } as const;
 
 /** coloured picture icons (pre-readers recognise the picture) */

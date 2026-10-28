@@ -1,8 +1,10 @@
-/* Phase 4: the Activity Hub */
+/* Phase 4: the Activity Hub. Three sheets of paper taped to the table, each with its Đông Hồ
+   picture on a mount and a stamped title; below them paper tags to revisit the story, the medals
+   on a split-bamboo rod, and two stamped tags for the gallery and the certificate. */
 @import './p4.css';
 
 .screen.p4-hub {
-  padding: calc(88px + var(--safe-top)) calc(24px + var(--safe-right)) calc(118px + var(--safe-bottom)) calc(24px + var(--safe-left));
+  padding: calc(88px + var(--safe-top)) calc(24px + var(--safe-right)) calc(120px + var(--safe-bottom)) calc(24px + var(--safe-left));
 }
 
 .p4h-main {
@@ -21,36 +23,36 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
   min-height: 0;
+  /* the tape on each sheet pokes above its top edge */
+  padding-top: 10px;
 }
 
+/* a sheet (paper, deckle, corners and shadow come from .sheet) lying a little askew on the table;
+   the middle one is straight */
 .p4h-card {
-  --band: var(--terracotta-600);
-  position: relative;
+  --tilt: -0.9deg;
   display: flex;
   flex-direction: column;
   min-height: 0;
   padding: 10px 10px 0;
-  border: 0;
-  border-radius: 30px;
-  background: var(--paper);
-  box-shadow: var(--shadow-lift);
-  overflow: hidden;
+  rotate: var(--tilt);
   text-align: left;
-  transition: translate 0.2s var(--ease-out), scale 0.2s var(--ease-out), rotate 0.2s var(--ease-out);
+  transition: translate 0.2s var(--ease-out), scale 0.2s var(--ease-out), rotate 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
   touch-action: manipulation;
 }
 
 .p4h-card[data-activity='colour'] {
-  --band: var(--dragon-600);
+  --tilt: 0deg;
 }
 
 .p4h-card[data-activity='quiz'] {
-  --band: var(--forest-700);
+  --tilt: 0.7deg;
 }
 
 .p4h-card:hover {
   translate: 0 -4px;
-  rotate: -0.4deg;
+  rotate: calc(var(--tilt) * 0.4);
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .p4h-card:active {
@@ -62,46 +64,67 @@
   scale: 1.02;
 }
 
+/* the picture on a mount of deeper paper with a hairline deckle round the print */
 .p4h-card__art {
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
-  border-radius: 22px;
+  padding: 7px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper-deep);
+  background-blend-mode: multiply, normal;
   overflow: hidden;
-  background: var(--straw-200);
 }
 
 .p4h-card__art img,
 .p4h-card__art svg {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: 7px;
+  width: calc(100% - 14px);
+  height: calc(100% - 14px);
   max-width: none;
+  border-radius: 8px 6px 9px 5px / 6px 9px 5px 8px;
   object-fit: cover;
 }
 
-.p4h-card__label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 -10px;
-  padding: 12px 18px 14px;
-  background: var(--band);
-  color: #fff;
-  font-family: var(--font-head);
-  font-size: clamp(1.2rem, 1.9vw, 1.6rem);
-  font-weight: 800;
-  line-height: 1.05;
+.p4h-card__art::after {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: var(--deckle);
+  border-radius: 8px 6px 9px 5px / 6px 9px 5px 8px;
+  pointer-events: none;
 }
 
-.p4h-card__icon {
-  width: 52px;
-  height: 52px;
+/* the label strip: the title set in the storybook face next to a one-ink stamp, on the paper */
+.p4h-card__label {
+  /* Vietnamese titles break evenly instead of leaving one word on the second line */
+  text-wrap: balance;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 8px 12px 4px;
+  color: var(--forest-900);
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
+  font-size: clamp(1.2rem, 1.9vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+
+.p4h-card__stamp {
+  width: 56px;
+  height: 56px;
   flex: none;
-  padding: 5px;
-  border-radius: 16px;
-  background: var(--paper);
+}
+
+.p4h-card__stamp svg {
+  width: 30px;
+  height: 30px;
 }
 
 /* ---------- lower row ---------- */
@@ -116,23 +139,34 @@
 
 .p4h-panel {
   padding: 12px 14px 14px;
-  border-radius: 24px;
-  background: rgba(255, 249, 236, 0.92);
-  box-shadow: var(--shadow-soft);
 }
 
 .p4h-panel__title {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 0 0 8px 4px;
-  font-size: 1.15rem;
-  color: var(--wood-700);
+  margin: 0 0 20px 4px;
+  font-size: 1.2rem;
+  color: var(--forest-900);
+}
+
+/* a short running stitch under the heading */
+.p4h-panel__title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  width: 72px;
+  height: 2px;
+  background: var(--stitch);
+  opacity: 0.9;
 }
 
 .p4h-panel__title .p4-icon {
   width: 26px;
   height: 26px;
+  color: var(--wood-700);
 }
 
 .p4h-revisit {
@@ -144,32 +178,39 @@
   gap: 8px;
 }
 
-.p4h-chip,
-.p4h-option {
-  display: flex;
+/* a luggage tag hung by its top: the hole and the loop of thread sit above the picture */
+.p4h-chip.tag,
+.p4h-option.tag {
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   gap: 4px;
   width: 122px;
   min-height: 86px;
-  padding: 8px 6px;
-  border: 2px solid var(--straw-300);
-  border-radius: 18px;
-  background: #fff;
-  font-family: var(--font-head);
-  font-weight: 700;
+  padding: 16px 6px 8px;
+  background:
+    radial-gradient(circle at 50% 9px, var(--bg) 3.5px, var(--wood-500) 4px, var(--wood-500) 5px, transparent 5.5px),
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: normal, multiply, normal;
   font-size: 1rem;
   line-height: 1.05;
   text-align: center;
-  transition: translate 0.15s var(--ease-out), scale 0.15s var(--ease-out), border-color 0.15s;
+  transition: translate 0.15s var(--ease-out), scale 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
   touch-action: manipulation;
+}
+
+.p4h-chip.tag::before,
+.p4h-option.tag::before {
+  left: 50%;
+  top: 0;
+  translate: -50% -62%;
+  clip-path: inset(0 0 55% 0);
 }
 
 .p4h-chip:hover,
 .p4h-option:hover {
-  border-color: var(--straw-500);
   translate: 0 -2px;
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .p4h-chip:active,
@@ -196,17 +237,25 @@
   padding: 2px 6px 12px;
 }
 
-/* the wooden shelf the medals stand on */
-.p4h-shelf__row::after {
+/* the split-bamboo rod the medals stand on: straw, darker underneath, with two knot bands */
+.p4h-shelf__row::after,
+.p4h-shelf__row::before {
   content: '';
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   height: 14px;
-  border-radius: 6px;
-  background: linear-gradient(180deg, #a07a52, #7a5a3a 60%, #5a3f28);
-  box-shadow: 0 4px 8px rgba(59, 42, 28, 0.25);
+  border-radius: 3px;
+  background:
+    linear-gradient(90deg, transparent 0 31.5%, rgba(90, 63, 40, 0.5) 31.5% 33.5%, transparent 33.5% 65.5%, rgba(90, 63, 40, 0.5) 65.5% 67.5%, transparent 67.5%),
+    linear-gradient(180deg, var(--straw-300), var(--straw-500) 55%, var(--straw-700));
+  box-shadow: 0 3px 6px rgba(59, 42, 28, 0.3), inset 0 -2px 0 rgba(59, 42, 28, 0.22);
+}
+
+/* one rod on wide screens (the second is for the phone's two shelves) */
+.p4h-shelf__row::before {
+  display: none;
 }
 
 .p4h-badge {
@@ -246,30 +295,24 @@
   }
 }
 
-.p4h-gallery,
-.p4h-cert {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* two paper tags with a stamp each: ink for the gallery, red for the certificate */
+.p4h-gallery.tag,
+.p4h-cert.tag {
+  justify-content: flex-start;
+  gap: 12px;
   min-height: 68px;
-  padding: 6px 18px 6px 10px;
-  border: 0;
-  border-radius: 22px;
-  background: var(--forest-700);
-  color: var(--cream);
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: 1.2rem;
+  padding: 6px 18px 6px 30px;
+  font-size: 1.1rem;
   line-height: 1.05;
-  box-shadow: var(--shadow-soft);
   text-align: left;
+  transition: translate 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
   touch-action: manipulation;
 }
 
-.p4h-cert {
-  background: var(--terracotta-600);
-  color: #fff;
+.p4h-gallery:hover,
+.p4h-cert:hover {
+  translate: 0 -2px;
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .p4h-gallery .p4-btn__text,
@@ -277,29 +320,37 @@
   text-wrap: balance;
 }
 
-.p4h-gallery .p4-icon,
-.p4h-cert .p4-icon {
-  width: 48px;
-  height: 48px;
-  padding: 4px;
-  border-radius: 14px;
-  background: var(--paper);
+/* "Tranh của con" is hand-written */
+.p4h-gallery .p4-btn__text {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.15rem;
 }
 
+.p4h-tag__stamp {
+  flex: none;
+}
+
+/* how many pictures are on the wall: a small straw stamp on the tag's corner */
 .p4h-count {
   position: absolute;
-  top: -8px;
-  right: -6px;
-  min-width: 30px;
-  height: 30px;
-  padding: 0 8px;
-  border-radius: 999px;
-  background: var(--mango-400);
-  color: var(--wood-900);
+  top: -10px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  border: 2px solid var(--straw-700);
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3.5px var(--straw-700);
+  color: var(--straw-700);
+  font-family: var(--font-hand);
   font-size: 1rem;
-  line-height: 30px;
-  text-align: center;
-  box-shadow: var(--shadow-soft);
+  font-weight: 700;
+  line-height: 1;
+  rotate: 8deg;
 }
 
 /* ---------- revisit picker ---------- */
@@ -324,19 +375,30 @@
   backdrop-filter: blur(3px);
 }
 
+/* a sheet of paper laid over the table */
 .p4h-picker__sheet {
-  position: relative;
   max-width: min(760px, 100%);
   padding: 26px 28px 28px;
-  border-radius: 32px;
-  background: var(--paper);
-  box-shadow: var(--shadow-lift);
+  border-radius: var(--corner-b);
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .p4h-picker__title {
-  margin: 0 64px 18px 0;
+  position: relative;
+  margin: 0 64px 30px 0;
   font-size: clamp(1.3rem, 2.4vw, 1.75rem);
-  color: var(--wood-900);
+  color: var(--forest-900);
+}
+
+.p4h-picker__title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 96px;
+  height: 2px;
+  background: var(--stitch);
+  opacity: 0.9;
 }
 
 .p4h-picker__close {
@@ -355,13 +417,13 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.p4h-option {
+.p4h-option.tag {
   width: auto;
   min-width: 132px;
   min-height: 150px;
   gap: 10px;
+  padding: 22px 8px 12px;
   font-size: 1.2rem;
-  border-width: 3px;
 }
 
 .p4h-option .p4-icon {
@@ -391,7 +453,7 @@
 }
 
 @media (max-width: 1100px) {
-  .p4h-chip {
+  .p4h-chip.tag {
     width: 104px;
     font-size: 0.92rem;
   }
@@ -417,7 +479,8 @@
 
   .p4h-cards {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 16px;
+    padding-top: 8px;
   }
 
   .p4h-card {
@@ -429,7 +492,19 @@
 
   .p4h-card__art {
     flex: 0 0 46%;
-    border-radius: 20px;
+    padding: 5px;
+  }
+
+  .p4h-card__art img,
+  .p4h-card__art svg,
+  .p4h-card__art::after {
+    inset: 5px;
+  }
+
+  .p4h-card__art img,
+  .p4h-card__art svg {
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
   }
 
   .p4h-card__label {
@@ -437,9 +512,19 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    margin: -8px -8px -8px 8px;
-    padding: 12px 14px;
+    gap: 8px;
+    padding: 4px 4px 4px 12px;
     font-size: 1.35rem;
+  }
+
+  .p4h-card__stamp {
+    width: 48px;
+    height: 48px;
+  }
+
+  .p4h-card__stamp svg {
+    width: 26px;
+    height: 26px;
   }
 
   .p4h-lower {
@@ -451,14 +536,16 @@
     justify-content: space-between;
   }
 
-  .p4h-chip {
+  .p4h-chip.tag {
     flex: 1;
     width: auto;
   }
 
+  /* the tags' thread loops hang out to the left, inside the scroll area's clip */
   .p4h-side {
     flex-direction: row;
     max-width: none;
+    padding-left: 6px;
   }
 
   .p4h-gallery,
@@ -474,16 +561,30 @@
     grid-template-columns: 1fr;
   }
 
-  .p4h-option {
+  .p4h-option.tag {
     min-height: 110px;
     min-width: 0;
   }
 
-  .p4h-picker__options[data-kind='chapter'] .p4h-option {
+  /* the three chapters go on one tag each, hung by the side like an ordinary luggage tag */
+  .p4h-picker__options[data-kind='chapter'] .p4h-option.tag {
     flex-direction: row;
     justify-content: flex-start;
     min-height: 80px;
-    padding: 8px 16px;
+    padding: 8px 16px 8px 30px;
+    background:
+      radial-gradient(circle at 13px 50%, var(--bg) 3.5px, var(--wood-500) 4px, var(--wood-500) 5px, transparent 5.5px),
+      var(--grain) 0 0 / 240px 240px,
+      var(--paper);
+    background-blend-mode: normal, multiply, normal;
+    text-align: left;
+  }
+
+  .p4h-picker__options[data-kind='chapter'] .p4h-option.tag::before {
+    left: 3px;
+    top: 50%;
+    translate: -60% -50%;
+    clip-path: inset(0 55% 0 0);
   }
 
   .p4h-option .p4-icon {
@@ -498,21 +599,31 @@
     padding-right: calc(16px + var(--safe-right));
   }
 
-  /* two shelves of three medals */
+  /* two rods of three medals */
   .p4h-shelf__row {
     display: grid;
     grid-template-columns: repeat(3, 64px);
     justify-content: space-evenly;
     row-gap: 12px;
-    padding: 0 0 0;
-    background: repeating-linear-gradient(180deg, transparent 0 74px, #7a5a3a 74px 86px, transparent 86px 90px);
+    padding: 0 0 8px;
+  }
+
+  .p4h-shelf__row::before,
+  .p4h-shelf__row::after {
+    display: block;
+    bottom: auto;
+    height: 12px;
+  }
+
+  .p4h-shelf__row::before {
+    top: 74px;
   }
 
   .p4h-shelf__row::after {
-    display: none;
+    top: 164px;
   }
 
-  /* one button per row, so "My Pictures · Tranh của con" fits on a line */
+  /* one tag per row, so "My Pictures · Tranh của con" fits on a line */
   .p4h-side {
     flex-direction: column;
   }

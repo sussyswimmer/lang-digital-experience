@@ -1,7 +1,7 @@
 /**
  * Phase 1: A Hat Full of Stories.
- * A floating polaroid collage of the nón lá in everyday life. Tapping a scene expands it to fill
- * the screen (GSAP Flip) with its ambient sound and a narrated caption. "Let's explore" appears
+ * Photos of the nón lá in everyday life, taped to the hat-maker's table. Tapping a scene expands it
+ * to fill the screen (GSAP Flip) with its ambient sound and a narrated caption. "Let's explore" appears
  * after the intro narration (or two scenes), and spirals the collage into the centre, handing
  * the photos to the 3D hat (viewer.convergeFrom) before moving on to Phase 2.
  */
@@ -70,6 +70,8 @@ class Phase1 implements Screen {
   private root!: HTMLElement;
   private collage!: HTMLDivElement;
   private explore!: HTMLButtonElement;
+  /** the paper the button is sewn onto: it is what appears, breathes and flies, the button stays level inside */
+  private exploreSheet!: HTMLDivElement;
   private views: TileView[] = [];
   private g = gsap.context(() => {});
   private alive = false;
@@ -81,7 +83,6 @@ class Phase1 implements Screen {
   private introRunning = false;
   private exploreShown = false;
   private exploreAnnounced = false;
-  private floats: gsap.core.Tween[] = [];
   private cleanups: (() => void)[] = [];
 
   mount(root: HTMLElement, ctx: AppContext): void {
@@ -92,11 +93,12 @@ class Phase1 implements Screen {
     this.collage = el('div.p1-collage');
     this.explore = el(
       'button.btn.btn--cta.p1-explore',
-      { type: 'button', 'data-touch': '', 'data-test': 'explore', hidden: true, onclick: () => void this.converge() },
+      { type: 'button', 'data-touch': '', 'data-test': 'explore', onclick: () => void this.converge() },
       svg(P1_ICONS.explore),
       i18n.bind(el('span'), 'p1.explore'),
     );
-    root.append(TopBar(ctx, { titleId: 'p1.title' }), this.collage, el('div.p1-explore-wrap', {}, this.explore));
+    this.exploreSheet = el('div.p1-explore-sheet.sheet.sheet--tilt-r.sheet--tape', { hidden: true }, this.explore);
+    root.append(TopBar(ctx, { titleId: 'p1.title' }), this.collage, el('div.p1-explore-wrap', {}, this.exploreSheet));
 
     for (const spec of [...DECOS, ...TILES]) this.views.push(this.buildTile(spec));
     this.collage.append(...this.views.map((v) => v.slot));
@@ -105,6 +107,7 @@ class Phase1 implements Screen {
 
     const ro = new ResizeObserver(() => this.layout());
     ro.observe(this.collage);
+    this.watchCaption();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && this.open) void this.closeScene();
     };
@@ -130,7 +133,6 @@ class Phase1 implements Screen {
   unmount(): void {
     this.alive = false;
     this.g.kill();
-    this.floats = [];
     for (const c of this.cleanups.splice(0)) c();
     if (this.open?.view.spec.ambient) this.ctx.audio.stopAmbient(this.open.view.spec.ambient);
     this.open = null;
@@ -143,16 +145,18 @@ class Phase1 implements Screen {
     const deco = Boolean(spec.deco);
     const media = this.media(spec);
     const photo = el('div.p1-photo', {}, media);
+    // the photo's mount: a sheet of paper (paper.css .sheet) with the scene's icon stamped in forest
+    // ink under the picture, and a red "seen" stamp once the scene has been opened
     const strip = el(
       'span.p1-tile__strip',
       {},
-      spec.icon ? el('span.p1-tile__icon', {}, svg(spec.icon, 'tile-icon')) : null,
-      deco ? null : el('span.p1-tile__seen', {}, svg(P1_ICONS.check, 'seen-icon')),
+      spec.icon ? el('span.p1-tile__icon.stamp.stamp--forest', {}, svg(spec.icon, 'tile-icon')) : null,
+      deco ? null : el('span.p1-tile__seen.stamp', {}, svg(P1_ICONS.check, 'seen-icon')),
     );
     const tile: HTMLElement = deco
-      ? el('div.p1-tile.p1-tile--deco', { 'aria-hidden': 'true' }, el('span.p1-tile__tape'), photo, strip)
+      ? el('div.p1-tile.p1-tile--deco.sheet', { 'aria-hidden': 'true' }, el('span.p1-tile__tape'), photo, strip)
       : el(
-          'button.p1-tile',
+          'button.p1-tile.sheet',
           { type: 'button', 'data-touch': '', 'data-test': `tile-${spec.id}`, 'aria-label': i18n.t(`p1.tile.${spec.id}`) },
           el('span.p1-tile__tape'),
           photo,
@@ -208,6 +212,27 @@ class Phase1 implements Screen {
     }
   }
 
+  /**
+   * "Let's explore" sits above the shared caption bar, whose height depends on the text and the
+   * language (three lines for the intro on a wide screen). The screen remembers the bar's tallest
+   * size in --p1-caption-h, so the sheet never slides under it, and only ever moves up, never down
+   * while the child is reaching for it.
+   */
+  private watchCaption(): void {
+    const caption = document.querySelector<HTMLElement>('#captions .caption');
+    if (!caption) return;
+    let tallest = 0;
+    const ro = new ResizeObserver(() => {
+      const h = Math.ceil(caption.getBoundingClientRect().height);
+      if (h <= tallest) return;
+      tallest = h;
+      this.root.style.setProperty('--p1-caption-h', `${h}px`);
+    });
+    ro.observe(caption);
+    this.cleanups.push(() => ro.disconnect());
+  }
+
+  /** the photos settle onto the table one after another (the paper.css .settle entrance, in GSAP) */
   private enter(): void {
     this.g.add(() => {
       const slots = this.views.map((v) => v.slot);
@@ -215,19 +240,7 @@ class Phase1 implements Screen {
         gsap.from(slots, { opacity: 0, duration: 0.3, stagger: 0.03 });
         return;
       }
-      gsap.from(slots, { opacity: 0, scale: 0.82, y: 40, duration: 0.7, ease: 'back.out(1.5)', stagger: 0.08 });
-      for (const v of this.views) {
-        const t = gsap.to(v.tile, {
-          y: gsap.utils.random(-5, 5),
-          rotation: gsap.utils.random(-1.2, 1.2),
-          duration: gsap.utils.random(2.6, 3.8),
-          ease: 'sine.inOut',
-          yoyo: true,
-          repeat: -1,
-          delay: gsap.utils.random(0, 1.2),
-        });
-        this.floats.push(t);
-      }
+      gsap.from(slots, { opacity: 0, y: 24, rotation: '+=1.5', duration: 0.55, ease: 'power3.out', stagger: 0.06 });
     });
   }
 
@@ -271,11 +284,12 @@ class Phase1 implements Screen {
     const holder = el('div.p1-photo.p1-photo--holder');
     const backdrop = el('div.p1-expand__backdrop');
     const frame = el('div.p1-expand__frame');
+    // a paper disc with the X; the word stays for screen readers (the scene also closes on a tap anywhere)
     const close = el(
-      'button.btn.btn--ghost.p1-expand__close',
+      'button.btn.btn--ghost.btn--round.p1-expand__close',
       { type: 'button', 'data-touch': '', 'data-test': 'close', 'aria-label': i18n.t('ui.close') },
       svg(ICONS.close),
-      i18n.bind(el('span'), 'ui.close'),
+      i18n.bind(el('span.visually-hidden'), 'ui.close'),
     );
     const overlay = el(
       'div.p1-expand',
@@ -283,6 +297,9 @@ class Phase1 implements Screen {
       backdrop,
       frame,
       el('div.p1-expand__handle'),
+      // the chapter's name written on the mat, a stitch sewn under it (the top bar is under the
+      // sheet while a scene is open); the stitch is a sibling because i18n.bind owns the title's text
+      el('div.p1-expand__head', { 'aria-hidden': 'true' }, i18n.bind(el('div.p1-expand__title'), 'p1.title'), el('hr.stitch.stitch--short.stitch--sew')),
       close,
     );
     this.root.appendChild(overlay);
@@ -359,7 +376,8 @@ class Phase1 implements Screen {
     const { view } = open;
     const ctx = this.ctx;
     open.drift?.kill();
-    gsap.set(view.media.querySelectorAll('img, video'), { clearProps: 'transform' });
+    // the same element the drift moved: a video is the media itself, a picture holds its img
+    gsap.set(view.media.querySelector('img, video') ?? view.media, { clearProps: 'transform' });
     if (view.spec.ambient) ctx.audio.stopAmbient(view.spec.ambient);
     if (ctx.narration.currentId() === `p1.tile.${view.spec.id}`) ctx.narration.stop();
     ctx.audio.sfx.play('swish');
@@ -410,10 +428,11 @@ class Phase1 implements Screen {
     const warm = window.setTimeout(() => this.alive && !this.converging && void this.ctx.viewer().catch(() => {}), 1200);
     this.cleanups.push(() => window.clearTimeout(warm));
     const b = this.explore;
-    b.hidden = false;
+    const sheet = this.exploreSheet;
+    sheet.hidden = false;
     this.g.add(() =>
       gsap.fromTo(
-        b,
+        sheet,
         { scale: 0.2, opacity: 0 },
         {
           scale: 1,
@@ -421,7 +440,7 @@ class Phase1 implements Screen {
           duration: motion.dur(0.6),
           ease: 'back.out(1.8)',
           onComplete: () => {
-            gsap.set(b, { clearProps: 'transform' });
+            gsap.set(sheet, { clearProps: 'transform' });
             if (!motion.reduced) b.classList.add('p1-pulse');
           },
         },
@@ -450,7 +469,6 @@ class Phase1 implements Screen {
     ctx.narration.stop();
     ctx.audio.sfx.play('whoosh');
     this.explore.classList.remove('p1-pulse');
-    for (const f of this.floats) f.kill();
 
     const area = this.collage.getBoundingClientRect();
     const centre = { x: area.width / 2, y: area.height * 0.46 };
@@ -463,7 +481,7 @@ class Phase1 implements Screen {
     const fly = this.g.add(() => {
       const tl = gsap.timeline();
       tl.fromTo(gather, { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: motion.dur(1.3), ease: 'power2.in' }, 0.1);
-      tl.to(this.explore, { scale: 0, opacity: 0, duration: 0.3, ease: 'back.in(2)' }, 0);
+      tl.to(this.exploreSheet, { scale: 0, opacity: 0, duration: 0.3, ease: 'back.in(2)' }, 0);
       views.forEach((v, i) => {
         const b = v.slot.getBoundingClientRect();
         const c = { x: b.left + b.width / 2 - area.left, y: b.top + b.height / 2 - area.top };

@@ -1,20 +1,23 @@
-/* Phase 3: Cultural Storytelling Showcase: a cloth-bound storybook and its three chapters. */
+/* Phase 3: Cultural Storytelling Showcase: a cloth-bound storybook and its three chapters.
+   The book lies on the shared table (base.css #app); its pages are sheets of rice paper sewn
+   together with the red thread (docs/DESIGN.md §5). */
 
 .screen.p3 {
   padding: 0;
   overflow: hidden;
-  background:
-    radial-gradient(60% 55% at 50% 45%, rgba(255, 249, 236, 0.75), rgba(255, 249, 236, 0) 72%),
-    radial-gradient(130% 100% at 50% 0%, #f8e8c4, #edd29c 58%, #d9b277);
+  /* chapter 2 turns the lights off: the paper takes an indigo wash instead of going black */
+  --p3-night: #272b4a;
+  --p3-night-ink: var(--straw-200);
+  --p3-night-line: rgba(246, 231, 196, 0.18);
 }
 
-/* Chapter 2 turns the lights off: everything behind the book fades to black */
+/* Chapter 2 turns the lights off: everything behind the book fades to night */
 .screen.p3::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: #000;
+  background: #060714;
   opacity: 0;
   pointer-events: none;
   transition: opacity 1.5s ease;
@@ -29,12 +32,13 @@
 .p3-cover {
   position: absolute;
   z-index: 2;
-  inset: calc(84px + var(--safe-top)) calc(16px + var(--safe-right)) calc(112px + var(--safe-bottom)) calc(16px + var(--safe-left));
+  inset: calc(84px + var(--safe-top)) calc(16px + var(--safe-right)) calc(120px + var(--safe-bottom)) calc(16px + var(--safe-left));
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 22px;
+  /* the gap leaves the bookmark tail room to hang below the book */
+  gap: 54px;
   container-type: size;
 }
 
@@ -45,22 +49,45 @@
 .p3-book {
   position: relative;
   flex: none;
-  height: min(540px, calc(100cqh - 118px), calc((100cqw - 24px) / 0.78));
+  height: min(540px, calc(100cqh - 150px), calc((100cqw - 24px) / 0.78));
   aspect-ratio: 0.78;
   perspective: 1800px;
+}
+
+/* the red thread bookmark, hanging out from the bottom of the page block (its top is under the cover) */
+.p3-book__ribbon {
+  position: absolute;
+  left: 15%;
+  bottom: -46px;
+  width: 22px;
+  height: 110px;
+  transform-origin: 50% 0;
+  rotate: -2deg;
+  filter: drop-shadow(0 3px 4px rgba(59, 42, 28, 0.4));
+  pointer-events: none;
+}
+
+.p3-book__ribbon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.06) 0 2px, transparent 2px 5px),
+    linear-gradient(90deg, var(--thread-deep), var(--thread) 35%, var(--thread) 65%, var(--thread-deep));
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
 }
 
 .p3-book__pages {
   position: absolute;
   inset: 8px -12px -9px 10px;
   border-radius: 4px 14px 14px 4px;
-  background: #fbf3df;
+  background: var(--straw-100);
   box-shadow:
-    inset -5px 0 0 #efe2c2,
-    inset -7px 0 0 #fffaf0,
+    inset -5px 0 0 var(--paper-deep),
+    inset -7px 0 0 var(--paper),
     inset -9px 0 0 #e7d6ae,
-    inset -11px 0 0 #fffaf0,
-    var(--shadow-lift);
+    inset -11px 0 0 var(--paper),
+    var(--shadow-paper-lift);
 }
 
 .p3-book__cover {
@@ -84,11 +111,12 @@
   overflow: hidden;
 }
 
+/* forest cloth: a fine weave over the green, lit from the top */
 .p3-book__front {
   background:
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 2px, transparent 2px 4px),
     repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 2px, transparent 2px 4px),
-    radial-gradient(120% 80% at 55% 35%, #33735a, #1f4d3a 58%, #143728);
+    radial-gradient(120% 80% at 55% 35%, #33735a, var(--forest-700) 58%, #143728);
   box-shadow: 0 18px 40px rgba(31, 30, 20, 0.35), inset 0 0 0 2px rgba(0, 0, 0, 0.25);
 }
 
@@ -100,6 +128,7 @@
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.25);
 }
 
+/* the gold frame is embossed into the cloth, with a running stitch of gold thread inside it */
 .p3-book__frame {
   position: absolute;
   inset: 6% 7% 6% 14%;
@@ -145,31 +174,42 @@
   height: auto;
 }
 
+/* the title: a paper label sewn onto the cloth with red thread, a touch askew */
 .p3-book__plate {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   width: 100%;
-  padding: 10px 14px 12px;
-  border-radius: 14px;
-  background: var(--paper);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  padding: 12px 18px 13px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--fibre) 0 0 / 320px 320px,
+    var(--paper);
+  background-blend-mode: multiply, multiply, normal;
+  box-shadow: var(--shadow-paper);
+  rotate: -1.2deg;
   text-align: center;
 }
 
 .p3-book__title {
-  font-family: var(--font-head);
-  font-weight: 800;
-  font-size: clamp(1.25rem, 3.6cqh, 2rem);
-  line-height: 1.05;
-  color: var(--terracotta-600);
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 3.8cqh, 2.1rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  color: var(--forest-900);
+  text-wrap: balance;
 }
 
 .p3-book__sub {
-  font-weight: 700;
-  font-size: clamp(0.85rem, 2cqh, 1.05rem);
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: clamp(0.9rem, 2.1cqh, 1.1rem);
   color: var(--wood-700);
 }
 
@@ -186,10 +226,15 @@
   object-fit: cover;
 }
 
+/* the endpaper: dotted straw paper */
 .p3-book__inside {
   transform: rotateY(180deg);
   border-radius: 16px 6px 6px 16px;
-  background: radial-gradient(circle at 10px 10px, rgba(184, 134, 42, 0.35) 2px, transparent 2.5px) 0 0 / 22px 22px, #f3e3bd;
+  background:
+    radial-gradient(circle at 10px 10px, rgba(184, 134, 42, 0.35) 2px, transparent 2.5px) 0 0 / 22px 22px,
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper-deep);
+  background-blend-mode: normal, multiply, normal;
 }
 
 .p3-cover-cta {
@@ -203,10 +248,12 @@
 
 /* ---------- the open book ---------- */
 
+/* the bottom inset is 8px more than the caption bar's 120px: a three-line caption on a desk would
+   otherwise touch the knots */
 .p3-story {
   position: absolute;
   z-index: 2;
-  inset: calc(84px + var(--safe-top)) calc(10px + var(--safe-right)) calc(110px + var(--safe-bottom)) calc(10px + var(--safe-left));
+  inset: calc(84px + var(--safe-top)) calc(10px + var(--safe-right)) calc(128px + var(--safe-bottom)) calc(10px + var(--safe-left));
   display: grid;
   grid-template-columns: 104px minmax(0, 1fr) 104px;
   grid-template-rows: minmax(0, 1fr) 64px;
@@ -217,15 +264,32 @@
   display: none;
 }
 
+/* the spread: one sheet of rice paper, clipped so the pages can slide through it. It settles onto
+   the table when the book opens (translate only: a rotated sheet would skew the chapters' hit-test
+   geometry, which they measure from getBoundingClientRect as the page starts) */
 .p3-viewport {
   position: relative;
   grid-column: 2;
   grid-row: 1;
   min-height: 0;
   overflow: hidden;
-  border-radius: 30px;
-  box-shadow: 0 16px 40px rgba(59, 42, 28, 0.28);
+  border: var(--deckle);
+  border-radius: var(--corner-a);
+  box-shadow: var(--shadow-paper-lift);
   touch-action: pan-y;
+  animation: p3-settle 0.55s var(--ease-out) both;
+  transition: box-shadow 1.5s ease, border-color 1.5s ease;
+}
+
+@keyframes p3-settle {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .p3-track {
@@ -235,18 +299,35 @@
 }
 
 .p3-page {
+  position: relative;
   flex: 0 0 100%;
   height: 100%;
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1.75fr) minmax(250px, 1fr);
-  gap: 20px;
+  gap: 36px;
   padding: 18px 20px 18px 18px;
   background:
-    linear-gradient(90deg, rgba(122, 90, 58, 0.14), rgba(122, 90, 58, 0) 2.5%),
-    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 60%),
-    #fff7e6;
+    var(--grain) 0 0 / 240px 240px,
+    var(--fibre) 0 0 / 320px 320px,
+    var(--paper);
+  background-blend-mode: multiply, multiply, normal;
   transition: background-color 1.5s ease, color 1.5s ease;
+}
+
+/* the indigo wash the paper takes when the lights go off (fades in over the paper colour) */
+.p3-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--fibre) 0 0 / 320px 320px,
+    var(--p3-night);
+  background-blend-mode: multiply, multiply, normal;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease;
 }
 
 .p3-page[data-chapter='identity'] {
@@ -254,6 +335,7 @@
 }
 
 .p3-page__pic {
+  position: relative;
   min-width: 0;
   min-height: 0;
   display: flex;
@@ -262,18 +344,47 @@
   container-type: size;
 }
 
-.p3-pic {
+/* the photo mount: a paper border with a deckled edge, lifted off the page */
+.p3-mount {
   position: relative;
   width: min(100cqw, calc(100cqh * var(--ar)));
   aspect-ratio: var(--ar);
-  border-radius: 20px;
+  border-radius: var(--corner-s);
+  box-shadow:
+    0 0 0 7px var(--paper),
+    0 0 0 8px rgba(59, 42, 28, 0.16),
+    0 1px 2px 8px rgba(59, 42, 28, 0.2),
+    0 10px 26px 8px rgba(59, 42, 28, 0.14);
+  transition: box-shadow 1.5s ease;
+}
+
+/* a strip of washi tape over the mount's top edge by the corner, holding the photo to the page
+   (normal blend: it has to read on the night photo too) */
+.p3-mount::after {
+  content: '';
+  position: absolute;
+  top: -15px;
+  right: 10px;
+  width: 92px;
+  height: 24px;
+  rotate: -7deg;
+  background: repeating-linear-gradient(90deg, rgba(246, 166, 35, 0.62) 0 7px, rgba(251, 243, 223, 0.58) 7px 14px);
+  pointer-events: none;
+  transition: opacity 1.5s ease;
+}
+
+/* the picture itself fills the mount and clips its layers (the chapters measure this box) */
+.p3-pic {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   overflow: hidden;
   background: #d9c49a;
-  box-shadow: 0 10px 26px rgba(59, 42, 28, 0.3), 0 0 0 6px #fffdf6;
-  transition: box-shadow 1.5s ease, background-color 1.5s;
+  transition: background-color 1.5s;
 }
 
 .p3-page__side {
+  position: relative;
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -283,52 +394,89 @@
   transition: color 1.5s;
 }
 
+/* the gutter: the two pages are sewn together with a line of red running stitch, in the fold */
+.p3-page__side::before {
+  content: '';
+  position: absolute;
+  top: -22px;
+  bottom: -22px;
+  left: -32px;
+  width: 28px;
+  background:
+    repeating-linear-gradient(180deg, var(--thread) 0 10px, transparent 10px 18px) 50% 0 / 2px 100% no-repeat,
+    linear-gradient(90deg, rgba(59, 42, 28, 0), rgba(59, 42, 28, 0.09) 50%, rgba(59, 42, 28, 0));
+  pointer-events: none;
+}
+
+/* the stamp and the title are laid out by the side column itself; phones put them on one row */
+.p3-page__head {
+  display: contents;
+}
+
+/* the chapter number, stamped in red beside its name */
 .p3-chip {
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 16px 4px 6px;
-  border-radius: 999px;
-  background: var(--straw-200);
-  font-family: var(--font-head);
+  gap: 10px;
+  font-family: var(--font-ui);
   font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--wood-700);
-  transition: background-color 1.5s, color 1.5s;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  transition: color 1.5s;
 }
 
-.p3-chip svg {
-  width: 38px;
-  height: 38px;
+.p3-chip .stamp {
+  flex: none;
 }
 
 .p3-page__title {
   margin: 0;
-  font-size: clamp(1.55rem, 2.5vw, 2.25rem);
-  color: var(--forest-700);
+  font-size: clamp(1.7rem, 2.6vw, 2.4rem);
+  color: var(--forest-900);
   transition: color 1.5s;
 }
 
+/* a short stitch under the title, sewn in once the page has settled */
+.p3-page__title::after {
+  content: '';
+  display: block;
+  width: 96px;
+  height: 2px;
+  margin-top: 10px;
+  background: var(--stitch);
+  opacity: 0.9;
+  animation: stitch-sew 0.8s var(--ease-out) both;
+  animation-delay: 440ms;
+}
+
+/* what to do, hand-written on a paper tag (the hole shows the page it lies on) */
 .p3-prompt {
-  display: flex;
+  align-self: flex-start;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 16px 12px 10px;
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: var(--shadow-soft);
-  font-family: var(--font-head);
+  gap: 8px;
+  max-width: calc(100% - 10px);
+  margin-left: 10px;
+  padding: 10px 16px 11px 30px;
+  background:
+    radial-gradient(circle at 13px 50%, var(--paper-deep) 3.5px, var(--wood-500) 4px, var(--wood-500) 5px, transparent 5.5px),
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: normal, multiply, normal;
+  font-family: var(--font-hand);
   font-weight: 600;
-  font-size: clamp(1.1rem, 1.7vw, 1.4rem);
-  line-height: 1.2;
-  transition: background-color 1.5s, color 1.5s;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  line-height: 1.3;
+  rotate: -1.2deg;
+  transition: background-color 1.5s, color 1.5s, border-color 1.5s;
 }
 
 .p3-prompt__hand {
   flex: none;
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   transform: rotate(-18deg);
 }
 
@@ -355,17 +503,20 @@
   height: 42px;
 }
 
+/* "We counted N hats!": a mango sticker pressed onto the page */
 .p3-result {
-  padding: 12px 16px;
-  border-radius: 20px;
+  align-self: flex-start;
+  padding: 10px 18px 12px;
+  border-radius: var(--corner-b);
   background: var(--mango-400);
   color: var(--wood-900);
-  font-family: var(--font-head);
-  font-weight: 800;
-  font-size: clamp(1.3rem, 2vw, 1.7rem);
-  line-height: 1.15;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+  line-height: 1.2;
   text-align: center;
-  box-shadow: var(--shadow-soft);
+  rotate: -2deg;
+  mix-blend-mode: multiply;
 }
 
 .p3-result[hidden] {
@@ -378,10 +529,10 @@
 
 .p3-listen {
   align-self: flex-start;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   padding: 0 20px 0 14px;
-  border: 2px solid rgba(90, 63, 40, 0.15);
   box-shadow: none;
+  transition: background-color 1.5s, color 1.5s, border-color 1.5s;
 }
 
 .p3-listen .icon {
@@ -396,14 +547,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   min-width: 96px;
   padding: 0;
   border: 0;
   background: none;
-  font-family: var(--font-head);
+  font-family: var(--font-ui);
   font-weight: 700;
-  color: var(--wood-700);
+  color: var(--ink);
   touch-action: manipulation;
 }
 
@@ -417,16 +568,38 @@
   grid-row: 1;
 }
 
+/* a paper disc with an ink arrow and a stitched edge; Next is sewn with the red thread */
 .p3-nav__disc {
+  position: relative;
   display: grid;
   place-items: center;
   width: 88px;
   height: 88px;
+  border: var(--deckle);
   border-radius: 50%;
-  background: var(--paper);
-  color: var(--forest-700);
-  box-shadow: var(--shadow-soft);
-  transition: background-color 0.3s, color 0.3s, transform 0.15s var(--ease-out);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  color: var(--forest-900);
+  box-shadow: var(--shadow-paper);
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s, transform 0.15s var(--ease-out);
+}
+
+.p3-nav__disc::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed currentColor;
+  border-radius: inherit;
+  opacity: 0.3;
+  pointer-events: none;
+  transition: border-color 0.3s, opacity 0.3s;
+}
+
+.p3-nav--next .p3-nav__disc::before {
+  border-color: var(--thread);
+  opacity: 0.9;
 }
 
 .p3-nav:active .p3-nav__disc {
@@ -438,19 +611,23 @@
   height: 46px;
 }
 
-.p3-nav--next .p3-nav__disc {
-  background: var(--forest-700);
-  color: var(--cream);
-}
-
+/* not yet: a dimmer scrap of paper, the thread loose */
 .p3-nav--next.is-locked .p3-nav__disc {
-  background: #d6c7a4;
-  color: #8a7a5c;
+  background-color: var(--paper-deep);
+  color: var(--ink-soft);
   box-shadow: none;
 }
 
-/* "you can go on": a gentle breathe plus a ring. Transform/opacity only, so it stays on the
-   compositor (the shared .pulse animates box-shadow, which repaints the whole page each frame) */
+.p3-nav--next.is-locked .p3-nav__disc::before {
+  opacity: 0.35;
+}
+
+.p3-nav--next.is-locked .p3-nav__disc .icon {
+  opacity: 0.55;
+}
+
+/* "you can go on": a gentle breathe plus a ring of thread. Transform/opacity only, so it stays on
+   the compositor (the shared .pulse animates box-shadow, which repaints the whole page each frame) */
 .p3-nav--next.is-ready .p3-nav__disc,
 .p3-pulse {
   position: relative;
@@ -458,16 +635,23 @@
   will-change: transform;
 }
 
+/* the ring is the disc's ::after (its ::before is the stitched edge) and the cover button's ::before
+   (.btn::after is its stitched edge) */
 .p3-nav--next.is-ready .p3-nav__disc::after,
-.p3-pulse::after {
+.p3-pulse::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 0 0 6px rgba(224, 169, 59, 0.75);
+  box-shadow: 0 0 0 6px rgba(200, 57, 43, 0.5);
   pointer-events: none;
   animation: p3-ring 1.6s ease-out infinite;
   will-change: transform, opacity;
+}
+
+/* the wide cover button spreads its ring more along the short axis */
+.p3-pulse::before {
+  animation-name: p3-ring-wide;
 }
 
 @keyframes p3-breathe {
@@ -486,17 +670,20 @@
     opacity: 0.9;
   }
   to {
-    transform: scale(1.35, 1.6);
+    transform: scale(1.4);
     opacity: 0;
   }
 }
 
-.p3-nav--finish .p3-nav__disc {
-  background: var(--terracotta-600);
-}
-
-.p3-nav--finish.is-locked .p3-nav__disc {
-  background: #d6c7a4;
+@keyframes p3-ring-wide {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.2, 1.5);
+    opacity: 0;
+  }
 }
 
 .p3-nav[disabled] {
@@ -506,24 +693,38 @@
 
 .p3-nav__label {
   max-width: 104px;
-  padding: 2px 10px;
-  border-radius: 14px;
-  background: rgba(255, 249, 236, 0.9);
   font-size: 1rem;
   line-height: 1.2;
   text-align: center;
+  transition: color 1.5s;
 }
 
+/* three knots on a line of red thread; the page you are on is the one pulled tight */
 .p3-dots {
+  position: relative;
   grid-column: 2;
   grid-row: 2;
+  justify-self: center;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2px;
 }
 
+.p3-dots::before {
+  content: '';
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  top: 50%;
+  height: 2px;
+  translate: 0 -50%;
+  background: var(--stitch);
+  opacity: 0.9;
+}
+
 .p3-dot {
+  position: relative;
   display: grid;
   place-items: center;
   width: 64px;
@@ -534,75 +735,111 @@
 }
 
 .p3-dot__mark {
+  box-sizing: border-box;
   width: 18px;
   height: 18px;
-  border-radius: 999px;
-  background: var(--wood-500);
-  opacity: 0.4;
-  transition: width 0.3s var(--ease-out), background-color 0.3s, opacity 0.3s;
+  border-radius: 50%;
+  border: 2.5px solid var(--thread);
+  background: var(--paper);
+  box-shadow: 0 0 0 3px var(--paper);
+  transition: width 0.3s var(--ease-out), height 0.3s var(--ease-out), background-color 0.3s, box-shadow 0.3s, opacity 0.3s;
 }
 
 .p3-dot.is-done .p3-dot__mark {
-  background: var(--forest-500);
-  opacity: 0.9;
+  background:
+    radial-gradient(circle, var(--thread) 3.5px, transparent 4px),
+    var(--paper);
 }
 
 .p3-dot.is-current .p3-dot__mark {
-  width: 44px;
-  background: var(--terracotta-600);
-  opacity: 1;
+  width: 24px;
+  height: 24px;
+  background: var(--thread);
 }
 
 .p3-dot.is-locked .p3-dot__mark {
-  background: transparent;
-  border: 3px dashed var(--wood-500);
-  opacity: 0.55;
+  border-style: dashed;
+  opacity: 0.6;
 }
 
 /* ---------- lights off (Chapter 2) ---------- */
 
 .p3--dark .p3-viewport {
   box-shadow: none;
+  border-color: var(--p3-night-line);
 }
 
+/* the paper colour goes to black under the indigo wash (the e2e spec reads it) */
 .p3--dark .p3-page {
-  background: #050403;
+  background-color: #050403;
+}
+
+.p3--dark .p3-page::before {
+  opacity: 1;
 }
 
 .p3--dark .p3-page__side,
 .p3--dark .p3-page__title {
+  color: var(--p3-night-ink);
+}
+
+.p3--dark .p3-chip {
   color: var(--straw-300);
 }
 
-.p3--dark .p3-chip,
+.p3--dark .p3-chip .stamp {
+  background: var(--p3-night);
+  box-shadow: inset 0 0 0 3px var(--p3-night), inset 0 0 0 4.5px currentColor;
+  mix-blend-mode: normal;
+}
+
 .p3--dark .p3-prompt {
-  background: rgba(255, 236, 190, 0.1);
-  color: var(--straw-200);
+  background:
+    radial-gradient(circle at 13px 50%, #050403 3.5px, var(--wood-500) 4px, var(--wood-500) 5px, transparent 5.5px),
+    var(--grain) 0 0 / 240px 240px,
+    #32365a;
+  background-blend-mode: normal, multiply, normal;
+  border-color: var(--p3-night-line);
+  color: var(--p3-night-ink);
   box-shadow: none;
+}
+
+.p3--dark .p3-mount {
+  box-shadow: 0 0 0 7px var(--p3-night), 0 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.p3--dark .p3-mount::after {
+  opacity: 0;
 }
 
 .p3--dark .p3-pic {
   background: #000;
-  box-shadow: 0 0 0 0 transparent;
 }
 
 .p3--dark .p3-nav__label {
-  background: rgba(255, 236, 190, 0.12);
-  color: var(--straw-200);
+  color: var(--p3-night-ink);
 }
 
 .p3--dark .p3-nav__disc {
-  background: rgba(255, 236, 190, 0.14);
-  color: var(--straw-200);
+  background-color: var(--p3-night);
+  border-color: var(--p3-night-line);
+  color: var(--p3-night-ink);
+  box-shadow: none;
 }
 
 .p3--dark .p3-listen {
-  background: rgba(255, 236, 190, 0.12);
-  color: var(--straw-200);
+  background-color: var(--p3-night);
+  border-color: var(--p3-night-line);
+  color: var(--p3-night-ink);
 }
 
 .p3--dark .p3-dot__mark {
-  background: var(--straw-300);
+  background-color: var(--p3-night);
+  box-shadow: 0 0 0 3px var(--p3-night);
+}
+
+.p3--dark .p3-dot.is-current .p3-dot__mark {
+  background-color: var(--thread);
 }
 
 /* ---------- Chapter 1: the sun and the shade ---------- */
@@ -826,6 +1063,7 @@
   box-shadow: var(--focus-ring);
 }
 
+/* the numbers: round ink stamps pressed onto the photo, in the three stamp colours */
 .p3-badge {
   position: absolute;
   display: grid;
@@ -835,12 +1073,12 @@
   translate: -50% -50%;
   border-radius: 50%;
   background: var(--terracotta-600);
-  color: #fff;
-  font-family: var(--font-head);
-  font-weight: 800;
+  color: var(--paper);
+  font-family: var(--font-hand);
+  font-weight: 700;
   font-size: clamp(0.95rem, 1.5vw, 1.3rem);
   line-height: 1;
-  box-shadow: 0 0 0 3px #fff9ec, 0 4px 10px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 3px var(--paper), 0 4px 10px rgba(0, 0, 0, 0.35);
   pointer-events: none;
 }
 
@@ -892,15 +1130,31 @@
 }
 
 @media (max-aspect-ratio: 1/1) {
+  /* the cover button must not run past the 16px gutter, nor wrap: smaller type, one line */
+  .p3-cover-cta {
+    max-width: 100%;
+    padding: 0 28px;
+    font-size: 1.35rem;
+    white-space: nowrap;
+  }
+
+  /* a near-full-width button's ring would paint two colour bands across the screen: keep it close */
+  .p3-pulse::before {
+    animation-name: p3-ring-sm;
+  }
+
+  /* the phone keeps the caption bar's 120px: the nav row below the sheet already clears it. That
+     row is a fixed height, so a three-line label (VI "Finish the story") cannot squeeze the sheet */
   .p3-story {
+    bottom: calc(120px + var(--safe-bottom));
     grid-template-columns: 84px minmax(0, 1fr) 84px;
-    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-rows: minmax(0, 1fr) 108px;
     gap: 6px 4px;
   }
 
   .p3-viewport {
     grid-column: 1 / -1;
-    border-radius: 24px;
+    border-radius: var(--corner-b);
   }
 
   .p3-nav--prev,
@@ -914,6 +1168,10 @@
     height: 68px;
   }
 
+  .p3-nav__disc::before {
+    inset: 5px;
+  }
+
   .p3-nav__disc .icon {
     width: 36px;
     height: 36px;
@@ -922,11 +1180,14 @@
   /* the arrows stay inside their columns, clear of the dots */
   .p3-nav {
     min-width: 0;
+    gap: 4px;
   }
 
+  /* two lines at most under the disc ("Kết thúc câu chuyện" breaks after "thúc") */
   .p3-nav__label {
-    font-size: 0.85rem;
-    padding: 0 4px;
+    max-width: 84px;
+    padding: 0;
+    font-size: 0.8rem;
   }
 
   /* three full 64 px dots fit the 194 px middle column of a 390 px phone */
@@ -938,40 +1199,132 @@
   .p3-page[data-chapter='identity'] {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);
-    gap: 10px;
-    padding: 10px;
+    gap: 12px;
+    padding: 12px 12px 8px;
   }
 
   .p3-page__pic {
     container-type: normal;
   }
 
-  .p3-pic {
-    width: 100%;
+  /* a tall (square) photo would leave the text column no room: cap it by the screen height */
+  .p3-mount {
+    width: min(100%, calc(36dvh * var(--ar)));
+    box-shadow:
+      0 0 0 5px var(--paper),
+      0 0 0 6px rgba(59, 42, 28, 0.16),
+      0 1px 2px 6px rgba(59, 42, 28, 0.2),
+      0 8px 20px 6px rgba(59, 42, 28, 0.14);
   }
 
-  .p3-page__side {
-    gap: 8px;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+  .p3-mount::after {
+    top: -9px;
+    right: 8px;
+    width: 76px;
+    height: 20px;
+    rotate: -5deg;
   }
 
-  .p3-chip {
+  /* the pages are stacked: the stitched fold runs under the picture instead of beside it */
+  .p3-page__side::before {
     display: none;
   }
 
+  .p3-page__pic::after {
+    content: '';
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    bottom: -7px;
+    height: 2px;
+    background: var(--stitch);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  /* the column scrolls once a chapter has shown all its buttons. Scroll shadows say so: the paper
+     covers scroll with the content (local) and slide off the fixed shadows when more lies beyond
+     either edge; nothing moves unless the child scrolls. No bottom padding: it would count as
+     overflow and show a shadow under a column that fits */
+  .p3-page__side {
+    --p3-fold: var(--paper);
+    gap: 6px;
+    padding-bottom: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background:
+      linear-gradient(var(--p3-fold) 40%, transparent) top / 100% 28px local no-repeat,
+      linear-gradient(transparent, var(--p3-fold) 60%) bottom / 100% 28px local no-repeat,
+      radial-gradient(farthest-side at 50% 0, rgba(59, 42, 28, 0.28), transparent) top / 100% 12px scroll no-repeat,
+      radial-gradient(farthest-side at 50% 100%, rgba(59, 42, 28, 0.28), transparent) bottom / 100% 12px scroll no-repeat;
+  }
+
+  .p3--dark .p3-page__side {
+    --p3-fold: var(--p3-night);
+  }
+
+  /* inside the scrolling column the stagger is a fade and a press: a child translated down mid-
+     animation leaves the column scrollable into blank paper (Chromium keeps the overflow it
+     measured until the next layout), and the shadow above would show under a column that fits */
+  .p3-page__side .settle {
+    animation-name: p3-press;
+  }
+
+  @keyframes p3-press {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* chapter 3 reveals its buttons by scrolling them to 8px above the fold: the listen button
+     waits just under it, whole, rather than peeking out by a couple of pixels */
+  .p3-listen {
+    margin-top: 4px;
+  }
+
+  /* the chapter number stamp sits beside the title; the words "Chapter n" are the stamp's job here */
+  .p3-page__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .p3-chip {
+    align-self: center;
+  }
+
+  .p3-chip > :not(.p3-chip__stamp) {
+    display: none;
+  }
+
+  .p3-chip .stamp {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
   .p3-page__title {
-    font-size: 1.35rem;
+    font-size: 1.4rem;
+  }
+
+  .p3-page__title::after {
+    width: 72px;
+    margin-top: 6px;
   }
 
   .p3-prompt {
-    padding: 8px 12px 8px 8px;
+    padding: 6px 12px 7px 28px;
     font-size: 1.05rem;
   }
 
   .p3-prompt__hand {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
   }
 
   .p3-actions {
@@ -997,20 +1350,49 @@
   .p3-page__grow {
     display: none;
   }
+
+  @keyframes p3-ring-sm {
+    from {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    to {
+      transform: scale(1.06, 1.25);
+      opacity: 0;
+    }
+  }
 }
 
-/* narrower phones: slimmer arrow columns leave the three 64 px dots their 192 px */
+/* narrower phones: slimmer arrow columns leave the three 64 px dots their 192 px, and the discs
+   and the photo give the text column a little height back */
 @media (max-aspect-ratio: 1/1) and (max-width: 387px) {
   .p3-story {
     grid-template-columns: 72px minmax(0, 1fr) 72px;
+    grid-template-rows: minmax(0, 1fr) 104px;
     column-gap: 2px;
+  }
+
+  .p3-nav__disc {
+    width: 64px;
+    height: 64px;
+  }
+
+  .p3-mount {
+    width: min(96%, calc(36dvh * var(--ar)));
+  }
+
+  /* the label keeps its 84px two-line measure, overhanging the 72px column by 6px a side (into
+     the column gap, below the knots) rather than wrapping to a third line */
+  .p3-nav__label {
+    width: 84px;
+    margin: 0 -6px;
   }
 }
 
 /* narrower still: the dots get a row of their own rather than shrinking under the 64 px minimum */
 @media (max-aspect-ratio: 1/1) and (max-width: 359px) {
   .p3-story {
-    grid-template-rows: minmax(0, 1fr) auto auto;
+    grid-template-rows: minmax(0, 1fr) 104px auto;
   }
 
   .p3-dots {

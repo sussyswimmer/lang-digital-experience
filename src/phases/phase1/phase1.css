@@ -1,33 +1,9 @@
-/* Phase 1: A Hat Full of Stories: a scattered polaroid collage on a warm woven-mat background. */
+/* Phase 1: A Hat Full of Stories: photos on paper mounts, taped to the hat-maker's table.
+   The table itself (paper ground, pool of light, grain) is the shared #app background. */
 
 .screen.p1 {
   padding: 0;
   overflow: hidden;
-  background:
-    radial-gradient(60% 50% at 50% 46%, rgba(255, 249, 236, 0.85), rgba(255, 249, 236, 0) 70%),
-    radial-gradient(130% 100% at 50% 0%, #fbf0d6, #f3ddae 58%, #e6c385);
-  transition: background-color 0.6s;
-}
-
-/* faint bamboo-mat weave */
-.screen.p1::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.07;
-  background:
-    repeating-linear-gradient(45deg, var(--wood-700) 0 2px, transparent 2px 14px),
-    repeating-linear-gradient(-45deg, var(--wood-700) 0 2px, transparent 2px 14px);
-}
-
-.screen.p1.is-converging {
-  background: transparent;
-}
-
-.screen.p1.is-converging::before {
-  opacity: 0;
-  transition: opacity 0.5s;
 }
 
 .p1-collage {
@@ -44,52 +20,74 @@
   display: none;
 }
 
+/* ---------- a photo on a paper mount ---------- */
+
+/* the mount is a .sheet (grain, deckle, paper shadow); a photo's corners are tighter than a page's */
 .p1-tile {
-  position: relative;
   display: block;
   width: 100%;
   padding: 4.5% 4.5% 0;
-  border: 0;
-  border-radius: 6px;
-  background: #fffdf6;
-  box-shadow: 0 12px 26px rgba(59, 42, 28, 0.24), 0 2px 5px rgba(59, 42, 28, 0.18);
+  border-radius: var(--corner-s);
   cursor: pointer;
   touch-action: manipulation;
   will-change: transform;
-  transition: box-shadow 0.2s var(--ease-out), filter 0.2s;
+  transition: box-shadow 0.2s var(--ease-out);
 }
 
 .p1-tile:hover {
-  box-shadow: 0 18px 36px rgba(59, 42, 28, 0.3), 0 3px 6px rgba(59, 42, 28, 0.2);
-  filter: brightness(1.03);
+  box-shadow: var(--shadow-paper-lift);
+}
+
+/* the mount sets its own shadow, so the shared focus ring has to be stacked on top of it */
+.p1-tile:focus-visible {
+  box-shadow: var(--focus-ring), var(--shadow-paper);
 }
 
 .p1-tile--deco {
   cursor: default;
-  background: #fbf5e6;
 }
 
+/* washi tape holding the top edge down: the .sheet--tape strip, sized to the photo, turned a little
+   differently on each one so the hand that stuck them is visible */
 .p1-tile__tape {
   position: absolute;
   z-index: 2;
   top: -11px;
   left: 50%;
   width: 34%;
-  height: 22px;
-  transform: translateX(-50%) rotate(-3deg);
-  background: repeating-linear-gradient(90deg, rgba(208, 122, 85, 0.82) 0 8px, rgba(224, 150, 110, 0.82) 8px 16px);
-  box-shadow: 0 2px 3px rgba(59, 42, 28, 0.18);
-  border-radius: 2px;
+  height: 24px;
+  transform: translateX(-50%) rotate(-2.5deg);
+  background: repeating-linear-gradient(90deg, rgba(246, 166, 35, 0.55) 0 7px, rgba(246, 166, 35, 0.32) 7px 14px);
+  mix-blend-mode: multiply;
+  /* torn ends */
+  clip-path: polygon(0 8%, 3% 0, 97% 5%, 100% 0, 98% 52%, 100% 100%, 95% 92%, 2% 100%, 1% 60%);
+  pointer-events: none;
 }
 
 .p1-slot:nth-child(3n) .p1-tile__tape {
-  background: repeating-linear-gradient(90deg, rgba(127, 191, 94, 0.8) 0 8px, rgba(150, 205, 120, 0.8) 8px 16px);
+  width: 30%;
+  left: 46%;
   transform: translateX(-50%) rotate(4deg);
 }
 
 .p1-slot:nth-child(3n + 1) .p1-tile__tape {
-  background: repeating-linear-gradient(90deg, rgba(246, 166, 35, 0.8) 0 8px, rgba(250, 190, 90, 0.8) 8px 16px);
+  width: 38%;
+  left: 55%;
   transform: translateX(-50%) rotate(-6deg);
+}
+
+/* the two loose photos are stuck down across a corner instead */
+.p1-tile--deco .p1-tile__tape {
+  top: 0;
+  left: 0;
+  width: 46%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.p1-slot[data-tile='sky'] .p1-tile__tape {
+  left: auto;
+  right: 0;
+  transform: translate(50%, -50%) rotate(45deg);
 }
 
 .p1-photo {
@@ -98,8 +96,18 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border-radius: 3px;
-  background: #e9d3a4;
+  border-radius: 3px 2px 4px 2px / 2px 4px 2px 3px;
+  background: var(--paper-deep);
+}
+
+/* the print's deckle: a hairline over the picture's edge */
+.p1-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: var(--deckle);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .p1-photo picture,
@@ -116,6 +124,7 @@
   background: repeating-linear-gradient(45deg, var(--straw-200), var(--straw-200) 10px, var(--straw-300) 10px, var(--straw-300) 20px);
 }
 
+/* the strip of paper under the picture, where the stamps go */
 .p1-tile__strip {
   position: relative;
   display: block;
@@ -123,74 +132,92 @@
   padding-bottom: 16%;
 }
 
-.p1-tile__icon {
+/* the scene's icon, stamped in forest ink on a paper disc that sits over the picture's bottom edge
+   (a sticker, so it reads on any photo); sized to the photo, not to the screen */
+.p1-tile .stamp {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  bottom: 4%;
   width: auto;
-  height: 74%;
-  transform: translate(-50%, -50%);
-}
-
-.p1-tile__icon svg {
-  height: 100%;
-  width: auto;
-}
-
-.p1-tile__seen {
-  position: absolute;
-  right: 4%;
-  top: 50%;
-  height: 60%;
+  height: 130%;
   aspect-ratio: 1;
-  transform: translateY(-50%) scale(0);
+  mix-blend-mode: normal;
+}
+
+.p1-tile .stamp svg {
+  width: 60%;
+  height: 60%;
+}
+
+.p1-tile__icon {
+  left: 50%;
+  translate: -50% 0;
+}
+
+/* "seen": a second stamp in red, pressed once the scene has been opened */
+.p1-tile__seen {
+  right: 5%;
+  rotate: 9deg;
+  transform: scale(0);
   transition: transform 0.35s var(--ease-out);
 }
 
-.p1-tile__seen svg {
-  width: 100%;
-  height: 100%;
+.p1-tile.is-seen .p1-tile__seen {
+  transform: scale(1);
 }
 
-.p1-tile.is-seen .p1-tile__seen {
-  transform: translateY(-50%) scale(1);
+/* the tick lands on the other side every other photo (a hand pressing stamps, not a template);
+   it also keeps the rain tile's tick clear of the explore sheet on wide screens */
+.p1-slot:nth-child(even) .p1-tile__seen {
+  right: auto;
+  left: 5%;
+  rotate: -8deg;
 }
 
 /* ---------- "Let's explore" ---------- */
 
+/* clear of the shared caption bar, whatever its height (Phase1Screen measures it into
+   --p1-caption-h; 78px is a one-line bar, so the sheet never sits lower than 118px) */
 .p1-explore-wrap {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: calc(118px + var(--safe-bottom));
+  bottom: calc(max(var(--p1-caption-h, 78px), 78px) + 40px + var(--safe-bottom));
   display: flex;
   justify-content: center;
+  padding: 0 8px;
   pointer-events: none;
   z-index: 6;
 }
 
-.p1-explore {
+/* the stitched red button is sewn onto a scrap of paper taped to the table */
+.p1-explore-sheet {
+  padding: 12px 14px;
   pointer-events: auto;
-  box-shadow: 0 14px 30px rgba(169, 71, 42, 0.45), 0 0 0 6px rgba(255, 249, 236, 0.9);
+  will-change: transform;
 }
 
-.p1-explore[hidden] {
+.p1-explore-sheet[hidden] {
   display: none;
 }
 
-/* compositor-only invitation (the shared .pulse animates box-shadow, which repaints every frame) */
-.p1-explore.p1-pulse {
+.p1-explore {
   position: relative;
+  rotate: -0.7deg;
+}
+
+/* compositor-only invitation (the shared .pulse animates box-shadow, which repaints every frame);
+   the ring is ::before, so the button keeps its stitched edge (::after) */
+.p1-explore.p1-pulse {
   animation: p1-breathe 1.6s ease-in-out infinite;
   will-change: transform;
 }
 
-.p1-explore.p1-pulse::after {
+.p1-explore.p1-pulse::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 0 0 8px rgba(246, 166, 35, 0.7);
+  box-shadow: 0 0 0 7px rgba(200, 57, 43, 0.4);
   pointer-events: none;
   animation: p1-ring 1.6s ease-out infinite;
   will-change: transform, opacity;
@@ -222,7 +249,7 @@
   height: 46px;
 }
 
-/* ---------- expanded scene ---------- */
+/* ---------- expanded scene: the print laid on a sheet of paper ---------- */
 
 .p1-expand {
   position: absolute;
@@ -230,12 +257,19 @@
   z-index: 10;
   touch-action: none;
   cursor: pointer;
+  /* the paper mat round the print: deeper at the top, where the title, the tape and the close disc sit */
+  --p1-mat: 26px;
+  --p1-mat-top: 92px;
 }
 
 .p1-expand__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(18, 48, 31, 0.86);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--fibre) 0 0 / 320px 320px,
+    var(--paper);
+  background-blend-mode: multiply, multiply, normal;
 }
 
 .p1-expand__frame {
@@ -243,14 +277,25 @@
   inset: 0;
 }
 
+/* the photo still fills the screen; its paper mat is the padding, grain and all */
 .p1-photo.is-expanded {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  padding: var(--p1-mat-top) var(--p1-mat) var(--p1-mat);
   aspect-ratio: auto;
   border-radius: 0;
-  background: transparent;
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--fibre) 0 0 / 320px 320px,
+    var(--paper);
+  background-blend-mode: multiply, multiply, normal;
+}
+
+.p1-photo.is-expanded::after {
+  inset: var(--p1-mat-top) var(--p1-mat) var(--p1-mat);
+  border-radius: 3px 2px 4px 2px / 2px 4px 2px 3px;
 }
 
 .p1-expand__close {
@@ -258,21 +303,47 @@
   z-index: 2;
   top: calc(16px + var(--safe-top));
   right: calc(16px + var(--safe-right));
-  gap: 8px;
-  padding: 0 22px 0 16px;
 }
 
+/* the chapter's name, written in ink on the mat above the print, lined up with the print's left
+   edge, with a short stitch sewn under it; it wraps when Vietnamese needs the room */
+.p1-expand__head {
+  position: absolute;
+  z-index: 2;
+  top: calc(20px + var(--safe-top));
+  left: calc(var(--p1-mat) + var(--safe-left));
+  max-width: calc(100% - 140px);
+  pointer-events: none;
+}
+
+.p1-expand__title {
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.p1-expand__head .stitch {
+  margin: 8px 0 0 2px;
+}
+
+/* a strip of tape across the print's top edge holds it to the mat (and marks where to swipe); it
+   lies half on the photo, so it is plain translucent tape rather than multiplied into the picture */
 .p1-expand__handle {
   position: absolute;
   z-index: 2;
-  top: calc(14px + var(--safe-top));
+  top: calc(var(--p1-mat-top) - 14px + var(--safe-top));
   left: 50%;
-  width: 72px;
-  height: 8px;
-  margin-left: -36px;
-  border-radius: 99px;
-  background: rgba(255, 249, 236, 0.75);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  width: 150px;
+  height: 28px;
+  margin-left: -75px;
+  rotate: -2deg;
+  background: repeating-linear-gradient(90deg, rgba(246, 166, 35, 0.6) 0 7px, rgba(246, 166, 35, 0.38) 7px 14px);
+  clip-path: polygon(0 8%, 3% 0, 97% 5%, 100% 0, 98% 52%, 100% 100%, 95% 92%, 2% 100%, 1% 60%);
+  pointer-events: none;
 }
 
 /* ---------- convergence ---------- */
@@ -318,15 +389,66 @@
   height: auto;
 }
 
+/* tablets: a slightly smaller button, so the Vietnamese label's sheet stays off the bottom tiles' stamps */
+@media (max-width: 1100px) and (min-width: 601px) {
+  .p1-explore {
+    min-height: 80px;
+    padding: 0 32px;
+    font-size: 1.4rem;
+  }
+
+  .p1-explore .icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 @media (max-width: 600px) {
   /* the shared top bar has no room for the title next to EN|VI on a phone */
   .screen.p1 .topbar__title {
     display: none;
   }
 
+  /* smaller photos: a finer stamp ring, thinner tape */
+  .p1-tile .stamp {
+    border-width: 1.5px;
+    box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3px currentColor;
+  }
+
+  .p1-tile__tape {
+    height: 18px;
+    top: -8px;
+  }
+
+  /* the Vietnamese label ("Cùng khám phá nào!") has to stay on one line at 390 px */
+  .p1-explore-sheet {
+    padding: 7px 8px;
+  }
+
   .p1-explore {
     min-height: 76px;
-    font-size: 1.45rem;
-    padding: 0 30px;
+    gap: 10px;
+    font-size: 1.4rem;
+    padding: 0 22px;
+  }
+
+  .p1-explore .icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* a slimmer mat, still deep enough at the top for a two-line Vietnamese title and the close disc */
+  .p1-expand {
+    --p1-mat: 16px;
+    --p1-mat-top: 88px;
+  }
+
+  .p1-expand__head {
+    top: calc(18px + var(--safe-top));
+    max-width: calc(100% - 104px);
+  }
+
+  .p1-expand__handle {
+    display: none;
   }
 }

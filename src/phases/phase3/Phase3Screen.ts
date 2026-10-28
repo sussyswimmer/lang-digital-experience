@@ -149,7 +149,7 @@ class Phase3 implements Screen {
     this.nextIcon = el('span.p3-nav__disc', {}, svg(ICONS.next));
     this.nextLabel = i18n.bind(el('span.p3-nav__label'), 'p3.next');
     this.nextBtn = el('button.p3-nav.p3-nav--next', { type: 'button', 'data-touch': '', 'data-test': 'next', onclick: () => this.onNext() }, this.nextIcon, this.nextLabel);
-    const dotsBox = i18n.bindAttr(el('div.p3-dots', { role: 'group' }), 'aria-label', 'p3.title');
+    const dotsBox = i18n.bindAttr(el('div.p3-dots.settle', { role: 'group', style: '--settle-i:6' }), 'aria-label', 'p3.title');
     this.dots = CHAPTERS.map((id, i) =>
       el(
         'button.p3-dot',
@@ -164,22 +164,35 @@ class Phase3 implements Screen {
   private buildPage(ch: Chapter, n: number): Page {
     const promptText = i18n.bind(el('span.p3-prompt__text'), ch.firstPrompt);
     const listen = el(
-      'button.btn.btn--ghost.p3-listen',
-      { type: 'button', 'data-touch': '', 'data-test': 'listen', onclick: () => this.retell(ch) },
+      'button.btn.btn--ghost.p3-listen.settle',
+      { type: 'button', 'data-touch': '', 'data-test': 'listen', style: '--settle-i:5', onclick: () => this.retell(ch) },
       svg(ICONS.speaker),
       i18n.bind(el('span'), 'p3.listen'),
+    );
+    // the page's contents settle onto the sheet one after another (paper.css .settle, 60 ms apart)
+    ch.actions.classList.add('settle');
+    ch.actions.style.setProperty('--settle-i', '4');
+    // the stamp and the title share a row on phones (the head is display: contents on a desk)
+    const head = el(
+      'div.p3-page__head',
+      {},
+      el('div.p3-chip.settle', { style: '--settle-i:1' }, el('span.stamp.p3-chip__stamp', { 'aria-hidden': 'true' }, String(n)), i18n.bind(el('span'), 'p3.chapter', { n })),
+      i18n.bind(el('h2.p3-page__title.settle', { style: '--settle-i:2' }), `p3.ch${n}.title`),
     );
     const side = el(
       'div.p3-page__side',
       {},
-      el('div.p3-chip', {}, svg(ch.icon), i18n.bind(el('span'), 'p3.chapter', { n })),
-      i18n.bind(el('h2.p3-page__title'), `p3.ch${n}.title`),
-      el('div.p3-prompt', {}, svg(P3_ICONS.hand, 'p3-prompt__hand'), promptText),
+      head,
+      el('div.p3-prompt.tag.settle', { style: '--settle-i:3' }, svg(P3_ICONS.hand, 'p3-prompt__hand'), promptText),
       ch.actions,
       el('div.p3-page__grow'),
       listen,
     );
-    const page = el('article.p3-page', { dataset: { chapter: ch.id } }, el('div.p3-page__pic', {}, ch.pic), side);
+    // the photo mount (paper ring, shadow, washi strip) wraps the chapter's picture so the strip can
+    // cross onto the page while the picture itself stays clipped; both boxes are the same size, so
+    // the chapters' getBoundingClientRect geometry is unchanged
+    const mount = el('div.p3-mount', { style: `--ar:${ch.pic.style.getPropertyValue('--ar')}` }, ch.pic);
+    const page = el('article.p3-page', { dataset: { chapter: ch.id } }, el('div.p3-page__pic', {}, mount), side);
     return { el: page, prompt: promptText };
   }
 

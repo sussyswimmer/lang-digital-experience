@@ -18,4 +18,6 @@ export const COLOUR_ICONS = {
   trash: `<svg viewBox="0 0 24 24" ${S} stroke-width="2.2"><path d="M4 6.5h16"/><path d="M9 6.5V4.5h6v2"/><path d="M6 6.5 7 20a1.5 1.5 0 0 0 1.5 1.4h7A1.5 1.5 0 0 0 17 20l1-13.5" fill="#FFF9EC"/><path d="M10 10.5v7M14 10.5v7"/></svg>`,
   keep: `<svg viewBox="0 0 24 24" ${S} stroke-width="2.8"><path d="m5 12 5 5 9-10"/></svg>`,
   brushDot: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" style="fill:var(--swatch,#8E5BA8)"/></svg>`,
+  /* a nón lá in one ink, for the picker's stamp */
+  hat: `<svg viewBox="0 0 24 24" ${S} stroke-width="2.2"><path d="M12 4.5 20 15.5Q12 18.6 4 15.5Z"/><path d="M7.2 17.2c1.4 2.6 8.2 2.6 9.6 0"/></svg>`,
 } as const;

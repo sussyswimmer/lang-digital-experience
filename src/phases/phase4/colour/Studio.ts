@@ -215,7 +215,8 @@ export class Studio {
       svg(COLOUR_ICONS.download, 'cs-btn__icon'),
       i18n.bind(el('span.cs-btn__label'), 'colour.download'),
     );
-    return el('div.cs-rail', {}, tools, sizes, el('div.cs-grow'), this.saveBtn, this.downloadBtn);
+    // the rail is a flat sheet of paper the tools sit on
+    return el('div.cs-rail.sheet.sheet--flat', {}, tools, sizes, el('div.cs-grow'), this.saveBtn, this.downloadBtn);
   }
 
   private buildSide(): HTMLElement {
@@ -245,13 +246,13 @@ export class Studio {
       grid.appendChild(b);
     }
     const strapLabel = el('div.cs-straplabel', {}, svg(ICONS.hat, 'cs-straplabel__hat'), i18n.bind(el('span'), 'colour.strap-row'));
-    return el('div.cs-side', {}, acts, el('div.cs-palette', {}, strapLabel, grid));
+    return el('div.cs-side', {}, acts, el('div.cs-palette.sheet.sheet--flat', {}, strapLabel, grid));
   }
 
   private buildLoading(): void {
     this.loadingText = i18n.bind(el('p.cs-loading__text'), 'colour.loading');
     this.loadingBack = el(
-      'button.btn.btn--straw',
+      'button.btn.btn--ghost',
       { type: 'button', 'data-touch': '', hidden: true, onclick: () => this.host.onPages() },
       svg(COLOUR_ICONS.pages),
       i18n.bind(el('span'), 'colour.pages'),
@@ -267,13 +268,13 @@ export class Studio {
       i18n.bind(el('span'), 'colour.clear.yes'),
     );
     this.confirmNo = el(
-      'button.btn.btn--straw',
+      'button.btn.btn--ghost',
       { type: 'button', 'data-touch': '', 'data-test': 'clear-no', onclick: () => this.closeConfirm(false) },
       svg(COLOUR_ICONS.keep),
       i18n.bind(el('span'), 'colour.clear.no'),
     );
     const card = el(
-      'div.cs-confirm__card',
+      'div.cs-confirm__card.sheet',
       { role: 'alertdialog', 'aria-modal': 'true', 'aria-labelledby': 'cs-confirm-q' },
       svg(COLOUR_ICONS.clear, 'cs-confirm__icon'),
       i18n.bind(el('p#cs-confirm-q.cs-confirm__q'), 'colour.clear.ask'),
@@ -895,6 +896,11 @@ export class Studio {
       saveCount: async () => (await getGallery()).count(),
       save: () => this.save(),
       ready: () => this.ready,
+      /** true once the autosaved draft has been written (tests wait for this rather than a fixed delay) */
+      draftSaved: async () => {
+        await this.flushing;
+        return !this.draftDirty;
+      },
       page: () => this.page?.id ?? null,
       tool: () => this.tool,
       swatch: () => this.swatch.hex,

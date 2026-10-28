@@ -1,7 +1,8 @@
 /**
- * "Tranh của con" (the child's pictures): every saved colouring page pegged on a wall. Tap one
- * to see it big, download it as a PNG, or delete it with a press-and-hold (so a stray tap can't).
- * When IndexedDB isn't available the pictures live for this visit only, and the screen says so.
+ * "Tranh của con" (the child's pictures): every saved colouring page lies on the table as a paper
+ * photo held down with washi tape. Tap one to see it big, download it as a PNG, or delete it with
+ * a press-and-hold (so a stray tap can't). When IndexedDB isn't available the pictures live for
+ * this visit only, and the screen says so.
  */
 import './gallery.css';
 import { gsap } from 'gsap';
@@ -14,6 +15,7 @@ import type { AppContext, Screen } from '../../../app/context';
 import { getGallery, type Artwork, type GalleryStore } from './galleryDb';
 import { pageById } from '../colour/pages';
 import { COLOUR_ICONS } from '../colour/icons';
+import { P4_ICONS } from '../hub/icons';
 import { downloadBlob, pictureFilename } from '../colour/compose';
 
 const HOLD_MS = 1400;
@@ -115,7 +117,8 @@ class GalleryScreen implements Screen {
     const head = el(
       'div.gl-head',
       {},
-      el('div.gl-title', {}, svg(COLOUR_ICONS.gallery, 'gl-title__icon'), el('div', {}, i18n.bind(el('h2'), 'gallery.name'), this.countText)),
+      // the title beside a one-ink stamp, like the hub's gallery tag
+      el('div.gl-title', {}, el('span.stamp.stamp--forest.gl-title__stamp', { 'aria-hidden': 'true' }, svg(P4_ICONS.photo)), el('div', {}, i18n.bind(el('h2'), 'gallery.name'), this.countText)),
       this.colourBtn,
     );
     this.banner = el(
@@ -131,11 +134,11 @@ class GalleryScreen implements Screen {
       svg(COLOUR_ICONS.brush),
       i18n.bind(el('span'), 'gallery.colour'),
     );
+    // the note on a sheet taped to the table; the button stays level under it
     this.empty = el(
       'div.gl-empty',
       { hidden: true, 'data-test': 'empty' },
-      el('div.gl-empty__art', {}, svg(EMPTY_ART)),
-      i18n.bind(el('p.gl-empty__text'), 'gallery.empty'),
+      el('div.gl-empty__sheet.sheet.sheet--tilt-l.sheet--tape', {}, el('div.gl-empty__art', {}, svg(EMPTY_ART)), i18n.bind(el('p.gl-empty__text'), 'gallery.empty')),
       this.emptyBtn,
     );
     const offLang = i18n.onChange(() => this.updateCount());
@@ -176,14 +179,15 @@ class GalleryScreen implements Screen {
     );
     this.ring = ringSvg.querySelector('.gl-del__prog') as SVGCircleElement;
     this.delBtn = el(
-      'button.btn.gl-del',
+      'button.btn.btn--ghost.gl-del',
       { type: 'button', 'data-touch': '', 'data-test': 'view-delete' },
       el('span.gl-del__icon', {}, ringSvg, svg(COLOUR_ICONS.trash, 'gl-del__trash')),
       i18n.bind(el('span'), 'gallery.delete'),
     );
     this.wireHold();
+    // a sheet of paper laid over the table
     const card = el(
-      'div.gl-view__card',
+      'div.gl-view__card.sheet',
       { role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'gl-view-name' },
       this.closeBtn,
       el('div.gl-view__frame', {}, this.viewImg),
@@ -205,13 +209,14 @@ class GalleryScreen implements Screen {
     this.wall.replaceChildren();
     arts.forEach((art, i) => {
       const thumbUrl = URL.createObjectURL(art.thumb);
+      // a paper photo held down with a strip of washi tape, each lying at its own slight angle
       const btn = el(
-        'button.gl-tile',
+        'button.gl-tile.sheet.sheet--tape',
         { type: 'button', 'data-touch': '', 'data-test': 'tile', role: 'listitem', onclick: () => this.openView(this.tiles.findIndex((t) => t.art.id === art.id)) },
-        el('span.gl-tile__peg', { 'aria-hidden': 'true' }),
         el('span.gl-tile__paper', {}, el('img', { src: thumbUrl, alt: '', draggable: false, decoding: 'async' })),
       );
       btn.style.setProperty('--tilt', `${[-2, 1.5, -1, 2, -1.5, 1][i % 6]}deg`);
+      btn.style.setProperty('--tape-tilt', `${[-3, 2.5, -1.5, 3, -2, 1.5][i % 6]}deg`);
       this.tiles.push({ art, btn, thumbUrl });
       this.wall.appendChild(btn);
     });
@@ -281,7 +286,7 @@ class GalleryScreen implements Screen {
       const card = this.view.firstElementChild as HTMLElement;
       const to = card.getBoundingClientRect();
       this.g.add(() => {
-        gsap.fromTo(this.view, { backgroundColor: 'rgba(18,48,31,0)' }, { backgroundColor: 'rgba(18,48,31,0.6)', duration: 0.3 });
+        gsap.fromTo(this.view, { backgroundColor: 'rgba(31,30,20,0)' }, { backgroundColor: 'rgba(31,30,20,0.45)', duration: 0.3 });
         gsap.fromTo(
           card,
           {
@@ -439,8 +444,8 @@ class GalleryScreen implements Screen {
   }
 }
 
-/** empty wall: a nón lá with a paintbrush and three strap-colour dabs */
-const EMPTY_ART = `<svg viewBox="0 0 240 180"><ellipse cx="120" cy="150" rx="92" ry="14" fill="#EED39A" opacity=".6"/><path d="M120 22 206 128Q120 150 34 128Z" fill="#F6E7C4" stroke="#5A3F28" stroke-width="5" stroke-linejoin="round"/><path d="M62 104q58 16 116 0" fill="none" stroke="#8E5BA8" stroke-width="10" stroke-linecap="round"/><path d="M82 80q38 10 76 0" fill="none" stroke="#F4A79A" stroke-width="10" stroke-linecap="round"/><path d="M99 56q21 6 42 0" fill="none" stroke="#A9D8A0" stroke-width="10" stroke-linecap="round"/><path d="M196 36c-12 8-30 28-38 42l8 7c13-10 30-29 37-42Z" fill="#E0A93B" stroke="#5A3F28" stroke-width="4" stroke-linejoin="round"/><path d="M156 80c-9 1-14 7-15 15-1 6-5 10-12 12 9 7 26 6 32-1 4-5 4-12 2-18Z" fill="#E0457B" stroke="#5A3F28" stroke-width="4" stroke-linejoin="round"/><circle cx="40" cy="40" r="9" fill="#8E5BA8"/><circle cx="62" cy="26" r="7" fill="#F4A79A"/><circle cx="30" cy="66" r="6" fill="#A9D8A0"/></svg>`;
+/** empty table: a nón lá and a brush with one dab of red, flat colour inside a bold ink line */
+const EMPTY_ART = `<svg viewBox="0 0 240 180"><path d="M120 22 206 128Q120 150 34 128Z" fill="#EED39A" stroke="#1E2A22" stroke-width="6" stroke-linejoin="round"/><path d="M62 104q58 16 116 0" fill="none" stroke="#8E5BA8" stroke-width="10" stroke-linecap="round"/><path d="M82 80q38 10 76 0" fill="none" stroke="#F4A79A" stroke-width="10" stroke-linecap="round"/><path d="M99 56q21 6 42 0" fill="none" stroke="#A9D8A0" stroke-width="10" stroke-linecap="round"/><path d="M120 22 206 128Q120 150 34 128Z" fill="none" stroke="#1E2A22" stroke-width="6" stroke-linejoin="round"/><path d="M196 36c-12 8-30 28-38 42l8 7c13-10 30-29 37-42Z" fill="#E0A93B" stroke="#1E2A22" stroke-width="5" stroke-linejoin="round"/><path d="M156 80c-9 1-14 7-15 15-1 6-5 10-12 12 9 7 26 6 32-1 4-5 4-12 2-18Z" fill="#C8392B" stroke="#1E2A22" stroke-width="5" stroke-linejoin="round"/></svg>`;
 
 export default function (): Screen {
   return new GalleryScreen();

@@ -1,13 +1,20 @@
-/** Little picture icons for Phase 1 (pre-readers recognise the scene from the icon). */
+/**
+ * Little picture icons for Phase 1 (pre-readers recognise the scene from the icon).
+ * The scene icons are ink line drawings in `currentColor`: each one is pressed into a round
+ * paper stamp under its photo (paper.css .stamp), so the stamp's ink colours them. The one
+ * exception is the needle's thread, which is the red thread that sews the hat.
+ */
+const INK = 'fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"';
+
 export const P1_ICONS = {
-  rice: '<svg viewBox="0 0 48 48"><path d="M24 44V20M16 44c0-10 2-16 8-20M32 44c0-10-2-16-8-20" fill="none" stroke="#4E8A3A" stroke-width="3.2" stroke-linecap="round"/><g fill="#E0A93B" stroke="#B8862A" stroke-width="1.2"><ellipse cx="24" cy="10" rx="3.2" ry="5"/><ellipse cx="18.5" cy="15" rx="3" ry="4.6" transform="rotate(-28 18.5 15)"/><ellipse cx="29.5" cy="15" rx="3" ry="4.6" transform="rotate(28 29.5 15)"/><ellipse cx="13" cy="22" rx="2.8" ry="4.2" transform="rotate(-40 13 22)"/><ellipse cx="35" cy="22" rx="2.8" ry="4.2" transform="rotate(40 35 22)"/></g></svg>',
-  mango: '<svg viewBox="0 0 48 48"><path d="M24 12c10-2 18 6 17 16-1 9-9 15-18 14C13 41 7 33 9 24c2-8 8-11 15-12z" fill="#F6A623" stroke="#C2731A" stroke-width="2"/><path d="M14 22c2-4 6-6 10-6" fill="none" stroke="#FFE0A0" stroke-width="3" stroke-linecap="round"/><path d="M25 12c0-4 2-7 5-8" fill="none" stroke="#6B4A2B" stroke-width="2.4" stroke-linecap="round"/><path d="M27 9c5-5 12-4 14-1-4 4-9 4-14 1z" fill="#7FBF5E" stroke="#4E8A3A" stroke-width="1.6"/></svg>',
-  bike: '<svg viewBox="0 0 48 48"><g fill="none" stroke="#1F4D3A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="32" r="8"/><circle cx="36" cy="32" r="8"/><path d="M12 32l8-14h12l4 14M20 18l6 14h-14M30 12h5l-3 6"/></g><rect x="31" y="20" width="10" height="7" rx="1.5" fill="#E0A93B" stroke="#7A5A3A" stroke-width="1.6"/></svg>',
-  rain: '<svg viewBox="0 0 48 48"><path d="M13 28a8 8 0 0 1 1-16 11 11 0 0 1 21 3 7 7 0 0 1-1 13z" fill="#FFF9EC" stroke="#5B7FA3" stroke-width="2.4" stroke-linejoin="round"/><g stroke="#3F8FC4" stroke-width="3" stroke-linecap="round"><path d="M16 34l-2 5M25 34l-2 6M34 34l-2 5"/></g></svg>',
-  needle: '<svg viewBox="0 0 48 48"><path d="M10 40 38 8" stroke="#7A5A3A" stroke-width="3" stroke-linecap="round"/><ellipse cx="36" cy="10" rx="2.6" ry="4.4" transform="rotate(42 36 10)" fill="#FFF9EC" stroke="#7A5A3A" stroke-width="1.8"/><path d="M36 10c6 6-2 14-10 12S12 30 20 38s12-2 8-6" fill="none" stroke="#A9472A" stroke-width="2.4" stroke-linecap="round"/></svg>',
+  rice: `<svg viewBox="0 0 48 48" ${INK}><path d="M24 43V21M16 43c0-9 3-15 8-19M32 43c0-9-3-15-8-19"/><g fill="currentColor" stroke="none"><ellipse cx="24" cy="11" rx="3" ry="5.2"/><ellipse cx="18.5" cy="15.5" rx="2.8" ry="4.6" transform="rotate(-30 18.5 15.5)"/><ellipse cx="29.5" cy="15.5" rx="2.8" ry="4.6" transform="rotate(30 29.5 15.5)"/><ellipse cx="13.5" cy="22" rx="2.6" ry="4.2" transform="rotate(-42 13.5 22)"/><ellipse cx="34.5" cy="22" rx="2.6" ry="4.2" transform="rotate(42 34.5 22)"/></g></svg>`,
+  mango: `<svg viewBox="0 0 48 48" ${INK}><path d="M23 13c10-2 18 6 17 16-1 9-9 15-18 14C12 42 6 34 8 25c2-8 8-11 15-12z"/><path d="M25 13c0-4 2-7 5-8"/><path d="M27 10c5-5 12-4 14-1-4 4-9 4-14 1z" fill="currentColor"/><path d="M14 25c2-4 5-7 9-8" stroke-width="2.2"/></svg>`,
+  bike: `<svg viewBox="0 0 48 48" ${INK}><circle cx="12" cy="32" r="8"/><circle cx="36" cy="32" r="8"/><path d="M12 32l8-14h12l4 14M20 18l6 14H12M30 12h5l-3 6"/><rect x="31" y="19" width="10" height="7" rx="1.5" stroke-width="2.4"/></svg>`,
+  rain: `<svg viewBox="0 0 48 48" ${INK}><path d="M13 28a8 8 0 0 1 1-16 11 11 0 0 1 21 3 7 7 0 0 1-1 13z"/><path d="M16 34l-2 6M25 34l-2 7M34 34l-2 6"/></svg>`,
+  needle: `<svg viewBox="0 0 48 48" ${INK}><path d="M10 40 38 8"/><ellipse cx="35.5" cy="10.5" rx="2.4" ry="4.2" transform="rotate(42 35.5 10.5)" stroke-width="2.2"/><path d="M36 11c6 6-2 14-10 12S12 30 20 38s12-2 8-6" stroke="var(--thread, #C8392B)" stroke-width="2.6"/></svg>`,
   explore:
     '<svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="13" fill="#FFF9EC" stroke="currentColor" stroke-width="4"/><path d="M30 30l11 11" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/><path d="M20 11 29 25Q20 28 11 25Z" fill="#E0A93B" stroke="#7A5A3A" stroke-width="1.8" stroke-linejoin="round"/></svg>',
-  check: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#2F5D46"/><path d="m6.5 12.5 3.6 3.6 7.4-8" fill="none" stroke="#FFF9EC" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  check: '<svg viewBox="0 0 24 24"><path d="m6 12.5 3.8 3.8 8.2-9" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 } as const;
 
 /** A friendly nón lá drawing (rings, ribs, a purple strap). `uid` keeps gradient ids unique. */

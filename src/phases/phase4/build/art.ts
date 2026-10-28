@@ -33,11 +33,11 @@ export function layerSvg(piece: PieceId, uid: string, strapColour: string): stri
  */
 export const RENDER_BENCH: Cone = { cx: 200, apexY: 30, brimY: 166, rx: 148, ry: 50 };
 
-/** the empty workbench: the hat's shadow and a dashed outline of where it will stand */
+/** the empty workbench: the hat's shadow and a running stitch of red thread (--thread) where it will stand */
 export function ghostSvg(c: Cone = BENCH, withShadow = true): string {
   return svgDoc(
     BENCH_VB,
-    `${withShadow ? shadow(c, 'ghost') : ''}<path d="${bodyPath(c)}" fill="#FFF9EC" fill-opacity=".35" stroke="#7A5A3A" stroke-opacity=".38" stroke-width="3" stroke-dasharray="10 9" stroke-linejoin="round"/>`,
+    `${withShadow ? shadow(c, 'ghost') : ''}<path d="${bodyPath(c)}" fill="#F1E6CB" fill-opacity=".45" stroke="#C8392B" stroke-opacity=".85" stroke-width="2.5" stroke-dasharray="10 8" stroke-linejoin="round"/>`,
   );
 }
 

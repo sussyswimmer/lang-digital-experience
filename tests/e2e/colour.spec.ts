@@ -10,6 +10,7 @@ test.setTimeout(120_000);
 
 type Hooks = {
   ready(): boolean;
+  draftSaved(): Promise<boolean>;
   pixel(x: number, y: number): number[];
   fillAt(x: number, y: number, hex: string): boolean;
   barrier(x: number, y: number): number | null;
@@ -193,8 +194,8 @@ test('save to Tranh của con, then view, download and hold-to-delete', async ({
 test('the draft comes back after a reload', async ({ page }) => {
   await openPage(page, 'strap');
   await hook(page, 'fillAt', CORNER.x, CORNER.y, '#7EC8E3');
-  // autosave runs a second after the last change
-  await page.waitForTimeout(2500);
+  // autosave runs a second after the last change; wait for that write to land, however slow the machine is
+  await expect.poll(() => hook(page, 'draftSaved'), { timeout: 20_000 }).toBe(true);
   await page.reload();
   await expect.poll(() => page.evaluate(() => Boolean((window as any).__nonla?.colour?.ready?.())), { timeout: 60_000 }).toBe(true);
   expect(await hook(page, 'pixel', CORNER.x, CORNER.y)).toEqual(SKY);
