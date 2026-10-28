@@ -312,22 +312,23 @@
     var(--fibre) 0 0 / 320px 320px,
     var(--paper);
   background-blend-mode: multiply, multiply, normal;
-  transition: background-color 1.5s ease, color 1.5s ease;
+  /* the night overlay below does the visible fade; the grained paper itself only steps to its night
+     colour once that fade is over, so the page is not repainted on every frame (slow software GPUs
+     stalled for seconds doing exactly that) */
+  transition: background-color 0s linear 1.5s, color 1.5s ease;
 }
 
-/* the indigo wash the paper takes when the lights go off (fades in over the paper colour) */
+/* the indigo wash the paper takes when the lights go off: a plain colour on its own compositor
+   layer, fading over the grained paper (the grain shows through it) */
 .p3-page::before {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    var(--grain) 0 0 / 240px 240px,
-    var(--fibre) 0 0 / 320px 320px,
-    var(--p3-night);
-  background-blend-mode: multiply, multiply, normal;
+  background: var(--p3-night);
   opacity: 0;
   pointer-events: none;
   transition: opacity 1.5s ease;
+  will-change: opacity;
 }
 
 .p3-page[data-chapter='identity'] {
