@@ -20,8 +20,11 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-head);
-  line-height: 1.1;
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
   margin: 0 0 0.4em;
 }
 
@@ -66,7 +69,10 @@ body.app-mode {
   inset: 0;
   height: 100dvh;
   overflow: hidden;
-  background: radial-gradient(120% 90% at 50% 20%, var(--straw-200), var(--cream) 60%, #EBD3A2);
+  /* the table: paper ground with a pool of warm light where the hat stands */
+  background:
+    radial-gradient(60% 48% at 50% 58%, rgba(255, 247, 222, 0.95), rgba(255, 247, 222, 0) 100%),
+    radial-gradient(120% 100% at 50% 40%, var(--paper) 0%, var(--bg) 70%, #E3D2AC 100%);
   -webkit-touch-callout: none;
   user-select: none;
   -webkit-user-select: none;
@@ -91,6 +97,18 @@ body.app-mode {
   width: 100% !important;
   height: 100% !important;
   touch-action: none;
+}
+
+/* paper grain and a soft vignette over the whole stage, so the render belongs to the paper world */
+#tabletop {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(130% 110% at 50% 45%, rgba(90, 63, 40, 0) 58%, rgba(90, 63, 40, 0.2) 100%),
+    var(--grain) 0 0 / 240px 240px;
+  mix-blend-mode: multiply;
 }
 
 #ui {

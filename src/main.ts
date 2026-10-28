@@ -1,6 +1,10 @@
-import '@fontsource-variable/baloo-2';
-import '@fontsource-variable/nunito';
+import '@fontsource-variable/fraunces/full.css';
+import '@fontsource/be-vietnam-pro/400.css';
+import '@fontsource/be-vietnam-pro/600.css';
+import '@fontsource/be-vietnam-pro/700.css';
+import '@fontsource-variable/playpen-sans';
 import './styles/tokens.css';
+import './styles/paper.css';
 import './styles/base.css';
 import './styles/components.css';
 

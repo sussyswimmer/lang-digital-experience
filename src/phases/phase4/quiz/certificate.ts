@@ -12,8 +12,8 @@ import { QUIZ_BADGES, MAKER_BADGE, badgeImage, svgImage, type BadgeDef } from '.
 export const CERT_W = 2480;
 export const CERT_H = 1754;
 
-const HEAD = '"Baloo 2 Variable", "Baloo 2", system-ui, sans-serif';
-const BODY = '"Nunito Variable", "Nunito", system-ui, sans-serif';
+const HEAD = '"Fraunces Variable", "Fraunces", Georgia, serif';
+const BODY = '"Be Vietnam Pro", system-ui, sans-serif';
 
 const C = {
   paper: '#FBF3DF',
@@ -99,10 +99,10 @@ export async function loadCertFonts(data: CertData): Promise<void> {
   const text = allText(data);
   try {
     await Promise.all([
-      document.fonts.load(`800 120px "Baloo 2 Variable"`, text),
-      document.fonts.load(`700 60px "Baloo 2 Variable"`, text),
-      document.fonts.load(`600 54px "Nunito Variable"`, text),
-      document.fonts.load(`800 54px "Nunito Variable"`, text),
+      document.fonts.load(`800 120px "Fraunces Variable"`, text),
+      document.fonts.load(`700 60px "Fraunces Variable"`, text),
+      document.fonts.load(`600 54px "Be Vietnam Pro"`, text),
+      document.fonts.load(`700 54px "Be Vietnam Pro"`, text),
     ]);
   } catch {
     /* fall back to the system font rather than not drawing */

@@ -18,7 +18,7 @@ const wind = `<g fill="none" stroke="#7EC8E3" stroke-width="4" stroke-linecap="r
 
 function numeral(n: number): string {
   const w = n >= 10 ? 62 : 44;
-  return `<g transform="translate(14 12)"><rect width="${w}" height="44" rx="22" fill="#1F4D3A"/><text x="${w / 2}" y="32" text-anchor="middle" font-family="'Baloo 2 Variable','Baloo 2',system-ui,sans-serif" font-weight="800" font-size="30" fill="#FFF4D6">${n}</text></g>`;
+  return `<g transform="translate(14 12)"><rect width="${w}" height="44" rx="22" fill="#1F4D3A"/><text x="${w / 2}" y="32" text-anchor="middle" font-family="'Be Vietnam Pro',system-ui,sans-serif" font-weight="700" font-size="30" fill="#FFF4D6">${n}</text></g>`;
 }
 
 const ART: Record<string, (uid: string) => string> = {

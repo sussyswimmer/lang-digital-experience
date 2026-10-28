@@ -1,13 +1,18 @@
-/* Warm & organic palette from the brief: golden straw, sun-baked terracotta, deep forest
-   green (vintage shutter doors), weathered wood, and pops of market-fruit colour. */
+/* The hat-maker's table (docs/DESIGN.md): rice paper, palm leaf, bamboo and red thread.
+   The brief's palette stays (golden straw, terracotta, forest green, weathered wood, market
+   fruit), but paper and ink do the work and the market colours are stamps and stickers. */
 :root {
   --straw-100: #FBF3DF;
   --straw-200: #F6E7C4;
   --straw-300: #EED39A;
   --straw-500: #E0A93B;
   --straw-700: #B8862A;
-  --cream: #F7EBCF;
-  --paper: #FFF9EC;
+
+  /* paper: the ground everything sits on, the sheets on top of it, and a shadowed fold */
+  --paper: #FBF5E6;
+  --paper-deep: #F1E6CB;
+  --bg: #EFE3C6;
+  --cream: var(--paper);
 
   --terracotta-400: #D07A55;
   --terracotta-600: #A9472A;
@@ -17,6 +22,10 @@
   --wood-500: #7A5A3A;
   --wood-700: #5A3F28;
   --wood-900: #3B2A1C;
+
+  /* the one accent: the red thread that sews the hat */
+  --thread: #C8392B;
+  --thread-deep: #9E2A20;
 
   --dragon-600: #C21F66;
   --dragon-400: #E0457B;
@@ -28,21 +37,42 @@
   --strap-peach: #F4A79A;
   --strap-green: #A9D8A0;
 
-  --ink: var(--wood-900);
-  --ink-soft: #6B5442;
-  --bg: var(--cream);
+  --ink: #1E2A22;
+  --ink-soft: #5A5A48;
 
-  --font-head: "Baloo 2 Variable", "Baloo 2", system-ui, sans-serif;
-  --font-body: "Nunito Variable", "Nunito", system-ui, sans-serif;
+  /* type: a soft wonky serif for titles, a sans designed for Vietnamese for everything else,
+     and a hand-written face for captions and stickers */
+  --font-display: "Fraunces Variable", "Fraunces", Georgia, serif;
+  --font-ui: "Be Vietnam Pro", system-ui, sans-serif;
+  --font-hand: "Playpen Sans Variable", "Playpen Sans", var(--font-ui);
+  --display-settings: "SOFT" 100, "WONK" 1;
+  /* old names, kept so no screen breaks while they move over */
+  --font-head: var(--font-display);
+  --font-body: var(--font-ui);
 
   --tap-min: 64px;
   --cta-h: 88px;
   --radius-s: 12px;
   --radius-m: 20px;
   --radius-l: 32px;
-  --shadow-soft: 0 6px 18px rgba(59, 42, 28, 0.18);
-  --shadow-lift: 0 14px 36px rgba(59, 42, 28, 0.28);
+  /* paper corners: never quite the same on every side */
+  --corner-a: 22px 18px 24px 16px / 18px 24px 16px 22px;
+  --corner-b: 18px 24px 16px 22px / 24px 16px 22px 18px;
+  --corner-s: 12px 10px 13px 9px / 10px 13px 9px 12px;
+
+  /* paper shadows: one tight contact line, one diffuse lift */
+  --shadow-paper: 0 1px 2px rgba(59, 42, 28, 0.2), 0 10px 26px rgba(59, 42, 28, 0.14);
+  --shadow-paper-lift: 0 2px 3px rgba(59, 42, 28, 0.2), 0 22px 44px rgba(59, 42, 28, 0.22);
+  --shadow-soft: var(--shadow-paper);
+  --shadow-lift: var(--shadow-paper-lift);
+  --deckle: 1px solid rgba(59, 42, 28, 0.14);
   --focus-ring: 0 0 0 4px var(--mango-400), 0 0 0 6px var(--forest-700);
+
+  /* rice-paper grain (fine noise) and fibre (long horizontal streaks), each with its opacity
+     baked in so they layer under content as plain backgrounds */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0.22'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  --fibre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.5' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0.1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  --stitch: repeating-linear-gradient(90deg, var(--thread) 0 10px, transparent 10px 18px);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --safe-top: env(safe-area-inset-top, 0px);

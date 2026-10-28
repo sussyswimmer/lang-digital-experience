@@ -1,6 +1,8 @@
 /* ---------- buttons ---------- */
 
+/* an ink block stamped on the table, with a stitched edge; paper (ghost) and straw variants */
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -9,24 +11,34 @@
   min-height: var(--tap-min);
   padding: 0 28px;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--corner-a);
   background: var(--forest-700);
-  color: var(--cream);
-  font-family: var(--font-head);
-  font-size: 1.35rem;
+  color: var(--paper);
+  font-family: var(--font-ui);
+  font-size: 1.25rem;
   font-weight: 700;
-  letter-spacing: 0.01em;
-  box-shadow: var(--shadow-soft);
+  letter-spacing: 0.005em;
+  box-shadow: var(--shadow-paper);
   transition: transform 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out), background 0.15s;
   touch-action: manipulation;
 }
 
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 2px dashed currentColor;
+  border-radius: inherit;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 .btn:hover {
-  box-shadow: var(--shadow-lift);
+  box-shadow: var(--shadow-paper-lift);
 }
 
 .btn:active {
-  transform: scale(0.95);
+  transform: scale(0.95) rotate(-0.6deg);
 }
 
 .btn[disabled] {
@@ -34,22 +46,39 @@
   pointer-events: none;
 }
 
+/* the one red thing on a screen */
 .btn--cta {
   min-height: var(--cta-h);
   padding: 0 44px;
-  font-size: 1.7rem;
-  background: var(--terracotta-600);
-  color: #fff;
+  font-size: 1.6rem;
+  background: var(--thread);
+  color: var(--paper);
+}
+
+.btn--cta::after {
+  opacity: 0.6;
 }
 
 .btn--straw {
-  background: var(--straw-500);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--straw-300);
+  background-blend-mode: multiply, normal;
   color: var(--wood-900);
 }
 
 .btn--ghost {
-  background: rgba(255, 249, 236, 0.92);
-  color: var(--wood-900);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  border: var(--deckle);
+  color: var(--ink);
+}
+
+.btn--ghost::after,
+.btn--straw::after {
+  display: none;
 }
 
 .btn--round {
@@ -57,6 +86,10 @@
   height: var(--tap-min);
   padding: 0;
   border-radius: 50%;
+}
+
+.btn--round::after {
+  display: none;
 }
 
 .btn--round svg {
@@ -119,14 +152,22 @@
   pointer-events: none;
 }
 
+/* the screen's name on a paper label, a touch askew, like a tag tied to the table */
 .topbar__title {
-  font-family: var(--font-head);
+  position: relative;
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
   font-weight: 700;
-  font-size: 1.25rem;
-  padding: 8px 18px;
-  border-radius: 999px;
-  background: rgba(255, 249, 236, 0.9);
-  box-shadow: var(--shadow-soft);
+  font-size: 1.35rem;
+  padding: 10px 20px 11px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
+  rotate: -1deg;
   min-width: 0;
   overflow: hidden;
   white-space: nowrap;
@@ -140,39 +181,65 @@
   }
 }
 
+/* two stamps on one strip of paper */
 .lang-toggle {
   display: inline-flex;
-  padding: 6px;
-  border-radius: 999px;
-  background: rgba(255, 249, 236, 0.95);
-  box-shadow: var(--shadow-soft);
+  gap: 4px;
+  padding: 5px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
 }
 
 .lang-toggle button {
+  position: relative;
   min-width: 64px;
   min-height: 64px;
   border: 0;
-  border-radius: 999px;
+  border-radius: 10px 8px 11px 7px / 8px 11px 7px 10px;
   background: transparent;
-  font-family: var(--font-head);
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
 }
 
 .lang-toggle button[aria-pressed="true"] {
   background: var(--forest-700);
-  color: var(--cream);
+  color: var(--paper);
+}
+
+.lang-toggle button[aria-pressed="true"]::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 2px dashed currentColor;
+  border-radius: inherit;
+  opacity: 0.45;
+  pointer-events: none;
 }
 
 /* ---------- captions ---------- */
 
+/* the voice, hand-written on a strip of paper */
 .caption {
   margin: 0 auto;
-  padding: 14px 22px;
-  border-radius: var(--radius-m);
-  background: rgba(255, 249, 236, 0.94);
-  box-shadow: var(--shadow-soft);
-  font-size: clamp(1.05rem, 1.6vw, 1.45rem);
+  padding: 14px 24px;
+  border: var(--deckle);
+  border-radius: var(--corner-b);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
   line-height: 1.4;
   text-align: center;
   opacity: 0;
@@ -187,8 +254,8 @@
 
 .caption mark {
   background: none;
-  color: var(--terracotta-600);
-  font-weight: 800;
+  color: var(--thread);
+  font-weight: 700;
 }
 
 /* phones: one sentence at a time, in a slimmer panel (the screen keeps 120 px free for it) */
@@ -215,23 +282,32 @@
   gap: 14px;
   max-width: min(560px, 80vw);
   padding: 16px 18px 16px 24px;
-  border-radius: var(--radius-l);
-  background: var(--paper);
-  box-shadow: var(--shadow-lift);
-  font-family: var(--font-head);
-  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
-  line-height: 1.2;
+  border: var(--deckle);
+  border-radius: var(--corner-a);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--fibre) 0 0 / 320px 320px,
+    var(--paper);
+  background-blend-mode: multiply, multiply, normal;
+  box-shadow: var(--shadow-paper-lift);
+  font-family: var(--font-display);
+  font-variation-settings: var(--display-settings);
+  font-weight: 600;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  line-height: 1.15;
 }
 
 /* ---------- toast ---------- */
 
 .toast {
-  padding: 12px 20px;
-  border-radius: 999px;
-  background: var(--forest-700);
-  color: var(--cream);
+  padding: 12px 22px;
+  border-radius: var(--corner-s);
+  background: var(--forest-900);
+  color: var(--paper);
+  font-family: var(--font-ui);
   font-weight: 700;
-  box-shadow: var(--shadow-lift);
+  box-shadow: var(--shadow-paper-lift);
+  rotate: -0.6deg;
 }
 
 /* ---------- hand hint ---------- */
