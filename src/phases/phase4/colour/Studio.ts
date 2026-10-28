@@ -182,7 +182,7 @@ export class Studio {
   }
 
   private buildRail(): HTMLElement {
-    const tools = el('div.cs-tools', { role: 'group', 'aria-label': i18n.t('colour.tools') });
+    const tools = i18n.bindAttr(el('div.cs-tools', { role: 'group' }), 'aria-label', 'colour.tools');
     for (const [tool, icon] of [
       ['fill', COLOUR_ICONS.fill],
       ['brush', COLOUR_ICONS.brush],
@@ -192,7 +192,7 @@ export class Studio {
       this.toolBtns[tool] = b;
       tools.appendChild(b);
     }
-    const sizes = el('div.cs-sizes', { role: 'group', 'aria-label': i18n.t('colour.size') });
+    const sizes = i18n.bindAttr(el('div.cs-sizes', { role: 'group' }), 'aria-label', 'colour.size');
     for (const s of ['s', 'm', 'l'] as const) {
       const b = el(
         'button.cs-size',
@@ -223,7 +223,7 @@ export class Studio {
     this.redoBtn = this.toolButton('cs-act', COLOUR_ICONS.redo, 'colour.tool.redo', () => this.redo(), 'redo');
     this.clearBtn = this.toolButton('cs-act', COLOUR_ICONS.clear, 'colour.tool.clear', () => this.askClear(), 'clear');
     const acts = el('div.cs-acts', {}, this.undoBtn, this.redoBtn, this.clearBtn);
-    const grid = el('div.cs-swatches', { role: 'group', 'aria-label': i18n.t('colour.palette') });
+    const grid = i18n.bindAttr(el('div.cs-swatches', { role: 'group' }), 'aria-label', 'colour.palette');
     for (const s of PALETTE) {
       const b = el(
         'button.cs-swatch',

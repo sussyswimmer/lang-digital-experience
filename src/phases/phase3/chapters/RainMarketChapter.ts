@@ -249,6 +249,7 @@ export class RainMarketChapter implements Chapter {
     this.counting = true;
     this.countLayer.classList.add('is-on');
     this.doneBtn.hidden = false;
+    this.revealActions();
     this.host.prompt('p3.ch3.count');
     const ctx = this.host.ctx;
     if (this.host.isCurrent(this.id)) {
@@ -331,6 +332,7 @@ export class RainMarketChapter implements Chapter {
     this.result.hidden = false;
     this.doneBtn.hidden = true;
     this.againBtn.hidden = false;
+    this.revealActions();
     const ctx = this.host.ctx;
     ctx.audio.sfx.play('fanfare');
     void ctx.narration.say(id);
@@ -340,6 +342,14 @@ export class RainMarketChapter implements Chapter {
       this.host.done(this.id);
     }
     this.hint();
+  }
+
+  /** on a phone the text column scrolls: bring the buttons that just appeared into view */
+  private revealActions(): void {
+    const side = this.actions.closest<HTMLElement>('.p3-page__side');
+    if (!side || side.scrollHeight <= side.clientHeight) return;
+    const below = this.actions.getBoundingClientRect().bottom - side.getBoundingClientRect().bottom;
+    if (below > 0) side.scrollTo({ top: side.scrollTop + below + 8, behavior: motion.reduced ? 'auto' : 'smooth' });
   }
 
   private hideResult(): void {

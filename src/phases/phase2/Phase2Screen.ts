@@ -56,10 +56,10 @@ export default function Phase2Screen(): Screen {
   const question = el(
     'div.bubble.p2-question',
     {},
-    el(
-      'button.btn.btn--round.btn--ghost.p2-question__say',
-      { type: 'button', 'data-touch': '', 'aria-label': i18n.t('ui.replay'), onclick: () => ctx.narration.say(script.question) },
-      svg(ICONS.replay),
+    i18n.bindAttr(
+      el('button.btn.btn--round.btn--ghost.p2-question__say', { type: 'button', 'data-touch': '', onclick: () => ctx.narration.say(script.question) }, svg(ICONS.replay)),
+      'aria-label',
+      'ui.replay',
     ),
     questionText,
     showMe,
@@ -375,7 +375,7 @@ export default function Phase2Screen(): Screen {
     const big = picture({ stem: script.photo.stem, alt: i18n.t(script.photo.alt) }, { sizes: '92vw', eager: true, className: 'p2-lightbox__img' });
     lightbox.replaceChildren(
       big,
-      el('button.btn.btn--round.btn--ghost.p2-lightbox__close', { type: 'button', 'data-touch': '', 'aria-label': i18n.t('p2.ui.close') }, svg(ICONS.close)),
+      i18n.bindAttr(el('button.btn.btn--round.btn--ghost.p2-lightbox__close', { type: 'button', 'data-touch': '' }, svg(ICONS.close)), 'aria-label', 'p2.ui.close'),
     );
     lightbox.hidden = false;
     gsap.fromTo(lightbox, { opacity: 0 }, { opacity: 1, duration: 0.25 });

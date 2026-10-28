@@ -60,7 +60,7 @@ class Quiz implements Screen {
       progress.appendChild(d);
       return d;
     });
-    const shelf = el('div.p4q-shelf', { 'aria-label': i18n.t('hub.badges'), role: 'list' });
+    const shelf = i18n.bindAttr(el('div.p4q-shelf', { role: 'list' }), 'aria-label', 'hub.badges');
     this.slots = QUIZ_BADGES.map((b) => {
       const s = el('span.p4q-slot', { role: 'listitem', dataset: { badge: b.id } });
       s.innerHTML = badgeSvg(b, false);

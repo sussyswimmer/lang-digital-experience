@@ -50,10 +50,10 @@ export class InsightPanel {
       i18n.bind(el('span'), 'p2.ui.more'),
       svg(ICONS.next),
     );
-    const replay = el(
-      'button.btn.btn--round.btn--ghost.p2-replay',
-      { type: 'button', 'data-touch': '', 'aria-label': i18n.t('ui.replay'), onclick: () => h.onReplay() },
-      svg(ICONS.replay),
+    const replay = i18n.bindAttr(
+      el('button.btn.btn--round.btn--ghost.p2-replay', { type: 'button', 'data-touch': '', onclick: () => h.onReplay() }, svg(ICONS.replay)),
+      'aria-label',
+      'ui.replay',
     );
     this.doneBtn = el('button.btn.btn--cta.p2-done', { type: 'button', 'data-touch': '', 'data-test': 'next', onclick: () => h.onDone() });
     this.el = el(

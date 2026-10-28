@@ -86,7 +86,7 @@ class Build implements Screen {
     this.strapColour = STRAP_COLOURS[this.strap];
 
     this.buildBench();
-    this.tray = el('div.p4b-tray', { role: 'group', 'aria-label': i18n.t('build.tray') });
+    this.tray = i18n.bindAttr(el('div.p4b-tray', { role: 'group' }), 'aria-label', 'build.tray');
     this.done = el('div.p4b-done', { hidden: true });
     this.layout = el('div.p4b-layout', {}, this.bench, el('div.p4b-side', {}, this.tray, this.done));
     root.append(TopBar(ctx, { titleId: 'build.title' }), this.layout);
@@ -153,7 +153,7 @@ class Build implements Screen {
     const face = el('span.p4b-bubble__face', { 'aria-hidden': 'true' });
     face.innerHTML = P4_PICTURES.maker;
     this.bubble = el('div.p4b-bubble', { hidden: true, 'data-test': 'hint' }, face, this.bubbleText);
-    const steps = el('div.p4b-steps', { role: 'list', 'aria-label': i18n.t('build.steps') });
+    const steps = i18n.bindAttr(el('div.p4b-steps', { role: 'list' }), 'aria-label', 'build.steps');
     this.steps = ORDER.map((_, i) => {
       const s = el('span.p4b-step', { role: 'listitem' }, el('span.p4b-step__n', {}, String(i + 1)));
       steps.appendChild(s);

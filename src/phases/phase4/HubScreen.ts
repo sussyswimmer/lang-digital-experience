@@ -101,7 +101,7 @@ class Hub implements Screen {
   // ---------- cards ----------
 
   private buildCards(): HTMLElement {
-    const box = el('div.p4h-cards', { role: 'group', 'aria-label': i18n.t('hub.cards') });
+    const box = i18n.bindAttr(el('div.p4h-cards', { role: 'group' }), 'aria-label', 'hub.cards');
     for (const c of CARDS) {
       const picture = art(
         {

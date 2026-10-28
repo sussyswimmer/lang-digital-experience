@@ -371,6 +371,25 @@
 
 /* ---------- smaller screens ---------- */
 
+/* six 64 px medals (the touch minimum) need 454 px: below about 1180 px they don't fit beside both
+   panels, so the two picture buttons take their own row under them */
+@media (max-width: 1179px) {
+  .p4h-lower {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: 'revisit shelf' 'side side';
+  }
+
+  .p4h-side {
+    flex-direction: row;
+    max-width: none;
+  }
+
+  .p4h-gallery,
+  .p4h-cert {
+    flex: 1;
+  }
+}
+
 @media (max-width: 1100px) {
   .p4h-chip {
     width: 104px;

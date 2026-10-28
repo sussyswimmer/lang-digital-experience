@@ -149,7 +149,7 @@ class Phase3 implements Screen {
     this.nextIcon = el('span.p3-nav__disc', {}, svg(ICONS.next));
     this.nextLabel = i18n.bind(el('span.p3-nav__label'), 'p3.next');
     this.nextBtn = el('button.p3-nav.p3-nav--next', { type: 'button', 'data-touch': '', 'data-test': 'next', onclick: () => this.onNext() }, this.nextIcon, this.nextLabel);
-    const dotsBox = el('div.p3-dots', { role: 'group', 'aria-label': i18n.t('p3.title') });
+    const dotsBox = i18n.bindAttr(el('div.p3-dots', { role: 'group' }), 'aria-label', 'p3.title');
     this.dots = CHAPTERS.map((id, i) =>
       el(
         'button.p3-dot',
