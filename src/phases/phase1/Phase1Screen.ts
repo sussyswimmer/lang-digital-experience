@@ -10,6 +10,7 @@ import { gsap } from 'gsap';
 import { Flip } from 'gsap/Flip';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { el, svg } from '../../ui/el';
+import { burst } from '../../ui/lottie';
 import { ICONS } from '../../ui/icons';
 import { TopBar } from '../../ui/TopBar';
 import { i18n } from '../../i18n/i18n';
@@ -388,6 +389,8 @@ class Phase1 implements Screen {
     this.ctx.audio.sfx.play('sparkle');
     void this.ctx.narration.say(`p1.deco.${view.spec.id}`);
     if (motion.reduced) return;
+    const r = view.slot.getBoundingClientRect();
+    burst(this.root, 'sparkle', { x: r.left + r.width / 2, y: r.top + r.height / 2 }, { size: Math.min(220, Math.max(r.width, r.height) * 1.2) });
     this.g.add(() => gsap.fromTo(view.slot, { y: 0 }, { y: -12, duration: 0.18, yoyo: true, repeat: 3, ease: 'power1.inOut' }));
   }
 

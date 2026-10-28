@@ -8,6 +8,7 @@ import '../hub/p4.css';
 import './build.css';
 import { gsap } from 'gsap';
 import { el, svg } from '../../../ui/el';
+import { burst, preload } from '../../../ui/lottie';
 import { TopBar } from '../../../ui/TopBar';
 import { i18n } from '../../../i18n/i18n';
 import { motion } from '../../../a11y/motion';
@@ -78,6 +79,7 @@ class Build implements Screen {
     this.alive = true;
     root.classList.add('p4', 'p4-build');
     quietViewer(ctx);
+    void preload('badge-pop');
     // the strap colour the child picked in Phase 2
     const strap = ctx.settings.get().strapColour;
     this.strap = strap in STRAP_COLOURS ? strap : 'purple';
@@ -583,7 +585,15 @@ class Build implements Screen {
     this.g.add(() => {
       if (motion.reduced) enter(this.done, { opacity: 0 }, { duration: 0.25 });
       else {
-        enter(medal, { scale: 0, rotate: -40 }, { duration: 0.8, delay: 0.5, ease: 'back.out(2.2)', onStart: () => ctx.audio.sfx.play('badge') });
+        enter(medal, { scale: 0, rotate: -40 }, {
+          duration: 0.8,
+          delay: 0.5,
+          ease: 'back.out(2.2)',
+          onStart: () => {
+            ctx.audio.sfx.play('badge');
+            burst(this.root, 'badge-pop', centreOf(medal), { size: 420 });
+          },
+        });
         enter(this.done.querySelectorAll('h2, .p4-action'), { y: 20, opacity: 0 }, { duration: 0.4, stagger: 0.08, delay: 0.9 });
       }
     });

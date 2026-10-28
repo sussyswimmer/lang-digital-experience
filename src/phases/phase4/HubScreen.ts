@@ -6,6 +6,7 @@
 import './hub/hub.css';
 import { gsap } from 'gsap';
 import { el, svg } from '../../ui/el';
+import { burst, preload } from '../../ui/lottie';
 import { TopBar } from '../../ui/TopBar';
 import { i18n } from '../../i18n/i18n';
 import { motion } from '../../a11y/motion';
@@ -17,7 +18,7 @@ import { art, refreshAlts } from './hub/media';
 import { buildCardSvg, colourCardSvg, quizCardSvg } from './hub/cardArt';
 import { P4_ICONS, P4_PICTURES } from './hub/icons';
 import { ALL_BADGES, MAKER_BADGE, badgeSvg, earnedBadges } from './hub/badges';
-import { enter, labelButton, quietViewer, rectOf, testHook } from './hub/kit';
+import { centreOf, enter, labelButton, quietViewer, rectOf, testHook } from './hub/kit';
 import { getGallery } from './gallery/galleryDb';
 
 type Activity = 'build' | 'colour' | 'quiz';
@@ -56,6 +57,7 @@ class Hub implements Screen {
     this.alive = true;
     root.classList.add('p4', 'p4-hub');
     quietViewer(ctx);
+    void preload('sparkle');
 
     const side = el('div.p4h-side', {}, this.buildGallery());
     const cert = this.buildCertificate();
@@ -257,6 +259,7 @@ class Hub implements Screen {
         onclick: () => {
           if (earned) {
             ctx.audio.sfx.play('sparkle');
+            burst(this.root, 'sparkle', centreOf(slot), { size: 150 });
             void ctx.narration.say(b.nameId);
             if (!motion.reduced) this.g.add(() => gsap.fromTo(slot, { rotate: -12, scale: 1.15 }, { rotate: 0, scale: 1, duration: 0.6, ease: 'elastic.out(1, 0.4)' }));
           } else {

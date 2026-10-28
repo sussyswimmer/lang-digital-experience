@@ -5,6 +5,7 @@
  */
 import { gsap } from 'gsap';
 import { el, svg } from '../ui/el';
+import { burst, isReady, preload } from '../ui/lottie';
 import { motion } from './motion';
 
 export type Gesture = 'tap' | 'swipe' | 'drag' | 'trace';
@@ -37,6 +38,7 @@ export class IdleHint {
   private repeats = 0;
   private hand: HTMLDivElement;
   private tl: gsap.core.Timeline | null = null;
+  private stopRipple: (() => void) | null = null;
   /** test mode shortens the 5 s wait */
   scale = 1;
   /** while narration is speaking the child is listening, not idle */
@@ -52,6 +54,8 @@ export class IdleHint {
   }
 
   watch(step: IdleStep): void {
+    // the EffectCraft ripple is fetched while the 5 s wait runs; until then the CSS ring stands in
+    if (step.gesture === 'tap' && !motion.reduced) void preload('tap-ripple');
     this.step = step;
     this.repeats = 0;
     this.reset();
@@ -106,8 +110,16 @@ export class IdleHint {
     if (motion.reduced) {
       tl.to(hand, { opacity: 0.4, yoyo: true, repeat: 3, duration: 0.4 });
     } else if (step.gesture === 'tap') {
-      tl.to(hand, { scale: 0.88, duration: 0.18, yoyo: true, repeat: 3 })
-        .fromTo(ripple, { scale: 0.4, opacity: 0.9 }, { scale: 2.2, opacity: 0, duration: 0.6 }, '<');
+      tl.to(hand, { scale: 0.88, duration: 0.18, yoyo: true, repeat: 3 });
+      if (isReady('tap-ripple')) {
+        // centred on the fingertip (the CSS ring's box)
+        tl.call(() => {
+          const r = ripple.getBoundingClientRect();
+          this.stopRipple = burst(hand, 'tap-ripple', { x: r.left + r.width / 2, y: r.top + r.height / 2 }, { size: 128 });
+        }, undefined, '<');
+      } else {
+        tl.fromTo(ripple, { scale: 0.4, opacity: 0.9 }, { scale: 2.2, opacity: 0, duration: 0.6 }, '<');
+      }
     } else {
       const pts = step.path?.() ?? [];
       if (pts.length) {
@@ -123,6 +135,8 @@ export class IdleHint {
   private hideHand(): void {
     this.tl?.kill();
     this.tl = null;
+    this.stopRipple?.();
+    this.stopRipple = null;
     this.hand.style.display = 'none';
   }
 }

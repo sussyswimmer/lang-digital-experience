@@ -143,8 +143,8 @@ Everything served lives under `public/assets/` with stable names (a final asset 
 |---|---|
 | Photos | `img/photos/<stem>-<640|1280|1920>.<avif|webp|jpg>` (`diverse-4` and `p3-identity` also 2560). Sizes in `content/photos.json` |
 | Model | `models/nonla.glb`, `models/nonla.meta.json` |
-| Build-game layers | `img/layers/build-0{1..6}-{frame,leaf-inner,poem-art,leaf-outer,stitches,strap}.webp` (Blender renders, one locked camera; each is cut by the layers below it so they stack like the real hat) + `build-00-shadow.webp` (the whole hat's floor shadow, under the stack) + `thumb-0N-*.webp` (whole piece, trimmed, for the tray) |
-| Renders | `img/renders/{hat-full,cover,cover-hat,underside-{purple,peach,green},brim-closeup,piece-mo-bark}.webp` (`cover-hat` is trimmed to the hat, no floor: the storybook cover) |
+| Build-game layers | `img/layers/build-0{1..6}-{frame,leaf-inner,poem-art,leaf-outer,stitches,strap}.webp` (Blender renders, one locked camera; each is cut by the layers below it so they stack like the real hat) + `build-00-shadow.webp` (the whole hat's floor shadow, under the stack); the tray draws its pieces as SVG |
+| Renders | `img/renders/{hat-full,cover,cover-hat}.webp` (`cover-hat` is trimmed to the hat, no floor: the storybook cover); the piece, underside and brim close-up stills only feed the quiz cards |
 | Line art | `img/lineart/page-{1-plain,2-strap,3-poem,4-market}.png`: 1600×1200 (the studio's canvas size) black ink on transparent (paint goes underneath) + `page-*-600.webp` picker thumbnails. Pages 1–2 Blender Freestyle, 3–4 Higgsfield; hand-drawn `.svg` versions are the fallback |
 | Quiz pictures | `img/quiz/<question>-<answer>.webp` (+ `-600`): Q2–Q4 Blender renders, Q1 from Blender stills, Q5 Higgsfield; `q1-scene`, `q3-scene` are Higgsfield illustrations |
 | Illustrations | `img/art/*.webp`, UI art `img/ui/*` |
@@ -152,7 +152,7 @@ Everything served lives under `public/assets/` with stable names (a final asset 
 | Ambient | `audio/ambient/{rain-on-hat,market-chatter,breeze-leaves,workshop,schoolyard,rain-market}.mp3` |
 | Video loops | `video/p1-<tile>.{mp4,webm}` + `-poster.webp` |
 | Scroll intro frames | `scroll/{960,1600}/f_0001.webp …` + `scroll/manifest.json` (`count`, `widths`, `aspect`, `bg`, `placeholder`, `bytes`) |
-| Lottie | `lottie/{hand-tap,hand-swipe,hand-trace,hand-drag,badge-pop,sparkle,…}.json` |
+| Lottie | `lottie/{badge-pop,sparkle,tap-ripple}.json` (EffectCraft exports, played once by `src/ui/lottie.ts`: badge-pop when a quiz or Build badge lands, sparkle on a tapped earned badge or Phase 1 decoration, tap-ripple under the idle hand; nothing plays under reduced motion) |
 
 Photo stems (team photos → PhotoCraft slight edit → encoded):
 

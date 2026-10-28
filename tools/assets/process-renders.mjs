@@ -2,8 +2,8 @@
 //   stills/build-0N-*.png      → img/layers/build-0N-*.webp (+ -800)   one locked camera, alpha kept; each is
 //                                 cut by the layers below it so they stack like the real hat; build-00-shadow is
 //                                 the whole hat's floor shadow that goes under the stack
-//   stills/piece-0N-*.png      → img/layers/thumb-0N-*.webp: the whole piece, trimmed (game tray)
-//   stills/<other>.png         → img/renders/<name>.webp (+ -800)
+//   stills/<other>.png         → img/renders/<name>.webp (+ -800); the piece, underside and brim
+//                                 close-up stills are only sources for the quiz cards (QUIZ_EXTRA)
 //   quiz/<q>-<answer>.png      → img/quiz/<q>-<answer>.webp (+ -600); Q1/Q5 answers come from QUIZ_EXTRA
 //   lineart/page-*.png         → img/lineart/page-*.png  (1600×1200, black lines on transparent: the
 //                                 colouring studio draws the paint layer underneath) + page-*-600.webp picker
@@ -37,19 +37,12 @@ async function webp(src, dest, widths) {
   console.log(path.relative(OUT, dest), widths.join(','));
 }
 
+// the Build game's tray draws its pieces as SVG, so these stills are not served on their own
+const SOURCE_ONLY = /^(piece-|underside-|brim-closeup)/;
 for (const f of await pngs('stills')) {
   const name = path.basename(f, '.png');
-  const piece = /^piece-\d\d-/.test(name);
   if (name.startsWith('build-')) await webp(path.join(SRC, 'stills', f), path.join(OUT, `layers/${name}`), [1600, 800]);
-  else if (!piece) await webp(path.join(SRC, 'stills', f), path.join(OUT, `renders/${name}`), [1600, 800]);
-  if (piece) {
-    const trimmed = await sharp(path.join(SRC, 'stills', f)).trim({ threshold: 1 }).toBuffer();
-    await sharp(trimmed)
-      .resize({ width: 480, height: 480, fit: 'inside' })
-      .extend({ top: 16, bottom: 16, left: 16, right: 16, background: { r: 0, g: 0, b: 0, alpha: 0 } })
-      .webp({ quality: 84, alphaQuality: 90 })
-      .toFile(path.join(OUT, 'layers', name.replace('piece-', 'thumb-') + '.webp'));
-  }
+  else if (!SOURCE_ONLY.test(name)) await webp(path.join(SRC, 'stills', f), path.join(OUT, `renders/${name}`), [1600, 800]);
 }
 for (const f of await pngs('quiz')) {
   await webp(path.join(SRC, 'quiz', f), path.join(OUT, 'quiz', path.basename(f, '.png')), [1200, 600]);

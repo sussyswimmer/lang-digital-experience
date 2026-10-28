@@ -265,3 +265,16 @@
   font-weight: 800;
   text-align: center;
 }
+
+/* ---------- Lottie bursts (src/ui/lottie.ts) ---------- */
+
+.lottie-burst {
+  position: absolute;
+  z-index: 40;
+  pointer-events: none;
+}
+
+/* under the hand, over nothing else */
+.hand-hint .lottie-burst {
+  z-index: -1;
+}

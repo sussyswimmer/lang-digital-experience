@@ -8,6 +8,7 @@ import '../hub/p4.css';
 import './quiz.css';
 import { gsap } from 'gsap';
 import { el, svg } from '../../../ui/el';
+import { burst, preload } from '../../../ui/lottie';
 import { TopBar } from '../../../ui/TopBar';
 import { i18n } from '../../../i18n/i18n';
 import { motion } from '../../../a11y/motion';
@@ -49,6 +50,7 @@ class Quiz implements Screen {
     root.classList.add('p4', 'p4-quiz');
     quietViewer(ctx);
     this.run = startRun(QUESTIONS.length);
+    void preload('badge-pop');
 
     this.count = el('span.p4q-count');
     const progress = el('div.p4q-progress', { 'aria-hidden': 'true' });
@@ -224,6 +226,7 @@ class Quiz implements Screen {
       slot.classList.add('is-earned');
       slot.setAttribute('aria-label', i18n.t(def.nameId));
       ctx.audio.sfx.play('badge');
+      burst(this.root, 'badge-pop', centreOf(slot), { size: 200 });
     };
     if (motion.reduced) {
       fill();
