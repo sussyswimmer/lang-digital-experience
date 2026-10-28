@@ -30,6 +30,10 @@ Two things make reviewing quicker:
 - **Language**: the EN / VI switch is in the top bar on every screen. The voice follows the switch.
 - **Skip the first run**: the first visit plays Phases 1 → 4 in order, as the brief asks. After that, the Activity Hub (`…/#/play/hub`) opens everything. Add `?review=1` to the address to open any screen directly, e.g. `…/?review=1#/play/p3/identity`. The landing page shows first; tap **Continue**, which also switches the sound on.
 
+### The look
+
+`docs/DESIGN.md` is the design brief every screen follows: rice paper, red thread, bamboo and Đông Hồ woodblock pictures (the hat's own materials). It lists what to keep and what to avoid, so new screens match without guesswork. Sizes, fonts and the paper primitives are in `src/styles/tokens.css` and `src/styles/paper.css`.
+
 ### Changing words
 
 Every word on screen lives in `content/strings/<area>.json` as `{ "en": …, "vi": …, "viStatus": … }`. The areas are `common`, `site`, `phase1`–`phase3`, `hub`, `build`, `colour`, `quiz`, `cert` and `gallery`. `npm run i18n:check` flags missing or empty strings.
