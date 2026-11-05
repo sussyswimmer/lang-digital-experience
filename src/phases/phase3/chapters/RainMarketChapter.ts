@@ -52,6 +52,7 @@ export class RainMarketChapter implements Chapter {
   private sim: RainSim | null = null;
   private raf = 0;
   private last = 0;
+  private rainEnds = 0;
   private rained = false;
   private counting = false;
   private counted = new Map<number, number>();
@@ -167,6 +168,8 @@ export class RainMarketChapter implements Chapter {
     this.sim = new RainSim(this.size.w, this.size.h, this.hats, { seed: (Date.now() & 0xffff) + 1, reduced: motion.reduced });
     this.sim.start(seconds);
     this.last = performance.now();
+    // the shower ends on the clock, however slowly a device draws it
+    this.rainEnds = this.last + seconds * 1000;
     if (!this.raf) this.raf = requestAnimationFrame((t) => this.frame(t));
   }
 
@@ -183,6 +186,7 @@ export class RainMarketChapter implements Chapter {
       sim.step(dt);
       rest -= dt;
     } while (rest > 1e-4);
+    if (sim.running && now >= this.rainEnds) sim.stop();
     this.draw(sim);
     if (sim.busy || sim.wetness > 0.01) {
       this.raf = requestAnimationFrame((t) => this.frame(t));
