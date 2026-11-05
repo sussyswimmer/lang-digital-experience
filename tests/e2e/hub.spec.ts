@@ -161,7 +161,12 @@ test.describe('Build Your Nón Lá', () => {
     }
     await expect.poll(() => build(page).finished()).toBe(true);
     await expect(page.locator('.p4b-layer[data-piece=strap] img')).toHaveAttribute('src', /build-06-strap-green\.webp$/);
-    await expect(page.locator('[data-test=badge-name]')).toHaveText('Little Hat Maker');
+    // lights off: the painting between the leaves shows through them before the badge appears
+    await expect(page.locator('.p4b-layout.is-night .p4b-secret')).toBeAttached();
+    await expect.poll(() => narrationLog(page)).toContain('build.secret');
+    await expect(page.locator('[data-test=badge-name]')).toHaveText('Little Hat Maker', { timeout: 30_000 });
+    await expect(page.locator('.p4b-layout')).not.toHaveClass(/is-night/);
+    await expect(page.locator('[data-test=see-secret]')).toBeVisible();
     expect((await games(page)).build.completed).toBe(1);
     expect((await sfxLog(page)).filter((s) => s === 'snap')).toHaveLength(6);
     await expect.poll(() => narrationLog(page)).toContain('build.badge.earned');

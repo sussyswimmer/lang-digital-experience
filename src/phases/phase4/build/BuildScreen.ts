@@ -1,8 +1,11 @@
 /**
  * Phase 4a: "Build Your Nón Lá". Drag the pieces from the tray onto the workbench hat, inside → out
  * (or tap a piece, then tap the hat). A correct piece snaps on and stacks; a wrong one floats back
- * with a friendly hint; after two misses the right piece glows. The finished hat spins, confetti
- * flies and the child earns the "Little Hat Maker" badge.
+ * with a friendly hint; after two misses the right piece glows. Only the piece itself leaves the tray
+ * (cut out of its print, with a soft shadow): its paper square stays behind on the tag. When the last
+ * piece is on, the lights go off: the hat glows as if held up to the sun and the poem painted between
+ * the leaves shows through them for the first time. Then the lights come back, confetti flies and the
+ * child earns the "Little Hat Maker" badge ("See the secret" plays the reveal again).
  */
 import '../hub/p4.css';
 import './build.css';
@@ -30,6 +33,9 @@ const DRAG_START_PX = 10;
 const ZONE_PAD = 0.15;
 /** the workbench's width (585 px at 1180, 656 at 1440); the renders' 1.4× zoom only crops their empty margins */
 const LAYER_SIZES = '(max-width: 760px) calc(100vw - 44px), min(50vw, 660px)';
+/** the reveal: lights off for at least this long (longer while its line is spoken, never more than NIGHT_MAX_MS) */
+const NIGHT_MIN_MS = 3600;
+const NIGHT_MAX_MS = 7000;
 
 /** a layer render at 800 or 1600 px wide (build-0N-x.webp + build-0N-x-800.webp) */
 function layerImg(file: string): string {
@@ -40,6 +46,11 @@ interface Card {
   piece: PieceId;
   el: HTMLButtonElement;
   art: HTMLElement;
+}
+
+/** the square the piece sits on in the tray (the art box itself when the SVG drawing stands in) */
+function printOf(card: Card): HTMLElement {
+  return card.art.querySelector<HTMLElement>('.p4b-piece__print') ?? card.art;
 }
 
 class Build implements Screen {
@@ -69,6 +80,10 @@ class Build implements Screen {
   private tray!: HTMLDivElement;
   private cards = new Map<PieceId, Card>();
   private done!: HTMLDivElement;
+  /** the dark behind the hat and over the wooden bench while the lights are off */
+  private night!: HTMLDivElement;
+  private dim!: HTMLDivElement;
+  private revealing: { skip: () => void } | null = null;
   private ghost: HTMLDivElement | null = null;
   private spinRaf = 0;
   private bursts: Burst[] = [];
@@ -160,23 +175,42 @@ class Build implements Screen {
       steps.appendChild(s);
       return s;
     });
+    this.night = el('div.p4b-night', { 'aria-hidden': 'true' });
+    this.dim = el('div.p4b-dim', { 'aria-hidden': 'true' });
     // a sheet of paper on the wooden bench is where the hat is built; the step knots sit on the wood
-    this.bench = el('div.p4b-bench', {}, this.bubble, el('div.p4b-hatbox.sheet', {}, this.hat), steps);
+    this.bench = el('div.p4b-bench', {}, this.bubble, el('div.p4b-hatbox.sheet', {}, this.night, this.hat), steps, this.dim);
   }
 
-  /** the piece's Đông Hồ print (the strap in the child's colour); the SVG drawing if it fails to load */
+  /**
+   * The piece's Đông Hồ print, cut out of its paper (piece-*-cut-*.webp, the strap in the child's
+   * colour). On a tray tag it lies on a square of paper of its own, which stays on the tag when the
+   * piece is dragged away. If the cut-out won't load, the whole print (paper and all); if that won't
+   * either, the SVG drawing.
+   */
   private pieceArt(piece: PieceId, className = 'p4b-piece__art'): HTMLElement {
+    const step = className === 'p4b-step__art';
     const box = el(`span.${className}`, { 'aria-hidden': 'true' });
-    const drawSvg = () => {
-      box.innerHTML = trayArt(piece, this.strapColour);
-    };
     const stem = piece === 'strap' ? `piece-strap-${this.strap}` : `piece-${piece}`;
-    const img = el('img', { decoding: 'async', draggable: false, alt: '' });
-    img.addEventListener('error', drawSvg, { once: true });
-    img.srcset = `${assetUrl(`img/art/${stem}-400.webp`)} 400w, ${assetUrl(`img/art/${stem}-800.webp`)} 800w`;
-    img.sizes = className === 'p4b-step__art' ? '40px' : '(max-width: 900px) 30vw, 220px';
-    img.src = assetUrl(`img/art/${stem}-400.webp`);
-    box.appendChild(img);
+    const sources = [
+      [`img/art/${stem}-cut-400.webp`, `img/art/${stem}-cut-800.webp`],
+      [`img/art/${stem}-400.webp`, `img/art/${stem}-800.webp`],
+    ];
+    const img = el('img.p4b-cut', { decoding: 'async', draggable: false, alt: '' });
+    img.sizes = step ? '40px' : '(max-width: 900px) 30vw, 220px';
+    const load = () => {
+      const files = sources.shift();
+      if (!files) {
+        box.innerHTML = trayArt(piece, this.strapColour);
+        return;
+      }
+      const [small, large] = files;
+      img.classList.toggle('is-print', !sources.length);
+      img.srcset = `${assetUrl(small)} 400w, ${assetUrl(large)} 800w`;
+      img.src = assetUrl(small);
+    };
+    img.addEventListener('error', load);
+    load();
+    box.appendChild(step ? img : el('span.p4b-piece__print', {}, el('span.p4b-piece__plate'), img));
     return box;
   }
 
@@ -266,7 +300,7 @@ class Build implements Screen {
       if (!cancelled) this.onPieceTap(d.piece);
       return;
     }
-    this.cards.get(d.piece)!.el.classList.remove('is-lifted');
+    // the piece stays off its tag until it is on the hat or has floated back home
     if (!cancelled && this.inZone(e.clientX, e.clientY)) this.attempt(d.piece);
     else {
       this.floatBack(d.piece, false);
@@ -279,12 +313,8 @@ class Build implements Screen {
     d.dragging = true;
     this.deselect();
     const card = this.cards.get(piece)!;
-    const r = card.art.getBoundingClientRect();
-    const ghost = el('div.p4b-ghostpiece', { 'aria-hidden': 'true' });
-    ghost.innerHTML = card.art.innerHTML;
-    ghost.style.width = `${r.width}px`;
-    ghost.style.height = `${r.height}px`;
-    this.root.appendChild(ghost);
+    const r = printOf(card).getBoundingClientRect();
+    const ghost = this.pieceGhost(card);
     this.ghost = ghost;
     // the ghost keeps the grab offset so it doesn't jump under the finger
     const ox = e.clientX - (r.left + r.width / 2);
@@ -387,6 +417,7 @@ class Build implements Screen {
     this.glow(null);
     this.hideHint();
     const card = this.cards.get(piece)!;
+    card.el.classList.remove('is-lifted');
     card.el.classList.add('is-used');
     card.el.disabled = true;
     const layer = this.makeLayer(piece);
@@ -444,14 +475,22 @@ class Build implements Screen {
     return layer;
   }
 
-  /** a copy of the card's picture to fly with (tap mode has no dragged ghost) */
-  private flyingCopy(card: Card): HTMLDivElement {
-    const r = card.art.getBoundingClientRect();
+  /** what leaves the tag: the piece alone, at its size on the tag (its paper square stays behind) */
+  private pieceGhost(card: Card): HTMLDivElement {
+    const r = printOf(card).getBoundingClientRect();
     const ghost = el('div.p4b-ghostpiece', { 'aria-hidden': 'true' });
-    ghost.innerHTML = card.art.innerHTML;
+    const art = card.art.querySelector('img, svg');
+    if (art) ghost.appendChild(art.cloneNode(true));
     ghost.style.width = `${r.width}px`;
     ghost.style.height = `${r.height}px`;
     this.root.appendChild(ghost);
+    return ghost;
+  }
+
+  /** a copy of the piece to fly with (tap mode has no dragged ghost) */
+  private flyingCopy(card: Card): HTMLDivElement {
+    const r = printOf(card).getBoundingClientRect();
+    const ghost = this.pieceGhost(card);
     gsap.set(ghost, { x: r.left + r.width / 2, y: r.top + r.height / 2, xPercent: -50, yPercent: -50 });
     return ghost;
   }
@@ -461,9 +500,10 @@ class Build implements Screen {
     const card = this.cards.get(piece)!;
     if (wrong) this.ctx.audio.sfx.play('floatBack');
     const ghost = this.takeGhost();
+    if (!ghost) card.el.classList.remove('is-lifted');
     this.g.add(() => {
       if (ghost) {
-        const home = centreOf(card.art);
+        const home = centreOf(printOf(card));
         gsap.to(ghost, {
           x: home.x,
           y: home.y,
@@ -471,7 +511,10 @@ class Build implements Screen {
           rotate: 0,
           duration: motion.reduced ? 0.2 : 0.9,
           ease: motion.reduced ? 'power1.out' : 'elastic.out(1, 0.55)',
-          onComplete: () => ghost.remove(),
+          onComplete: () => {
+            ghost.remove();
+            card.el.classList.remove('is-lifted');
+          },
         });
       }
       if (wrong && !motion.reduced) {
@@ -548,12 +591,100 @@ class Build implements Screen {
     ctx.progress.set((p) => ({ ...p, games: { ...p.games, build: { completed: p.games.build.completed + 1 } } }));
     this.hat.disabled = true;
     this.hat.classList.add('is-finished');
-    ctx.audio.sfx.play('fanfare');
+    ctx.idle.clear();
     this.spin();
+    const still = () => this.alive && this.finished;
+    await speak(ctx.narration, [PIECES.strap.placedId], still);
+    if (!still()) return;
+    // the big reveal first, then the badge
+    await this.lightsOff();
+    if (!still()) return;
+    ctx.audio.sfx.play('fanfare');
     this.bursts.push(confettiBurst(this.root, { from: centreOf(this.stack) }));
     this.showDone(first);
     this.watchIdle();
-    await speak(ctx.narration, [PIECES.strap.placedId, 'build.done', 'build.badge.earned'], () => this.alive && this.finished);
+    await speak(ctx.narration, ['build.done', 'build.badge.earned'], still);
+  }
+
+  /**
+   * "Lights off": the bench goes dark, the hat glows as if it were held up to the sun, and the poem
+   * painted between the leaves shows through them, the way a real nón bài thơ only shows its secret
+   * against the light. A tap anywhere brings the lights back early. Under reduced motion it is a
+   * plain cross-fade: no glow pulse, no flash.
+   */
+  private async lightsOff(): Promise<void> {
+    if (this.revealing || !this.alive) return;
+    const ctx = this.ctx;
+    const side = this.layout.querySelector<HTMLElement>('.p4b-side')!;
+    const shadow = this.stack.querySelector<HTMLElement>('.p4b-ghost');
+    // two extra layers just over the outer leaves (under the stitches and the strap): the leaves lit
+    // from behind, glowing at the rim, and the painting's shapes seen through them. Their filters are
+    // fixed (build.css); only their opacity moves, so every frame stays a cheap cross-fade.
+    const lit = this.makeLayer('leaf-outer');
+    lit.classList.add('p4b-lit');
+    lit.dataset.piece = 'lit';
+    const secret = this.makeLayer('poem-art');
+    secret.classList.add('p4b-secret');
+    secret.dataset.piece = 'secret';
+    const outer = this.stack.querySelector('.p4b-layer[data-piece="leaf-outer"]');
+    if (outer) outer.after(lit, secret);
+    else this.stack.append(lit, secret);
+    let wasSkipped = false;
+    let skip = () => {};
+    const skipped = new Promise<void>((r) => (skip = () => ((wasSkipped = true), r())));
+    this.revealing = { skip };
+    this.layout.classList.add('is-night');
+    this.layout.addEventListener('pointerdown', skip);
+    ctx.audio.sfx.play('whoosh');
+
+    const fade = motion.reduced ? 0.4 : 0.9;
+    await this.g.add(() => {
+      const tl = gsap.timeline();
+      tl.to([this.night, this.dim], { opacity: 1, duration: fade, ease: 'power2.inOut' }, 0);
+      tl.to(side, { opacity: 0.4, duration: fade }, 0);
+      if (shadow) tl.to(shadow, { opacity: 0, duration: fade }, 0);
+      tl.fromTo(lit, { opacity: 0 }, { opacity: 1, duration: motion.reduced ? 0.4 : fade * 1.4, ease: 'sine.inOut' }, fade * 0.4);
+      tl.fromTo(secret, { opacity: 0 }, { opacity: 1, duration: motion.reduced ? 0.4 : 1.6, ease: 'power1.inOut', onStart: () => ctx.audio.sfx.play('chime') }, fade * 0.8);
+      return tl;
+    });
+    if (!this.alive) return;
+    const told = speak(ctx.narration, ['build.secret'], () => this.alive && this.revealing !== null);
+    const held = new Promise((r) => window.setTimeout(r, NIGHT_MIN_MS));
+    const cap = new Promise((r) => window.setTimeout(r, NIGHT_MAX_MS));
+    await Promise.race([Promise.all([told, held]), skipped, cap]);
+    this.layout.removeEventListener('pointerdown', skip);
+    if (!this.alive) return;
+    // a tap means "move on": the line stops too (otherwise it finishes as the lights come back)
+    if (wasSkipped && ctx.narration.currentId() === 'build.secret') ctx.narration.stop();
+
+    await this.g.add(() => {
+      const tl = gsap.timeline();
+      tl.to(secret, { opacity: 0, duration: fade * 0.8 }, 0);
+      tl.to(lit, { opacity: 0, duration: fade }, 0);
+      tl.to([this.night, this.dim], { opacity: 0, duration: fade, ease: 'power2.inOut' }, fade * 0.3);
+      tl.to(side, { opacity: 1, duration: fade }, fade * 0.3);
+      if (shadow) tl.to(shadow, { opacity: 1, duration: fade }, fade * 0.3);
+      return tl;
+    });
+    this.daylight();
+  }
+
+  /** back to the lit bench at once (end of the reveal, or a restart in the middle of it) */
+  private daylight(): void {
+    this.revealing?.skip();
+    this.revealing = null;
+    this.layout.classList.remove('is-night');
+    this.stack.querySelectorAll('.p4b-secret, .p4b-lit').forEach((n) => n.remove());
+    gsap.set([this.night, this.dim], { clearProps: 'opacity' });
+    gsap.set(this.layout.querySelectorAll('.p4b-side, .p4b-ghost'), { clearProps: 'opacity' });
+  }
+
+  private replaySecret(): void {
+    if (this.revealing) return;
+    this.ctx.audio.sfx.play('tap');
+    this.ctx.narration.stop();
+    this.ctx.idle.clear();
+    void this.lightsOff().then(() => this.alive && this.watchIdle());
   }
 
   /** the hat hops and turns once: the leaf seams sweep round (SVG) or the picture turns (renders) */
@@ -585,6 +716,9 @@ class Build implements Screen {
     const medal = el('div.p4b-done__medal', { 'aria-hidden': 'true' });
     medal.innerHTML = badgeSvg(MAKER_BADGE);
     const again = labelButton('button.btn.btn--straw', P4_ICONS.again, 'build.again', () => this.restart(), { 'data-test': 'again' });
+    const secret = labelButton('button.btn.btn--ghost.p4b-done__secret', P4_ICONS.sun, 'build.secret.again', () => this.replaySecret(), {
+      'data-test': 'see-secret',
+    });
     const hub = labelButton('button.btn', P4_ICONS.grid, 'hub.back', () => {
       ctx.audio.sfx.play('tap');
       ctx.go({ state: 'hub', params: {} });
@@ -592,6 +726,7 @@ class Build implements Screen {
     this.done.replaceChildren(
       medal,
       i18n.bind(el('h2.p4b-done__name', { 'data-test': 'badge-name' }), 'build.badge.name'),
+      secret,
       el('div.p4b-done__actions', {}, again, hub),
     );
     this.done.dataset.first = String(first);
@@ -620,6 +755,8 @@ class Build implements Screen {
     ctx.narration.stop();
     cancelAnimationFrame(this.spinRaf);
     for (const b of this.bursts.splice(0)) b.stop();
+    this.g.getTweens().forEach((t: gsap.core.Tween) => t.kill());
+    this.daylight();
     this.placed = [];
     this.misses = 0;
     this.selected = null;

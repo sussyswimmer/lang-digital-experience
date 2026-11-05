@@ -19,12 +19,57 @@
 /* ---------- activity cards ---------- */
 
 .p4h-cards {
+  /* the label strip under each picture: a 56 px stamp, or three lines of a Vietnamese title */
+  --p4h-label-h: 84px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 22px;
   min-height: 0;
   /* the tape on each sheet pokes above its top edge */
   padding-top: 10px;
+}
+
+/* The pictures are square prints, so their mounts are square too: as wide as the column allows,
+   or as tall as the room above the lower row allows (HubScreen measures it into --p4h-fit), but
+   never smaller than 260 px. When that floor wins (a 1024 × 768 tablet) the hub scrolls a little,
+   rather than shrink the prints. The sheet hugs its mount, centred in the column, so a print is
+   never cropped and never letterboxed. */
+@media (min-width: 901px) and (min-height: 641px) {
+  .p4h-main {
+    grid-template-rows: auto auto;
+    align-content: space-between;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    scrollbar-width: none;
+    /* room inside the scroll area for the sheets' shadows */
+    margin: 0 -12px;
+    padding: 0 12px 12px;
+  }
+
+  /* the row is as tall as its sheets (the base rule lets it shrink to fit the screen) */
+  .p4h-cards {
+    container-type: inline-size;
+    align-items: start;
+    min-height: auto;
+  }
+
+  .p4h-card {
+    --p4h-side: min(calc((100cqw - 44px) / 3 - 20px), max(calc(var(--p4h-fit, 100vh) - 24px - var(--p4h-label-h)), 260px));
+    justify-self: center;
+    width: calc(var(--p4h-side) + 20px);
+  }
+
+  .p4h-card__art {
+    flex: none;
+    width: var(--p4h-side);
+    height: var(--p4h-side);
+  }
+
+  .p4h-card__label {
+    min-height: var(--p4h-label-h);
+  }
 }
 
 /* a sheet (paper, deckle, corners and shadow come from .sheet) lying a little askew on the table;
@@ -88,6 +133,8 @@
   max-width: none;
   border-radius: 8px 6px 9px 5px / 6px 9px 5px 8px;
   object-fit: cover;
+  /* if a mount is ever wider than its print, lose the floor, never the heads and hats */
+  object-position: 50% 0;
 }
 
 .p4h-card__art::after {
@@ -486,12 +533,16 @@
   .p4h-card {
     flex-direction: row;
     align-items: stretch;
-    height: 150px;
+    height: 164px;
     padding: 8px;
   }
 
+  /* a square mount the height of the sheet, the title beside it */
   .p4h-card__art {
-    flex: 0 0 46%;
+    flex: none;
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1;
     padding: 5px;
   }
 

@@ -18,6 +18,8 @@ export const P4_ICONS = {
   speaker: s('<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6"/>'),
   close: s('<path d="M6 6l12 12M18 6 6 18"/>', 2.8),
   next: s('<path d="M9 5l7 7-7 7"/>', 2.8),
+  /* the sun behind the hat: "See the secret" */
+  sun: s('<circle cx="12" cy="12" r="4"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7"/>', 2.2),
   /* one-ink stamps for the hub's paper tags: a nón lá, a brush, a question, a certificate */
   hat: s('<path d="M12 4.5 20 15.5Q12 18.6 4 15.5Z"/><path d="M7.2 17.2c1.4 2.6 8.2 2.6 9.6 0"/>', 2.2),
   brush: s('<path d="M19.5 4.5 11.5 12.5"/><path d="M12.6 11.4 14.6 13.4 11 17c-1.5 1.5-3.8 1.6-6 .8 1-2 .8-4.3 2.4-6z"/>', 2.2),

@@ -34,6 +34,8 @@
   "build.hint.already": { "kind": "narration", "en": "That piece is already on the hat!", "vi": "Mảnh này đã ở trên nón rồi!", "viStatus": "machine" },
 
   "build.done": { "kind": "narration", "en": "Hooray! You built a whole nón lá, just like a real hat maker!", "vi": "Hoan hô! Con đã làm xong cả một chiếc nón lá, giống hệt một người thợ làm nón thật!", "viStatus": "machine" },
+  "build.secret": { "kind": "narration", "en": "Lights off! Hold your hat up to the sun… The secret painting shines through the leaves!", "vi": "Tắt đèn nào! Giơ chiếc nón lên phía mặt trời… Bức tranh bí mật hiện ra qua những lớp lá!", "viStatus": "machine", "notes": "Spoken in the dark at the end of Build, while the hidden poem painting shows through the backlit leaves" },
+  "build.secret.again": { "kind": "ui", "en": "See the secret", "vi": "Xem bí mật", "viStatus": "machine", "notes": "Small button beside the badge: plays the lights-off reveal again" },
   "build.badge.name": { "kind": "label", "en": "Little Hat Maker", "vi": "Thợ làm nón nhí", "viStatus": "machine" },
   "build.badge.earned": { "kind": "narration", "en": "You earned the Little Hat Maker badge!", "vi": "Con đã nhận được huy hiệu Thợ làm nón nhí!", "viStatus": "machine" },
   "build.again": { "kind": "ui", "en": "Build again", "vi": "Làm lại nào", "viStatus": "machine" }

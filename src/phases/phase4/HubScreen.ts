@@ -63,9 +63,12 @@ class Hub implements Screen {
     const side = el('div.p4h-side', {}, this.buildGallery());
     const cert = this.buildCertificate();
     if (cert) side.appendChild(cert);
-    const main = el('div.p4h-main', {}, this.buildCards(), el('div.p4h-lower', {}, this.buildRevisit(), this.buildShelf(), side));
+    const cards = this.buildCards();
+    const lower = el('div.p4h-lower', {}, this.buildRevisit(), this.buildShelf(), side);
+    const main = el('div.p4h-main', {}, cards, lower);
     this.picker = this.buildPicker();
     root.append(TopBar(ctx, { titleId: 'hub.title' }), main, this.picker);
+    this.fitCards(main, cards, lower);
 
     this.cleanups.push(i18n.onChange(() => refreshAlts(root)));
     const onKey = (e: KeyboardEvent) => {
@@ -129,6 +132,25 @@ class Hub implements Screen {
       box.appendChild(card);
     }
     return box;
+  }
+
+  /**
+   * The square card pictures are as big as the room above the lower row allows (hub.css caps them by
+   * the column width and keeps a floor). That room is measured here, not guessed, because the lower
+   * row's height changes with the width and the language.
+   */
+  private fitCards(main: HTMLElement, cards: HTMLElement, lower: HTMLElement): void {
+    const fit = () => {
+      const cs = getComputedStyle(main);
+      const inner = main.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const room = inner - lower.offsetHeight - (parseFloat(cs.rowGap) || 0);
+      cards.style.setProperty('--p4h-fit', `${Math.max(0, Math.floor(room))}px`);
+    };
+    const ro = new ResizeObserver(fit);
+    ro.observe(main);
+    ro.observe(lower);
+    fit();
+    this.cleanups.push(() => ro.disconnect());
   }
 
   private open(state: FlowState, params: Record<string, string> = {}): void {

@@ -33,9 +33,10 @@
   overflow: hidden;
 }
 
-/* the sheet of paper the hat is built on (paper, deckle and corners from .sheet) */
+/* the sheet of paper the hat is built on (paper, deckle and corners from .sheet); above the bench's
+   night veil (.p4b-dim), which darkens the wood and the step knots */
 .p4b-hatbox {
-  z-index: 1;
+  z-index: 2;
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
@@ -46,6 +47,7 @@
 
 .p4b-hat {
   position: relative;
+  z-index: 1;
   width: min(100cqw, 133.33cqh);
   aspect-ratio: 4 / 3;
   padding: 0;
@@ -394,18 +396,48 @@
   min-height: 0;
   display: grid;
   place-items: center;
+  container-type: size;
 }
 
-.p4b-piece__art svg,
-.p4b-piece__art img {
+.p4b-piece__art > svg {
   width: 100%;
   height: 100%;
   max-height: 140px;
 }
 
-/* the prints are square on their own paper margin: show the whole print, blended into the card */
-.p4b-piece__art img {
+/* the print's square of paper, pasted on the tag (it stays here when the piece is dragged away),
+   and the piece cut out of the print lying on it */
+.p4b-piece__print {
+  position: relative;
+  width: min(100cqw, 100cqh, 140px);
+  height: min(100cqw, 100cqh, 140px);
+}
+
+.p4b-piece__plate {
+  position: absolute;
+  inset: 0;
+  border-radius: 5px 4px 6px 3px / 4px 6px 3px 5px;
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--fibre) 0 0 / 320px 320px,
+    #e8dac2;
+  background-blend-mode: multiply, multiply, normal;
+  mix-blend-mode: multiply;
+  box-shadow: inset 0 0 0 1px rgba(90, 63, 40, 0.08);
+}
+
+.p4b-piece__print img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
   object-fit: contain;
+  transition: opacity 0.12s;
+}
+
+/* the fallback: the whole print, paper and all, blended into the card */
+.p4b-cut.is-print {
   mix-blend-mode: multiply;
 }
 
@@ -463,9 +495,10 @@
   box-shadow: var(--shadow-paper-lift);
 }
 
-.p4b-piece.is-lifted {
-  opacity: 0.35;
-  scale: 0.95;
+/* the piece is in the child's hand: its square of paper stays on the tag, empty */
+.p4b-piece.is-lifted .p4b-piece__print img,
+.p4b-piece.is-lifted .p4b-piece__art > svg {
+  opacity: 0;
 }
 
 /* a tag whose piece is on the hat lies flat on the table */
@@ -488,19 +521,80 @@
   transform: none;
 }
 
-/* the piece following the finger */
+/* the piece following the finger: the cut-out alone, lifted off the table, its soft shadow under it */
 .p4b-ghostpiece {
   position: absolute;
   left: 0;
   top: 0;
   z-index: 30;
   pointer-events: none;
-  filter: drop-shadow(0 14px 14px rgba(59, 42, 28, 0.35));
+  filter: drop-shadow(0 3px 3px rgba(59, 42, 28, 0.22)) drop-shadow(0 16px 14px rgba(59, 42, 28, 0.3));
 }
 
-.p4b-ghostpiece svg {
+.p4b-ghostpiece svg,
+.p4b-ghostpiece img {
+  display: block;
   width: 100%;
   height: 100%;
+  max-width: none;
+  object-fit: contain;
+}
+
+/* ---------- lights off: the secret painting ---------- */
+
+/* the dark behind the hat, with the sun it is held up to glowing straight behind it */
+/* (it reaches over the sheet's deckle edge too, so no pale rim is left round the dark) */
+.p4b-night {
+  position: absolute;
+  inset: -2px;
+  z-index: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(closest-side circle at 50% 44%, rgba(255, 231, 168, 0.9), rgba(255, 190, 92, 0.42) 42%, rgba(150, 88, 28, 0.12) 72%, rgba(0, 0, 0, 0)),
+    radial-gradient(130% 100% at 50% 44%, #2a1b0e, #0c0805 72%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* the same night over the wooden bench and its step knots (the hat's sheet sits above it) */
+.p4b-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: rgba(12, 8, 4, 0.66);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* while the lights are off a tap anywhere brings them back (the finished hat is a disabled button,
+   which would swallow the tap) */
+.p4b-layout.is-night .p4b-hat {
+  pointer-events: none;
+}
+
+/* The reveal only ever moves opacity: each of these sits on its own compositor layer with a fixed
+   filter, so the filter is drawn once, not on every frame (a slow tablet, or software rendering,
+   would otherwise crawl through the fade). */
+.p4b-night,
+.p4b-dim,
+.p4b-lit,
+.p4b-secret,
+.p4b-layout.is-night .p4b-side {
+  will-change: opacity;
+}
+
+/* the outer leaves lit from behind: paler, warmer, glowing round the rim */
+.p4b-lit img,
+.p4b-lit svg {
+  filter: brightness(1.38) saturate(0.8) drop-shadow(0 0 22px rgba(255, 206, 110, 0.85));
+}
+
+/* the painting between the leaves, seen through them against the light: dark shapes, softened */
+.p4b-secret img,
+.p4b-secret svg {
+  filter: brightness(0.12) contrast(1.3) blur(0.5px);
+  opacity: 0.9;
 }
 
 /* ---------- finished ---------- */
@@ -543,6 +637,20 @@
   margin: 0;
   font-size: clamp(1.7rem, 3vw, 2.3rem);
   color: var(--forest-900);
+}
+
+/* "See the secret": a small paper button under the badge's name (still a full touch target) */
+.p4b-done__secret.btn {
+  min-height: 64px;
+  padding: 0 20px;
+  font-size: 1.05rem;
+  gap: 8px;
+}
+
+.p4b-done__secret .p4-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--wood-700);
 }
 
 .p4b-done__actions {
@@ -633,21 +741,39 @@
 
   /* the finished sheet shares the screen with the bench: a small medal and the two buttons one
      above the other (each still 64 px tall), so nothing runs under the caption */
+  /* the medal beside its name and "See the secret", the two buttons under them */
   .p4b-done {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-areas: 'medal name' 'medal secret' 'actions actions';
+    align-content: center;
+    justify-content: center;
     padding: 10px 12px;
-    gap: 6px;
+    gap: 6px 14px;
   }
 
   .p4b-done__medal {
+    grid-area: medal;
+    align-self: center;
     width: 72px;
     height: 88px;
   }
 
   .p4b-done__name {
+    grid-area: name;
+    align-self: end;
     font-size: 1.35rem;
+    text-align: left;
+  }
+
+  .p4b-done__secret.btn {
+    grid-area: secret;
+    justify-self: start;
+    padding: 0 16px;
   }
 
   .p4b-done__actions {
+    grid-area: actions;
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
