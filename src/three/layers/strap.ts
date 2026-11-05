@@ -241,13 +241,18 @@ export class StrapLayer extends LayerBase {
     const mat = this.rig.strap.material;
     const st = { v: 0 };
     const base = mat.emissive.clone();
-    this.anim.to(st, {
+    const pulse: gsap.core.Tween = this.anim.to(st, {
       v: 1,
       duration: 0.6,
       yoyo: true,
       repeat: times < 0 ? -1 : times * 2 - 1,
       ease: 'sine.inOut',
       onUpdate: () => {
+        // a slow device: the endless pulse stops (the pinned "Show me" still marks the strap)
+        if (times < 0 && !this.rig.decor) {
+          pulse.kill();
+          return;
+        }
         h.intensity = st.v * 1.1;
         mat.emissive.copy(base).lerp(mat.color, st.v * 0.45);
       },

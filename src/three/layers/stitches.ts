@@ -259,7 +259,7 @@ export class StitchesLayer extends LayerBase {
     if (!r) return;
     const st = { t: 0 };
     const n = r.count;
-    this.anim.to(st, {
+    const run: gsap.core.Tween = this.anim.to(st, {
       t: 1,
       duration: 2.4,
       repeat: -1,
@@ -267,6 +267,16 @@ export class StitchesLayer extends LayerBase {
       ease: 'none',
       onUpdate: () => {
         if (this.completed || this.celebrating) return;
+        // a slow device: the shimmer stops and the row goes back to plain thread
+        if (!this.rig.decor) {
+          run.kill();
+          for (let i = 0; i < n; i++) if (!this.covered[i]) {
+            r.glow.set(i, 0);
+            r.dots.values[i] = 0;
+          }
+          r.dots.flush();
+          return;
+        }
         const head = st.t * n * 1.5 - n * 0.25;
         for (let i = 0; i < n; i++) {
           if (this.covered[i]) continue;
@@ -407,7 +417,7 @@ export class StitchesLayer extends LayerBase {
     if (motion.reduced || !this.rig.decor) return;
     const s = this.rig.stitches;
     this.onFrame(() => {
-      if (s.float.f < 0.5) {
+      if (s.float.f < 0.5 || !this.rig.decor) {
         s.float.bob = 0;
         return false;
       }

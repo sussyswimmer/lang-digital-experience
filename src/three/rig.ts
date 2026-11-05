@@ -369,7 +369,8 @@ export class StrapRig {
     const g = TMP.set(0, -4.9, 0).applyQuaternion(Q);
     const sub = 1 / 120;
     let steps = Math.max(1, Math.round(dt / sub));
-    steps = Math.min(steps, 6);
+    // up to a quarter second of swing per frame, in stable 1/120 s steps (a slow device keeps time)
+    steps = Math.min(steps, 30);
     for (let k = 0; k < steps; k++) {
       let wind = 0;
       if (this.gustT >= 0) {
@@ -449,7 +450,11 @@ export class Rig {
    * tests, where software WebGL can't keep up with endless redraws (layers also skip them under
    * reduced motion).
    */
-  readonly decor = !new URLSearchParams(location.search).has('test');
+  private readonly decorAllowed = !new URLSearchParams(location.search).has('test');
+  /** decorative loops are wanted (not in tests, and not once the stage has found the device slow) */
+  get decor(): boolean {
+    return this.decorAllowed && !this.stage.lowPower;
+  }
   private gesture: GestureTarget | null = null;
   private offFrame: () => void;
   private offAfter: () => void;

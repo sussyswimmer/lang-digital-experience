@@ -20,9 +20,12 @@ import { celebrateAndShrink, converge } from './transitions';
 import { createFallbackViewer } from './fallback2d';
 
 export async function createViewer(host: HTMLElement): Promise<HatViewer> {
-  // Automated tests render on a CPU (software WebGL), where a frame can take over half a second;
-  // GSAP's lag smoothing would then slow every tween to a crawl. Keep wall-clock time in tests.
+  // A slow device (or software WebGL in tests) can take over half a second a frame; GSAP's default
+  // lag smoothing then counts each one as 33 ms and every tween crawls (a 1 s turn takes 30 s).
+  // Keep wall-clock time: animations run choppy but on time. Only a real stall (a hidden tab coming
+  // back) is capped, to half a second. Tests keep pure wall-clock time.
   if (new URLSearchParams(location.search).has('test')) gsap.ticker.lagSmoothing(0);
+  else gsap.ticker.lagSmoothing(1500, 500);
   let stage: Stage;
   try {
     if (!webglAvailable()) throw new Error('no WebGL');

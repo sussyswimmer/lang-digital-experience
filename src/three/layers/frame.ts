@@ -61,7 +61,20 @@ export class FrameLayer extends LayerBase {
   async run(): Promise<void> {
     this.useGesture({ tap: (p) => this.tap(p), cursor: (p) => (this.hitHat(p) ? 'pointer' : null) });
     if (!motion.reduced) {
-      this.anim.to(this.halo, { intensity: 0.9, duration: 0.8, yoyo: true, repeat: this.rig.decor ? -1 : 2, ease: 'sine.inOut' });
+      const glow: gsap.core.Tween = this.anim.to(this.halo, {
+        intensity: 0.9,
+        duration: 0.8,
+        yoyo: true,
+        repeat: this.rig.decor ? -1 : 2,
+        ease: 'sine.inOut',
+        // a slow device: the endless glow stops, steady, so the hat isn't redrawn for nothing
+        onUpdate: () => {
+          if (glow.repeat() < 0 && !this.rig.decor) {
+            glow.kill();
+            this.halo.intensity = 0.6;
+          }
+        },
+      });
     } else {
       this.halo.intensity = 0.6;
     }

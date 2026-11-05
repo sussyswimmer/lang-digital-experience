@@ -15,6 +15,12 @@ import { gsap } from 'gsap';
 import { Anim } from './anim';
 import { defaultFrame, fitDistance, viewOffset, type Extent, type Rect } from './framing';
 
+/** slower than this between frames (ms, the middle of the last dozen) counts as a slow device */
+const SLOW_FRAME_MS = 50;
+const SPEED_WINDOW = 12;
+/** the pixel-ratio cap at each quality step down */
+const QUALITY_DPR = [1, 0.75, 0.6];
+
 export const HAT_CENTRE_Y = 0.095;
 
 /** returns true while it still needs frames (inertia, rope, glow fades) */
@@ -62,6 +68,16 @@ export class Stage {
   private afterRender = new Set<() => void>();
   /** device-pixel-ratio cap (a full-window stage may want less than the app's 2×) */
   maxDpr = 2;
+  /**
+   * Slow-device fallback. 0 = full quality. Each step down draws the hat at a lower resolution; the
+   * first also tells the rig to stop its endless decorative loops (onLowPower), so a slow device
+   * stops redrawing when nothing is moving. It only ever steps down, never back up.
+   */
+  quality = 0;
+  private lowPowerFns = new Set<() => void>();
+  private frameGaps: number[] = [];
+  private lastRender = 0;
+  private watchFrom = 0;
 
   constructor(readonly host: HTMLElement) {
     this.canvas = document.createElement('canvas');
@@ -155,10 +171,22 @@ export class Stage {
     return () => this.afterRender.delete(fn);
   }
 
+  get lowPower(): boolean {
+    return this.quality > 0;
+  }
+
+  /** called once, the first time the stage finds the device too slow for full quality */
+  onLowPower(fn: () => void): () => void {
+    this.lowPowerFns.add(fn);
+    return () => this.lowPowerFns.delete(fn);
+  }
+
   start(): void {
     if (this.running) return;
     this.running = true;
     this.lastTime = performance.now();
+    // the first frames compile shaders and upload textures: judge the device after them
+    this.watchFrom = this.lastTime + 1500;
     gsap.ticker.add(this.tick);
     this.invalidate();
   }
@@ -258,15 +286,44 @@ export class Stage {
 
   private tick = (): void => {
     const now = performance.now();
-    const dt = Math.min((now - this.lastTime) / 1000, 1 / 20);
+    // a slow device's long frames still move effects on in real time (sparkles, glow fades, the
+    // strap), up to a quarter second a frame; physics subdivides its own steps
+    const dt = Math.min((now - this.lastTime) / 1000, 0.25);
     this.lastTime = now;
-    if (!this.needs) return;
+    if (!this.needs) {
+      // idle: a pause between drawings is not a slow frame
+      this.lastRender = 0;
+      return;
+    }
     this.needs = false;
     let keep = false;
     for (const fn of this.frameFns) if (fn(dt, now / 1000)) keep = true;
     this.render();
     if (keep) this.needs = true;
+    this.watchSpeed(now);
   };
+
+  /**
+   * While the hat is drawn frame after frame, keep the last dozen gaps between drawings. If the
+   * middle one says under 20 frames a second, step the quality down and look again.
+   */
+  private watchSpeed(now: number): void {
+    if (this.lastRender) {
+      this.frameGaps.push(now - this.lastRender);
+      if (this.frameGaps.length > SPEED_WINDOW) this.frameGaps.shift();
+    }
+    this.lastRender = now;
+    if (now < this.watchFrom || this.frameGaps.length < SPEED_WINDOW || this.quality >= QUALITY_DPR.length) return;
+    const middle = [...this.frameGaps].sort((a, b) => a - b)[SPEED_WINDOW >> 1];
+    if (middle <= SLOW_FRAME_MS) return;
+    this.quality++;
+    this.maxDpr = Math.min(this.maxDpr, QUALITY_DPR[this.quality - 1]);
+    this.frameGaps = [];
+    this.watchFrom = now + 600;
+    if (import.meta.env.DEV) console.info(`[hat] slow frames (${Math.round(middle)} ms): quality step ${this.quality}, ${this.maxDpr}× pixels`);
+    this.resize();
+    if (this.quality === 1) for (const fn of this.lowPowerFns) fn();
+  }
 
   private onWindowResize = (): void => this.resize();
 
