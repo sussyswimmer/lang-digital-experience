@@ -41,6 +41,9 @@ const CHAPTER_PICS: Record<ChapterId, string> = { protection: P4_PICTURES.sun, h
 /** the full card-by-card introduction plays once per visit; later returns just say "Choose an activity!" */
 let introduced = false;
 
+/** below this a square print reads as "too small" (demo review), so the mounts go wide instead */
+const MIN_SQUARE = 260;
+
 class Hub implements Screen {
   private ctx!: AppContext;
   private root!: HTMLElement;
@@ -145,6 +148,10 @@ class Hub implements Screen {
       const inner = main.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
       const room = inner - lower.offsetHeight - (parseFloat(cs.rowGap) || 0);
       cards.style.setProperty('--p4h-fit', `${Math.max(0, Math.floor(room))}px`);
+      // the reviewer's fallback: when a square print would drop under 260 px, keep the wide mounts
+      // and crop from the bottom (heads and hats stay in view) rather than scroll or shrink
+      const label = parseFloat(getComputedStyle(cards).getPropertyValue('--p4h-label-h')) || 84;
+      cards.classList.toggle('p4h-cards--wide', room - 24 - label < MIN_SQUARE);
     };
     const ro = new ResizeObserver(fit);
     ro.observe(main);

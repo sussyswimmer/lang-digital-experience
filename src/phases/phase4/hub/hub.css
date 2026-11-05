@@ -30,10 +30,9 @@
 }
 
 /* The pictures are square prints, so their mounts are square too: as wide as the column allows,
-   or as tall as the room above the lower row allows (HubScreen measures it into --p4h-fit), but
-   never smaller than 260 px. When that floor wins (a 1024 × 768 tablet) the hub scrolls a little,
-   rather than shrink the prints. The sheet hugs its mount, centred in the column, so a print is
-   never cropped and never letterboxed. */
+   or as tall as the room above the lower row allows (HubScreen measures it into --p4h-fit). The
+   sheet hugs its mount, centred in the column, so a print is never cropped and never letterboxed.
+   Where a square would fall under 260 px, HubScreen switches to wide mounts (.p4h-cards--wide). */
 @media (min-width: 901px) and (min-height: 641px) {
   .p4h-main {
     grid-template-rows: auto auto;
@@ -69,6 +68,18 @@
 
   .p4h-card__label {
     min-height: var(--p4h-label-h);
+  }
+
+  /* too short for square prints at a good size (a 1024 × 768 tablet): the reviewer's fallback, wide
+     mounts the height of the room, the print cropped from the bottom so heads and hats stay; no scroll */
+  .p4h-cards--wide .p4h-card {
+    --p4h-side: max(calc(var(--p4h-fit, 100vh) - 24px - var(--p4h-label-h)), 180px);
+    justify-self: stretch;
+    width: auto;
+  }
+
+  .p4h-cards--wide .p4h-card__art {
+    width: 100%;
   }
 }
 
