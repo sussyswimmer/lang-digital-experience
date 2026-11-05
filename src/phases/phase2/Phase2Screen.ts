@@ -398,7 +398,8 @@ export default function Phase2Screen(): Screen {
     showSteps(-1);
     panel.el.classList.add('is-open');
     buildExtras();
-    panel.doneBtn.classList.add('pulse');
+    // an endless breathing loop: off under reduced motion and in automated tests (like the hat's decor)
+    if (!motion.reduced && !ctx.flags.test) panel.doneBtn.classList.add('pulse');
     // let the card lay out, then slide the hat into the free space
     requestAnimationFrame(() => placeHat(0.9));
     ctx.idle.watch({ stepId: `p2.${layer}.next`, gesture: 'tap', target: () => panel.doneBtn.getBoundingClientRect() });
