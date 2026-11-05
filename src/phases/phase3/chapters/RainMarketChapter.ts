@@ -174,9 +174,15 @@ export class RainMarketChapter implements Chapter {
     this.raf = 0;
     const sim = this.sim;
     if (!sim) return;
-    const dt = Math.min(0.05, (now - this.last) / 1000);
+    // the shower lasts its seconds of real time on a slow device too: catch up in small, stable
+    // steps (at most half a second per frame, so a long stall doesn't fast-forward the whole shower)
+    let rest = Math.min(0.5, Math.max(0, (now - this.last) / 1000));
     this.last = now;
-    sim.step(dt);
+    do {
+      const dt = Math.min(0.05, rest);
+      sim.step(dt);
+      rest -= dt;
+    } while (rest > 1e-4);
     this.draw(sim);
     if (sim.busy || sim.wetness > 0.01) {
       this.raf = requestAnimationFrame((t) => this.frame(t));
