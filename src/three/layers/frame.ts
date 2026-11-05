@@ -1,8 +1,8 @@
 /**
  * Layer 3 · Bamboo rings (Vành nón): the inner shells turn see-through and the skeleton glows;
- * a tap sends the shells away and the 16 rings count off from the wide brim (1) to the tip (16),
- * stretching apart so they're easy to count, then settle. Joints light up in turn (staggered),
- * and callouts show "≈ 2 cm between rings" and "40–50 cm across".
+ * a tap sends the shells away and the whole frame stretches open and closes again as one piece
+ * (no counting ring by ring), then a single "16 rings" stamp is pressed. The joints (staggered) and
+ * the callouts ("≈ 2 cm between rings", "40–50 cm across") come with the narration that names them.
  * The rings end at home spacing on purpose (the 2 cm callout must be true); L4's "frame flies back"
  * is a stretch-and-close of its own (StrapLayer.assemble). This supersedes integration correction 2.
  */
@@ -14,7 +14,6 @@ import { pad } from '../hat';
 import type { Rig } from '../rig';
 import type { PointerSample } from '../rotator';
 import { DEFAULT_FRAMING, HAT_CENTRE_Y } from '../scene';
-import type { Label } from '../labels';
 import { LayerBase } from './base';
 
 const GOLD = 0xffc24a;
@@ -28,8 +27,8 @@ export class FrameLayer extends LayerBase {
   private proxy: THREE.Mesh;
   private shown = 0;
   private busy = false;
-  private numerals: Label[] = [];
   private spiral: THREE.Mesh | null = null;
+  private jointLabel: ReturnType<LayerBase['label']> | null = null;
   private dimLine: THREE.Mesh | null = null;
 
   constructor(rig: Rig, cb: LayerCallbacks, animate: boolean) {
@@ -149,41 +148,33 @@ export class FrameLayer extends LayerBase {
     // nearly side-on, so the rings stack up visibly as they spread
     rig.pose({ pitch: 0.16 }, 0.8, this.anim);
     rig.frameTo({ cy: HAT_CENTRE_Y * SPREAD * 0.98, halfH: DEFAULT_FRAMING.halfH * 1.55, halfW: DEFAULT_FRAMING.halfW * 1.05 }, 1.2);
-    const step = reduced ? 0.06 : 0.16;
+    // the frame moves as one: every ring opens out together in one smooth stretch, glowing together
     const ribs = hat.has('ribs') ? hat.meshes('ribs') : [];
     const fade = { o: 1 };
     this.anim.to(fade, { o: 0, duration: 0.6, onUpdate: () => ribs.forEach((m) => (m.visible = fade.o > 0.5)) });
-    for (let i = 0; i < this.rings.length; i++) {
-      const ring = this.rings[i];
-      const home = hat.home(ring);
-      const delay = 0.3 + i * step;
-      this.anim.to(ring.position, { y: home.position.y * SPREAD, duration: 0.5, delay, ease: 'back.out(1.6)' });
-      this.anim.fromTo(ring.scale, { x: 0.9, y: 0.9, z: 0.9 }, { x: 1, y: 1, z: 1, duration: 0.5, delay, ease: 'back.out(3)' });
-      this.flash(hat.meshes(ring), GOLD, delay, 0.7);
-      this.anim.call(delay, () => {
-        this.shown = i + 1;
-        this.emit('ring', this.shown);
-        this.sfx('ringSnap', i);
-        this.addNumeral(i);
-      });
-    }
-    const countEnd = 0.3 + this.rings.length * step + 0.5;
-    await this.wait(countEnd + (reduced ? 0.3 : 1.4));
+    const homes = this.rings.map((r) => hat.home(r).position.y);
+    const open = { t: 0 };
+    const spread = () => this.rings.forEach((r, i) => (r.position.y = homes[i] * (1 + (SPREAD - 1) * open.t)));
+    const ringMeshes = this.rings.flatMap((r) => hat.meshes(r));
+    this.anim.call(0.3, () => this.sfx('ringSnap', 8));
+    this.anim.to(open, { t: 1, duration: reduced ? 0.3 : 1.3, delay: 0.3, ease: 'power2.inOut', onUpdate: spread });
+    this.flash(ringMeshes, GOLD, 0.3, reduced ? 0.6 : 1.6);
+    await this.wait(0.3 + (reduced ? 0.6 : 2.1));
     if (this.disposed) return;
-    // settle back together; ribs return
-    for (const r of this.rings) this.anim.to(r.position, { y: hat.home(r).position.y, duration: 0.9, ease: 'power2.inOut' });
+    // and closes up again, all together; the ribs come back
+    this.anim.to(open, { t: 0, duration: reduced ? 0.3 : 1.0, ease: 'power2.inOut', onUpdate: spread });
     this.anim.call(0.5, () => ribs.forEach((m) => (m.visible = true)));
     rig.defaultFraming(1.0);
     rig.pose({ pitch: 0.28 }, 1.0, this.anim);
     await this.wait(1.1);
     if (this.disposed) return;
     rig.rot.locked = false;
-    for (const l of this.numerals) this.unlabel(l);
-    this.numerals = [];
+    // one stamp: "16 rings"
+    this.shown = this.rings.length;
     this.sfx('snap');
-    await this.lightJoints();
+    this.emit('ring', this.shown);
+    await this.wait(reduced ? 0.3 : 0.9);
     if (this.disposed) return;
-    this.showCallouts();
     this.busy = false;
     this.useGesture({ tap: (p) => this.tapRing(p) });
     this.complete();
@@ -206,39 +197,7 @@ export class FrameLayer extends LayerBase {
     this.sfx('ringSnap', i);
     this.flash(this.rig.hat.meshes(ring), GOLD, 0, 0.6);
     this.anim.fromTo(ring.scale, { x: 1.06, y: 1.06, z: 1.06 }, { x: 1, y: 1, z: 1, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
-    const l = this.addNumeral(i);
-    this.anim.call(1.6, () => this.unlabel(l));
     return true;
-  }
-
-  private addNumeral(i: number): Label {
-    const ring = this.rings[i];
-    const meta = this.rig.hat.meta.rings[i];
-    const r = meta?.r ?? 0.2;
-    const a = new THREE.Vector3();
-    const n = new THREE.Vector3();
-    const l = this.label({
-      text: String(i + 1),
-      kind: 'num',
-      place: 'center',
-      // on the ring's outline as the child sees it: odd numbers on the left, even on the right,
-      // so 16 badges climb the two slopes of the cone without piling up
-      anchor: () => {
-        const cam = this.rig.stage.camera.position;
-        const toCam = ring.worldToLocal(cam.clone());
-        toCam.y = 0;
-        if (toCam.lengthSq() < 1e-8) toCam.set(0, 0, 1);
-        toCam.normalize();
-        const side = i % 2 === 0 ? 1 : -1;
-        const out = new THREE.Vector3(-toCam.z * side, 0, toCam.x * side).multiplyScalar(0.94).addScaledVector(toCam, 0.34);
-        out.setLength(r + 0.02);
-        return ring.localToWorld(a.copy(out));
-      },
-      facing: () => n.set(0, 0, 1),
-      onTap: () => this.sfx('ringSnap', i),
-    });
-    this.numerals.push(l);
-    return l;
   }
 
   /** joints glow one after another along a golden spiral: they never line up */
@@ -259,8 +218,10 @@ export class FrameLayer extends LayerBase {
     const total = geo?.index ? geo.index.count : 0;
     const st = { t: 0 };
     const step = motion.reduced ? 0.04 : 0.11;
+    if (this.jointLabel) this.unlabel(this.jointLabel);
     this.joints.forEach((j, i) => this.flash(hat.meshes(j), 0xffe7a3, i * step, 1.2, 1, 3));
     const label = this.label({ id: 'p2.label.joints', tone: 'gold', place: 'right', anchor: () => this.rig.world(pts[Math.floor(pts.length / 2)] ?? new THREE.Vector3()) });
+    this.jointLabel = label;
     const tw = this.anim.to(st, {
       t: 1,
       duration: this.joints.length * step + 0.3,
@@ -268,11 +229,19 @@ export class FrameLayer extends LayerBase {
       onUpdate: () => geo?.setDrawRange(0, Math.floor((total * st.t) / 3) * 3),
     });
     await this.anim.done(tw);
-    this.anim.call(5, () => this.unlabel(label));
+    // one label at a time: it goes when the measurements come, or after a while
+    this.anim.call(5, () => {
+      this.unlabel(label);
+      if (this.jointLabel === label) this.jointLabel = null;
+    });
   }
 
   private showCallouts(): void {
     if (this.dimLine) return;
+    if (this.jointLabel) {
+      this.unlabel(this.jointLabel);
+      this.jointLabel = null;
+    }
     const hat = this.rig.hat;
     const rings = hat.meta.rings;
     const r1 = rings[0]?.r ?? 0.24;

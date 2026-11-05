@@ -1,7 +1,7 @@
 /**
  * Where the polaroids sit (pure, unit-tested). Slots are tuned by eye for tablet landscape and
- * phone portrait: a loose, hand-scattered look, with the bottom centre kept free for
- * "Let's explore", and every scene tile's centre left uncovered so it is easy to tap.
+ * phone portrait: a loose, hand-scattered look, with every scene tile's centre left uncovered so it
+ * is easy to tap. The choices ("Hear the story", "Let's explore") sit in their own band below.
  */
 export interface Slot {
   /** centre, as a fraction of the collage area */
@@ -97,9 +97,4 @@ export function spiralPath(from: { x: number; y: number }, to: { x: number; y: n
   pts[0] = { ...from };
   pts[steps] = { ...to };
   return pts;
-}
-
-/** "Let's explore" shows once the intro narration has ended or two scenes have been opened. */
-export function exploreReady(introDone: boolean, seenCount: number, alreadyDone: boolean): boolean {
-  return introDone || seenCount >= 2 || alreadyDone;
 }

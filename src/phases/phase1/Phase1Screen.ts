@@ -1,9 +1,11 @@
 /**
  * Phase 1: A Hat Full of Stories.
- * Photos of the nón lá in everyday life, taped to the hat-maker's table. Tapping a scene expands it
- * to fill the screen (GSAP Flip) with its ambient sound and a narrated caption. "Let's explore" appears
- * after the intro narration (or two scenes), and spirals the collage into the centre, handing
- * the photos to the 3D hat (viewer.convergeFrom) before moving on to Phase 2.
+ * Photos of the nón lá in everyday life, taped to the hat-maker's table. Nothing here is compulsory:
+ * under the photos, from the moment the screen opens, sit "Hear the story" (the intro narration, only
+ * if the child asks for it) and "Let's explore" (always there; it stops any voice and moves on).
+ * Tapping a photo is optional too: it expands to fill the screen (GSAP Flip) with its ambient sound
+ * and a narrated caption. No ticks, so the photos never read as a checklist. "Let's explore" spirals
+ * the collage into the centre, handing the photos to the 3D hat (viewer.convergeFrom) before Phase 2.
  */
 import './phase1.css';
 import { gsap } from 'gsap';
@@ -20,7 +22,7 @@ import { seeTile } from '../../app/flow';
 import type { AppContext, Screen } from '../../app/context';
 import type { HatViewer, ScreenRect } from '../../three/HatViewer';
 import { DECOS, TILES, VIDEO_READY, type TileSpec } from './tiles';
-import { exploreReady, placeTiles, spiralPath } from './layout';
+import { placeTiles, spiralPath } from './layout';
 import { hatArt, P1_ICONS } from './art';
 import { speak } from './speak';
 import { within } from './within';
@@ -70,19 +72,19 @@ class Phase1 implements Screen {
   private root!: HTMLElement;
   private collage!: HTMLDivElement;
   private explore!: HTMLButtonElement;
-  /** the paper the button is sewn onto: it is what appears, breathes and flies, the button stays level inside */
+  /** the paper both choices are sewn onto: it is what appears and flies, the buttons stay level inside */
   private exploreSheet!: HTMLDivElement;
+  private hear!: HTMLButtonElement;
   private views: TileView[] = [];
   private g = gsap.context(() => {});
   private alive = false;
   private busy = false;
   private converging = false;
   private open: OpenScene | null = null;
-  private introDone = false;
-  private introAt = 0;
-  private introRunning = false;
-  private exploreShown = false;
-  private exploreAnnounced = false;
+  /** the optional story: true while "Hear the story" is playing */
+  private storyPlaying = false;
+  /** the child has done something (heard the story or opened a photo): only then does "Let's explore" breathe */
+  private engaged = false;
   private cleanups: (() => void)[] = [];
 
   mount(root: HTMLElement, ctx: AppContext): void {
@@ -97,7 +99,13 @@ class Phase1 implements Screen {
       svg(P1_ICONS.explore),
       i18n.bind(el('span'), 'p1.explore'),
     );
-    this.exploreSheet = el('div.p1-explore-sheet.sheet.sheet--tilt-r.sheet--tape', { hidden: true }, this.explore);
+    this.hear = el(
+      'button.btn.btn--ghost.p1-hear',
+      { type: 'button', 'data-touch': '', 'data-test': 'hear', 'aria-pressed': 'false', onclick: () => this.toggleStory() },
+      el('span.p1-hear__icon', {}, svg(ICONS.speaker, 'p1-hear__speaker'), svg(P1_ICONS.stop, 'p1-hear__stop')),
+      i18n.bind(el('span'), 'p1.hear'),
+    );
+    this.exploreSheet = el('div.p1-explore-sheet.sheet.sheet--tilt-r.sheet--tape', {}, this.hear, this.explore);
     root.append(TopBar(ctx, { titleId: 'p1.title' }), this.collage, el('div.p1-explore-wrap', {}, this.exploreSheet));
 
     for (const spec of [...DECOS, ...TILES]) this.views.push(this.buildTile(spec));
@@ -107,7 +115,6 @@ class Phase1 implements Screen {
 
     const ro = new ResizeObserver(() => this.layout());
     ro.observe(this.collage);
-    this.watchCaption();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && this.open) void this.closeScene();
     };
@@ -120,14 +127,13 @@ class Phase1 implements Screen {
       this.cleanups.push(() => delete window.__nonla?.p1);
     }
 
-    // fetch three.js and the hat model while the child looks at the photos (network only: the
-    // WebGL viewer itself is created once "Let's explore" shows, when nothing else is animating)
+    // fetch three.js and the hat model while the child looks at the photos (network only), then
+    // warm the WebGL viewer once the photos have settled and nothing else is animating
     const prefetch = window.setTimeout(() => this.alive && prefetch3d(), 1500);
-    this.cleanups.push(() => window.clearTimeout(prefetch));
+    const warm = window.setTimeout(() => this.alive && !this.converging && void this.ctx.viewer().catch(() => {}), 2600);
+    this.cleanups.push(() => window.clearTimeout(prefetch), () => window.clearTimeout(warm));
 
-    if (exploreReady(false, this.seenCount(), ctx.progress.get().p1.done)) this.showExplore(false);
     this.hint();
-    void this.runIntro(0);
   }
 
   unmount(): void {
@@ -146,12 +152,11 @@ class Phase1 implements Screen {
     const media = this.media(spec);
     const photo = el('div.p1-photo', {}, media);
     // the photo's mount: a sheet of paper (paper.css .sheet) with the scene's icon stamped in forest
-    // ink under the picture, and a red "seen" stamp once the scene has been opened
+    // ink under the picture. No "seen" tick: the photos are an invitation, not a checklist.
     const strip = el(
       'span.p1-tile__strip',
       {},
       spec.icon ? el('span.p1-tile__icon.stamp.stamp--forest', {}, svg(spec.icon, 'tile-icon')) : null,
-      deco ? null : el('span.p1-tile__seen.stamp', {}, svg(P1_ICONS.check, 'seen-icon')),
     );
     const tile: HTMLElement = deco
       ? el('div.p1-tile.p1-tile--deco.sheet', { 'aria-hidden': 'true' }, el('span.p1-tile__tape'), photo, strip)
@@ -166,7 +171,6 @@ class Phase1 implements Screen {
     const view: TileView = { spec, slot, tile, photo, media };
     if (deco) tile.addEventListener('click', () => this.wiggle(view));
     else tile.addEventListener('click', () => void this.openScene(view));
-    if (!deco && this.ctx.progress.get().p1.seenTiles.includes(spec.id)) tile.classList.add('is-seen');
     return view;
   }
 
@@ -212,26 +216,6 @@ class Phase1 implements Screen {
     }
   }
 
-  /**
-   * "Let's explore" sits above the shared caption bar, whose height depends on the text and the
-   * language (three lines for the intro on a wide screen). The screen remembers the bar's tallest
-   * size in --p1-caption-h, so the sheet never slides under it, and only ever moves up, never down
-   * while the child is reaching for it.
-   */
-  private watchCaption(): void {
-    const caption = document.querySelector<HTMLElement>('#captions .caption');
-    if (!caption) return;
-    let tallest = 0;
-    const ro = new ResizeObserver(() => {
-      const h = Math.ceil(caption.getBoundingClientRect().height);
-      if (h <= tallest) return;
-      tallest = h;
-      this.root.style.setProperty('--p1-caption-h', `${h}px`);
-    });
-    ro.observe(caption);
-    this.cleanups.push(() => ro.disconnect());
-  }
-
   /** the photos settle onto the table one after another (the paper.css .settle entrance, in GSAP) */
   private enter(): void {
     this.g.add(() => {
@@ -246,19 +230,29 @@ class Phase1 implements Screen {
 
   // ---------- narration ----------
 
-  private async runIntro(from: number): Promise<void> {
-    if (this.introRunning || this.introDone) return;
-    this.introRunning = true;
-    const r = await speak(this.ctx.narration, INTRO.slice(from), () => this.alive && !this.converging, (_id, i) => this.cue(from + i));
-    this.introRunning = false;
-    if (!this.alive) return;
-    if (r.result === 'ended') {
-      this.introDone = true;
-      if (this.exploreShown) this.announceExplore();
-      else this.maybeShowExplore();
-    } else {
-      this.introAt = from + r.index;
+  /** "Hear the story": the intro, only when the child asks; a second tap stops it */
+  private toggleStory(): void {
+    if (this.converging || this.open) return;
+    if (this.storyPlaying) {
+      this.ctx.narration.stop();
+      return;
     }
+    this.ctx.audio.sfx.play('tap');
+    void this.playStory();
+  }
+
+  private async playStory(): Promise<void> {
+    this.setStory(true);
+    await speak(this.ctx.narration, INTRO, () => this.alive && !this.converging && this.storyPlaying, (_id, i) => this.cue(i));
+    if (!this.alive) return;
+    this.setStory(false);
+    this.engage();
+  }
+
+  private setStory(on: boolean): void {
+    this.storyPlaying = on;
+    this.hear.setAttribute('aria-pressed', String(on));
+    this.hear.classList.toggle('is-playing', on);
   }
 
   /** visual cue for each intro line: "a busy market, a green rice field, on your way to school" */
@@ -315,9 +309,9 @@ class Phase1 implements Screen {
     this.wireOverlay(open);
 
     if (spec.ambient) ctx.audio.playAmbient(spec.ambient);
+    // one voice at a time: the photo's line takes over from the story (speak() sees it and stops)
     void ctx.narration.say(`p1.tile.${spec.id}`);
     ctx.progress.set((p) => seeTile(p, spec.id));
-    view.tile.classList.add('is-seen');
 
     await this.g.add(() => {
       gsap.fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: motion.dur(0.5) });
@@ -396,9 +390,7 @@ class Phase1 implements Screen {
     if (!this.alive) return;
     for (const n of this.root.children) (n as HTMLElement).inert = false;
     view.tile.focus({ preventScroll: true });
-    // resume the intro first, so "Let's explore" isn't spoken only to be cut off by it
-    if (!this.introDone && !this.introRunning) void this.runIntro(this.introAt);
-    this.maybeShowExplore();
+    this.engage();
     this.hint();
   }
 
@@ -414,50 +406,11 @@ class Phase1 implements Screen {
 
   // ---------- "Let's explore" ----------
 
-  private seenCount(): number {
-    return this.ctx.progress.get().p1.seenTiles.filter((t) => TILES.some((x) => x.id === t)).length;
-  }
-
-  private maybeShowExplore(): void {
-    if (exploreReady(this.introDone, this.seenCount(), this.ctx.progress.get().p1.done)) this.showExplore(true);
-  }
-
-  private showExplore(announce: boolean): void {
-    if (this.exploreShown) return;
-    this.exploreShown = true;
-    const warm = window.setTimeout(() => this.alive && !this.converging && void this.ctx.viewer().catch(() => {}), 1200);
-    this.cleanups.push(() => window.clearTimeout(warm));
-    const b = this.explore;
-    const sheet = this.exploreSheet;
-    sheet.hidden = false;
-    this.g.add(() =>
-      gsap.fromTo(
-        sheet,
-        { scale: 0.2, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: motion.dur(0.6),
-          ease: 'back.out(1.8)',
-          onComplete: () => {
-            gsap.set(sheet, { clearProps: 'transform' });
-            if (!motion.reduced) b.classList.add('p1-pulse');
-          },
-        },
-      ),
-    );
-    if (announce) {
-      this.ctx.audio.sfx.play('invite');
-      this.announceExplore();
-    }
-    this.hint();
-  }
-
-  /** say "Let's explore" once, when nothing else is talking */
-  private announceExplore(): void {
-    if (this.exploreAnnounced || this.open || this.converging || this.ctx.narration.currentId()) return;
-    this.exploreAnnounced = true;
-    void this.ctx.narration.say('p1.explore');
+  /** after a first story or photo, "Let's explore" starts to breathe: an invitation, never a gate */
+  private engage(): void {
+    if (this.engaged || !this.alive || this.converging) return;
+    this.engaged = true;
+    if (!motion.reduced) this.explore.classList.add('p1-pulse');
   }
 
   private async converge(): Promise<void> {
@@ -466,6 +419,8 @@ class Phase1 implements Screen {
     this.converging = true;
     const ctx = this.ctx;
     ctx.idle.clear();
+    // "Let's explore" skips everything: the story, a photo's line, whatever is talking
+    this.setStory(false);
     ctx.narration.stop();
     ctx.audio.sfx.play('whoosh');
     this.explore.classList.remove('p1-pulse');
@@ -569,7 +524,8 @@ class Phase1 implements Screen {
       ctx.idle.watch({ stepId: 'p1.close', gesture: 'tap', target: () => close.getBoundingClientRect() });
       return;
     }
-    if (this.exploreShown) {
+    // before the child has done anything, the hand points at a photo; after that, at "Let's explore"
+    if (this.engaged) {
       ctx.idle.watch({ stepId: 'p1.explore', gesture: 'tap', target: () => this.explore.getBoundingClientRect() });
       return;
     }

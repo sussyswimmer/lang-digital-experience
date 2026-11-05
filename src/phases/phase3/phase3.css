@@ -1007,25 +1007,29 @@
   object-fit: cover;
 }
 
+/* while it rains the market turns greyer and darker (overcast), and clears more slowly after */
 .p3-rain__img {
-  transition: filter 1.2s ease;
+  transition: filter 2.4s ease;
 }
 
 .p3-rain.is-raining .p3-rain__img {
-  filter: brightness(0.86) saturate(0.9);
+  filter: brightness(0.8) saturate(0.7) contrast(0.95);
+  transition-duration: 1.4s;
 }
 
+/* the overcast sky: a cool grey wash, heavier at the top of the picture */
 .p3-rain__grade {
   position: absolute;
   inset: 0;
-  background: rgb(70, 92, 128);
+  background: linear-gradient(180deg, rgba(58, 70, 90, 0.42), rgba(70, 84, 104, 0.2) 70%, rgba(70, 84, 104, 0.14));
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1.2s ease;
+  transition: opacity 2.4s ease;
 }
 
 .p3-rain.is-raining .p3-rain__grade {
-  opacity: 0.2;
+  opacity: 1;
+  transition-duration: 1.4s;
 }
 
 .p3-rain__canvas {

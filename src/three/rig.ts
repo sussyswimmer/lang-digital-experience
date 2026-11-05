@@ -8,12 +8,13 @@ import type { LayerId } from '../app/types';
 import type { SfxId } from '../audio/sfx';
 import { Anim } from './anim';
 import { Hat, pad } from './hat';
-import { Labels } from './labels';
+import { Labels, type HatOutline } from './labels';
 import { Rotator, type GestureTarget } from './rotator';
 import { HAT_CENTRE_Y, Stage, type Framing, DEFAULT_FRAMING } from './scene';
 import { GlowDots, HaloShell, StitchGlow, clearGlow, setOpacity, setXray } from './fx';
-import { Rope, type V3 } from './rope';
+import { Rope, hangingLoop, polylineLength, type V3 } from './rope';
 import { nearestAngle } from './framing';
+import { motion } from '../a11y/motion';
 
 export type Sound = (id: SfxId, opts?: { step?: number }) => void;
 
@@ -29,6 +30,11 @@ export type StrapColour = keyof typeof STRAP_COLOURS;
 /** how far the floating stitches sit from the hat (world metres, along camera-right) */
 export const FLOAT_DIST = 0.54;
 const PEEL_ANGLE = THREE.MathUtils.degToRad(42);
+/**
+ * The chin strap is a short loop that would sit under a child's chin: its lowest point hangs about a
+ * third of the hat's height below the brim (the Blender rest curve hung almost a whole hat-height).
+ */
+export const STRAP_DROP = 1 / 3;
 
 // ------------------------------------------------------------------ stitches
 
@@ -260,6 +266,11 @@ export class StrapRig {
     this.material.roughness = 0.75; // woven cloth, not satin
     this.material.userData = { ...(orig.material as THREE.Material).userData };
     this.width = meta.width * 1.6;
+    // replace the long rest curve with the short loop; everything else (framing, hints, the tap
+    // proxy, restShape) reads meta.rest_points, so they all follow
+    const height = hat.meta.params?.height ?? 0.21;
+    meta.rest_points = hangingLoop(meta.anchor_L, meta.anchor_R, -height * STRAP_DROP, meta.rest_points.length);
+    meta.length = polylineLength(meta.rest_points);
     const pts = meta.rest_points;
     this.rope = new Rope(pts as V3[], { damping: 0.992, iterations: 24, bend: 0.5 });
     this.rope.pin(0, meta.anchor_L);
@@ -453,6 +464,8 @@ export class Rig {
     this.rot.yaw = DEFAULT_POSE.yaw;
     this.rot.pitch = DEFAULT_POSE.pitch;
     this.labels = new Labels(stage.overlay, stage);
+    // labels keep off the hat: they need its outline on screen
+    this.labels.outline = () => this.outline();
     this.stitches = new StitchRig(hat);
     this.panels = new PanelRig(hat);
     this.strap = new StrapRig(hat, hat.get('strap_rig'));
@@ -589,6 +602,86 @@ export class Rig {
   }
 
   /**
+   * Leaves come off, or go back on, the way a hat maker works: the hat turns once in the maker's
+   * hands and each leaf leaves (or is laid on) as it comes round to the front, so the leaves wrap
+   * around the cone instead of lifting straight up. Off: a leaf curls back and sweeps away against
+   * the turn, like tape unwinding from a roll. On: it sweeps in the same way and lands at the front.
+   * `turn: false` keeps the hat still (another tween owns the pose) but keeps the same order.
+   * Returns when (in seconds from now) the last leaf has settled.
+   */
+  turnLeaves(
+    mode: 'off' | 'on',
+    anim: Anim,
+    opts: { duration?: number; delay?: number; turn?: boolean; caps?: boolean; onLeaf?: (count: number) => void } = {},
+  ): number {
+    const h = this.hat;
+    const reduced = motion.reduced;
+    const D = reduced ? 0.6 : (opts.duration ?? 4);
+    const delay = opts.delay ?? 0;
+    const turn = (opts.turn ?? true) && !reduced;
+    const leafDur = reduced ? 0.25 : Math.min(0.8, D / 4);
+    const panels = this.panels.panels.filter((p) => (mode === 'off' ? p.state === 'on' : p.state !== 'on' || p.peel.value > 0));
+    const yaw0 = this.rot.yaw;
+    if (turn) {
+      this.rot.stop();
+      anim.to(this.rot, { yaw: yaw0 + Math.PI * 2, duration: D, delay, ease: 'none' });
+    }
+    const TWO_PI = Math.PI * 2;
+    // when each leaf comes round to the front (the spin turns hat-space azimuth a to a + yaw)
+    const order = panels
+      .map((p) => {
+        const a = Math.atan2(p.radial.x, p.radial.z);
+        const frac = (((-a - yaw0) % TWO_PI) + TWO_PI) % TWO_PI / TWO_PI;
+        return { p, a, frac };
+      })
+      .sort((x, y) => x.frac - y.frac);
+    let count = 0;
+    order.forEach(({ p, a, frac }, i) => {
+      const at = delay + (reduced ? i * 0.04 : turn ? frac * D : (i / Math.max(1, order.length)) * D);
+      // sweep against the turn (the surface at the front moves toward +X as the yaw grows)
+      const tangent = new THREE.Vector3(Math.cos(a), 0, -Math.sin(a));
+      const away = p.radial.clone().multiplyScalar(0.75).addScaledVector(tangent, -0.85).addScaledVector(UP, 0.12).normalize();
+      if (mode === 'off') {
+        p.state = 'away';
+        anim.to(p.peel, { value: 1, duration: leafDur * 0.6, delay: Math.max(0, at - leafDur * 0.2), ease: 'power2.out', onUpdate: () => this.panels.setPeel(p, p.peel.value, h) });
+        this.sendAway(p.hinge, anim, { dir: away, dist: 0.5, duration: leafDur, delay: at, spin: reduced ? 0 : 0.5 });
+        anim.call(at, () => opts.onLeaf?.(++count));
+      } else {
+        p.state = 'on';
+        const start = Math.max(0, at - leafDur);
+        this.bringBack(p.hinge, anim, { dir: away, dist: 0.5, duration: leafDur, delay: start });
+        anim.to(p.peel, { value: 0, duration: leafDur, delay: start + 0.01, ease: 'power2.out', onUpdate: () => this.panels.setPeel(p, p.peel.value, h) });
+        anim.call(at, () => opts.onLeaf?.(++count));
+      }
+    });
+    let end = delay + D + leafDur * 0.5;
+    if (opts.caps) {
+      for (const n of ['leaf_outer_cap', 'apex_cap']) {
+        if (!h.has(n)) continue;
+        const cap = h.get(n);
+        if (mode === 'off' && !cap.userData.away) this.sendAway(cap, anim, { dir: UP, dist: 0.35, delay: end, duration: 0.6 });
+        else if (mode === 'on' && (cap.userData.away || !cap.visible)) this.bringBack(cap, anim, { dist: 0.35, delay: end, duration: 0.6 });
+      }
+      end += 0.6;
+    }
+    return end;
+  }
+
+  /** after an interrupted leaf animation: every leaf exactly on or exactly off, as its state says */
+  settleLeaves(): void {
+    const h = this.hat;
+    for (const p of this.panels.panels) {
+      if (p.state === 'on') {
+        this.snapHome(p.hinge);
+        this.panels.setPeel(p, 0, h);
+      } else {
+        this.panels.setPeel(p, 1, h);
+        this.snapAway(p.hinge);
+      }
+    }
+  }
+
+  /**
    * Put parts into the state a layer starts from: stitches → whole hat; leaves → stitches gone;
    * frame → outer leaves gone too; strap → inner shells gone too (they all fly back in L4).
    */
@@ -655,28 +748,16 @@ export class Rig {
       }
     }
 
-    // outer leaves + cap: on for L1–L2, gone from L3
-    for (const p of this.panels.panels) {
-      if (level <= 1) {
-        if (p.state !== 'on' || p.peel.value !== 0) {
-          p.state = 'on';
-          if (animate) {
-            this.bringBack(p.hinge, anim, { dir: p.radial.clone().add(UP), dist: 0.5, duration: 0.6, delay: 0.03 * p.index });
-            anim.to(p.peel, { value: 0, duration: 0.6, delay: 0.03 * p.index, onUpdate: () => this.panels.setPeel(p, p.peel.value, h) });
-          } else {
-            this.snapHome(p.hinge);
-            this.panels.setPeel(p, 0, h);
-          }
-        }
-      } else if (p.state === 'on') {
-        p.state = 'away';
-        if (animate) {
-          anim.to(p.peel, { value: 1, duration: 0.4, delay: 0.04 * p.index, onUpdate: () => this.panels.setPeel(p, p.peel.value, h) });
-          this.sendAway(p.hinge, anim, { dir: p.radial.clone().add(UP), dist: 0.5, delay: 0.25 + 0.04 * p.index });
-        } else {
-          this.panels.setPeel(p, 1, h);
-          this.snapAway(p.hinge);
-        }
+    // outer leaves + cap: on for L1–L2, gone from L3. They wrap on and unwrap off around the cone
+    // as the hat turns (turnLeaves); for the strap layer the hat's pose belongs to the layer, so the
+    // leaves go in the same order without the turn.
+    const leavesOn = level <= 1;
+    const needs = this.panels.panels.some((p) => (leavesOn ? p.state !== 'on' || p.peel.value !== 0 : p.state === 'on'));
+    if (needs) {
+      if (animate) this.turnLeaves(leavesOn ? 'on' : 'off', anim, { duration: 2.4, turn: level <= 2 });
+      else {
+        for (const p of this.panels.panels) p.state = leavesOn ? 'on' : 'away';
+        this.settleLeaves();
       }
     }
     const left = right.clone().negate().add(UP);
@@ -726,6 +807,27 @@ export class Rig {
     Object.assign(this.stage.framing, { ...DEFAULT_FRAMING, cy: HAT_CENTRE_Y });
     this.applyTransforms();
     this.stage.invalidate();
+  }
+
+  /** the hat's silhouette on screen (viewport px): its tip and the brim's widest points */
+  outline(): HatOutline | null {
+    const st = this.stage;
+    const height = this.hat.meta.params?.height ?? 0.21;
+    const r = (this.hat.meta.params?.brim_d ?? 0.48) / 2 + 0.012;
+    const a = st.toScreen(this.world([0, height + 0.006, 0], TMP));
+    const apex = { x: a.x, y: a.y };
+    let left = { x: Infinity, y: 0 };
+    let right = { x: -Infinity, y: 0 };
+    let bottom = -Infinity;
+    for (let k = 0; k < 32; k++) {
+      const ang = (k / 32) * Math.PI * 2;
+      const p = st.toScreen(this.world([Math.cos(ang) * r, 0, Math.sin(ang) * r], TMP));
+      if (p.x < left.x) left = { x: p.x, y: p.y };
+      if (p.x > right.x) right = { x: p.x, y: p.y };
+      bottom = Math.max(bottom, p.y);
+    }
+    if (!Number.isFinite(left.x) || !Number.isFinite(right.x)) return null;
+    return { apex, left, right, bottom };
   }
 
   /** world anchor for a hat-space point */

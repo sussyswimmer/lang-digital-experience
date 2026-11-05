@@ -2,8 +2,16 @@
  * Phase 2 · Uncover the Secrets of the Nón Lá. One screen for all four layers (stitches → leaves →
  * frame → strap); moving between layers keeps the same 3D hat, so pieces carry over.
  *
- * Per layer: guided question (narrated, replayable) → the layer's interaction on the 3D hat →
- * the insight sheet (brief's words, chunk by chunk, each chunk can cue the hat) → Next.
+ * One thing at a time, always skippable. Each layer is four simple steps:
+ *   1. Listen: only the question and the hat are on screen while the narrator asks.
+ *   2. Tap: the child touches the hat. "Show me" is pinned on the hat itself, beside the spot to
+ *      touch, with a gently pulsing ring on that spot (a button in a corner teaches button-tapping).
+ *   3. Watch and listen: the hat moves while the narrator explains; no side panel, nothing to
+ *      scroll, the caption shows one sentence at a time (each chunk can cue the hat).
+ *   4. The card: once the narrator has finished, the card slides in with the layer's name, the
+ *      photo and "Next layer".
+ * "Skip ›" stays in the same corner through steps 1–3: it stops the voice and goes straight to the
+ * next layer (on the card, "Next layer" does the same job in the same place).
  */
 import './phase2.css';
 import { gsap } from 'gsap';
@@ -12,6 +20,7 @@ import { ICONS } from '../../ui/icons';
 import { TopBar } from '../../ui/TopBar';
 import { i18n } from '../../i18n/i18n';
 import { picture } from '../../assets/manifest';
+import { motion } from '../../a11y/motion';
 import { LAYERS, type LayerId } from '../../app/types';
 import type { AppContext, Screen } from '../../app/context';
 import type { Gesture } from '../../a11y/idleHint';
@@ -27,6 +36,10 @@ type StrapColour = 'purple' | 'peach' | 'green';
 
 const HINT_GESTURE: Record<LayerId, Gesture> = { stitches: 'trace', leaves: 'swipe', frame: 'tap', strap: 'tap' };
 const COLOURS: StrapColour[] = ['purple', 'peach', 'green'];
+/** the layering order a hat maker follows (layer 2's "watch" step plays it) */
+const STEPS = ['p2.step.inner', 'p2.step.painting', 'p2.step.outer', 'p2.step.coat'];
+/** if the question's voice never ends (muted, blocked), "Show me" still comes */
+const PIN_FALLBACK_MS = 6000;
 
 export default function Phase2Screen(): Screen {
   let ctx: AppContext;
@@ -41,18 +54,13 @@ export default function Phase2Screen(): Screen {
   let alive = true;
   let fallbackSaid = false;
   let cycleIds: number[] = [];
+  let pinRaf = 0;
   const timers = new Set<number>();
   const offs: (() => void)[] = [];
 
   // ---- DOM
   const dots = el('nav.p2-dots', { 'aria-label': 'Layers' });
   const questionText = el('span.p2-question__text');
-  const showMe = el(
-    'button.btn.btn--straw.p2-showme',
-    { type: 'button', 'data-touch': '', 'data-test': 'show-me', onclick: () => assist() },
-    svg(PANEL_ICONS.hand, 'icon'),
-    i18n.bind(el('span'), 'p2.ui.showMe'),
-  );
   const question = el(
     'div.bubble.p2-question',
     {},
@@ -62,21 +70,31 @@ export default function Phase2Screen(): Screen {
       'ui.replay',
     ),
     questionText,
-    showMe,
+  );
+  // "Show me", pinned on the hat: a pulsing ring on the spot to touch and a straw tag beside it
+  const showMe = el(
+    'button.btn.btn--straw.p2-showme',
+    { type: 'button', 'data-touch': '', 'data-test': 'show-me', onclick: () => assist() },
+    svg(PANEL_ICONS.hand, 'icon'),
+    i18n.bind(el('span'), 'p2.ui.showMe'),
+  );
+  const pin = el('div.p2-pin', { hidden: true }, el('span.p2-pin__ring', { 'aria-hidden': 'true' }), el('span.p2-pin__thread', { 'aria-hidden': 'true' }), showMe);
+  const skip = el(
+    'button.btn.btn--ghost.p2-skipper',
+    { type: 'button', 'data-touch': '', 'data-test': 'skip', onclick: () => skipLayer() },
+    i18n.bind(el('span'), 'p2.ui.skip'),
+    svg(ICONS.next),
+  );
+  const steps = el(
+    'ol.p2-steps',
+    { hidden: true, 'aria-live': 'polite' },
+    ...STEPS.map((id, i) => el('li.p2-step', {}, el('span.p2-step__n.stamp', {}, String(i + 1)), i18n.bind(el('span.p2-step__w'), id))),
   );
   const loading = el('div.p2-loading', { role: 'status' }, el('span.p2-loading__hat', {}, svg(ICONS.hat)), i18n.bind(el('span'), 'p2.ui.loading'));
-  // a red ink stamp that counts the rings
-  const counter = el('div.p2-counter.stamp', { 'aria-live': 'polite' }, el('span.p2-counter__n', {}, '0'), i18n.bind(el('span.p2-counter__w'), 'p2.ui.rings'));
+  // one red ink stamp at the end of layer 3: "16 rings"
+  const counter = el('div.p2-counter.stamp', { 'aria-live': 'polite' }, el('span.p2-counter__n', {}, '16'), i18n.bind(el('span.p2-counter__w'), 'p2.ui.rings'));
   const panel = new InsightPanel({
-    onPrev: () => {
-      const p = prevChunk(chunk);
-      if (p !== null) playChunk(p, true);
-    },
-    onNext: () => {
-      const n = nextChunk(chunk, script.chunks.length);
-      if (n !== null) playChunk(n, true);
-    },
-    onReplay: () => playChunk(Math.max(0, chunk), true),
+    onReplay: () => watchAgain(),
     onName: () => {
       play('tap');
       ctx.narration.say(script.name);
@@ -105,24 +123,48 @@ export default function Phase2Screen(): Screen {
     return w >= 720 && w > h * 1.05;
   };
 
+  function setPhase(p: Phase): void {
+    phase = p;
+    root.dataset.phase = p;
+    // Skip lives in the same corner through listen, tap and watch; on the card "Next layer" takes over
+    skip.hidden = p === 'done' || p === 'loading';
+  }
+
   /** the screen area the hat should use right now (between the UI pieces) */
   function frameRect(): ScreenRect {
     const { w, h } = viewport();
-    const top = Math.max(question.hidden ? 0 : question.getBoundingClientRect().bottom, dots.getBoundingClientRect().bottom, 80) + 8;
+    const tops = [dots.getBoundingClientRect().bottom, 80];
+    if (!question.hidden) tops.push(question.getBoundingClientRect().bottom);
+    if (!steps.hidden) tops.push(steps.getBoundingClientRect().bottom);
+    if (counter.classList.contains('is-on')) tops.push(counter.getBoundingClientRect().bottom - 18);
+    const top = Math.max(...tops) + 8;
     const bottom = h - (h < 600 ? 96 : 128);
-    if (phase === 'insight' || phase === 'done') {
-      // the panel's resting place (its layout box, not the slide-in transform)
+    if (phase === 'done') {
+      // the card's resting place (its layout box, not the slide-in transform)
       const r = root.getBoundingClientRect();
       const left = r.left + panel.el.offsetLeft;
       if (isWide()) return { x: 16, y: Math.min(top, 104), width: Math.max(200, left - 32), height: bottom - Math.min(top, 104) };
       const below = r.top + panel.el.offsetTop + panel.el.offsetHeight + 8;
       return { x: 12, y: below, width: w - 24, height: Math.max(140, bottom - below) };
     }
-    return { x: 16, y: top, width: w - 32, height: Math.max(180, bottom - top) };
+    // while the narrator explains, the hat stays a little narrower so its labels fit beside it
+    const side = phase === 'insight' && isWide() ? Math.min(250, w * 0.18) : 16;
+    return { x: side, y: top, width: w - side * 2, height: Math.max(180, bottom - top) };
   }
 
   function placeHat(duration = 0.7): void {
     viewer?.setFrame(frameRect(), { duration });
+    viewer?.setLabelArea?.(labelArea(), skip.hidden ? [] : [skip.getBoundingClientRect()]);
+  }
+
+  /** with the card open, the hat's labels stay in the hat's own space, never under the card */
+  function labelArea(): ScreenRect | null {
+    if (phase !== 'done') return null;
+    const { w, h } = viewport();
+    const r = root.getBoundingClientRect();
+    if (isWide()) return { x: 0, y: 0, width: r.left + panel.el.offsetLeft - 8, height: h };
+    const below = r.top + panel.el.offsetTop + panel.el.offsetHeight + 8;
+    return { x: 0, y: below, width: w, height: h - below };
   }
 
   /** four paper tags on one red thread: the current one outlined in thread, done ones stamped */
@@ -159,7 +201,12 @@ export default function Phase2Screen(): Screen {
     );
   }
 
-  // ---- layer flow
+  /** the question, with "nón lá" kept together on one line (no lone word, no split name) */
+  function setQuestion(): void {
+    questionText.textContent = i18n.t(script.question).replace(/(nón) (lá|bài thơ)/gi, '$1\u00a0$2');
+  }
+
+  // ---- step 1 · listen, step 2 · tap
 
   function startLayer(next: LayerId): void {
     const my = ++token;
@@ -168,21 +215,20 @@ export default function Phase2Screen(): Screen {
     ctx.idle.clear();
     ctx.narration.stop();
     stopCycle();
+    hidePin();
     layer = next;
     script = SCRIPT[next];
     chunk = -1;
-    phase = 'question';
+    setPhase('question');
     root.dataset.layer = next;
-    root.dataset.phase = phase;
     paintDots();
-    i18n.bind(questionText, script.question);
+    setQuestion();
     question.hidden = false;
-    showMe.hidden = false;
     panel.el.classList.remove('is-open');
     panel.setLayer(script, next === 'strap');
-    panel.doneBtn.hidden = true;
+    panel.doneBtn.classList.remove('pulse');
     counter.classList.remove('is-on');
-    counter.querySelector('.p2-counter__n')!.textContent = '0';
+    showSteps(-1);
     gsap.fromTo(question, { y: -16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'back.out(1.6)' });
     if (!viewer) return;
     viewer.setInteractive(true);
@@ -192,17 +238,30 @@ export default function Phase2Screen(): Screen {
         if (my !== token) return;
         if (name === 'say' && typeof data === 'string') ctx.narration.interject(data);
         else if (name === 'ring') showCount(Number(data));
+        else if (name === 'step') showSteps(Number(data));
+        else if (name === 'whoosh') {
+          // the child's part is done: watch the leaves go, nothing else on screen
+          question.hidden = true;
+          hidePin();
+          ctx.idle.clear();
+        }
       },
     });
     ctrl = c;
     if (next === 'strap') viewer.setStrapColour(ctx.settings.get().strapColour);
+    // listen first: "Show me" comes once the question has been asked
+    const ask = () => speakLine(ctx.narration, script.question, () => alive && my === token && phase === 'question');
+    let asked: Promise<unknown>;
     if (viewer.kind === '2d' && !fallbackSaid) {
       // first tell the grown-ups why the hat is a drawing, then ask the question
       fallbackSaid = true;
-      void speak(ctx.narration, ['p2.fallback', script.question], () => alive && my === token && phase === 'question');
+      asked = speak(ctx.narration, ['p2.fallback', script.question], () => alive && my === token && phase === 'question');
     } else {
-      ctx.narration.say(script.question);
+      asked = ask();
     }
+    const showTap = () => my === token && phase === 'question' && showPin();
+    void asked.then(showTap);
+    later(PIN_FALLBACK_MS, showTap);
     watchInteraction(c);
     c.run().then(() => {
       if (my === token && alive) interactionDone(my);
@@ -219,78 +278,144 @@ export default function Phase2Screen(): Screen {
     });
   }
 
+  /** the tag follows its spot as the hat turns; it hides while there is nothing to touch */
+  function showPin(): void {
+    if (!pin.hidden || phase !== 'question') return;
+    pin.hidden = false;
+    pin.classList.remove('is-on');
+    const follow = () => {
+      if (!alive || pin.hidden) return;
+      const h = ctrl?.hint?.() ?? null;
+      const p = h?.points[0];
+      if (p && phase === 'question') {
+        const { w } = viewport();
+        // the tag sits on the outer side of the spot, so the spot itself stays free to touch, unless
+        // that side would run off the screen
+        const reach = showMe.offsetWidth + (w < 600 ? 44 : 52) + 8;
+        let left = p.x < w / 2;
+        if (left && p.x - reach < 0) left = false;
+        else if (!left && p.x + reach > w) left = true;
+        pin.classList.toggle('p2-pin--left', left);
+        pin.style.transform = `translate(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px)`;
+        pin.classList.add('is-on');
+      } else {
+        pin.classList.remove('is-on');
+      }
+      pinRaf = requestAnimationFrame(follow);
+    };
+    cancelAnimationFrame(pinRaf);
+    pinRaf = requestAnimationFrame(follow);
+  }
+
+  function hidePin(): void {
+    cancelAnimationFrame(pinRaf);
+    pin.hidden = true;
+    pin.classList.remove('is-on');
+  }
+
   function assist(): void {
     if (phase !== 'question') return;
     play('tap');
     ctrl?.assist?.();
   }
 
+  /** layer 3 ends with one stamp, never a count: "16 rings" */
   function showCount(n: number): void {
+    if (n < 16 || counter.classList.contains('is-on')) return;
+    question.hidden = true;
+    counter.querySelector('.p2-counter__n')!.textContent = String(n);
     counter.classList.add('is-on');
-    const num = counter.querySelector('.p2-counter__n')!;
-    num.textContent = String(n);
-    gsap.fromTo(num, { scale: 1.25 }, { scale: 1, duration: 0.35, ease: 'back.out(3)' });
+    play('snap');
+    if (!motion.reduced) gsap.fromTo(counter, { scale: 1.6, rotate: -14 }, { scale: 1, rotate: -6, duration: 0.45, ease: 'back.out(2.2)' });
+    requestAnimationFrame(() => placeHat(0.8));
   }
+
+  /** layer 2's layering order: which step is playing (-1 hides the row) */
+  function showSteps(i: number): void {
+    steps.hidden = i < 0;
+    steps.querySelectorAll('.p2-step').forEach((s, k) => {
+      s.classList.toggle('is-on', k === i);
+      s.classList.toggle('is-done', k < i);
+      if (k === i) s.setAttribute('aria-current', 'step');
+      else s.removeAttribute('aria-current');
+    });
+    requestAnimationFrame(() => phase !== 'done' && placeHat(0.6));
+  }
+
+  // ---- step 3 · watch and listen
 
   function interactionDone(my: number): void {
     ctx.idle.clear();
-    showMe.hidden = true;
+    hidePin();
     later(700, () => {
       if (my !== token) return;
-      phase = 'insight';
-      root.dataset.phase = phase;
-      question.hidden = true;
-      panel.el.classList.add('is-open');
-      panel.setChunk(-1, script.chunks.length);
-      buildExtras();
-      const revisit = ctx.flags.review || ctx.progress.get().p2.layers[layer] === 'done';
-      panel.doneBtn.hidden = !revisit;
-      // let the sheet lay out, then slide the hat into the free space
-      requestAnimationFrame(() => placeHat(0.9));
-      watchInsight();
-      // the layer's name first (it carries the Vietnamese part name: Chỉ Khâu, Lá Nón…), then the insight
-      void speakLine(ctx.narration, script.name, () => alive && my === token && chunk < 0).then((ok) => {
-        if (ok && my === token && chunk < 0) playChunk(0, false);
+      startWatch(my);
+    });
+  }
+
+  function startWatch(my: number): void {
+    setPhase('insight');
+    question.hidden = true;
+    panel.el.classList.remove('is-open');
+    chunk = -1;
+    requestAnimationFrame(() => placeHat(0.9));
+    watchSkip();
+    // the layer's name first (it carries the Vietnamese part name: Chỉ Khâu, Lá Nón…), then the explanation
+    void speakLine(ctx.narration, script.name, () => alive && my === token && phase === 'insight' && chunk < 0).then(() => {
+      if (my === token && phase === 'insight' && chunk < 0) later(300, () => my === token && phase === 'insight' && chunk < 0 && playChunk(0));
+    });
+  }
+
+  /** while the narrator explains, the hand (if the child goes idle) points at Skip, never at a panel */
+  function watchSkip(): void {
+    ctx.idle.watch({ stepId: `p2.${layer}.skip`, gesture: 'tap', target: () => skip.getBoundingClientRect(), delayMs: 20000 });
+  }
+
+  function playChunk(i: number): void {
+    if (phase !== 'insight') return;
+    const my = token;
+    chunk = i;
+    const cue = script.cues[i];
+    if (cue === 'colours') cycleColours();
+    else if (cue) ctrl?.cue?.(cue);
+    // speakLine, not say(): the EN/VI toggle and "hear it again" restart the line, which must not stall the step
+    void speakLine(ctx.narration, script.chunks[i], () => alive && my === token && chunk === i && phase === 'insight').then((ok) => {
+      if (my !== token || chunk !== i || phase !== 'insight') return;
+      const n = nextChunk(i, script.chunks.length);
+      // a line that was cut short (sound off, blocked audio) still moves on, a little later
+      later(ok ? 600 : 1500, () => {
+        if (chunk !== i || my !== token || phase !== 'insight') return;
+        if (n !== null) playChunk(n);
+        else showCard();
       });
     });
   }
 
-  /** if the sheet goes quiet (a line was cut short), the hand points at More, or at Next on the last chunk */
-  function watchInsight(): void {
-    ctx.idle.watch({
-      stepId: `p2.${layer}.more`,
-      gesture: 'tap',
-      target: () => (chunk >= script.chunks.length - 1 ? panel.doneBtn : panel.nextBtn).getBoundingClientRect(),
-    });
-  }
+  // ---- step 4 · the card
 
-  function playChunk(i: number, manual: boolean): void {
-    if (phase !== 'insight' && phase !== 'done') return;
-    const my = token;
-    chunk = i;
-    panel.setChunk(i, script.chunks.length);
-    if (manual) play('pageTurn');
-    const cue = script.cues[i];
-    if (cue === 'colours') cycleColours();
-    else if (cue) ctrl?.cue?.(cue);
-    const last = i === script.chunks.length - 1;
-    if (last) panel.doneBtn.hidden = false;
-    if (phase === 'insight') watchInsight();
-    // speakLine, not say(): the EN/VI toggle and "hear it again" restart the line, which must not stall the sheet
-    void speakLine(ctx.narration, script.chunks[i], () => alive && my === token && chunk === i).then((ok) => {
-      if (!ok || my !== token || chunk !== i) return;
-      const n = nextChunk(i, script.chunks.length);
-      if (n !== null) later(900, () => chunk === i && my === token && playChunk(n, false));
-      else insightDone();
-    });
-  }
-
-  function insightDone(): void {
-    phase = 'done';
-    root.dataset.phase = phase;
-    panel.doneBtn.hidden = false;
+  function showCard(): void {
+    setPhase('done');
+    showSteps(-1);
+    panel.el.classList.add('is-open');
+    buildExtras();
     panel.doneBtn.classList.add('pulse');
+    // let the card lay out, then slide the hat into the free space
+    requestAnimationFrame(() => placeHat(0.9));
     ctx.idle.watch({ stepId: `p2.${layer}.next`, gesture: 'tap', target: () => panel.doneBtn.getBoundingClientRect() });
+  }
+
+  function watchAgain(): void {
+    play('tap');
+    stopCycle();
+    panel.doneBtn.classList.remove('pulse');
+    ctx.narration.stop();
+    const my = token;
+    setPhase('insight');
+    panel.el.classList.remove('is-open');
+    chunk = -1;
+    requestAnimationFrame(() => placeHat(0.9));
+    watchSkip();
+    later(500, () => my === token && phase === 'insight' && playChunk(0));
   }
 
   function done(): void {
@@ -301,51 +426,40 @@ export default function Phase2Screen(): Screen {
     ctx.completeLayer(layer);
   }
 
+  /** "Skip ›": stop talking and go straight to the next layer, whatever step this is */
+  function skipLayer(): void {
+    if (phase === 'loading') return;
+    play('tap');
+    ctx.idle.clear();
+    ctx.narration.stop();
+    stopCycle();
+    hidePin();
+    ctx.completeLayer(layer);
+  }
+
   function buildExtras(): void {
     const box = panel.extras;
     box.replaceChildren();
-    if (layer === 'stitches') {
-      const chip = (icon: string, id: string, cue: string, tone: string) =>
-        el(
-          `button.tag.p2-chip.p2-chip--${tone}` as 'button',
-          {
-            type: 'button',
-            'data-touch': '',
-            onclick: () => {
-              play('tap');
-              ctx.narration.interject(id);
-              ctrl?.cue?.(cue);
-            },
-          },
-          svg(icon, 'p2-chip__icon'),
-          i18n.bind(el('span'), id),
-        );
-      box.append(
-        i18n.bind(el('h3.p2-panel__sub'), 'p2.ui.legend'),
-        chip(PANEL_ICONS.thread, 'p2.label.whiteThread', 'stitches', 'white'),
-        chip(PANEL_ICONS.redThread, 'p2.label.redThread', 'brim', 'red'),
+    if (layer !== 'strap') return;
+    const current = ctx.settings.get().strapColour;
+    const row = el('div.p2-swatches', { role: 'radiogroup' });
+    for (const c of COLOURS) {
+      const b = el(
+        `button.p2-swatch.p2-swatch--${c}` as 'button',
+        {
+          type: 'button',
+          'data-touch': '',
+          role: 'radio',
+          'data-colour': c,
+          'aria-checked': String(c === current),
+          onclick: () => pickColour(c, true),
+        },
+        el('span.p2-swatch__blob', { 'aria-hidden': 'true' }),
+        i18n.bind(el('span.p2-swatch__name'), `p2.colour.${c}`),
       );
-    } else if (layer === 'strap') {
-      const current = ctx.settings.get().strapColour;
-      const row = el('div.p2-swatches', { role: 'radiogroup' });
-      for (const c of COLOURS) {
-        const b = el(
-          `button.p2-swatch.p2-swatch--${c}` as 'button',
-          {
-            type: 'button',
-            'data-touch': '',
-            role: 'radio',
-            'data-colour': c,
-            'aria-checked': String(c === current),
-            onclick: () => pickColour(c, true),
-          },
-          el('span.p2-swatch__blob', { 'aria-hidden': 'true' }),
-          i18n.bind(el('span.p2-swatch__name'), `p2.colour.${c}`),
-        );
-        row.appendChild(b);
-      }
-      box.append(i18n.bind(el('h3.p2-panel__sub'), 'p2.ui.strapColours'), row);
+      row.appendChild(b);
     }
+    box.append(i18n.bind(el('h3.p2-panel__sub'), 'p2.ui.strapColours'), row);
   }
 
   function pickColour(c: StrapColour, byChild: boolean): void {
@@ -397,12 +511,12 @@ export default function Phase2Screen(): Screen {
     if ((e.key === 'Enter' || e.key === ' ') && !onButton && phase === 'question') {
       e.preventDefault();
       assist();
-    } else if (e.key === 'ArrowRight' && phase !== 'question') {
+    } else if (e.key === 'ArrowRight' && phase === 'insight') {
       const n = nextChunk(chunk, script.chunks.length);
-      if (n !== null) playChunk(n, true);
-    } else if (e.key === 'ArrowLeft' && phase !== 'question') {
+      if (n !== null) playChunk(n);
+    } else if (e.key === 'ArrowLeft' && phase === 'insight') {
       const p = prevChunk(chunk);
-      if (p !== null) playChunk(p, true);
+      if (p !== null) playChunk(p);
     } else if (e.key === 'Escape' && !lightbox.hidden) {
       closePhoto();
     }
@@ -424,13 +538,14 @@ export default function Phase2Screen(): Screen {
     loading.replaceChildren(i18n.bind(el('span'), 'p2.loadError'));
     loading.classList.add('is-error');
     ctx.narration.say('p2.loadError');
-    const skip = el(
+    skip.hidden = true;
+    const next = el(
       'button.btn.btn--cta.p2-skip',
       { type: 'button', 'data-touch': '', 'data-test': 'next', onclick: () => ctx.completeLayer(layer) },
       i18n.bind(el('span'), 'ui.next'),
       svg(ICONS.next),
     );
-    root.appendChild(skip);
+    root.appendChild(next);
   }
 
   return {
@@ -443,9 +558,11 @@ export default function Phase2Screen(): Screen {
       const bar = TopBar(ctx, { titleId: 'p2.title' });
       bar.insertBefore(dots, bar.querySelector('.topbar__spacer'));
       paintDots();
-      i18n.bind(questionText, script.question);
-      root.append(bar, question, counter, panel.el, loading, lightbox);
+      setQuestion();
+      offs.push(i18n.onChange(() => setQuestion()));
+      root.append(bar, question, steps, counter, pin, panel.el, skip, loading, lightbox);
       question.hidden = true;
+      setPhase('loading');
       window.addEventListener('keydown', onKey);
       window.addEventListener('resize', onResize);
       window.addEventListener('pointermove', onPointerMove, { passive: true });
@@ -503,6 +620,7 @@ export default function Phase2Screen(): Screen {
       token++;
       for (const t of timers) window.clearTimeout(t);
       timers.clear();
+      cancelAnimationFrame(pinRaf);
       offs.forEach((off) => off());
       ctrl?.dispose();
       ctrl = null;
@@ -510,6 +628,7 @@ export default function Phase2Screen(): Screen {
       gsap.killTweensOf([question, counter, lightbox, panel.doneBtn]);
       if (viewer) {
         viewer.setInteractive(false);
+        viewer.setLabelArea?.(null);
         viewer.setFrame(null, { duration: 0.5 });
         viewer.hide({ fade: 0.35 });
       }

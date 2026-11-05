@@ -439,30 +439,6 @@
   box-shadow: 0 10px 18px -6px rgba(59, 42, 28, 0.5);
 }
 
-/* the fruit are die-cut paper stickers: a cream edge all round, stuck on a little crooked */
-.hero__fruit {
-  position: absolute;
-  bottom: 22px;
-  filter:
-    drop-shadow(2px 0 0 var(--paper)) drop-shadow(-2px 0 0 var(--paper))
-    drop-shadow(0 2px 0 var(--paper)) drop-shadow(0 -2px 0 var(--paper))
-    drop-shadow(0 4px 5px rgba(59, 42, 28, 0.35));
-}
-
-.hero__fruit--dragon {
-  right: clamp(26px, 6vw, 80px);
-  width: clamp(64px, 7.4vw, 100px);
-  height: auto;
-  rotate: 5deg;
-}
-
-.hero__fruit--mango {
-  right: clamp(84px, 13.5vw, 182px);
-  width: clamp(54px, 6vw, 82px);
-  height: auto;
-  rotate: -7deg;
-}
-
 /* the scroll cue: a hand-written line and a hand-drawn arrow, nothing round it */
 .hero__scroll {
   position: absolute;

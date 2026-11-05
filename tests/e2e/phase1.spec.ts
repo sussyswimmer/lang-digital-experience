@@ -1,6 +1,6 @@
 /**
  * Phase 1 end to end: the collage, a scene filling the screen and closing again (Esc, tap,
- * swipe down), the "Let's explore" gate and the convergence into Phase 2.
+ * swipe down), the optional story, "Let's explore" (there from the start) and the convergence into Phase 2.
  * Tiles float (GSAP), so clicks use { force: true }; rendering on a CPU is slow, so waits are generous.
  */
 import { expect, test, type Page } from '@playwright/test';
@@ -37,9 +37,24 @@ test('shows the five everyday scenes as polaroids', async ({ page }) => {
   await open(page);
   expect(await tiles(page)).toEqual(['farmers', 'market', 'aodai', 'rain', 'craft']);
   await expect(page.locator('button.p1-tile')).toHaveCount(5);
-  // the intro narration plays with captions (the brief's words)
-  await expect.poll(() => narrationLog(page)).toContain('p1.intro.1');
+  // nothing is compulsory: no voice starts on its own, and both choices are there at once
+  await page.waitForTimeout(1500);
+  expect(await narrationLog(page)).not.toContain('p1.intro.1');
+  await expect(page.locator('[data-test=explore]')).toBeVisible();
+  await expect(page.locator('[data-test=hear]')).toBeVisible();
+  // no ticks: the photos are not a checklist
+  await expect(page.locator('.p1-tile__seen')).toHaveCount(0);
   expect(errors).toEqual([]);
+});
+
+test('"Hear the story" plays the intro only when asked, and a second tap stops it', async ({ page }) => {
+  await open(page);
+  const hear = page.locator('[data-test=hear]');
+  await hear.click({ force: true });
+  await expect.poll(() => narrationLog(page)).toContain('p1.intro.1');
+  await expect(hear).toHaveAttribute('aria-pressed', 'true');
+  await hear.click({ force: true });
+  await expect(hear).toHaveAttribute('aria-pressed', 'false');
 });
 
 test('a tapped scene fills the screen with its caption, and closes by Esc, tap or swipe down', async ({ page }) => {
@@ -56,7 +71,6 @@ test('a tapped scene fills the screen with its caption, and closes by Esc, tap o
   await expect(page.locator('.p1-collage')).toHaveJSProperty('inert', true);
   await page.keyboard.press('Escape');
   await expect(page.locator('.p1-expand')).toHaveCount(0, { timeout: 30_000 });
-  await expect(page.locator('[data-test=tile-market]')).toHaveClass(/is-seen/);
   // and back on the tile that was opened
   await expect(page.locator('[data-test=tile-market]')).toBeFocused();
   await expect(page.locator('.p1-collage')).toHaveJSProperty('inert', false);
@@ -76,13 +90,8 @@ test('a tapped scene fills the screen with its caption, and closes by Esc, tap o
   expect(p1.seenTiles).toEqual(expect.arrayContaining(['market', 'rain', 'craft']));
 });
 
-test('"Let\'s explore" appears after two scenes and in Vietnamese too', async ({ page }) => {
+test('"Let\'s explore" is there from the start, and in Vietnamese too', async ({ page }) => {
   await open(page);
-  await expandScene(page, 'farmers');
-  await page.keyboard.press('Escape');
-  await expect(page.locator('.p1-expand')).toHaveCount(0, { timeout: 30_000 });
-  await expandScene(page, 'aodai');
-  await page.keyboard.press('Escape');
   const explore = page.locator('[data-test=explore]');
   await expect(explore).toBeVisible({ timeout: 30_000 });
   await expect(explore).toContainText("Let's explore");
@@ -95,7 +104,7 @@ test('"Let\'s explore" spirals the collage into the hat and moves on to Phase 2'
   const errors = collectErrors(page);
   await open(page);
   const explore = page.locator('[data-test=explore]');
-  // in test mode the intro narration runs 20× faster, so the button appears on its own
+  // no photo has to be opened first
   await expect(explore).toBeVisible({ timeout: 60_000 });
   await explore.click({ force: true });
   await expect.poll(() => sfxLog(page)).toContain('whoosh');

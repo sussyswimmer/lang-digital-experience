@@ -1,7 +1,7 @@
 /**
- * Captions for narration: up to two lines on a cream panel; the current sentence is highlighted.
- * On a phone only the current sentence is shown (components.css), so the panel stays inside the
- * 120 px every screen keeps free at the bottom and never covers its controls.
+ * Captions for narration on a strip of paper, one sentence at a time (components.css shows only the
+ * current sentence, on every screen), so the strip stays inside the band every screen keeps free at
+ * the bottom and never covers the picture or its controls.
  */
 import type { Howl } from 'howler';
 import { el } from './el';

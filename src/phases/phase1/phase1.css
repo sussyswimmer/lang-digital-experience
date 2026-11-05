@@ -6,9 +6,17 @@
   overflow: hidden;
 }
 
+/* three bands, top to bottom: the photos, the two choices, the caption strip. The choices have a band
+   of their own so they are there from the first frame, below the photos, never on top of them. */
+.screen.p1 {
+  --p1-caption-band: 96px;
+  --p1-actions-band: 116px;
+}
+
 .p1-collage {
   position: absolute;
-  inset: calc(84px + var(--safe-top)) calc(16px + var(--safe-right)) calc(112px + var(--safe-bottom)) calc(16px + var(--safe-left));
+  inset: calc(84px + var(--safe-top)) calc(16px + var(--safe-right))
+    calc(var(--p1-caption-band) + var(--p1-actions-band) + var(--safe-bottom)) calc(16px + var(--safe-left));
 }
 
 .p1-slot {
@@ -153,51 +161,71 @@
   translate: -50% 0;
 }
 
-/* "seen": a second stamp in red, pressed once the scene has been opened */
-.p1-tile__seen {
-  right: 5%;
-  rotate: 9deg;
-  transform: scale(0);
-  transition: transform 0.35s var(--ease-out);
-}
+/* ---------- the two choices: "Hear the story" and "Let's explore" ---------- */
 
-.p1-tile.is-seen .p1-tile__seen {
-  transform: scale(1);
-}
-
-/* the tick lands on the other side every other photo (a hand pressing stamps, not a template);
-   it also keeps the rain tile's tick clear of the explore sheet on wide screens */
-.p1-slot:nth-child(even) .p1-tile__seen {
-  right: auto;
-  left: 5%;
-  rotate: -8deg;
-}
-
-/* ---------- "Let's explore" ---------- */
-
-/* clear of the shared caption bar, whatever its height (Phase1Screen measures it into
-   --p1-caption-h; 78px is a one-line bar, so the sheet never sits lower than 118px) */
+/* their own band between the photos and the caption strip (the caption shows one sentence) */
 .p1-explore-wrap {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: calc(max(var(--p1-caption-h, 78px), 78px) + 40px + var(--safe-bottom));
+  bottom: calc(var(--p1-caption-band) + var(--safe-bottom));
+  height: var(--p1-actions-band);
   display: flex;
+  align-items: center;
   justify-content: center;
   padding: 0 8px;
   pointer-events: none;
   z-index: 6;
 }
 
-/* the stitched red button is sewn onto a scrap of paper taped to the table */
+/* both buttons are sewn onto one scrap of paper taped to the table: the quiet choice on the left,
+   the way on (the stitched red button) on the right */
 .p1-explore-sheet {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   padding: 12px 14px;
   pointer-events: auto;
   will-change: transform;
 }
 
-.p1-explore-sheet[hidden] {
-  display: none;
+/* "Hear the story": plain paper, a speaker that turns into a stop square while the story plays */
+.p1-hear {
+  gap: 12px;
+  min-height: 72px;
+  padding: 0 24px;
+  font-size: 1.15rem;
+  rotate: 0.6deg;
+}
+
+.p1-hear__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+}
+
+.p1-hear__icon > svg {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.2s, transform 0.2s var(--ease-out);
+}
+
+.p1-hear__stop {
+  opacity: 0;
+  transform: scale(0.5);
+  color: var(--thread);
+}
+
+.p1-hear.is-playing .p1-hear__speaker {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.p1-hear.is-playing .p1-hear__stop {
+  opacity: 1;
+  transform: none;
 }
 
 .p1-explore {
@@ -389,7 +417,7 @@
   height: auto;
 }
 
-/* tablets: a slightly smaller button, so the Vietnamese label's sheet stays off the bottom tiles' stamps */
+/* tablets: slightly smaller buttons, so both fit side by side in Vietnamese too */
 @media (max-width: 1100px) and (min-width: 601px) {
   .p1-explore {
     min-height: 80px;
@@ -420,9 +448,22 @@
     top: -8px;
   }
 
-  /* the Vietnamese label ("Cùng khám phá nào!") has to stay on one line at 390 px */
+  /* phones: the two choices stack, the way on underneath where the thumb rests */
+  .screen.p1 {
+    --p1-caption-band: 84px;
+    --p1-actions-band: 168px;
+  }
+
   .p1-explore-sheet {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
     padding: 7px 8px;
+  }
+
+  .p1-hear {
+    min-height: 56px;
+    font-size: 1.05rem;
   }
 
   .p1-explore {

@@ -24,6 +24,13 @@
     "viStatus": "machine",
     "notes": "Button label, also spoken when the button appears"
   },
+  "p1.hear": {
+    "kind": "ui",
+    "en": "Hear the story",
+    "vi": "Nghe kể chuyện",
+    "viStatus": "machine",
+    "notes": "Optional button: plays the three intro lines; tap again to stop"
+  },
   "p1.tile.farmers": {
     "kind": "narration",
     "en": "Farmers wear their nón lá while they work in the fields.",

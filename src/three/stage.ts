@@ -126,6 +126,12 @@ class Viewer3D implements HatViewer {
     this.stage.setRect(rect, opts.duration ?? 0.6);
   }
 
+  setLabelArea(rect: ScreenRect | null, avoid: ScreenRect[] = []): void {
+    if (!this.rig) return;
+    this.rig.labels.area = rect;
+    this.rig.labels.avoid = avoid;
+  }
+
   async convergeFrom(rects: ScreenRect[], images: string[]): Promise<void> {
     await this.ready;
     this.current?.dispose();

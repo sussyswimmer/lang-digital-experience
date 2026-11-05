@@ -57,17 +57,41 @@ test('layer 2: three peels by hand, then the rest go whoosh', async ({ page }) =
     await page.waitForTimeout(1200);
   }
   await expect.poll(() => hook<number>(page, 'peeled'), { timeout: 60_000 }).toBe(12);
-  await expect(page.locator('.hat-label', { hasText: 'Mo (tree bark)' })).toBeAttached({ timeout: 30_000 });
+  await expect(page.locator('.hat-label', { hasText: 'Lá mo' })).toBeAttached({ timeout: 30_000 });
   await expect(page.locator('.screen.p2')).toHaveAttribute('data-phase', /insight|done/, { timeout: 30_000 });
+  // while the narrator explains, the layering order plays step by step, ending with the coating
+  await expect(page.locator('.p2-step.is-on')).toHaveText(/Coating/, { timeout: 90_000 });
+  // and the outer leaves are back on, covering the painting
+  await expect.poll(() => hook<number>(page, 'peeled'), { timeout: 30_000 }).toBe(0);
 });
 
-test('layer 3: a tap on the skeleton counts all 16 rings', async ({ page }) => {
+test('labels never sit on top of each other or on the caption strip', async ({ page }) => {
+  await open(page, 'stitches');
+  await hook(page, 'finish');
+  await expect.poll(() => page.locator('.hat-label.is-shown').count(), { timeout: 30_000 }).toBeGreaterThanOrEqual(2);
+  await page.waitForTimeout(800);
+  const boxes = await page.locator('.hat-label.is-shown').evaluateAll((els) => els.map((e) => e.getBoundingClientRect().toJSON()));
+  for (let i = 0; i < boxes.length; i++)
+    for (let j = i + 1; j < boxes.length; j++) {
+      const [a, b] = [boxes[i], boxes[j]];
+      expect(a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom).toBe(false);
+    }
+  const vp = page.viewportSize()!;
+  for (const r of boxes) expect(r.bottom).toBeLessThanOrEqual(vp.height - 100);
+});
+
+test('layer 3: a tap on the skeleton moves the rings as one frame and stamps "16 rings" once', async ({ page }) => {
   await open(page, 'frame');
   const hint = await hook<{ points: Pt[] } | null>(page, 'hint');
   await page.mouse.click(hint!.points[0].x, hint!.points[0].y);
+  // no counting ring by ring: no numbered badges at any point, and the stamp only ever says 16
+  await page.waitForTimeout(1500);
+  await expect(page.locator('.hat-label--num')).toHaveCount(0);
+  await expect(page.locator('.p2-counter')).not.toHaveClass(/is-on/);
   await expect.poll(() => hook<number>(page, 'ringsShown'), { timeout: 60_000 }).toBe(16);
+  await expect(page.locator('.p2-counter')).toHaveClass(/is-on/);
   await expect(page.locator('.p2-counter__n')).toHaveText('16');
-  await expect(page.locator('.hat-label', { hasText: '40–50 cm across' })).toBeAttached({ timeout: 30_000 });
+  await expect(page.locator('.hat-label', { hasText: '40–50 cm across' })).toBeAttached({ timeout: 60_000 });
 });
 
 test('layer 4: everything flies back, the strap is centre stage and sways when tapped', async ({ page }) => {
@@ -80,7 +104,8 @@ test('layer 4: everything flies back, the strap is centre stage and sways when t
   await page.mouse.click(strap.x, strap.y);
   // a real sway: well past the few degrees it may still be settling by after dropping down
   await expect.poll(async () => Math.abs(await hook<number>(page, 'strapAngle')), { timeout: 30_000, intervals: [150] }).toBeGreaterThan(9);
-  await expect(page.locator('.screen.p2')).toHaveAttribute('data-phase', /insight|done/, { timeout: 30_000 });
+  // the colours come on the card, once the narrator has finished
+  await expect(page.locator('.screen.p2')).toHaveAttribute('data-phase', 'done', { timeout: 120_000 });
   await page.locator('.p2-swatch--green').click();
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('nonla.settings.v1') ?? '{}').strapColour)).toBe('green');
   await expect(page.locator('.p2-swatch--green')).toHaveAttribute('aria-checked', 'true');
@@ -98,8 +123,26 @@ test('Next moves on to the following layer without reloading the hat', async ({ 
   await open(page, 'stitches');
   await hook(page, 'finish');
   const next = page.locator('[data-test="next"]');
-  await expect(next).toBeVisible({ timeout: 30_000 });
+  await expect(next).toBeVisible({ timeout: 90_000 });
   await next.click();
+  await expect(page).toHaveURL(/#\/play\/p2\/leaves$/);
+  await expect.poll(() => hook<string>(page, 'layer')).toBe('leaves');
+});
+
+test('"Skip" is in the same corner at every step and goes straight to the next layer', async ({ page }) => {
+  await open(page, 'stitches');
+  const skip = page.locator('[data-test="skip"]');
+  await expect(skip).toBeVisible();
+  const at = (await skip.boundingBox())!;
+  // nothing to scroll and no side panel while listening
+  await expect(page.locator('.p2-panel')).not.toHaveClass(/is-open/);
+  await hook(page, 'finish');
+  await expect(page.locator('.screen.p2')).toHaveAttribute('data-phase', 'insight', { timeout: 30_000 });
+  await expect(page.locator('.p2-panel')).not.toHaveClass(/is-open/);
+  const during = (await skip.boundingBox())!;
+  expect(Math.round(during.x)).toBe(Math.round(at.x));
+  expect(Math.round(during.y)).toBe(Math.round(at.y));
+  await skip.click();
   await expect(page).toHaveURL(/#\/play\/p2\/leaves$/);
   await expect.poll(() => hook<string>(page, 'layer')).toBe('leaves');
 });

@@ -93,6 +93,23 @@ button.hat-label:focus-visible {
   pointer-events: none;
 }
 
+/* the thread from a label set beside the hat back to its spot on the hat */
+.hat-leader {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 0;
+  border-top: 2px dashed var(--thread);
+  transform-origin: 0 0;
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+.hat-leader.is-shown {
+  opacity: 0.8;
+}
+
 /* ring numbers: little red stamps */
 .hat-label--num {
   justify-content: center;

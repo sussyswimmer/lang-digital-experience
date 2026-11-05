@@ -1,7 +1,13 @@
 /**
- * Layer 2 · Outer leaves (Lá nón): swipe (or tap) a leaf panel to peel it back — it curls from the
- * brim end and flutters away. After three by hand the rest go "Whoosh!", then the cap, revealing
- * the mo (tree bark) layer, the inner leaves and a sparkly secret (the poem art, seen later).
+ * Layer 2 · Outer leaves (Lá nón): swipe (or tap) a leaf panel to peel it back: it curls from the
+ * brim end and sweeps away round the cone, and the hat turns a little so the next leaf faces the
+ * child. After three by hand the rest go "Whoosh!": the hat turns once in the maker's hands and each
+ * leaf comes off as it reaches the front, then the cap, revealing the lá mo, the inner leaves and a
+ * sparkly secret (the poem art, seen later). Labels sit beside the hat, never on the painting.
+ *
+ * While the narrator explains, two cues play the layering order a hat maker follows, with the step
+ * shown on screen ('step' events): 1 inner leaves, 2 the painting, 3 the outer leaves wrapped back
+ * on round the cone, covering the painting again ('layers'), then 4 the coating ('coat').
  */
 import * as THREE from 'three';
 import { motion } from '../../a11y/motion';
@@ -20,6 +26,10 @@ export class LeavesLayer extends LayerBase {
   private busy = false;
   private animating = new Set<PanelState>();
   private sparkles = new Set<Sparkles>();
+  private revealLabels: ReturnType<LayerBase['label']>[] = [];
+  /** the layering sequence (cue 'layers'); the coating waits for it */
+  private layering: Promise<void> | null = null;
+  private coated = false;
 
   constructor(rig: Rig, cb: LayerCallbacks, animate: boolean) {
     super(rig, cb);
@@ -68,16 +78,102 @@ export class LeavesLayer extends LayerBase {
   }
 
   cue(name: string): void {
-    const hat = this.rig.hat;
-    if (name === 'mo' && hat.has('mo_bark')) {
-      const meshes = hat.meshes('mo_bark');
-      const st = { v: 0 };
-      this.anim.to(st, { v: 1, duration: 0.45, yoyo: true, repeat: 3, onUpdate: () => setGlow(meshes, 0xffb347, st.v * 0.5), onComplete: () => clearGlow(meshes) });
-    } else if (name === 'resin') {
-      this.sparkle(this.rig.world([0, 0.12, 0.12]), 70, 0.16);
+    if (name === 'layers') {
+      this.layering ??= this.layerUp();
+    } else if (name === 'coat') {
+      void this.coat();
     } else if (name === 'secret') {
       this.sparkle(this.poemPoint(), 40, 0.06);
     }
+  }
+
+  // ---------------------------------------------------------------- the layering order
+
+  /** 1 inner leaves → 2 painting → 3 outer leaves wrapped back on round the cone */
+  private async layerUp(): Promise<void> {
+    const rig = this.rig;
+    const hat = rig.hat;
+    const reduced = motion.reduced;
+    this.useGesture(null);
+    for (const l of this.revealLabels) this.unlabel(l);
+    this.revealLabels = [];
+    // start from the open hat (a revisit or a quick finish may have left leaves on)
+    if (rig.panels.panels.some((p) => p.state === 'on')) {
+      const t = rig.turnLeaves('off', this.anim, { duration: 1.6, caps: true });
+      await this.wait(t);
+      if (this.disposed) return;
+    }
+    rig.rot.locked = true;
+    rig.pose({ yaw: DEFAULT_POSE.yaw * 0.5, pitch: 0.2 }, reduced ? 0.3 : 0.8, this.anim);
+
+    // 1 · inner leaves (and the lá mo over them): the painting isn't on yet
+    this.emit('step', 0);
+    this.sfx('leafRustle');
+    const poem = hat.has('poem_art') ? hat.get('poem_art') : null;
+    const front = new THREE.Vector3(0.1, 0.25, 1);
+    if (poem) rig.sendAway(poem, this.anim, { dir: front, dist: 0.3, duration: reduced ? 0.2 : 0.6 });
+    const inner = ['leaf_inner', 'mo_bark'].filter((n) => hat.has(n)).flatMap((n) => hat.meshes(n));
+    this.glow(inner, 0xffd27a, 2);
+    const step1 = [this.innerLabel(), this.moLabel()].filter((l): l is NonNullable<typeof l> => !!l);
+    await this.wait(reduced ? 1.4 : 2.8);
+    if (this.disposed) return;
+    for (const l of step1) this.unlabel(l);
+
+    // 2 · the painting, laid on over them
+    this.emit('step', 1);
+    this.sfx('sparkle');
+    if (poem) {
+      rig.bringBack(poem, this.anim, {
+        dir: front,
+        dist: 0.3,
+        duration: reduced ? 0.2 : 0.8,
+        onLand: () => {
+          this.glow(hat.meshes(poem), 0xffe7a3, 1);
+          this.sparkle(this.poemPoint(), 46, 0.07);
+        },
+      });
+    }
+    const secret = this.secretLabel();
+    await this.wait(reduced ? 1.4 : 2.8);
+    if (this.disposed) return;
+    this.unlabel(secret);
+
+    // 3 · the outer leaves, laid on at the front as the hat turns, wrapping round the cone and
+    //     covering the painting again
+    this.emit('step', 2);
+    this.sfx('leafRustle');
+    const t = rig.turnLeaves('on', this.anim, {
+      duration: 4.2,
+      caps: true,
+      onLeaf: (n) => n % 3 === 1 && this.sfx('peel'),
+    });
+    await this.wait(t);
+    if (this.disposed) return;
+    rig.rot.locked = false;
+  }
+
+  /** 4 · the coating: a shine brushed over the finished hat */
+  private async coat(): Promise<void> {
+    if (this.coated) return;
+    this.coated = true;
+    await (this.layering ?? Promise.resolve());
+    if (this.disposed) return;
+    this.emit('step', 3);
+    this.sfx('sparkle');
+    const leaves = this.rig.panels.panels.flatMap((p) => this.rig.hat.meshes(p.hinge));
+    this.glow(leaves, 0xfff1c4, 1, 0.55);
+    // the brush goes round the front from one side to the other
+    for (let k = 0; k < 5; k++) {
+      const a = -0.9 + k * 0.45;
+      const at = this.rig.world([Math.sin(a) * 0.15, 0.07 + 0.02 * Math.cos(k), Math.cos(a) * 0.15]);
+      this.anim.call(k * 0.28, () => this.sparkle(at, 26, 0.06));
+    }
+  }
+
+  private glow(meshes: THREE.Mesh[], color: number, times: number, peak = 0.5): void {
+    if (!meshes.length) return;
+    const st = { v: 0 };
+    this.anim.to(st, { v: 1, duration: 0.45, yoyo: true, repeat: times * 2 - 1, onUpdate: () => setGlow(meshes, color, st.v * peak), onComplete: () => clearGlow(meshes) });
   }
 
   // ---------------------------------------------------------------- peeling
@@ -163,8 +259,11 @@ export class LeavesLayer extends LayerBase {
       ease: 'power2.out',
       onUpdate: () => rig.panels.setPeel(panel, panel.peel.value, rig.hat),
     });
-    const dir = panel.radial.clone().applyAxisAngle(UP, 0.4).add(UP.clone().multiplyScalar(0.8));
-    rig.sendAway(panel.hinge, this.anim, { dir, dist: 0.55, duration: reduced ? 0.3 : 0.8, delay: delay + (reduced ? 0.1 : 0.3), spin: reduced ? 0 : 0.8 });
+    // away round the cone, against the way the hat turns (not straight up)
+    const a = Math.atan2(panel.radial.x, panel.radial.z);
+    const tangent = new THREE.Vector3(Math.cos(a), 0, -Math.sin(a));
+    const dir = panel.radial.clone().multiplyScalar(0.75).addScaledVector(tangent, -0.85).addScaledVector(UP, 0.12).normalize();
+    rig.sendAway(panel.hinge, this.anim, { dir, dist: 0.55, duration: reduced ? 0.3 : 0.8, delay: delay + (reduced ? 0.1 : 0.3), spin: reduced ? 0 : 0.5 });
     this.anim.call(delay + 1.2, () => this.animating.delete(panel));
     if (!manual) return;
     this.manual++;
@@ -183,20 +282,17 @@ export class LeavesLayer extends LayerBase {
     const rig = this.rig;
     this.emit('whoosh');
     this.sfx('whoosh');
-    const pop = this.label({ id: 'p2.l2.whoosh', kind: 'pop', place: 'center', anchor: () => rig.world([0, 0.24, 0]) });
-    const rest = rig.panels.panels.filter((p) => p.state === 'on');
-    const step = motion.reduced ? 0.02 : 0.08;
-    rest.forEach((p, i) => this.peelAway(p, false, i * step));
-    let t = rest.length * step + 0.4;
-    for (const n of ['leaf_outer_cap', 'apex_cap']) {
-      if (!rig.hat.has(n)) continue;
-      rig.sendAway(rig.hat.get(n), this.anim, { dir: UP, dist: 0.35, delay: t, duration: 0.6 });
-    }
-    t += 0.7;
-    // end facing the front, where the hidden paper art is
-    rig.pose({ yaw: DEFAULT_POSE.yaw * 0.5, pitch: 0.2 }, motion.reduced ? 0.4 : t + 0.6, this.anim);
-    await this.wait(t + 0.4);
+    const pop = this.label({ id: 'p2.l2.whoosh', kind: 'pop', place: 'center', anchor: () => rig.world([0, 0.26, 0]) });
+    // the hat turns once in the maker's hands; each leaf comes off as it reaches the front
+    rig.rot.locked = true;
+    const off = rig.turnLeaves('off', this.anim, { duration: 3.6, caps: true, onLeaf: (n) => n % 2 === 1 && this.sfx('peel') });
+    await this.wait(off);
     if (this.disposed) return;
+    // end facing the front, where the hidden paper art is
+    rig.pose({ yaw: DEFAULT_POSE.yaw * 0.5, pitch: 0.2 }, motion.reduced ? 0.3 : 0.8, this.anim);
+    await this.wait(motion.reduced ? 0.3 : 0.8);
+    if (this.disposed) return;
+    rig.rot.locked = false;
     this.emit('peeled', rig.panels.peeledCount);
     this.unlabel(pop);
     this.reveal(true);
@@ -207,43 +303,47 @@ export class LeavesLayer extends LayerBase {
     this.complete();
   }
 
-  /** labels for what the leaves were hiding */
+  /** labels for what the leaves were hiding: beside the hat, never on the painting */
   private reveal(animate: boolean): void {
+    if (animate) this.sfx('sparkle');
+    this.revealLabels = [this.moLabel(), this.innerLabel(), this.secretLabel()].filter((l): l is NonNullable<typeof l> => !!l);
+    if (animate && this.rig.hat.has('poem_art')) this.sparkle(this.poemPoint(), 46, 0.07);
+  }
+
+  private moLabel() {
     const rig = this.rig;
     const hat = rig.hat;
-    if (animate) this.sfx('sparkle');
-    if (hat.has('mo_bark')) {
-      const a = new THREE.Vector3();
-      const n = new THREE.Vector3();
-      this.label({
-        id: 'p2.label.mo',
-        tone: 'bark',
-        place: 'above',
-        anchor: () => rig.world([-0.1, 0.06, 0.12], a),
-        facing: () => hat.dirToWorld([-0.5, 0.6, 0.6], n),
-      });
-    }
-    if (hat.has('leaf_inner')) {
-      // the inner leaves peep out at the tip, above the mo
-      const a = new THREE.Vector3();
-      this.label({ id: 'p2.label.innerLeaves', tone: 'green', place: 'right', anchor: () => rig.world([0.012, 0.19, 0.012], a) });
-    }
-    if (hat.has('poem_art')) {
-      const n = new THREE.Vector3();
-      this.label({
-        id: 'p2.label.secret',
-        kind: 'callout',
-        tone: 'gold',
-        place: 'right',
-        anchor: () => this.poemPoint(),
-        facing: () => hat.dirToWorld([0.2, 0.6, 0.8], n),
-        onTap: () => {
-          this.emit('say', 'p2.label.secret');
-          this.cue('secret');
-        },
-      });
-      if (animate) this.sparkle(this.poemPoint(), 46, 0.07);
-    }
+    if (!hat.has('mo_bark')) return null;
+    const a = new THREE.Vector3();
+    const n = new THREE.Vector3();
+    // on the left slope, low down: the label goes out to the left of the hat
+    return this.label({ id: 'p2.label.mo', tone: 'bark', place: 'left', anchor: () => rig.world([-0.17, 0.04, 0.09], a), facing: () => hat.dirToWorld([-0.8, 0.6, 0.4], n) });
+  }
+
+  private innerLabel() {
+    const rig = this.rig;
+    if (!rig.hat.has('leaf_inner')) return null;
+    // the inner leaves peep out at the tip, above the lá mo
+    const a = new THREE.Vector3();
+    return this.label({ id: 'p2.label.innerLeaves', tone: 'green', place: 'right', anchor: () => rig.world([0.012, 0.19, 0.012], a) });
+  }
+
+  private secretLabel() {
+    const hat = this.rig.hat;
+    if (!hat.has('poem_art')) return null;
+    const n = new THREE.Vector3();
+    return this.label({
+      id: 'p2.label.secret',
+      kind: 'callout',
+      tone: 'gold',
+      place: 'right',
+      anchor: () => this.poemPoint(),
+      facing: () => hat.dirToWorld([0.2, 0.6, 0.8], n),
+      onTap: () => {
+        this.emit('say', 'p2.label.secret');
+        this.cue('secret');
+      },
+    });
   }
 
   /** the paper art sits on the front of the hat (+Z), between rings 3 and 12 */
@@ -269,6 +369,17 @@ export class LeavesLayer extends LayerBase {
     for (const sp of this.sparkles) sp.dispose();
     this.sparkles.clear();
     super.dispose();
+    // a leaf caught mid-flight (Skip, a new layer) lands exactly on or off, so the next layer
+    // starts from a hat that makes sense
+    this.rig.settleLeaves();
+    const hat = this.rig.hat;
+    const leavesOn = this.rig.panels.panels.every((p) => p.state === 'on');
+    if (hat.has('poem_art') && hat.get('poem_art').userData.away) this.rig.snapHome(hat.get('poem_art'));
+    for (const n of ['leaf_outer_cap', 'apex_cap']) {
+      if (!hat.has(n)) continue;
+      if (leavesOn) this.rig.snapHome(hat.get(n));
+      else this.rig.snapAway(hat.get(n));
+    }
   }
 
   // ---------------------------------------------------------------- geometry helpers

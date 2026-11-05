@@ -34,7 +34,7 @@ export const SCRIPT: Record<LayerId, LayerScript> = {
     name: 'p2.l2.name',
     question: 'p2.l2.question',
     chunks: chunks(2, 7),
-    cues: { 3: 'mo', 5: 'resin' },
+    cues: { 3: 'layers', 5: 'coat' },
     photo: { stem: 'p2-layering-leaves', alt: 'p2.l2.photo.alt' },
   },
   frame: {

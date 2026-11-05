@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Rope, gust, type V3 } from '../../src/three/rope';
+import { Rope, gust, hangingLoop, polylineLength, type V3 } from '../../src/three/rope';
 
 function hanging(n = 25): V3[] {
   // a U between two anchors 0.38 m apart, like the strap's rest curve
@@ -63,5 +63,34 @@ describe('strap rope', () => {
   it('gusts fade away', () => {
     expect(gust(-1)).toBe(0);
     expect(Math.abs(gust(10))).toBeLessThan(0.05);
+  });
+});
+
+describe('the short chin strap loop', () => {
+  const A: V3 = [-0.19208, 0.036349, 0];
+  const B: V3 = [0.19208, 0.036349, 0];
+  const low = -0.21 / 3;
+  const pts = hangingLoop(A, B, low, 25);
+
+  it('starts and ends at the knots', () => {
+    expect(pts).toHaveLength(25);
+    expect(pts[0]).toEqual(A);
+    expect(pts[24]).toEqual(B);
+  });
+
+  it('hangs about a third of the hat height below the brim, no lower', () => {
+    const lowest = Math.min(...pts.map((p) => p[1]));
+    expect(lowest).toBeCloseTo(low, 2);
+    expect(lowest).toBeGreaterThan(-0.08);
+  });
+
+  it('spaces its points evenly, so the rope keeps its shape when it settles', () => {
+    const seg = polylineLength(pts) / 24;
+    for (let i = 1; i < pts.length; i++) expect(Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])).toBeCloseTo(seg, 3);
+    const rope = new Rope(pts, { damping: 0.992, iterations: 24, bend: 0.5 });
+    rope.pin(0, A);
+    rope.pin(24, B);
+    rope.settle(240, 1 / 120, [0, -4.9, 0]);
+    expect(rope.point(12)[1]).toBeCloseTo(low, 2);
   });
 });

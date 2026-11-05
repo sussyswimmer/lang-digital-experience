@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import ann from '../../content/phase3.json';
 import { buildHats, hatAt, insideDry, insideHat, runoffTarget, type HatAnnotation } from '../../src/phases/phase3/hats';
-import { RainSim } from '../../src/phases/phase3/rain/RainSim';
+import { RainSim, runPoint } from '../../src/phases/phase3/rain/RainSim';
 
 const I = ann.identity;
 const W = 1000;
@@ -65,7 +65,8 @@ describe('Chapter 3 rain (seeded)', () => {
     for (let f = 0; f < 60 * 7; f++) {
       sim.step(1 / 60);
       for (const d of sim.drops) {
-        if (d.state === 'slide' || d.state === 'splash') continue;
+        // beads on a hat (running down it, or hanging from its brim) and splashes are not falling rain
+        if (d.state === 'slide' || d.state === 'hang' || d.state === 'splash') continue;
         checked++;
         for (const h of hats) if (insideDry(h, d) || insideHat(h, d)) wet++;
       }
@@ -73,6 +74,38 @@ describe('Chapter 3 rain (seeded)', () => {
     expect(checked).toBeGreaterThan(10000);
     expect(wet).toBe(0);
   }, 20000);
+
+  it('water runs down the slope to the brim, then along it to the edge, and hangs there before it drips', () => {
+    const sim = new RainSim(W, H, hats, { seed: 9 });
+    sim.start(4);
+    let runs = 0;
+    let hangs = 0;
+    for (let f = 0; f < 60 * 5; f++) {
+      sim.step(1 / 60);
+      for (const d of sim.drops) {
+        if (d.state === 'hang') {
+          hangs++;
+          expect(d.x).toBe(d.tx);
+          expect(d.y).toBe(d.ty);
+        }
+        if (d.state !== 'slide' || d.t > 0.02) continue;
+        runs++;
+        const h = hats[d.hat];
+        // the run starts where the drop hit and ends on the brim's tip (or an upside-down hat's tip)
+        expect(runPoint(d, 0)).toEqual({ x: d.sx, y: d.sy });
+        const end = runPoint(d, 1);
+        expect([h.l, h.r, h.apex].some((p) => Math.hypot(p.x - end.x, p.y - end.y) < 1e-6)).toBe(true);
+        // the bend sits on the brim's chord (or at the hit, for a drop that landed on the brim)
+        if (d.tx !== h.apex.x || d.ty !== h.apex.y) {
+          const off = (d.cx - h.c.x) * h.nrm.x + (d.cy - h.c.y) * h.nrm.y;
+          const hitOnBrim = (d.sx - h.c.x) * h.nrm.x + (d.sy - h.c.y) * h.nrm.y >= 0;
+          if (!hitOnBrim) expect(Math.abs(off)).toBeLessThan(1e-6);
+        }
+      }
+    }
+    expect(runs).toBeGreaterThan(50);
+    expect(hangs).toBeGreaterThan(50);
+  });
 
   it('is reproducible for a given seed', () => {
     const run = () => {

@@ -258,7 +258,18 @@
   font-weight: 700;
 }
 
-/* phones: one sentence at a time, in a slimmer panel (the screen keeps 120 px free for it) */
+/* one sentence at a time, on every screen: a child reads (or follows) one short line, the strip
+   stays one or two lines tall and never grows into the picture. The current sentence is the only
+   one shown, so it keeps the ink colour instead of turning thread red. */
+.caption span:not(.is-current) {
+  display: none;
+}
+
+.caption mark {
+  color: inherit;
+}
+
+/* phones: a slimmer panel (the screen keeps 120 px free for it) */
 @media (max-width: 600px) {
   .caption {
     padding: 8px 12px;
@@ -266,10 +277,6 @@
     line-height: 1.3;
     max-height: calc(4 * 1.3em + 16px);
     overflow: hidden;
-  }
-
-  .caption span:not(.is-current) {
-    display: none;
   }
 }
 

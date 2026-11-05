@@ -169,3 +169,57 @@ function flatten(v: V3, axis: V3): V3 {
   const k = dot(v, axis);
   return [v[0] - axis[0] * k, v[1] - axis[1] * k, v[2] - axis[2] * k];
 }
+
+/**
+ * A strap hanging between its two knots: a catenary whose lowest point is at `lowY` (hat space),
+ * resampled into `n` points evenly spaced along its length (the rope's segment rest lengths).
+ */
+export function hangingLoop(a: V3, b: V3, lowY: number, n: number): V3[] {
+  const half = Math.hypot(b[0] - a[0], b[2] - a[2]) / 2;
+  const top = (a[1] + b[1]) / 2;
+  const sag = Math.max(0.005, top - lowY);
+  // solve c·(cosh(half/c) − 1) = sag for c by bisection (the function falls as c grows)
+  let lo = 1e-4;
+  let hi = 10;
+  for (let i = 0; i < 80; i++) {
+    const c = (lo + hi) / 2;
+    if (c * (Math.cosh(half / c) - 1) > sag) lo = c;
+    else hi = c;
+  }
+  const c = (lo + hi) / 2;
+  // dense samples along x, then pick points at equal arc length
+  const dense: V3[] = [];
+  const m = 400;
+  for (let i = 0; i <= m; i++) {
+    const t = i / m;
+    const x = -half + 2 * half * t;
+    const y = lowY + c * (Math.cosh(x / c) - 1);
+    dense.push([a[0] + (b[0] - a[0]) * t, y + (a[1] - top) * (1 - t) + (b[1] - top) * t, a[2] + (b[2] - a[2]) * t]);
+  }
+  const cum = [0];
+  for (let i = 1; i < dense.length; i++) cum.push(cum[i - 1] + dist3(dense[i - 1], dense[i]));
+  const total = cum[cum.length - 1];
+  const out: V3[] = [];
+  let j = 1;
+  for (let k = 0; k < n; k++) {
+    const target = (total * k) / (n - 1);
+    while (j < dense.length - 1 && cum[j] < target) j++;
+    const f = (target - cum[j - 1]) / Math.max(1e-9, cum[j] - cum[j - 1]);
+    const p = dense[j - 1];
+    const q = dense[j];
+    out.push([p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f, p[2] + (q[2] - p[2]) * f]);
+  }
+  out[0] = [...a];
+  out[n - 1] = [...b];
+  return out;
+}
+
+function dist3(p: V3, q: V3): number {
+  return Math.hypot(q[0] - p[0], q[1] - p[1], q[2] - p[2]);
+}
+
+export function polylineLength(pts: V3[]): number {
+  let l = 0;
+  for (let i = 1; i < pts.length; i++) l += dist3(pts[i - 1], pts[i]);
+  return l;
+}

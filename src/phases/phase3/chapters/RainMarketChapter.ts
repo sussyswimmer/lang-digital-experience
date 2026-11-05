@@ -13,12 +13,22 @@ import { ANN } from '../annotations';
 import { P3_ICONS } from '../art';
 import type { Pt } from '../geometry';
 import { badgeSpot, buildHats, hatAt, type Hat } from '../hats';
-import { RainSim } from '../rain/RainSim';
+import { RainSim, runPoint } from '../rain/RainSim';
 import type { Chapter, ChapterHost } from './types';
 
 const A = ANN.identity;
 const AR = A.width / A.height;
 const RAIN_SECONDS = 10;
+/**
+ * Depth bands for the falling rain (Drop.z): far drops are finer and fainter, near ones a little
+ * longer and clearer. length scales the streak (speed × exposure); tail/head are the alphas of the
+ * streak's back and front halves, so each one tapers like a real streak of rain.
+ */
+const RAIN_BANDS = [
+  { from: 0, to: 0.4, width: 0.6, length: 0.8, tail: 0.1, head: 0.24 },
+  { from: 0.4, to: 0.78, width: 0.8, length: 1, tail: 0.14, head: 0.34 },
+  { from: 0.78, to: 1.01, width: 1.1, length: 1.25, tail: 0.18, head: 0.46 },
+] as const;
 /** count words and narration exist up to here (content/strings/phase3.json num.N) */
 const MAX_SAY = 60;
 
@@ -188,59 +198,152 @@ export class RainMarketChapter implements Chapter {
     c?.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
+  /**
+   * Real rain, not snow: thin, see-through streaks at a slight angle, fainter and finer the
+   * further away they are (three depth bands, each one batched path drawn tail-faint, head-bright).
+   * On the hats: a tiny splash where a drop lands, a glistening rivulet running down the slope and
+   * along the brim, a bead swelling on the brim's edge, and the drip falling off it.
+   */
   private draw(sim: RainSim): void {
     const c = this.canvas.getContext('2d');
     if (!c) return;
     const dpr = this.canvas.width / (this.size.w || 1);
     c.setTransform(dpr, 0, 0, dpr, 0, 0);
     c.clearRect(0, 0, this.size.w, this.size.h);
-    // wet sheen on the hats
+    c.lineCap = 'round';
+    // wet leaves catch a cool, soft light
     if (sim.wetness > 0.01) {
       c.globalCompositeOperation = 'screen';
-      c.fillStyle = `rgba(200, 225, 255, ${0.22 * sim.wetness})`;
+      c.fillStyle = `rgba(190, 210, 235, ${0.14 * sim.wetness})`;
+      c.beginPath();
       for (const h of this.hats) {
-        c.beginPath();
         c.moveTo(h.apex.x, h.apex.y);
         c.lineTo(h.l.x, h.l.y);
         c.lineTo(h.r.x, h.r.y);
         c.closePath();
-        c.fill();
+      }
+      c.fill();
+      c.globalCompositeOperation = 'source-over';
+    }
+
+    // the falling rain: exposure (s) sets the streak length, a long thin blur like a photo of rain
+    const exposure = motion.reduced ? 0.02 : 0.03;
+    // close to the camera: faint, fast, over everything (it is far above the people)
+    if (sim.veilCount) {
+      for (const half of [0, 1] as const) {
+        c.beginPath();
+        for (let i = 0; i < sim.veilCount; i++) {
+          const v = sim.veil[i];
+          const k0 = half === 0 ? exposure : exposure * 0.45;
+          const k1 = half === 0 ? exposure * 0.45 : 0;
+          c.moveTo(v.x - v.vx * k0, v.y - v.vy * k0);
+          c.lineTo(v.x - v.vx * k1, v.y - v.vy * k1);
+        }
+        c.strokeStyle = `rgba(226, 235, 246, ${half === 0 ? 0.05 : 0.15})`;
+        c.lineWidth = 0.9;
+        c.stroke();
       }
     }
-    c.globalCompositeOperation = 'lighter';
-    c.lineCap = 'round';
-    c.strokeStyle = 'rgba(220, 236, 255, 0.7)';
-    c.lineWidth = 1.6;
+    // down among the crowd: the drops that reach the hats and the ground
+    for (const band of RAIN_BANDS) {
+      for (const half of [0, 1] as const) {
+        c.beginPath();
+        for (const d of sim.drops) {
+          if (d.state !== 'fall' || d.z < band.from || d.z >= band.to) continue;
+          const len = exposure * band.length;
+          const k0 = half === 0 ? len : len * 0.45;
+          const k1 = half === 0 ? len * 0.45 : 0;
+          c.moveTo(d.x - d.vx * k0, d.y - d.vy * k0);
+          c.lineTo(d.x - d.vx * k1, d.y - d.vy * k1);
+        }
+        c.strokeStyle = `rgba(222, 232, 244, ${half === 0 ? band.tail : band.head})`;
+        c.lineWidth = band.width;
+        c.stroke();
+      }
+    }
+
+    // a drop meeting a hat: two specks of spray jump off for a moment
+    c.fillStyle = 'rgba(235, 243, 252, 0.45)';
     c.beginPath();
     for (const d of sim.drops) {
-      if (d.state === 'fall' || d.state === 'drip') {
-        const k = d.state === 'drip' ? 0.01 : 0.014;
-        const fade = Math.min(1, d.age / 0.06);
-        if (fade < 1) continue;
-        c.moveTo(d.x - d.vx * k, d.y - d.vy * k);
-        c.lineTo(d.x, d.y);
+      if (d.state !== 'slide' || d.age > 0.08 || d.z < 0.5) continue;
+      const r = 1.5 + d.age * 30;
+      const lift = d.age * 22 - d.age * d.age * 120;
+      for (const side of [-1, 1]) {
+        const x = d.sx + side * r;
+        const y = d.sy - lift;
+        c.moveTo(x + 0.7, y);
+        c.arc(x, y, 0.7, 0, Math.PI * 2);
       }
     }
-    c.stroke();
-    c.fillStyle = 'rgba(235, 245, 255, 0.9)';
-    for (const d of sim.drops) {
-      if (d.state !== 'slide') continue;
+    c.fill();
+
+    // rivulets: each bead leaves a short wet trail behind it, down the slope and along the brim;
+    // two strengths (by depth) so the trails converging on a brim's edge stay a glint, not an outline
+    for (const near of [false, true]) {
+      c.strokeStyle = `rgba(225, 238, 252, ${near ? 0.3 : 0.16})`;
+      c.lineWidth = 0.9;
       c.beginPath();
-      c.arc(d.x, d.y, 1.8, 0, Math.PI * 2);
+      for (const d of sim.drops) {
+        if (d.state !== 'slide' || d.z >= 0.5 !== near) continue;
+        const t0 = Math.max(0, d.t - 14 / d.plen);
+        const p0 = runPoint(d, t0);
+        const pm = runPoint(d, (t0 + d.t) / 2);
+        c.moveTo(p0.x, p0.y);
+        c.quadraticCurveTo(pm.x, pm.y, d.x, d.y);
+      }
+      c.stroke();
+      c.fillStyle = `rgba(240, 247, 255, ${near ? 0.6 : 0.32})`;
+      c.beginPath();
+      for (const d of sim.drops) {
+        if (d.state !== 'slide' || d.z >= 0.5 !== near) continue;
+        c.moveTo(d.x + 0.9, d.y);
+        c.arc(d.x, d.y, 0.9, 0, Math.PI * 2);
+      }
       c.fill();
     }
-    c.strokeStyle = 'rgba(220, 236, 255, 0.5)';
-    c.lineWidth = 1;
+
+    // a bead swelling on the brim's edge, then the drip falling off it, stretched by its speed
+    c.fillStyle = 'rgba(236, 245, 255, 0.72)';
+    c.beginPath();
     for (const d of sim.drops) {
-      if (d.state !== 'splash') continue;
-      const r = 2 + d.age * 16;
-      c.globalAlpha = Math.max(0, 1 - d.age / 0.3);
+      if (d.state !== 'hang') continue;
+      const grow = Math.min(1, d.age / Math.max(0.05, d.hangFor));
+      const r = 0.8 + grow * 0.9;
+      c.moveTo(d.x + r, d.y + r);
+      c.ellipse(d.x, d.y + r, r, r * (1 + grow * 0.4), 0, 0, Math.PI * 2);
+    }
+    c.fill();
+    c.strokeStyle = 'rgba(236, 245, 255, 0.7)';
+    c.lineWidth = 1.3;
+    c.beginPath();
+    for (const d of sim.drops) {
+      if (d.state !== 'drip') continue;
+      const k = Math.min(0.018, 0.005 + d.age * 0.03);
+      c.moveTo(d.x - d.vx * k, d.y - d.vy * k);
+      c.lineTo(d.x, d.y);
+    }
+    c.stroke();
+
+    // where rain meets the ground: a tiny spray, two short flicks thrown up and out, gone at once
+    // (rings would stack into bubbles under a dripping brim)
+    c.lineWidth = 0.8;
+    for (const near of [false, true]) {
+      c.strokeStyle = `rgba(226, 236, 248, ${near ? 0.4 : 0.22})`;
       c.beginPath();
-      c.ellipse(d.x, d.y, r, r * 0.35, 0, 0, Math.PI * 2);
+      for (const d of sim.drops) {
+        if (d.state !== 'splash' || d.age > 0.12) continue;
+        const drip = d.hat >= 0;
+        if ((drip || d.z >= 0.8) !== near || (!drip && d.z < 0.5)) continue;
+        const r = 1 + d.age * 26;
+        const up = 1 + d.age * 14;
+        c.moveTo(d.x - r * 0.4, d.y);
+        c.lineTo(d.x - r, d.y - up);
+        c.moveTo(d.x + r * 0.4, d.y);
+        c.lineTo(d.x + r, d.y - up);
+      }
       c.stroke();
     }
-    c.globalAlpha = 1;
-    c.globalCompositeOperation = 'source-over';
   }
 
   // ---------- counting ----------

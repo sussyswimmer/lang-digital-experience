@@ -14,7 +14,7 @@ export const P1_ICONS = {
   needle: `<svg viewBox="0 0 48 48" ${INK}><path d="M10 40 38 8"/><ellipse cx="35.5" cy="10.5" rx="2.4" ry="4.2" transform="rotate(42 35.5 10.5)" stroke-width="2.2"/><path d="M36 11c6 6-2 14-10 12S12 30 20 38s12-2 8-6" stroke="var(--thread, #C8392B)" stroke-width="2.6"/></svg>`,
   explore:
     '<svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="13" fill="#FFF9EC" stroke="currentColor" stroke-width="4"/><path d="M30 30l11 11" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/><path d="M20 11 29 25Q20 28 11 25Z" fill="#E0A93B" stroke="#7A5A3A" stroke-width="1.8" stroke-linejoin="round"/></svg>',
-  check: '<svg viewBox="0 0 24 24"><path d="m6 12.5 3.8 3.8 8.2-9" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  stop: '<svg viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="2.5" fill="currentColor"/></svg>',
 } as const;
 
 /** A friendly nón lá drawing (rings, ribs, a purple strap). `uid` keeps gradient ids unique. */

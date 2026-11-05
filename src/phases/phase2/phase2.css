@@ -1,8 +1,9 @@
 /* Phase 2 · Uncover the Secrets of the Nón Lá. The 3D hat stands on the lit table under this
    screen; only the pieces below take touches, the rest of the screen passes them through to the
    hat. Everything here is paper and red thread (docs/DESIGN.md): tags on a thread for the layer
-   picker, a paper bubble for the question, a stitched sheet for the insight, a red stamp for the
-   ring count. */
+   picker, a paper bubble for the question, "Show me" as a straw tag pinned on the hat, a stitched
+   card once the layer has been explained, and one red stamp for the 16 rings. "Skip" sits in the
+   same corner as the card's Next button, so the way on is always in one place. */
 
 .screen.p2 {
   --p2-panel-w: min(400px, 36vw);
@@ -127,23 +128,32 @@
 
 /* ---------- guided question ---------- */
 
+/* centred over the hat, a size smaller and a weight lighter than a title; balanced lines, so no
+   word is left alone on the last line (in English or Vietnamese) */
 .p2-question {
   position: absolute;
   top: calc(100px + var(--safe-top));
-  left: calc(20px + var(--safe-left));
-  max-width: min(640px, calc(100% - 40px));
-  padding: 10px 12px 10px 10px;
-  anchor-name: --p2-q;
+  left: 0;
+  right: 0;
+  width: max-content;
+  max-width: min(620px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 8px 20px 8px 8px;
+  gap: 10px;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.25;
 }
 
-/* the tail: a folded corner of the same paper, pointing at the hat */
+/* the tail: a folded corner of the same paper, pointing down at the hat */
 .p2-question::after {
   content: '';
   position: absolute;
-  left: 58px;
+  left: 50%;
   bottom: -11px;
   width: 22px;
   height: 22px;
+  margin-left: -11px;
   background:
     var(--grain) 0 0 / 240px 240px,
     var(--paper);
@@ -161,16 +171,98 @@
 
 .p2-question__say {
   flex: none;
+  width: 52px;
+  height: 52px;
+  min-height: 52px;
 }
 
 .p2-question__text {
   flex: 1;
   color: var(--forest-900);
+  text-wrap: balance;
+}
+
+/* ---------- "Show me", pinned on the hat ---------- */
+
+/* a zero-size anchor moved onto the spot to touch (Phase2Screen follows it as the hat turns): a
+   pulsing ring on the spot, a short thread, and the straw tag beside it on the outer side */
+.screen.p2 .p2-pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.p2-pin[hidden] {
+  display: none;
+}
+
+.screen.p2 .p2-pin.is-on {
+  opacity: 1;
+}
+
+.p2-pin__ring,
+.p2-pin__thread {
+  position: absolute;
+  pointer-events: none;
+}
+
+.p2-pin__ring {
+  left: -28px;
+  top: -28px;
+  width: 56px;
+  height: 56px;
+}
+
+/* the spot: a steady knot of thread, and a ring that keeps breathing out from it */
+.p2-pin__ring::before,
+.p2-pin__ring::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+.p2-pin__ring::before {
+  inset: 20px;
+  background: var(--thread);
+  box-shadow: 0 0 0 3px rgba(251, 245, 230, 0.85);
+}
+
+.p2-pin__ring::after {
+  inset: 0;
+  border: 3px solid var(--thread);
+  box-shadow: 0 0 0 2px rgba(251, 245, 230, 0.6);
+  animation: p2-pin-pulse 1.7s ease-out infinite;
+}
+
+@keyframes p2-pin-pulse {
+  0% { transform: scale(0.45); opacity: 1; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+.p2-pin__thread {
+  top: -1px;
+  left: 14px;
+  width: 40px;
+  border-top: 2px dashed var(--thread);
+}
+
+.p2-pin--left .p2-pin__thread {
+  left: auto;
+  right: 14px;
 }
 
 /* "Show me": a straw tag with a hole and a loop of thread */
 .p2-showme {
-  flex: none;
+  position: absolute;
+  top: 0;
+  left: 52px;
+  transform: translateY(-50%);
   min-height: var(--tap-min);
   padding: 0 18px 0 30px;
   border: var(--deckle);
@@ -180,40 +272,134 @@
     var(--grain) 0 0 / 240px 240px,
     var(--straw-300);
   background-blend-mode: normal, multiply, normal;
+  box-shadow: var(--shadow-paper);
   font-size: 1.1rem;
+  white-space: nowrap;
+  pointer-events: none;
+  rotate: -2deg;
 }
 
-.p2-showme::before {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 50%;
-  width: 18px;
-  height: 18px;
-  translate: -60% -50%;
-  border: 2px solid var(--thread);
-  border-radius: 50%;
-  clip-path: inset(0 55% 0 0);
-  pointer-events: none;
+.p2-pin.is-on .p2-showme {
+  pointer-events: auto;
+}
+
+.p2-pin--left .p2-showme {
+  left: auto;
+  right: 52px;
+  rotate: 2deg;
 }
 
 .p2-showme .icon {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
 }
 
-.p2-showme[hidden] {
+/* ---------- "Skip ›": always in the same corner ---------- */
+
+/* where the card's Next button sits (bottom right, above the caption strip) */
+.p2-skipper {
+  position: absolute;
+  right: calc(20px + var(--safe-right));
+  bottom: calc(132px + var(--safe-bottom));
+  z-index: 3;
+  gap: 6px;
+  min-height: 60px;
+  padding: 0 14px 0 22px;
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+}
+
+.p2-skipper .icon {
+  width: 26px;
+  height: 26px;
+}
+
+.p2-skipper[hidden] {
   display: none;
 }
 
-/* ---------- ring counter (layer 3): a red ink stamp ---------- */
+/* ---------- layer 2: the layering order, one step at a time ---------- */
+
+.p2-steps {
+  position: absolute;
+  top: calc(100px + var(--safe-top));
+  left: 0;
+  right: 0;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  list-style: none;
+  pointer-events: none !important;
+}
+
+.p2-steps[hidden] {
+  display: none;
+}
+
+.p2-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px 6px 8px;
+  border: var(--deckle);
+  border-radius: var(--corner-s);
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    var(--paper);
+  background-blend-mode: multiply, normal;
+  box-shadow: var(--shadow-paper);
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  font-weight: 700;
+  opacity: 0.55;
+  transition: opacity 0.3s, transform 0.35s var(--ease-out), background-color 0.3s, color 0.3s;
+}
+
+.p2-step__n.stamp {
+  width: 30px;
+  height: 30px;
+  border-width: 1.5px;
+  box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3px currentColor;
+  font-size: 1rem;
+  color: var(--straw-700);
+}
+
+.p2-step.is-done {
+  opacity: 0.85;
+}
+
+.p2-step.is-done .p2-step__n.stamp {
+  color: var(--forest-700);
+}
+
+.p2-step.is-on {
+  opacity: 1;
+  background: var(--forest-900);
+  color: var(--paper);
+  transform: translateY(-2px) scale(1.06);
+}
+
+.p2-step.is-on .p2-step__n.stamp {
+  color: var(--thread);
+  mix-blend-mode: normal;
+}
+
+/* ---------- "16 rings" (layer 3): one red ink stamp, pressed once, centred above the hat ---------- */
 
 .p2-counter {
   position: absolute;
-  top: calc(104px + var(--safe-top));
-  right: calc(36px + var(--safe-right));
-  width: 124px;
-  height: 124px;
+  top: calc(96px + var(--safe-top));
+  left: 0;
+  right: 0;
+  width: 116px;
+  height: 116px;
+  margin: 0 auto;
   display: grid;
   align-content: center;
   justify-items: center;
@@ -221,20 +407,17 @@
   box-shadow: inset 0 0 0 4px var(--paper), inset 0 0 0 6px currentColor;
   pointer-events: none !important;
   opacity: 0;
-  transform: scale(0.6);
-  transition: opacity 0.3s, transform 0.4s var(--ease-out);
+  transition: opacity 0.3s;
 }
 
 .p2-counter.is-on {
   opacity: 1;
-  transform: none;
 }
 
 .p2-counter__n {
   font-size: 3rem;
   font-weight: 700;
   line-height: 0.9;
-  transform-origin: 50% 90%;
 }
 
 .p2-counter__w {
@@ -244,12 +427,12 @@
   letter-spacing: 0.02em;
 }
 
-[data-phase="insight"] .p2-counter,
+/* on the card the stamp moves over with the hat */
 [data-phase="done"] .p2-counter {
-  right: calc(var(--p2-panel-w) + 44px);
+  right: calc(var(--p2-panel-w) + 20px);
 }
 
-/* ---------- insight sheet ---------- */
+/* ---------- the layer card ---------- */
 
 /* a sheet of rice paper with the red thread sewn down its left edge */
 .p2-panel {
@@ -262,8 +445,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 18px 18px 18px 32px;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow: hidden;
   border: var(--deckle);
   border-radius: var(--corner-b);
   background:
@@ -455,80 +637,31 @@
   color: var(--ink-soft);
 }
 
-.p2-panel__nav {
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
 .p2-panel__head,
 .p2-panel__extras {
   flex: none;
 }
 
-/* the nav and the Next button stay in view even when the sheet has to scroll: the foot sticks to
-   the bottom of the content box, and a paper skirt over the padding hides what scrolls under it
-   (the spine sits in the left padding, outside the skirt, so it stays visible) */
+/* the foot: "Watch again" and the Next button, at the bottom of the card (Skip's corner) */
 .p2-panel__foot {
   flex: none;
   display: grid;
   gap: 10px;
-  position: sticky;
-  bottom: 0;
-  z-index: 1;
-  margin-top: -6px;
-  padding-top: 6px;
-  background:
-    var(--grain) 0 0 / 240px 240px,
-    var(--paper);
-  background-blend-mode: multiply, normal;
-  box-shadow: 0 13px 0 var(--paper);
-}
-
-.p2-nav {
-  padding: 0 16px;
-  font-size: 1.1rem;
-}
-
-.p2-nav .icon {
-  width: 26px;
-  height: 26px;
-}
-
-/* chunk progress: a running stitch, one stitch per chunk, a knot at the current one */
-.p2-panel__dots {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  min-height: 9px;
-}
-
-.p2-panel__dot {
-  width: 14px;
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(59, 42, 28, 0.22);
-  transition: width 0.25s var(--ease-out), height 0.25s var(--ease-out), background 0.25s;
-}
-
-.p2-panel__dot.is-seen {
-  background: var(--thread);
-}
-
-.p2-panel__dot.is-on {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--thread);
-  box-shadow: 0 0 0 2px var(--paper), 0 0 0 3.5px var(--thread);
+  margin-top: auto;
 }
 
 .p2-replay {
   flex: none;
+  justify-self: start;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 16px;
+  font-size: 1.05rem;
+}
+
+.p2-replay .icon {
+  width: 24px;
+  height: 24px;
 }
 
 .p2-done {
@@ -545,35 +678,6 @@
 .p2-done .icon {
   width: 34px;
   height: 34px;
-}
-
-/* legend tags (layer 1): the two threads, each on a paper tag */
-
-.p2-chip.tag {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: var(--tap-min);
-  padding: 6px 14px 6px 30px;
-  font-size: 1.05rem;
-  line-height: 1.25;
-  text-align: left;
-  transition: transform 0.15s var(--ease-out), box-shadow 0.15s;
-  touch-action: manipulation;
-}
-
-.p2-chip__icon {
-  flex: none;
-  width: 36px;
-  height: 36px;
-}
-
-.p2-chip:hover {
-  box-shadow: var(--shadow-paper-lift);
-}
-
-.p2-chip:active {
-  transform: scale(0.97) rotate(-0.4deg);
 }
 
 /* strap colour swatches (layer 4): dabs of paint, the chosen one ringed with thread */
@@ -755,9 +859,6 @@
     display: none;
   }
 
-  .p2-chip.tag {
-    min-height: var(--tap-min);
-  }
 
   .p2-done {
     min-height: 68px;
@@ -784,43 +885,56 @@
 
   .p2-question {
     top: calc(172px + var(--safe-top));
-    left: 12px;
-    right: 12px;
-    max-width: none;
-    padding: 8px;
-    gap: 10px;
-    font-size: 1.15rem;
+    max-width: calc(100% - 24px);
+    padding: 6px 14px 6px 6px;
+    font-size: 1.05rem;
   }
 
-  /* a picture button with a small word under it, so the question keeps its width */
+  .p2-question__say {
+    width: 46px;
+    height: 46px;
+    min-height: 46px;
+  }
+
   .p2-showme {
-    flex-direction: column;
-    gap: 0;
-    width: 76px;
-    min-height: 72px;
-    padding: 4px;
-    background:
-      var(--grain) 0 0 / 240px 240px,
-      var(--straw-300);
-    background-blend-mode: multiply, normal;
-    font-size: 0.8rem;
-    line-height: 1.1;
+    left: 44px;
+    padding: 0 14px 0 26px;
+    font-size: 1rem;
   }
 
-  .p2-showme::before {
-    display: none;
+  .p2-pin--left .p2-showme {
+    right: 44px;
   }
 
-  .p2-showme .icon {
+  .p2-pin__thread {
     width: 32px;
-    height: 32px;
   }
 
-  /* the stamp sits under the bubble's right end (anchored to it where the browser can) */
+  .p2-skipper {
+    bottom: calc(100px + var(--safe-bottom));
+    right: calc(12px + var(--safe-right));
+    min-height: 56px;
+  }
+
+  .p2-steps {
+    top: calc(172px + var(--safe-top));
+    gap: 6px;
+  }
+
+  .p2-step {
+    padding: 4px 10px 4px 5px;
+    gap: 5px;
+    font-size: 0.85rem;
+  }
+
+  .p2-step__n.stamp {
+    width: 24px;
+    height: 24px;
+    font-size: 0.85rem;
+  }
+
   .p2-counter {
-    top: calc(300px + var(--safe-top));
-    top: calc(anchor(--p2-q bottom) + 10px);
-    right: 14px;
+    top: calc(172px + var(--safe-top));
     width: 92px;
     height: 92px;
   }
@@ -833,9 +947,9 @@
     font-size: 0.85rem;
   }
 
-  /* the sheet takes the top of the screen here; the count lives on in the narration */
-  [data-phase="insight"] .p2-counter,
+  /* the card takes the top of the screen here; the stamp makes way */
   [data-phase="done"] .p2-counter {
+    right: 0;
     opacity: 0;
   }
 
@@ -912,18 +1026,6 @@
     display: none;
   }
 
-  .p2-chip.tag {
-    min-height: var(--tap-min);
-    padding: 4px 10px 4px 26px;
-    gap: 8px;
-    font-size: 0.95rem;
-  }
-
-  .p2-chip__icon {
-    width: 28px;
-    height: 28px;
-  }
-
   .p2-swatch {
     min-height: 72px;
     padding: 8px 2px 4px;
@@ -938,33 +1040,19 @@
   .p2-panel__foot {
     grid-column: 1 / -1;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 11px 0 var(--paper);
   }
 
-  /* the stitches on their own line above the buttons */
-  .p2-panel__dots {
-    flex: 1 0 100%;
+  /* "Watch again" becomes a round picture button beside Next */
+  .p2-replay span {
+    display: none;
   }
 
-  .p2-panel__nav {
-    gap: 8px;
-  }
-
-  /* the top bar already has "hear it again" */
   .p2-replay {
-    display: none;
-  }
-
-  .p2-nav span {
-    display: none;
-  }
-
-  .p2-nav {
-    padding: 0;
     width: var(--tap-min);
+    padding: 0;
+    justify-content: center;
   }
 
   .p2-done {
@@ -996,9 +1084,8 @@
 .p2-question__say:focus-visible,
 .p2-panel__say:focus-visible,
 .p2-panel__photo:focus-visible,
-.p2-chip.tag:focus-visible,
 .p2-swatch:focus-visible,
-.p2-nav:focus-visible,
+.p2-skipper:focus-visible,
 .p2-replay:focus-visible,
 .p2-done:focus-visible {
   box-shadow: var(--focus-ring);
@@ -1009,6 +1096,7 @@
   transition-duration: 0.15s;
 }
 
-.reduced-motion .p2-panel__stitch {
+.reduced-motion .p2-panel__stitch,
+.reduced-motion .p2-pin__ring::after {
   animation: none;
 }

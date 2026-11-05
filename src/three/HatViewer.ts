@@ -80,6 +80,11 @@ export interface HatViewer {
    * null = the whole viewport minus the top bar and captions.
    */
   setFrame(rect: ScreenRect | null, opts?: { duration?: number }): void;
+  /**
+   * Where the hat's labels may sit (viewport px), e.g. not under an open card (null = anywhere), and
+   * buttons they must keep off (e.g. Skip).
+   */
+  setLabelArea?(rect: ScreenRect | null, avoid?: ScreenRect[]): void;
 
   /** Phase 1 → 2: photos fly in from these rects and become the hat */
   convergeFrom(rects: ScreenRect[], images: string[]): Promise<void>;
