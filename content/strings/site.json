@@ -9,7 +9,7 @@
   "site.loading": { "kind": "ui", "en": "Getting the hat ready…", "vi": "Đang chuẩn bị chiếc nón…", "viStatus": "machine" },
 
   "site.story.label": { "kind": "ui", "en": "How a nón lá comes together", "vi": "Chiếc nón lá được làm nên như thế nào", "viStatus": "machine" },
-  "site.story.alt": { "kind": "alt", "en": "A nón lá turns slowly, opens up into its layers of leaves, bark, bamboo rings and stitches, then comes back together.", "vi": "Một chiếc nón lá xoay chậm, tách ra thành từng lớp lá, lớp mo, vòng tre và đường khâu, rồi ghép lại như cũ.", "viStatus": "machine" },
+  "site.story.alt": { "kind": "alt", "en": "A nón lá turns slowly, opens up into its layers of leaves, lá mo, bamboo rings and stitches, then comes back together.", "vi": "Một chiếc nón lá xoay chậm, tách ra thành từng lớp lá, lớp mo, vòng tre và đường khâu, rồi ghép lại như cũ.", "viStatus": "machine" },
   "site.story.1": { "kind": "narration", "en": "A hat made of leaves…", "vi": "Một chiếc nón làm từ lá…", "viStatus": "machine" },
   "site.story.2": { "kind": "narration", "en": "…shaped by 16 bamboo rings…", "vi": "…được tạo dáng nhờ 16 vòng tre…", "viStatus": "machine" },
   "site.story.3": { "kind": "narration", "en": "…stitched by hand…", "vi": "…và khâu tay từng mũi một…", "viStatus": "machine" },

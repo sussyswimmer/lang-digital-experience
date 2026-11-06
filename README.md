@@ -49,7 +49,7 @@ Every word on screen lives in `content/strings/<area>.json` as `{ "en": …, "vi
 | Team | Quiz questions 4 (how many rings: 16) and 5 (what hides in a nón bài thơ: poems) are drafts written to sit beside the brief's three. Keep, change or drop them. |
 | Tram | Photo rights. `p2-chin-straps` carries a Dreamstime watermark, so it needs replacing or licensing. Permission is needed for `p3-identity` (© Doan Duc Minh), `p1-aodai` and `p3-poem`. Sources for the other photos are needed for the credits page. |
 | Tram | The sound recordings weren't in the shared folder. The ambient sounds and effects are generated stand-ins for now, and any real recordings can replace them (`public/assets/audio/`). |
-| Max | Record the narration lines added or changed in the demo-review pass (`npm run tts:plan` lists them): "lá mo" in Layer 2 (`p2.l2.insight.4`, `p2.label.mo`), the four layering steps (`p2.step.*`) and the Build reveal. Until then they show as captions, and the old "mo" clip still plays. |
+| Max | Record the narration lines added or changed in the demo-review pass (`npm run tts:plan` lists them): "lá mo", made from bamboo sheath, in Layer 2 (`p2.l2.insight.4`, `p2.label.mo`, `p2.part.mo`), the four layering steps (`p2.step.*`) and the Build reveal. Until then they show as captions, and the old "mo (tree bark)" clips still play. |
 | Tram | The new rain-market photo (fewer people). Swapping it only needs the hats' coordinates in `content/phase3.json`; the rain, runoff and drips follow them. |
 
 ### Running it locally

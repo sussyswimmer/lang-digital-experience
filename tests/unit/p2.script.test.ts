@@ -10,7 +10,8 @@ const SOURCES = import.meta.glob(['../../src/phases/phase2/Phase2Screen.ts', '..
 
 /**
  * The brief's English, word for word (Phase 2). The chunks must add back up to exactly this.
- * One change since the brief, from the product owner's demo review: the bark layer is called "lá mo".
+ * Changed since the brief, from the product owner's demo review: the middle layer is "lá mo", made
+ * from bamboo sheath (the brief said "tree bark, called mo").
  */
 const BRIEF = {
   stitches: {
@@ -21,7 +22,7 @@ const BRIEF = {
   leaves: {
     question: 'What keeps the rain off your face?',
     insight:
-      "Here comes the leafy layer! These leaves help protect us from the sun and rain. But hat makers can't use just any leaves. They carefully choose leaves that are smooth, flat, and free from tears or cracks. First, the leaves need a little preparation. The hat maker gently irons them to make them flat and smooth. The heat must be just right. Too much heat can burn the leaves, while too little leaves them too soft. When prepared properly, the leaves become smooth, strong, and flexible. Next, it's time to cover the hat! The leaves are carefully arranged over a middle layer made from tree bark, called lá mo. The prettiest leaves are placed on the outside, where everyone can see them. The leaves are spread neatly across the frame, then secured with thread so they don't slip out of place. And here's one final touch! Once the hat is finished, the maker brushes on a protective coating of resin mixed with gasoline. This traditional finishing step helps the hat become shinier and more durable. And there you have it! Layer by layer, the leaves transform a simple frame into a hat that is both beautiful and useful.",
+      "Here comes the leafy layer! These leaves help protect us from the sun and rain. But hat makers can't use just any leaves. They carefully choose leaves that are smooth, flat, and free from tears or cracks. First, the leaves need a little preparation. The hat maker gently irons them to make them flat and smooth. The heat must be just right. Too much heat can burn the leaves, while too little leaves them too soft. When prepared properly, the leaves become smooth, strong, and flexible. Next, it's time to cover the hat! The leaves are carefully arranged over a middle layer made from bamboo sheath, called lá mo. The prettiest leaves are placed on the outside, where everyone can see them. The leaves are spread neatly across the frame, then secured with thread so they don't slip out of place. And here's one final touch! Once the hat is finished, the maker brushes on a protective coating of resin mixed with gasoline. This traditional finishing step helps the hat become shinier and more durable. And there you have it! Layer by layer, the leaves transform a simple frame into a hat that is both beautiful and useful.",
   },
   frame: {
     question: 'What gives the nón lá its conical shape?',
