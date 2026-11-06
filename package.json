@@ -22,6 +22,7 @@
     "assets:renders": "node tools/assets/process-renders.mjs",
     "assets:video": "node tools/assets/process-video.mjs",
     "tts:plan": "node tools/audio/tts-plan.mjs",
+    "tts:record": "node tools/audio/tts-elevenlabs.mjs",
     "tts:ingest": "node tools/audio/tts-ingest.mjs"
   },
   "dependencies": {

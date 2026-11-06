@@ -1,0 +1,6 @@
+{
+  "provider": "elevenlabs",
+  "model": "eleven_v3",
+  "en": { "voice": "cgSgspJ2msm6clMCkdW9", "name": "Jessica (playful, bright, warm)" },
+  "vi": { "voice": "d5HVupAWCwe4e6GvMCAL", "name": "Mai (natural, bright, standard accent)" }
+}

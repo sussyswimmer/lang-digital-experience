@@ -171,7 +171,7 @@ Photo stems (team photos → PhotoCraft slight edit → encoded):
 | `diverse-1`, `diverse-2` | jars; artisan & hat stacks | not used: kept in `raw-assets/photos/edited`, not published |
 
 Asset pipeline: `npm run assets:photos | assets:glb | assets:renders | assets:video`, narration `npm run tts:plan` →
-Higgsfield → `npm run tts:ingest` (only kinds `narration` and `label` are voiced: give any string the app says, card titles
+`npm run tts:record` (ElevenLabs, `tools/audio/voices.json`) → `npm run tts:ingest` (only kinds `narration` and `label` are voiced: give any string the app says, card titles
 included, kind `label`, not `ui`). `assets:photos` publishes only the stems in the table above.
 `npm run assets:check` (also run by `npm run build`, as a warning) lists files under `public/assets` that nothing in `src/`,
 `content/` or `index.html` refers to; delete them or move them to `raw-assets/`.

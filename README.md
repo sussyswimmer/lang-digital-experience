@@ -39,7 +39,7 @@ Two things make reviewing quicker:
 Every word on screen lives in `content/strings/<area>.json` as `{ "en": …, "vi": …, "viStatus": … }`. The areas are `common`, `site`, `phase1`–`phase3`, `hub`, `build`, `colour`, `quiz`, `cert` and `gallery`. `npm run i18n:check` flags missing or empty strings.
 
 - **Vietnamese review (Meri)**: `docs/vi-review.csv` lists all 521 strings, with the English beside the machine-drafted Vietnamese. Fill in `corrected_vietnamese` (and `comment` if needed) in Excel or Google Sheets and send it back. The corrections then go into the JSON with `viStatus: "reviewed"`. To regenerate the sheet after text changes, run `npm run i18n:export`.
-- **Narration**: each narration line and spoken label has a recorded clip in both languages (`public/assets/audio/narration/{en,vi}/<id>.mp3`). If you change a line, re-record it. Until then the app keeps playing the old clip, and a brand-new line shows as a caption with no voice. `npm run tts:plan` lists the lines that are new or changed. Max records them with Higgsfield, and `npm run tts:ingest` installs the clips.
+- **Narration**: each narration line and spoken label has a recorded clip in both languages (`public/assets/audio/narration/{en,vi}/<id>.mp3`). If you change a line, re-record it. Until then the app keeps playing the old clip, and a brand-new line shows as a caption with no voice. `npm run tts:plan` lists the lines that are new or changed. `npm run tts:record` records them with ElevenLabs (Eleven v3; Jessica in English, Mai in Vietnamese, set in `tools/audio/voices.json`; needs `ELEVENLABS_API_KEY`), and `npm run tts:ingest` installs the clips. `npm run tts:record -- --dry` shows the characters a run will cost first.
 
 ### Still open
 
@@ -49,7 +49,6 @@ Every word on screen lives in `content/strings/<area>.json` as `{ "en": …, "vi
 | Team | Quiz questions 4 (how many rings: 16) and 5 (what hides in a nón bài thơ: poems) are drafts written to sit beside the brief's three. Keep, change or drop them. |
 | Tram | Photo rights. `p2-chin-straps` carries a Dreamstime watermark, so it needs replacing or licensing. Permission is needed for `p3-identity` (© Doan Duc Minh), `p1-aodai` and `p3-poem`. Sources for the other photos are needed for the credits page. |
 | Tram | The sound recordings weren't in the shared folder. The ambient sounds and effects are generated stand-ins for now, and any real recordings can replace them (`public/assets/audio/`). |
-| Max | Record the narration lines added or changed in the demo-review pass (`npm run tts:plan` lists them): "lá mo", made from bamboo sheath, in Layer 2 (`p2.l2.insight.4`, `p2.label.mo`, `p2.part.mo`), the four layering steps (`p2.step.*`) and the Build reveal. Until then they show as captions, and the old "mo (tree bark)" clips still play. |
 | Tram | The new rain-market photo (fewer people). Swapping it only needs the hats' coordinates in `content/phase3.json`; the rain, runoff and drips follow them. |
 
 ### Running it locally

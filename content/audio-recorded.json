@@ -9,7 +9,7 @@
  },
  "en/p1.intro.2": {
   "hash": "d227976dabf8",
-  "seconds": 8.47
+  "seconds": 7.99
  },
  "en/p1.intro.3": {
   "hash": "d60dc3d5ef74",
@@ -613,7 +613,7 @@
  },
  "vi/p1.intro.2": {
   "hash": "903100915589",
-  "seconds": 9.1
+  "seconds": 7.87
  },
  "vi/p1.intro.3": {
   "hash": "ace9a3f8b8e8",
@@ -688,8 +688,8 @@
   "seconds": 8.38
  },
  "vi/p2.l2.insight.4": {
-  "hash": "3f96de36aad1",
-  "seconds": 12.7
+  "hash": "6dc5d882f8d7",
+  "seconds": 13.27
  },
  "vi/p2.l2.insight.5": {
   "hash": "09dcd3c194a8",
@@ -1396,8 +1396,8 @@
   "seconds": 13.61
  },
  "en/p2.l2.insight.4": {
-  "hash": "a6f41fb71f58",
-  "seconds": 12.84
+  "hash": "783b7b45ea15",
+  "seconds": 14.04
  },
  "en/p2.l2.insight.5": {
   "hash": "2cef004b358b",

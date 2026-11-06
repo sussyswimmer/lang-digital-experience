@@ -20,10 +20,13 @@ for (const r of results) {
   const outDir = `public/assets/audio/narration/${r.lang}`;
   mkdirSync(outDir, { recursive: true });
   const out = `${outDir}/${r.id}.mp3`;
-  // trim leading/trailing silence, normalise to -16 LUFS, mono 48 kbps
-  execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', raw, '-af',
-    'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.05,areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.15,areverse,loudnorm=I=-16:TP=-1.5:LRA=11',
-    '-ac', '1', '-ar', '24000', '-c:a', 'libmp3lame', '-b:a', '48k', out]);
+  // trim leading/trailing silence, then normalise to -16 LUFS, mono 48 kbps. Two passes: in one filter
+  // chain, areverse + loudnorm can deadlock on some clips. -nostdin and a timeout: never wait silently.
+  const trimmed = path.join(tmp, `${r.lang}-${r.id}.wav`);
+  const ff = (args) => execFileSync('ffmpeg', ['-nostdin', '-v', 'error', '-y', ...args], { stdio: ['ignore', 'inherit', 'inherit'], timeout: 60_000 });
+  ff(['-i', raw, '-af', 'silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.05,areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.15,areverse', '-c:a', 'pcm_s16le', trimmed]);
+  ff(['-i', trimmed, '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11', '-ac', '1', '-ar', '24000', '-c:a', 'libmp3lame', '-b:a', '48k', out]);
+  rmSync(trimmed);
   const seconds = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', out]).toString().trim());
   recorded[`${r.lang}/${r.id}`] = { hash: r.hash, seconds: Math.round(seconds * 100) / 100 };
   rmSync(raw);
