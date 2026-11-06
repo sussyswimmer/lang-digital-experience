@@ -82,15 +82,25 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 async function record(j) {
   const body = JSON.stringify({ text: j.text, model_id: cfg.model, language_code: j.lang });
   for (let attempt = 1; attempt <= 5; attempt++) {
-    const res = await fetch(`${API}/v1/text-to-speech/${cfg[j.lang].voice}?output_format=mp3_44100_128`, {
-      method: 'POST',
-      headers: { 'xi-api-key': key, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
-      body,
-    });
-    if (res.ok) {
-      writeFileSync(fileOf(j), Buffer.from(await res.arrayBuffer()));
-      manifest[`${j.lang}/${j.id}`] = stamp(j);
-      return true;
+    let res;
+    try {
+      res = await fetch(`${API}/v1/text-to-speech/${cfg[j.lang].voice}?output_format=mp3_44100_128`, {
+        method: 'POST',
+        headers: { 'xi-api-key': key, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
+        body,
+      });
+      if (res.ok) {
+        writeFileSync(fileOf(j), Buffer.from(await res.arrayBuffer()));
+        manifest[`${j.lang}/${j.id}`] = stamp(j);
+        // saved after every clip: a crash never loses (and never pays twice for) a finished one
+        writeFileSync(manifestPath, JSON.stringify(manifest, null, 1));
+        return true;
+      }
+    } catch (err) {
+      // a dropped connection (ECONNRESET, a timeout): wait and try again, like a server error
+      console.error(`  ${j.lang}/${j.id}: ${err.cause?.code ?? err.message}, retrying`);
+      await sleep(2000 * 2 ** (attempt - 1));
+      continue;
     }
     const detail = (await res.text()).slice(0, 300);
     if (res.status === 429 || res.status >= 500) {
@@ -112,10 +122,7 @@ await Promise.all(
     for (let j = queue.shift(); j; j = queue.shift()) {
       if (await record(j)) done++;
       else failed++;
-      if ((done + failed) % 25 === 0) {
-        writeFileSync(manifestPath, JSON.stringify(manifest, null, 1));
-        console.log(`  ${done + failed}/${todo.length}`);
-      }
+      if ((done + failed) % 25 === 0) console.log(`  ${done + failed}/${todo.length}`);
     }
   }),
 );
