@@ -11,13 +11,14 @@ const SOURCES = import.meta.glob(['../../src/phases/phase2/Phase2Screen.ts', '..
 /**
  * The brief's English, word for word (Phase 2). The chunks must add back up to exactly this.
  * Changed since the brief, from the product owner's demo review: the middle layer is "lá mo", made
- * from bamboo sheath (the brief said "tree bark, called mo").
+ * from bamboo sheath (the brief said "tree bark, called mo"), and the brim's layer between the wires
+ * is bamboo sheath too (the brief said "tree bark").
  */
 const BRIEF = {
   stitches: {
     question: 'What holds all these pieces tightly together?',
     insight:
-      "Look closely! Can you see those tiny stitches? They may be small, but they have a very important job. They hold the leaves in place and help keep the hat together. Hat makers use thin, transparent white nylon thread to sew the delicate leaves onto the frame. The stitches must be neat and evenly spaced so the leaves stay secure and the hat looks beautiful. The sewing begins at the third rim from the wide brim and continues down towards the edge. But that's not all! The brim needs extra support, too. Red nylon thread and two thin bamboo wires help strengthen it, with a layer of tree bark tucked between the wires. Now you know the secret behind those tiny stitches: they help turn many separate pieces into one sturdy hat!",
+      "Look closely! Can you see those tiny stitches? They may be small, but they have a very important job. They hold the leaves in place and help keep the hat together. Hat makers use thin, transparent white nylon thread to sew the delicate leaves onto the frame. The stitches must be neat and evenly spaced so the leaves stay secure and the hat looks beautiful. The sewing begins at the third rim from the wide brim and continues down towards the edge. But that's not all! The brim needs extra support, too. Red nylon thread and two thin bamboo wires help strengthen it, with a layer of bamboo sheath tucked between the wires. Now you know the secret behind those tiny stitches: they help turn many separate pieces into one sturdy hat!",
   },
   leaves: {
     question: 'What keeps the rain off your face?',
